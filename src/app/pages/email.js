@@ -1,0 +1,39 @@
+import File from '../../../public/file.png'
+import Image from "next/image";
+
+export default function email() {
+    // Create Personalised Email and Send Also Automate the Sending Here
+    // Attach Transcript and Resume Here
+    return (
+        <>
+            <div className = "h-[30rem] flex justify-center items-center border-2 border-gray-200 rounded-md m-10">
+                <div>
+                        <div className = "h-[10rem] w-[20rem] flex flex-col justify-center items-center border-2 border-gray-300 cursor-pointer border-dashed rounded-md">
+                            <h1 className = "font-sans">Upload Transcript</h1>
+                            <div className = "flex flex-col justify-center items-center">
+                                <Image src={File} alt="Placeholder" width={40} height={40}/>
+                                <h1 className = "font-sans font-medium ">Browse Files to Upload</h1>
+                                <p className = "font-extralight text-sm">Supports PDF, JPG, PNG</p>
+                            </div>
+                        </div>
+                </div>
+                <div className = "font-sans m-10">
+                    <h1 className = "font-sans font-medium">Email: Jiexuan.liu@mail.utoronto.ca</h1>
+                    <div>
+                        <div>
+                            <h1 className = "bg-green-200">Subject Line: </h1> 
+                            <span>UofT Email Research Email in Machine Learning</span>
+                        </div>
+                        <div className = "mt-5">
+                            <h1>Body: </h1>
+                            <p>Dear Professor [Last Name], I hope you're doing well. My name is [Your Name], a student in [Your Program] at UofT. I’m very interested in your research on [Specific Topic] and would love to learn more. I am currently working on [Brief Project Description] and believe your insights in [Research Area] would be valuable. Would you be available for a brief meeting or call to discuss your work and potential collaboration? Looking forward to your response. </p>
+                            <p>Best Regards,</p>
+                            <p>Jie Xuan Liu</p>
+                            <p>University of Toronto, Industrial Engineering</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
