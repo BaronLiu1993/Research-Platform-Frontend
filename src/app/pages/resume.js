@@ -1,7 +1,22 @@
+'use client'
+
+import { useState } from 'react';
 import File from '../../../public/file.png'
 import Image from "next/image";
 
+
 export default function resume () {
+    const [pdfFile, setPdfFile] = useState(null);
+
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type === 'application/pdf') {
+            const fileURL = URL.createObjectURL(file);
+            setPdfFile(fileURL);
+        } else {
+            alert('Please upload a valid PDF file');
+        }
+    };
     //Fix Resume With AI RAG Model and the Keywords and Data from the Description 
     return (
         <>
@@ -9,12 +24,19 @@ export default function resume () {
                 <div className = 'flex flex-col justify-center items-center'>
                     <h1 className = "font-sans text-2xl font-medium">Upload Your Resume</h1>
                     <p className = "font-sans text-sm">Fix Your Resume and Match Keywords</p>
-                    <div className = "h-[10rem] w-[20rem] flex flex-col justify-center items-center border-2 border-gray-300 cursor-pointer border-dashed rounded-md">
-                        <Image src={File} alt="Placeholder" width={40} height={40}/>
+                    <label className="h-[10rem] w-[20rem] flex flex-col justify-center items-center border-2 border-gray-300 cursor-pointer border-dashed rounded-md">
+                        <Image src= {File} alt="Placeholder" width={40} height={40} />
+                        <h1 className="font-sans font-medium">Browse Files to Upload</h1>
+                        <p className="font-extralight text-sm">Supports PDF, JPG, PNG</p>
 
-                        <h1 className = "font-sans font-medium ">Browse Files to Upload</h1>
-                        <p className = "font-extralight text-sm">Supports PDF, JPG, PNG</p>
-                    </div>
+                        <input 
+                            type="file" 
+                            className="hidden"
+                            accept=".pdf, .jpg, .png"
+                            onClick = {handleFileUpload}
+                        />
+                    </label>
+                    
                     <p className = "bg-blue-200 text-sm font-sans h-[2rem] w-[20rem] flex items-center pl-4 rounded-md mt-5">
                         No Files Uploaded
                     </p>
@@ -40,7 +62,7 @@ export default function resume () {
                 </div>
 
                 <div className = "h-[40rem] border-1 w-[30rem] rounded-md">
-                    
+
                 </div>
             </div>
             <button className = "flex justify-center items-center font-extralight cursor-pointer w-[20rem] h-[3rem] text-white bg-blue-500 rounded-sm px-2 font-sans">
