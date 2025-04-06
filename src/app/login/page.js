@@ -1,4 +1,21 @@
+'use client'
+import { useState } from 'react'
+import { handleLogin } from '../api/auth'
+
 export default function login() {
+    const [formData, setFormData] = useState({
+      email: '',
+      password: ''
+    })
+
+    const handleSubmit = async () => {
+      try {
+        await handleLogin(formData)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
     return (
         <>  
             <div className = 'flex flex-col justify-center items-center mt-20'>
@@ -8,20 +25,23 @@ export default function login() {
         <h1 className="font-sans space-x-0.5 tracking-wide font-bold text-xl text-gray-400 ">
           Start Now!
         </h1>
-        <div className = "mt-5 flex flex-col space-y-2">
-          <input className = "p-2 border-1 border-gray-200 rounded-md w-[20rem]" placeholder = "📨 Enter your email address...">
+        <form onSubmit = {handleSubmit}>
+          <div className = "mt-5 flex flex-col space-y-2">
+            <input value = {e} onChange = {setFormData({...FormData, email: e.target.value})} className = "p-2 border-1 border-gray-200 rounded-md w-[20rem]" placeholder = "📨 Enter your email address...">
 
-          </input>
-          <input className = "p-2 border-1 border-gray-200 rounded-md w-[20rem]" placeholder = "📚 Enter your password...">
+            </input>
+            <input value = {e} onChange = {setFormData({...FormData, password: e.target.value})} className = "p-2 border-1 border-gray-200 rounded-md w-[20rem]" placeholder = "📚 Enter your password...">
 
-          </input>
+            </input>
+            
+            <h2 className = "font-sans text-gray-500 w-[20rem] text-sm">Use an organization Email to easily collaborate with teammates</h2>
+          </div>
           
-          <h2 className = "font-sans text-gray-500 w-[20rem] text-sm">Use an organization Email to easily collaborate with teammates</h2>
-        </div>
-        
-        <button className = "bg-blue-500 mt-10 text-white w-[20rem] rounded-md font-sans py-2">
-          Continue
-        </button>
+          <button type = "submit" className = "bg-blue-500 mt-10 text-white w-[20rem] rounded-md font-sans py-2">
+            Continue
+          </button>
+
+        </form>
       </div>
         </>
     )

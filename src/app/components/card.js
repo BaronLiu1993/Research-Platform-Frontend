@@ -2,6 +2,7 @@ export default function Card({ name, url, researchInterests }) {
     const sendURLData = () => {
         
     }
+
     return (
         <div className="w-[20rem] h-[15rem] justify-center flex flex-col p-5 rounded-md transition border bg-white border-gray-300 shadow-md">
             <h1 className="font-sans font-semibold text-xl">{name}</h1>
