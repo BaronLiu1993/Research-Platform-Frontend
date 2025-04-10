@@ -9,6 +9,7 @@ export default function login() {
     })
 
     const handleSubmit = async () => {
+      e.preventdefault()
       try {
         await handleLogin(formData)
       } catch (e) {
@@ -27,11 +28,10 @@ export default function login() {
         </h1>
         <form onSubmit = {handleSubmit}>
           <div className = "mt-5 flex flex-col space-y-2">
-            <input value = {e} onChange = {setFormData({...FormData, email: e.target.value})} className = "p-2 border-1 border-gray-200 rounded-md w-[20rem]" placeholder = "📨 Enter your email address...">
+            <input value = {email} onChange = {setFormData({...formData, email: e.target.value})} className = "p-2 border-1 border-gray-200 rounded-md w-[20rem]" placeholder = "📨 Enter your email address...">
 
             </input>
-            <input value = {e} onChange = {setFormData({...FormData, password: e.target.value})} className = "p-2 border-1 border-gray-200 rounded-md w-[20rem]" placeholder = "📚 Enter your password...">
-
+            <input value = {password} onChange = {setFormData({...formData, password: e.target.value})} className = "p-2 border-1 border-gray-200 rounded-md w-[20rem]" placeholder = "📚 Enter your password...">
             </input>
             
             <h2 className = "font-sans text-gray-500 w-[20rem] text-sm">Use an organization Email to easily collaborate with teammates</h2>

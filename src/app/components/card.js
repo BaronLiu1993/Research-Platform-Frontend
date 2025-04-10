@@ -1,6 +1,6 @@
-export default function Card({ name, url, researchInterests }) {
-    const sendURLData = () => {
-        
+export default function Card({ name, url, researchInterests, onUrlSelect}) {
+    const handleCardClick = () => {
+        onUrlSelect(url)
     }
 
     return (
@@ -10,7 +10,11 @@ export default function Card({ name, url, researchInterests }) {
                 <p className="bg-green-200 p-0.5 font-extralight rounded-md">{researchInterests}</p>
             </div>
             <h2 className="font-sans">Connect people & projects with updates & actionable items</h2>
-            <h2 className="font-sans text-blue-400 mt-4">Connect Now ➝</h2>
+            <button
+                onClick = {handleCardClick}
+                className="font-sans text-blue-400 mt-4 cursor-pointer w-fit">
+                    Connect Now ➝
+            </button>
         </div>
     );
 }

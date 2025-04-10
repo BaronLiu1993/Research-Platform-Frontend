@@ -1,12 +1,14 @@
 'use client'
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation'
 import Card from '../components/card'; 
 import Navbar from '../components/navbar';
 import { fetchRepositoryData } from '../api/getRepository';
 
-export default function Page() {
-  const [data, setData] = useState([]); 
+export default function Repository() {
+  const [data, setData] = useState([]);
+  const router = useRouter()
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetchRepositoryData(); 
@@ -17,7 +19,9 @@ export default function Page() {
     fetchData(); 
   }, []);
 
-  
+  const handleUrlSelection = (url) => {
+    router.push(`/resume?url=${encodeURIComponent(url)}`);
+  }
 
   return (
     <>
@@ -31,6 +35,7 @@ export default function Page() {
               name={professor.name}
               url={professor.url}
               researchInterests={professor.research_interests}
+              onUrlSelect={handleUrlSelection}
             />
           ))}
         </div>

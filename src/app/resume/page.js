@@ -1,24 +1,22 @@
 'use client'
 
-
-import { useState } from 'react';
+import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import File from '../../../public/file.png'
 import Image from "next/image";
+import RAGSocket from '../components/RAGsocket';
 
 
 export default function resume () {
-    const [pdfFile, setPdfFile] = useState(null);
-
-    const handleFileUpload = (e) => {
-        const file = e.target.files[0];
-        if (file && file.type === 'application/pdf') {
-            const fileURL = URL.createObjectURL(file);
-            setPdfFile(fileURL);
-        } else {
-            alert('Please upload a valid PDF file');
-        }
+    const searchParams = useSearchParams()
+    const search = searchParams.get('url')
+    //Fix Resume With AI RAG Model and the Keywords and Data from the Description
+    const [websocketResponse, setWebSocketResponse] = useState(null)
+    const handleWebSocketResponse = (response) => {
+        setWebSocketResponse(response);  
     };
-    //Fix Resume With AI RAG Model and the Keywords and Data from the Description 
+    
+ 
     return (
         <>
             <div className = "flex items-start justify-center space-x-10">
@@ -34,7 +32,6 @@ export default function resume () {
                             type="file" 
                             className="hidden"
                             accept=".pdf, .jpg, .png"
-                            onClick = {handleFileUpload}
                         />
                     </label>
                     
@@ -51,11 +48,18 @@ export default function resume () {
 
                         <h1 className = "text-2xl font-sans">Resume Feedback</h1>
                         <div>
-                            <p className = "text-sm">Reformat</p>
                             <p className = "text-sm">Apply Machine Learning</p>
                             <p className = "text-sm">Operations Research</p>
                             <p className = "text-sm">Mechanical and Industrial Engineering</p>
                         </div>
+                        </div>
+                
+                <div>
+                    <RAGSocket url={search} onResponse={handleWebSocketResponse} />
+                    {websocketResponse}
+                </div>
+                        
+                <div>
                         <button className = "mt-5 font-extralight cursor-pointer text-white bg-blue-500 rounded-sm px-2 font-sans">
                             Apply Changes
                         </button>
@@ -63,11 +67,11 @@ export default function resume () {
                 </div>
 
                 <div className = "h-[40rem] border-1 w-[30rem] rounded-md">
-
+                    Big Box Here
                 </div>
             </div>
             <button className = "flex justify-center items-center font-extralight cursor-pointer w-[20rem] h-[3rem] text-white bg-blue-500 rounded-sm px-2 font-sans">
-                Preview Email
+                Apply Changes
             </button>
         </>
     )
