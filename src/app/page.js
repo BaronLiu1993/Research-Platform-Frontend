@@ -1,21 +1,24 @@
 import Navbar from "./components/navbar";
 import Homecard from "./components/homecard";
 import Kanban from "./components/kanban";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <>
       <div>
           <Navbar />
-          <div className = "flex flex-col justify-center items-center mt-10 m-5">
-            <h1 className = "font-sans font-extrabold text-4xl">
+          <div className = "flex flex-col justify-center items-center my-30 m-5">
+            <h1 className = "font-sans font-extrabold text-6xl">
               <span>Write, Plan, Share <br /> with AI at your Side</span> 
             </h1>
             <h2 className = "font-sans text-[rgb(109,171,225)] my-1">Notion is the connected workspace where better, faster work happens</h2>
             <div className = "my-4">
-              <button className = "font-sans font-medium mx-2 text-sm bg-black text-white p-1 px-2 rounded-md">
+            <Link href="/register">
+              <button className="font-sans font-medium mx-2 text-sm bg-black text-white p-1 px-2 rounded-md">
                 Sign Up
               </button>
+            </Link>
               <button className = "text-black font-sans">
                 Check Out Our Features
               </button>

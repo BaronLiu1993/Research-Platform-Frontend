@@ -11,7 +11,7 @@ export default function kanban ({title, description}) {
                      {description}
                      </p>
                  </div>
-                 </div>
+            </div>
          </>
     )
  }

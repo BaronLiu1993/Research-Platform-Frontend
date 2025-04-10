@@ -9,9 +9,9 @@ export default function homecard ({title, description, hexcode}) {
                     <h1 className="font-sans text-sm font-medium text-gray-800">
                     {title}
                     </h1>
-                    <p className = "font-sans text-xs font-light text-gray-800">
-                    {description}
-                    </p>
+                    <a href = "" className = "font-sans text-xs font-light text-gray-800">
+                        {description}
+                    </a>
                 </div>
                 </div>
         </>
