@@ -28,9 +28,6 @@ export default function resume () {
 
         fetchData();
     }, [search]);
-
-    console.log(data)
-    console.log(data.type)
     return (
         <>
                     <div className = "flex items-start justify-center space-x-10 p-10 select-none">
@@ -81,8 +78,8 @@ export default function resume () {
                             </div>
                         </div>
         
-                        <div className = "w-full border-1 rounded-md flex flex-col">
-                            <Editor />
+                        <div className = "w-full h-full border-1 rounded-md flex flex-col">
+                            <Editor className = "w-full h-full"/>
                         </div>
                     </div>
                     
