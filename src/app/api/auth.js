@@ -11,8 +11,7 @@ export async function handleRegister (formData) {
             console.error("Error during login", error)
         }
     } else {
-        console.log("Please Fill In Everything")
-        throw new Error("Form Data is Missing")
+        console.error("Please Fill In Everything")
     }
 }
 
@@ -22,9 +21,9 @@ export async function handleLogin (formData) {
         const response = await axios.post('http://localhost:8080/auth/login', formData)
         return response
       } catch (error) {
-        console.log(error)
+        console.error(error)
       } 
     } else {
-        console.log("Please fill in all the forms")
+        console.error("Please fill in the whole form forms")
     } 
 }

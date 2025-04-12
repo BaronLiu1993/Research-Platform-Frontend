@@ -1,4 +1,4 @@
-export default function kanban ({title, description}) {
+export default function homekanban ({title, description}) {
     return (
          <>
              {/* Cards Start Here */}
