@@ -6,7 +6,7 @@ import Image from "next/image";
 import File from '../../../public/file.png'
 import RAGSocket from '../components/RAGsocket';
 import ParseResume from '../api/parseresume';
-import Editor from '../components/editorresume'
+import WordProcessor from '../api/wordprocessor';
 import removeSingleQuoteOrJson from '../api/fixjson';
 import getProfessorData from '../api/getprofessordata';
 import { parseAppSegmentConfig } from 'next/dist/build/segment-config/app/app-segment-config';
@@ -19,6 +19,7 @@ export default function resume () {
     const [researchInterests, setResearchInterests] = useState({})
     const [feedback, setFeedback] = useState("")
     const [resumeFile, setResumeFile] = useState(null);
+    const [editorContent, setEditorContent] = useState(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,9 +28,9 @@ export default function resume () {
                 const response = await getProfessorData({ url: professor_url });
                 const fixedResponse = removeSingleQuoteOrJson(response.result);
                 const professorDataObject = JSON.parse(fixedResponse);
-                console.log(professorDataObject)
+                console.log(professorDataObject);
                 setData(professorDataObject);
-                setResearchInterests(professorDataObject.research_interests)
+                setResearchInterests(professorDataObject.research_interests);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -46,9 +47,11 @@ export default function resume () {
         const file = resumeFile
         try {
             const interests = researchInterests
-            const response = await ParseResume(file, interests);
-            console.log(response.result)
-            setFeedback(response.result);
+            const resumeDataHTML = await ParseResume(file, interests);
+            //const fixedResponse = removeSingleQuoteOrJson(response.result);
+            //const resumeDataObject = JSON.parse(fixedResponse);
+            console.log(resumeDataHTML)
+            setEditorContent(resumeDataHTML)
         } catch (error) {
             console.error("Error fetching data", error);
         }
@@ -111,14 +114,14 @@ export default function resume () {
                             <button
                                 className="mt-5 font-extralight cursor-pointer text-white bg-blue-500 rounded-sm text-xs px-2 font-sans"
                                 onClick={() => handleSubmit(resumeFile)}
-                                >
+                            >
                                 Change with AI
                             </button>
                             </div>
                         </div>
         
                         <div className = "w-full h-full border-1 rounded-md flex flex-col">
-                            <Editor className = "w-full h-full"/>
+                            <WordProcessor content={editorContent} className = "w-full h-full"/>
                         </div>
                     </div>
                     
