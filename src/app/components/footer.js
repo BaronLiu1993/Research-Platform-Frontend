@@ -1,6 +1,6 @@
 export default function footer () {
     <>
-        <footer style={{ fontFamily: "Poppins"}} className="w-[100%] bg-white rounded-lg shadow-sm">
+        <footer className="w-[100%] h-[2rem] bg-white rounded-lg shadow-sm">
             <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <a href="" className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">

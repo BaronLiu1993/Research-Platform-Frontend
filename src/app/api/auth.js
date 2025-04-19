@@ -27,3 +27,25 @@ export async function handleLogin (formData) {
         console.error("Please fill in the whole form forms")
     } 
 }
+
+export async function verifyOtp (formData) {
+    if (formData) {
+        try {
+            const response = await axios.post('http://localhost:8080/auth/login', formData) 
+            return response
+        } catch {
+            console.error("Please Send Valid")
+        }
+    }
+}
+
+export async function resendCode() {
+    if (formData) {
+        try {
+            const response = await axios.post('https', formData) 
+            return response
+        } catch {
+            console.error("Please Send Valid Form")
+        }
+    }
+}

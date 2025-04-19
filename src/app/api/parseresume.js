@@ -8,7 +8,7 @@ export default async function ParseResume(pdfFile, keywordsObj) {
     const formData = new FormData();
     formData.append('file', pdfFile); 
     formData.append('keywords', keywords_str); 
-    const response = await axios.post('http://127.0.0.1:8000/resume/parse', formData, {
+    const response = await axios.post('http://127.0.0.1:8000/resume/analyse', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
