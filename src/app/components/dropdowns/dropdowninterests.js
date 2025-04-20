@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import Select from 'react-select'
 import chroma from 'chroma-js'
 import makeAnimated from 'react-select/animated'
 
 const animatedComponents = makeAnimated()
 
-const colourOptions = [
+const interestOptions = [
   { value: 'Engineering', label: 'Engineering', color: '#0074D9' },
   { value: 'Biology', label: 'Biology', color: '#2ECC40' },
   { value: 'Physics', label: 'Physics', color: '#FF4136' },
@@ -78,17 +78,20 @@ const colourStyles = {
   }),
 }
 
-export default function DropdownMajor({ value, onChange }) {
+export default function DropdownInterests({ value, onChange }) {
   return (
-    <div className="w-full max-w-md mx-auto pt-4">
+    <div className="w-full max-w-md mx-auto">
       <Select
         closeMenuOnSelect={false}
         components={animatedComponents}
         isMulti
         isSearchable
-        options={colourOptions}
-        value={value}
-        onChange={onChange}
+        options={interestOptions}
+        value={interestOptions.filter((option) => value.includes(option.value))}
+        onChange={(selectedOptions) => {
+            const selectedValues = selectedOptions.map((option) => option.value)
+            onChange(selectedValues)
+          }}
         styles={colourStyles}
       />
     </div>

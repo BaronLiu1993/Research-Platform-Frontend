@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { handleLogin } from '../api/auth'
+import Navbar from '../components/navbar'
 
 export default function login() {
     const [formData, setFormData] = useState({
@@ -8,18 +9,20 @@ export default function login() {
       password: ''
     })
 
-    const handleSubmit = async () => {
-      e.preventdefault()
+    const handleSubmit = async (e) => {
+      e.preventDefault()
       try {
-        await handleLogin(formData)
-      } catch (e) {
-        console.log(e)
+        const response = await handleLogin(formData)
+        console.log(response)
+      } catch (error) {
+        console.log(error)
       }
     }
 
     return (
         <>  
-            <div className = 'flex flex-col justify-center items-center mt-20'>
+        <Navbar />
+        <div className = 'flex flex-col justify-center items-center mt-20'>
         <h1 className="font-sans space-x-0.5 tracking-wide font-bold text-2xl">
           Think it. Make it.
         </h1>

@@ -11,6 +11,9 @@
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
+    "@heroui/input-otp": "^2.1.16",
+    "@heroui/system": "^2.4.13",
+    "@heroui/theme": "^2.4.13",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.4",
     "@tabler/icons-react": "^3.31.0",
@@ -25,10 +28,11 @@
     "@tiptap/starter-kit": "^2.11.7",
     "axios": "^1.8.4",
     "chroma-js": "^3.1.2",
+    "framer-motion": "^12.7.4",
     "next": "15.2.4",
     "pdfjs-dist": "^5.1.91",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-select": "^5.10.1",
     "react-use-websocket": "^3.0.0",
     "uoft_research": "file:"
