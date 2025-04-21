@@ -1,4 +1,4 @@
-export default function removeSingleQuoteOrJson(inputString) {
+export function removeSingleQuoteOrJson(inputString) {
     let modifiedString = inputString;
 
     if (modifiedString.includes("'")) {
@@ -13,3 +13,23 @@ export default function removeSingleQuoteOrJson(inputString) {
 
     return modifiedString;
 }
+
+export function removeSingleQuoteOrString(inputString) {
+    let modifiedString = inputString;
+  
+    if (modifiedString.includes("```html")) {
+      modifiedString = modifiedString.replace(/^```html\s*/i, '');
+    }
+  
+    if (modifiedString.includes("```")) {
+      modifiedString = modifiedString.replace(/```/g, '');
+    }
+  
+    if (modifiedString.includes("`")) {
+      modifiedString = modifiedString.replace(/`/g, '');
+    }
+  
+    return modifiedString;
+  }
+  
+  

@@ -3,16 +3,16 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from "next/image";
+import { useRouter } from 'next/navigation'
 import File from '../../../public/file.png'
-import RAGSocket from '../components/RAGsocket';
+import Navbar from '../components/navbar';
 import ParseResume from '../api/parseresume';
 import WordProcessor from '../api/wordprocessor';
-import removeSingleQuoteOrJson from '../api/fixjson';
+import { removeSingleQuoteOrJson, removeSingleQuoteOrString } from '../api/fixjson';
 import getProfessorData from '../api/getprofessordata';
-import { parseAppSegmentConfig } from 'next/dist/build/segment-config/app/app-segment-config';
 //Scans current resume for all keywords and then builds new resume with latex and the format given
 
-export default function resume () {
+export default function resume ({}) {
     const searchParams = useSearchParams()
     const search = searchParams.get('url')
     const [data, setData] = useState({}); 
@@ -20,6 +20,7 @@ export default function resume () {
     const [feedback, setFeedback] = useState("")
     const [resumeFile, setResumeFile] = useState(null);
     const [editorContent, setEditorContent] = useState(null)
+    const router = useRouter()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,6 +40,22 @@ export default function resume () {
         fetchData();
     }, [search]);
 
+    const handleSendData = ({ professorData }) => {
+        if (!professorData) {
+          console.warn("No Data Attached")  
+        } 
+
+
+    }
+
+    const handleUrlSelection = (url) => {
+        router.push(`/resume/email/?url=${encodeURIComponent(url)}`);
+    }
+
+    const handleRender = () => {
+        
+    }
+
     const handleSubmit = async () => {
         if (!resumeFile) {
             console.warn("No file selected!");
@@ -48,10 +65,10 @@ export default function resume () {
         try {
             const interests = researchInterests
             const resumeDataHTML = await ParseResume(file, interests);
-            //const fixedResponse = removeSingleQuoteOrJson(response.result);
-            //const resumeDataObject = JSON.parse(fixedResponse);
-            console.log(resumeDataHTML)
-            setEditorContent(resumeDataHTML)
+            console.log(resumeDataHTML.result)
+            const response = removeSingleQuoteOrString(resumeDataHTML.result)
+            console.log(response)
+            setEditorContent(response)
         } catch (error) {
             console.error("Error fetching data", error);
         }
@@ -59,20 +76,12 @@ export default function resume () {
 
     return (
         <>
+                <Navbar />
                     <div className = "flex items-start justify-center space-x-10 p-10 select-none">
                         <div className = 'flex flex-col'>
                             
-                            <div className = "mt-2">
-                                <div className = "flex flex-col justify-center items-center">
-                                    <Image src={File} alt="Placeholder" width={40} height={40}/>
-                                    <input
-                                        type="file"
-                                        accept=".pdf"
-                                        onChange={(e) => setResumeFile(e.target.files[0])}
-                                    />
-                                    <h1 className = "font-sans font-medium ">Browse Files to Upload</h1>
-                                    <p className = "font-extralight text-sm">Supports PDF, JPG, PNG</p>
-                                </div>
+                            <div className = "mt-2 w-[20rem]">
+                                
                                 <h1 className = "text-sm font-bold border-b-2 p-1 font-sans">
                                     PROFESSOR INFORMATION
                                 </h1>
@@ -120,9 +129,27 @@ export default function resume () {
                             </div>
                         </div>
         
-                        <div className = "w-full h-full border-1 rounded-md flex flex-col">
-                            <WordProcessor content={editorContent} className = "w-full h-full"/>
+
+                        <div>
+                            <label className = "flex justify-center items-center m-4 border-2 p-4 rounded-md border-dashed border-red-300">
+                                    <Image src={File} alt="Placeholder" width={40} height={40}/>
+                                    <input
+                                        type="file"
+                                        accept=".pdf"
+                                        onChange={(e) => setResumeFile(e.target.files[0])}
+                                        className = "font-sans font-medium font hidden"
+
+                                    />
+
+                                    <p className = "font-bold  text-sm">Upload Your Resume</p>
+                                    <p className = "font-extralight text-sm">Supports PDF, JPG, PNG</p>
+                                    <div></div>
+                            </label>
+                            <div className = "w-full h-full border-1 rounded-md flex flex-col">
+                                <WordProcessor content={editorContent} className = "w-full h-full"/>
+                            </div>
                         </div>
+                        
                     </div>
                     
                 </>

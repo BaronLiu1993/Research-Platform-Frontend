@@ -7,13 +7,13 @@ import {
   IconStrike,
 } from "@tabler/icons-react";
 
-export default function WordProcessor({ content }) {
+export default function SubjectWordProcessor({ content }) {
   const editor = useEditor({
     extensions: [StarterKit],
     content: content, 
     editorProps: {
       attributes: {
-        class: "min-h-[156px] border rounded-md bg-slate-50 py-2 px-3 font-sans"
+        class: " border rounded-md bg-slate-50 py-2 px-3 font-sans"
       },
     },
   });
@@ -55,7 +55,7 @@ export default function WordProcessor({ content }) {
         </BubbleMenu>
       </div>
 
-      <EditorContent editor={editor} />
+      <EditorContent className = "" editor={editor} />
     </>
   );
 }
