@@ -8,6 +8,7 @@ import File from '../../../public/file.png'
 import Navbar from '../components/navbar';
 import ParseResume from '../api/parseresume';
 import WordProcessor from '../api/wordprocessor';
+import { fetchProfessorData } from '../api/fetching'
 import { removeSingleQuoteOrJson, removeSingleQuoteOrString } from '../api/fixjson';
 import getProfessorData from '../api/getprofessordata';
 //Scans current resume for all keywords and then builds new resume with latex and the format given
@@ -17,6 +18,7 @@ export default function resume ({}) {
     const search = searchParams.get('url')
     const [data, setData] = useState({}); 
     const [researchInterests, setResearchInterests] = useState({})
+    const [professorInformation, setProfessorInformation] = useState({})
     const [feedback, setFeedback] = useState("")
     const [resumeFile, setResumeFile] = useState(null);
     const [editorContent, setEditorContent] = useState(null)
@@ -31,6 +33,7 @@ export default function resume ({}) {
                 const professorDataObject = JSON.parse(fixedResponse);
                 console.log(professorDataObject);
                 setData(professorDataObject);
+                setProfessorInformation(professorDataObject.name)
                 setResearchInterests(professorDataObject.research_interests);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -40,20 +43,13 @@ export default function resume ({}) {
         fetchData();
     }, [search]);
 
+
+
     const handleSendData = ({ professorData }) => {
         if (!professorData) {
           console.warn("No Data Attached")  
         } 
-
-
-    }
-
-    const handleUrlSelection = (url) => {
-        router.push(`/resume/email/?url=${encodeURIComponent(url)}`);
-    }
-
-    const handleRender = () => {
-
+        router.push(`/resume?url=${encodeURIComponent(url)}?professor_interests=${encodeURIComponent(researchInterests)}?professor_information=${encodeURIComponent(professorInformation)}`);
     }
 
     const handleSubmit = async () => {
