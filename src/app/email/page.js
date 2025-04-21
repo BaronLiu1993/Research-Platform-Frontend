@@ -8,7 +8,7 @@ import WordProcessor from '../api/wordprocessor';
 import SubjectWordProcessor from '../api/subjectwordprocessor';
 
 
-export default function email() {
+export default function email({ data }) {
     const [resumeAttached, setResumeAttached] = useState("")
     const [userData, setUserData] = useState({
         student_email: "",
@@ -21,7 +21,9 @@ export default function email() {
         professor_interests: []
     })
 
-
+    const [subjectWordContent, setSubjectWordContent] = useState("")
+    const [bodyWordContent, setBodyWordContent] = useState("")
+     
     // Create Personalised Email and Send Also Automate the Sending Here
     // Attach Transcript and Resume Here
     return (
@@ -47,11 +49,11 @@ export default function email() {
                     <div>
                         <div className = "my-5 space-y-4">
                             <h1 className = "bg-green-200 p-1 rounded-md">Subject Line: </h1> 
-                            <SubjectWordProcessor />
+                            <SubjectWordProcessor content = {subjectWordContent} />
                         </div>
                         <div className = "mt-5 space-y-4">
                             <h1 className = "bg-green-200 p-1 rounded-md">Email Body </h1> 
-                            <WordProcessor />
+                            <WordProcessor content = {bodyWordContent}/>
                         </div>
                     </div>
                 </div>

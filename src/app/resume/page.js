@@ -53,7 +53,7 @@ export default function resume ({}) {
     }
 
     const handleRender = () => {
-        
+
     }
 
     const handleSubmit = async () => {
