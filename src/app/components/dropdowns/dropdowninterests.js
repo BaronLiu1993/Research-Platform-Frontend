@@ -4,26 +4,21 @@ import React from 'react'
 import Select from 'react-select'
 import chroma from 'chroma-js'
 import makeAnimated from 'react-select/animated'
+import { uoftInterests } from '@/app/data/uoftInterests'
 
 const animatedComponents = makeAnimated()
-
-const interestOptions = [
-  { value: 'Engineering', label: 'Engineering', color: '#0074D9' },
-  { value: 'Biology', label: 'Biology', color: '#2ECC40' },
-  { value: 'Physics', label: 'Physics', color: '#FF4136' },
-  { value: 'Math', label: 'Math', color: '#B10DC9' },
-  { value: 'Medicine', label: 'Medicine', color: '#B10DC9' },
-]
-
 const colourStyles = {
   control: (styles) => ({
     ...styles,
-    backgroundColor: 'white',
+    backgroundColor: '#F9FAFB',
     borderColor: '#E5E7EB',
     borderRadius: '0.375rem',
     width: '100%',
     boxShadow: 'none',
     padding: '0.125rem 0.25rem',
+    fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+    fontSize: '0.75rem',
+    fontWeight: 500, 
     ':hover': {
       borderColor: '#D1D5DB',
     },
@@ -57,6 +52,17 @@ const colourStyles = {
       },
     }
   },
+  menu: (styles) => ({
+    ...styles,
+    borderRadius: '0.5rem', 
+    marginTop: '0.25rem', 
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', 
+    overflow: 'hidden',
+    backgroundColor: 'white',
+    fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+    fontSize: '0.75rem',
+    fontWeight: 500, 
+  }),
   multiValue: (styles, { data }) => {
     const color = chroma(data.color)
     return {
@@ -80,14 +86,15 @@ const colourStyles = {
 
 export default function DropdownInterests({ value, onChange }) {
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-[20rem]">
+      <label className="font-sans text-xs font-semibold">Research Interests</label>
       <Select
         closeMenuOnSelect={false}
         components={animatedComponents}
         isMulti
         isSearchable
-        options={interestOptions}
-        value={interestOptions.filter((option) => value.includes(option.value))}
+        options={uoftInterests}
+        value={uoftInterests.filter((option) => value.includes(option.value))}
         onChange={(selectedOptions) => {
             const selectedValues = selectedOptions.map((option) => option.value)
             onChange(selectedValues)

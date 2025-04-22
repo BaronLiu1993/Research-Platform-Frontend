@@ -24,6 +24,7 @@ export default function resume ({}) {
     const [editorContent, setEditorContent] = useState(null)
     const router = useRouter()
 
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -33,7 +34,7 @@ export default function resume ({}) {
                 const professorDataObject = JSON.parse(fixedResponse);
                 console.log(professorDataObject);
                 setData(professorDataObject);
-                setProfessorInformation(professorDataObject.name)
+                setProfessorInformation(professorDataObject.email)
                 setResearchInterests(professorDataObject.research_interests);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -45,11 +46,11 @@ export default function resume ({}) {
 
 
 
-    const handleSendData = ({ professorData }) => {
-        if (!professorData) {
+    const handleSendData = () => {
+        if (!researchInterests || !professorInformation) {
           console.warn("No Data Attached")  
         } 
-        router.push(`/resume?url=${encodeURIComponent(url)}?professor_interests=${encodeURIComponent(researchInterests)}?professor_information=${encodeURIComponent(professorInformation)}`);
+        router.push(`/email?professor_interests=${encodeURIComponent(researchInterests)}?professor_information=${encodeURIComponent(professorInformation)}`);
     }
 
     const handleSubmit = async () => {
@@ -121,6 +122,12 @@ export default function resume ({}) {
                                 onClick={() => handleSubmit(resumeFile)}
                             >
                                 Change with AI
+                            </button>
+                            <button
+                                className="mt-5 font-extralight cursor-pointer text-white bg-blue-500 rounded-sm text-xs px-2 font-sans"
+                                onClick={() => handleSendData()}
+                            >
+                                Move to Next
                             </button>
                             </div>
                         </div>

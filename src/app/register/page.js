@@ -111,8 +111,7 @@ export default function Register() {
           </div>
 
           <div className="space-x-2 space-y-4 mt-4 flex flex-col">
-          <div>
-            <label className="font-sans text-xs font-semibold">Research Interests</label>
+          <div >
             <DropdownInterests
               value={formData.student_interests}
               onChange={(selected) =>
@@ -120,7 +119,7 @@ export default function Register() {
               }
             />
           </div>
-          <div className = "space-x-2 flex justify-center items-center">
+          <div className = "space-x-2 flex">
             <input
               type="checkbox"
               checked={formData.student_acceptedterms}
@@ -132,14 +131,16 @@ export default function Register() {
           </div>
           
         </div>
+        <button
+          className="bg-blue-500 active:bg-blue-400 hover:bg-blue-600 mt-5 text-white w-[20rem] rounded-md font-light font-sans py-2"
+          onClick={handleSubmit}
+        >
+          Continue
+        </button>
       </div>
+      
       }
-      <button
-        className="bg-blue-500 active:bg-blue-400 hover:bg-blue-600 mt-5 text-white w-[20rem] rounded-md font-light font-sans py-2"
-        onClick={handleSubmit}
-      >
-        Continue
-      </button>
+      
         
 
       </form>

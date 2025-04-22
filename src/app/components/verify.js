@@ -19,7 +19,7 @@ export default function VerifyOtp ({ email}) {
 
     return (
         <>
-        <div className = "flex flex-col">
+        <div className = "flex flex-col mt-20">
                 <label className = "font-sans text-xs font-semibold">Verification Code</label>
                 <div className = "flex">
                     <input
@@ -28,14 +28,14 @@ export default function VerifyOtp ({ email}) {
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     />
-                    <button             
-                        onClick={handleVerify}
-                        className = "ml-5 text-3xl">
-                    →
-                    </button>
+                    
                 </div>
-                <a href = "#" className = "font-sans text-xs text-blue-500">Resend Verfication Code</a>
                 <p className = "font-sans text-xs mt-4">We Sent a Verification Code to You!</p>
+                <button
+                    className="bg-blue-500 active:bg-blue-400 hover:bg-blue-600 mt-5 text-white w-[20rem] rounded-md font-light font-sans py-2"
+                >
+                Continue
+                </button>
           </div>
         </>
     )

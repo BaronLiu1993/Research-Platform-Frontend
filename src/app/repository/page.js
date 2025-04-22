@@ -15,7 +15,7 @@ export default function Repository() {
     const fetchData = async () => {
       const response = await fetchRepositoryData(); 
       if (response && response.data) {
-        setData(response.data.slice(0, 10)); 
+        setData(response.data.slice(60, 70)); 
       }
     };
     fetchData(); 

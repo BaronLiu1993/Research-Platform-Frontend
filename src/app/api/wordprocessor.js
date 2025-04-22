@@ -10,7 +10,7 @@ import {
 export default function WordProcessor({ content }) {
   const editor = useEditor({
     extensions: [StarterKit],
-    content: content, 
+    content: "<p>This is a <strong>bold</strong> text example.</p>", 
     editorProps: {
       attributes: {
         class: "min-h-[156px] border rounded-md bg-slate-50 py-2 px-3 font-sans"

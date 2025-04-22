@@ -1,18 +1,8 @@
 'use client'
+import { uoftStemYears } from '@/app/data/uoftStemYears'
 
 import chroma from 'chroma-js'
 import Select from 'react-select'
-
-const uoftStemYears = [
-  { value: 'First Year Undergrad', label: 'First', color: '#0074D9' },
-  { value: 'Second Year Undergrad', label: 'Second', color: '#FF851B' },
-  { value: 'Third Year Undergrad', label: 'Third', color: '#FF851B' },
-  { value: 'Fourth Year Undergrad', label: 'Fourth', color: '#FF851B' },
-  { value: 'Fifth Year Undergrad', label: 'Fifth', color: '#FF851B' },
-  { value: 'PEY', label: 'PEY', color: '#FF851B' },
-  { value: 'Masters', label: 'Masters', color: '#FF851B' },
-  { value: 'PhD', label: 'PhD', color: '#FF851B' },
-]
 
 const dot = (color = 'transparent') => ({
   alignItems: 'center',
@@ -29,7 +19,19 @@ const dot = (color = 'transparent') => ({
 })
 
 const colourStyles = {
-  control: (styles) => ({ ...styles, backgroundColor: 'white' }),
+  control: (styles, state) => ({
+    ...styles,
+    backgroundColor: '#F9FAFB',
+    borderRadius: '0.5rem', 
+    borderColor: state.isFocused ? '#3B82F6' : '#E5E7EB', 
+    boxShadow: state.isFocused ? '0 0 0 2px #BFDBFE' : 'none', 
+    fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+    fontSize: '0.75rem',
+    fontWeight: 500, 
+    '&:hover': {
+      borderColor: '#3B82F6',
+    },
+  }),
   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
     const color = chroma(data.color)
     return {
@@ -48,31 +50,44 @@ const colourStyles = {
           ? 'white'
           : 'black'
         : data.color,
-      cursor: isDisabled ? 'not-allowed' : 'default',
-      ':active': {
-        ...styles[':active'],
-        backgroundColor: !isDisabled
-          ? isSelected
-            ? data.color
-            : color.alpha(0.3).css()
-          : undefined,
-      },
+      cursor: isDisabled ? 'not-allowed' : 'pointer',
     }
   },
+  menu: (styles) => ({
+    ...styles,
+    borderRadius: '0.5rem',
+    marginTop: '0.25rem',
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', // shadow-lg
+    backgroundColor: 'white',
+    overflow: 'hidden',
+    fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+    fontSize: '0.75rem',
+    fontWeight: 500, 
+  }),
   input: (styles) => ({ ...styles, ...dot() }),
-  placeholder: (styles) => ({ ...styles, ...dot('#ccc') }),
-  singleValue: (styles, { data }) => ({ ...styles, ...dot(data.color) }),
+  placeholder: (styles) => ({
+    ...styles,
+    ...dot('#ccc'),
+    color: '#9CA3AF', 
+  }),
+  singleValue: (styles, { data }) => ({
+    ...styles,
+    ...dot(data.color),
+    fontWeight: 500, 
+  }),
 }
 
 export default function DropdownYear({ value, onChange }) {
   return (
-    <Select
-      value={uoftStemYears.find((option) => option.value === value)}
-      options={uoftStemYears}
-      isSearchable={true}
-      styles={colourStyles}
-      onChange={(selectedOption) => onChange(selectedOption?.value)}
-      placeholder="Select your Year"
-    />
+    <div className="w-[20rem] max-w-lg rounded-md"> 
+      <Select
+        value={uoftStemYears.find((option) => option.value === value)}
+        options={uoftStemYears}
+        isSearchable={true}
+        styles={colourStyles}
+        onChange={(selectedOption) => onChange(selectedOption?.value)}
+        placeholder="Select your Year"
+      />
+    </div>
   )
 }
