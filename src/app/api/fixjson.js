@@ -30,6 +30,4 @@ export function removeSingleQuoteOrString(inputString) {
     }
   
     return modifiedString;
-  }
-  
-  
+  }  

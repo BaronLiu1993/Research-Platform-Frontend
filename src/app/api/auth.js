@@ -30,12 +30,15 @@ export async function handleLogin(formData) {
   }
 
 export async function verifyOtp (formData) {
+    if (!formData?.code) {
+        throw new Error("Code Required")
+    }
     if (formData) {
         try {
-            const response = await axios.post('http://localhost:8080/auth/login', formData) 
-            return response
+            const response = await axios.post('http://localhost:8080/auth/verify-code', formData) 
+            return response.data
         } catch {
-            console.error("Please Send Valid")
+            console.error("Please Send Valid Code")
         }
     }
 }
