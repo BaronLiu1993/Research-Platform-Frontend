@@ -9,7 +9,6 @@ export default function Card({ name, url, researchInterests, school, faculty, de
             <div className = "space-y-2">
                 <p className="bg-blue-200 w-fit p-0.5 text-blue-500 text-xs rounded-md">{school}</p>
                 <p className="bg-red-200 w-fit p-0.5 text-red-500 font-md text-xs rounded-md">{department}</p>
-                <p className="bg-purple-200 w-fit p-0.5 text-purple-500 font-md text-xs rounded-md">{faculty}</p>
                 <p className="bg-green-200 w-fit p-0.5 text-green-500 font-md text-xs rounded-md">{researchInterests}</p>
 
             </div>

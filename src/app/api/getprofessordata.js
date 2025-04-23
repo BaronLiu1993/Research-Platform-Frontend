@@ -1,4 +1,4 @@
-export default async function getProfessorData({ url }) {
+export async function getProfessorData({ url }) {
     if (!url) {
         console.error('URL is required');
         return;
@@ -27,3 +27,4 @@ export default async function getProfessorData({ url }) {
         throw error; 
     }
 }
+
