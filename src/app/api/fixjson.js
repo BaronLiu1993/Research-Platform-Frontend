@@ -1,6 +1,10 @@
 export function removeSingleQuoteOrJson(inputString) {
     let modifiedString = inputString;
 
+    if (modifiedString.includes("```json")) {
+        modifiedString = modifiedString.replace(/^```json\s*/i, '');
+      }
+
     if (modifiedString.includes("'")) {
         modifiedString = modifiedString.replace(/'/g, '');
     }

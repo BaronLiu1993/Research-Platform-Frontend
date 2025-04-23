@@ -63,7 +63,8 @@ export default function resume ({}) {
             const interests = researchInterests
             const resumeDataHTML = await ParseResume(file, interests);
             console.log(resumeDataHTML.result)
-            const response = removeSingleQuoteOrString(resumeDataHTML.result)
+            const cleanedData = removeSingleQuoteOrJson(resumeDataHTML.result)
+            const response = JSON.parse(cleanedData)
             console.log(response)
             setEditorContent(response)
         } catch (error) {

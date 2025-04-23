@@ -80,6 +80,9 @@ export default function Repository() {
                   key={professor.id}
                   name={professor.name}
                   url={professor.url}
+                  school={professor.school}
+                  department={professor.department}
+                  faculty={professor.faculty}
                   researchInterests={professor.research_interests}
                   onUrlSelect={handleUrlSelection}
                 />
