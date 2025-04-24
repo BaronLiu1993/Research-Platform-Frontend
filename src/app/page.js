@@ -14,7 +14,7 @@ export default function Home() {
           <Navbar />
           <div className = "flex flex-col justify-center items-center my-30 m-5">
             <h1 className = "font-sans font-bold text-6xl">
-              <span className = "font-sans">Write, Explore, Share <br /> with AI at your Side</span> 
+              <span className = "font-sans">Connecting University of Toronto <br /> Students with Researchers </span> 
             </h1>
             <div className = "my-4">
             <Link href="/register">

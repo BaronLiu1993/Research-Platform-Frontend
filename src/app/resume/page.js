@@ -6,11 +6,12 @@ import Image from "next/image";
 import { useRouter } from 'next/navigation'
 import File from '../../../public/file.png'
 import Navbar from '../components/navbar';
-import ParseResume from '../api/parseresume';
 import WordProcessor from '../api/wordprocessor';
-import { fetchProfessorData } from '../api/fetching'
+import ParseResume from '../api/parseresume';
+import Projects from '../components/resume/projects';
+import Employment from '../components/resume/employment';
 import { removeSingleQuoteOrJson, removeSingleQuoteOrString } from '../api/fixjson';
-import getProfessorData from '../api/getprofessordata';
+import { getProfessorData } from '../api/getProfessorData.js';
 //Scans current resume for all keywords and then builds new resume with latex and the format given
 
 export default function resume ({}) {
@@ -149,11 +150,11 @@ export default function resume ({}) {
                                     <p className = "font-extralight text-sm">Supports PDF, JPG, PNG</p>
                                     <div></div>
                             </label>
-                            <div className = "w-full h-full border-1 rounded-md flex flex-col">
-                                <WordProcessor content={editorContent} className = "w-full h-full"/>
-                            </div>
+                            <Employment />
                         </div>
-                        
+                        <div>
+                            <WordProcessor className = "w-full h-full"/>
+                        </div>
                     </div>
                     
                 </>
