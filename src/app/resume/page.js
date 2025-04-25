@@ -4,12 +4,18 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from "next/image";
 import { useRouter } from 'next/navigation'
-import File from '../../../public/file.png'
 import Navbar from '../components/navbar';
 import WordProcessor from '../api/wordprocessor';
 import ParseResume from '../api/parseresume';
 import Projects from '../components/resume/projects';
+import Contact from '../components/resume/contact';
 import Employment from '../components/resume/employment';
+
+import Builder from '../components/resume/builder';
+import Progress from '../components/resume/progress';
+
+import PersonalInfo from '../components/resume/personalinfo';
+
 import { removeSingleQuoteOrJson, removeSingleQuoteOrString } from '../api/fixjson';
 import { getProfessorData } from '../api/getProfessorData.js';
 //Scans current resume for all keywords and then builds new resume with latex and the format given
@@ -76,12 +82,15 @@ export default function resume ({}) {
     return (
         <>
                 <Navbar />
-                    <div className = "flex items-start justify-center space-x-10 p-10 select-none">
+                    <div className = "mt-10 mx-10">
+                        <Progress />
+                    </div>
+                    <div className = "flex items-start space-x-10 p-10 select-none">
                         <div className = 'flex flex-col'>
                             
                             <div className = "mt-2 w-[20rem]">
                                 
-                                <h1 className = "text-sm font-bold border-b-2 p-1 font-sans">
+                                <h1 className = "text-sm font-bold w-fit border-b-2 p-1 font-sans">
                                     PROFESSOR INFORMATION
                                 </h1>
 
@@ -133,30 +142,9 @@ export default function resume ({}) {
                             </button>
                             </div>
                         </div>
-        
-
-                        <div>
-                            <label className = "flex justify-center items-center m-4 border-2 p-4 rounded-md border-dashed border-red-300">
-                                    <Image src={File} alt="Placeholder" width={40} height={40}/>
-                                    <input
-                                        type="file"
-                                        accept=".pdf"
-                                        onChange={(e) => setResumeFile(e.target.files[0])}
-                                        className = "font-sans font-medium font hidden"
-
-                                    />
-
-                                    <p className = "font-bold  text-sm">Upload Your Resume</p>
-                                    <p className = "font-extralight text-sm">Supports PDF, JPG, PNG</p>
-                                    <div></div>
-                            </label>
-                            <Employment />
-                        </div>
-                        <div>
-                            <WordProcessor className = "w-full h-full"/>
-                        </div>
+                        
+                        <Builder />
                     </div>
-                    
                 </>
     )
 }
