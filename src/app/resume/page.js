@@ -17,6 +17,8 @@ import { getProfessorData } from '../api/getProfessorData.js';
 export default function resume ({}) {
     const searchParams = useSearchParams()
     const search = searchParams.get('url')
+    const router = useRouter()
+
     const [data, setData] = useState({}); 
 
 
@@ -24,11 +26,6 @@ export default function resume ({}) {
     const [professorInformation, setProfessorInformation] = useState({})
     const [feedback, setFeedback] = useState("")
     const [editorContent, setEditorContent] = useState(null)
-    const router = useRouter()
-
-    const handleUrlSelection = (url) => {
-        router.push(`/resume?url=${encodeURIComponent(url)}`);
-    };
 
     
     useEffect(() => {
@@ -50,14 +47,14 @@ export default function resume ({}) {
         fetchData();
     }, [search]);
 
-
-
-    const handleSendData = () => {
+    /*
+    const handleSendDataToEmail = (url) => {
         if (!researchInterests || !professorInformation) {
           console.warn("No Data Attached")  
         } 
-        router.push(`/email?professor_interests=${encodeURIComponent(researchInterests)}?professor_information=${encodeURIComponent(professorInformation)}`);
+        router.push(`/resume/?url=${encodeURIComponent(url)}/email/?professor_interests=${encodeURIComponent(researchInterests)}?professor_information=${encodeURIComponent(professorInformation)}`);
     }
+    */
 
     return (
         <>
@@ -103,8 +100,8 @@ export default function resume ({}) {
                                 </div>
                         </div>
                         <Builder researchInterests = {data.research_interests}/>
-                        <Editor />
                     </div>
+                    
                 </>
     )
 }

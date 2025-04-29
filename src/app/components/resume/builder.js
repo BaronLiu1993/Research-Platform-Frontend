@@ -1,9 +1,17 @@
 import { useState } from 'react'
 import ParseResume from '@/app/api/parseresume';
 import { removeSingleQuoteOrJson } from '@/app/api/fixjson';
+import Editor from './editor';
 
 export default function Builder ({researchInterests}) {
     const [resumeFile, setResumeFile] = useState(null);
+    const [] = useState(null)
+
+    const [experience, setExperience] = useState({})
+    const [contact, setContact] = useState({})
+    const [projects, setProjects] = useState({})
+    const [personalDetails, setPersonalDetails] = useState({})
+
     const handleParseResume = async () => {
             if (!resumeFile) {
                 console.warn("No file selected!");
@@ -16,8 +24,14 @@ export default function Builder ({researchInterests}) {
                 console.log(resumeDataHTML.result)
                 const cleanedData = removeSingleQuoteOrJson(resumeDataHTML.result)
                 const response = JSON.parse(cleanedData)
+
+                
                 console.log(response)
-                setEditorContent(response)
+                setExperience(response.experience)
+                setContact(response.contact)
+                setProjects(response.projects)
+                setPersonalDetails(response.skills)
+
             } catch (error) {
                 console.error("Error fetching data", error);
             }
@@ -26,7 +40,7 @@ export default function Builder ({researchInterests}) {
     
     return (
         <>
-            <div>
+            {!resumeFile ? <div>
                 <h1 className = "p-4 text-2xl font-sans font-semibold">Build Your New Resume!</h1>
                 <div>
                     <label className = "flex space-x-2 cursor-pointer shadow-md items-center m-4 border-2 p-4 rounded-md border-gray-300 w-full">
@@ -64,17 +78,18 @@ export default function Builder ({researchInterests}) {
                     </label>
 
 
-                    <div className = "mx-5 space-x-4">
-                    {resumeFile && (
-                            <button
-                                className="mt-5 font-light cursor-pointer text-white bg-blue-500 rounded-sm text-sm px-2 font-sans"
-                                onClick={() => handleParseResume(resumeFile)}
-                            >
-                                Parse Resume
-                            </button>
-                        )}
-                    </div>
+                    
                 </div>
+            </div>: <Editor />}
+            <div className = "mx-5 space-x-4">
+                {resumeFile && (
+                    <button
+                    className="mt-5 font-light cursor-pointer text-white bg-blue-500 rounded-sm text-sm px-2 font-sans"
+                    onClick={() => handleParseResume(resumeFile)}
+                    >
+                        Parse Resume
+                    </button>
+                )}
             </div>
         </>
     )

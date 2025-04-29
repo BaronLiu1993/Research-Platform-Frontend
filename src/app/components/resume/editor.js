@@ -7,7 +7,8 @@ import Contact from "./items/contact";
 import PersonalInfo from "./items/personalinfo";
 import Progress from "./progress";
 
-export default function Editor() {
+export default function Editor({experience, contact, projects, personalDetails}) {
+
     const pages = [
         { component: <Employment />, name: "Employment" },
         { component: <Projects />, name: "Projects" },
