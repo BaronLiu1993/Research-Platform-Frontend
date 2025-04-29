@@ -1,4 +1,29 @@
-export default function Builder () {
+import { useState } from 'react'
+import ParseResume from '@/app/api/parseresume';
+import { removeSingleQuoteOrJson } from '@/app/api/fixjson';
+
+export default function Builder ({researchInterests}) {
+    const [resumeFile, setResumeFile] = useState(null);
+    const handleParseResume = async () => {
+            if (!resumeFile) {
+                console.warn("No file selected!");
+                return;
+            }
+            const file = resumeFile
+            try {
+                const interests = researchInterests
+                const resumeDataHTML = await ParseResume(file, interests);
+                console.log(resumeDataHTML.result)
+                const cleanedData = removeSingleQuoteOrJson(resumeDataHTML.result)
+                const response = JSON.parse(cleanedData)
+                console.log(response)
+                setEditorContent(response)
+            } catch (error) {
+                console.error("Error fetching data", error);
+            }
+        };
+    
+    
     return (
         <>
             <div>
@@ -10,6 +35,11 @@ export default function Builder () {
                             type="file"
                             accept=".pdf"
                             className = "font-sans font-medium font hidden"
+                            onChange={(e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                    setResumeFile(e.target.files[0]);
+                                }
+                            }}
                         />
                 
                         <div>
@@ -32,6 +62,18 @@ export default function Builder () {
                             <p className = "font-extralight font-sans text-sm">Supports PDF, JPG, PNG</p>
                         </div>  
                     </label>
+
+
+                    <div className = "mx-5 space-x-4">
+                    {resumeFile && (
+                            <button
+                                className="mt-5 font-light cursor-pointer text-white bg-blue-500 rounded-sm text-sm px-2 font-sans"
+                                onClick={() => handleParseResume(resumeFile)}
+                            >
+                                Parse Resume
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         </>

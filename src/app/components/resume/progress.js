@@ -1,4 +1,4 @@
-export default function progress () {
+export default function Progress () {
     return (
         <>
             <div className = "bg-gray-200 p-3 rounded-md">
@@ -8,8 +8,7 @@ export default function progress () {
                             1
                         </span>
                         <span>
-                            <h3 className="font-medium leading-tight">Collect Professor Info</h3>
-                            <p className="text-sm">Step details here</p>
+                            <h3 className="font-medium leading-tight">Experience</h3>
                         </span>
                     </li>
                     <li className="flex items-center text-gray-500 dark:text-gray-400 space-x-2.5 rtl:space-x-reverse">

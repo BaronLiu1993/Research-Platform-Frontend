@@ -1,4 +1,4 @@
-export default function PersonalInfo () {
+export default function Contact () {
     return (
         <>
             <div className = "p-4 border-gray-400 border-1 bg-gray-50 rounded-md">
@@ -35,16 +35,13 @@ export default function PersonalInfo () {
                                 <label className="text-xs font-semibold">Address</label>
                                 <input className="p-2 border border-gray-200 bg-gray-50 rounded-md" />
                             </div>
-                            <div className="flex flex-col">
-                                <label className="text-xs font-semibold" value = {"University of Toronto"}>Phone Number</label>
+                        </div>
+                        <div className="flex flex-col">
+                                <label className="text-xs font-semibold" value = {"University of Toronto"}>University</label>
                                 <input className="p-2 border border-gray-200 bg-gray-50 rounded-md" />
-                            </div>
                         </div>
                 </div>
-                <div className = "flex justify-between">
-                    <button className = "font-sans bg-gray-300 p-1 rounded-md font-light mx-6 cursor-pointer">{"< Back"}</button>
-                    <button className = "font-sans bg-blue-500 p-1 rounded-md font-light text-white mx-6 cursor-pointer">{"Next >"}</button>
-                </div>
+                
             </div>
         </>
     )

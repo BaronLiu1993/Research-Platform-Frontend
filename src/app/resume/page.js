@@ -6,15 +6,9 @@ import Image from "next/image";
 import { useRouter } from 'next/navigation'
 import Navbar from '../components/navbar';
 import WordProcessor from '../api/wordprocessor';
-import ParseResume from '../api/parseresume';
-import Projects from '../components/resume/projects';
-import Contact from '../components/resume/contact';
-import Employment from '../components/resume/employment';
 
+import Editor from '../components/resume/editor';
 import Builder from '../components/resume/builder';
-import Progress from '../components/resume/progress';
-
-import PersonalInfo from '../components/resume/personalinfo';
 
 import { removeSingleQuoteOrJson, removeSingleQuoteOrString } from '../api/fixjson';
 import { getProfessorData } from '../api/getProfessorData.js';
@@ -24,12 +18,17 @@ export default function resume ({}) {
     const searchParams = useSearchParams()
     const search = searchParams.get('url')
     const [data, setData] = useState({}); 
+
+
     const [researchInterests, setResearchInterests] = useState({})
     const [professorInformation, setProfessorInformation] = useState({})
     const [feedback, setFeedback] = useState("")
-    const [resumeFile, setResumeFile] = useState(null);
     const [editorContent, setEditorContent] = useState(null)
     const router = useRouter()
+
+    const handleUrlSelection = (url) => {
+        router.push(`/resume?url=${encodeURIComponent(url)}`);
+    };
 
     
     useEffect(() => {
@@ -60,37 +59,13 @@ export default function resume ({}) {
         router.push(`/email?professor_interests=${encodeURIComponent(researchInterests)}?professor_information=${encodeURIComponent(professorInformation)}`);
     }
 
-    const handleSubmit = async () => {
-        if (!resumeFile) {
-            console.warn("No file selected!");
-            return;
-        }
-        const file = resumeFile
-        try {
-            const interests = researchInterests
-            const resumeDataHTML = await ParseResume(file, interests);
-            console.log(resumeDataHTML.result)
-            const cleanedData = removeSingleQuoteOrJson(resumeDataHTML.result)
-            const response = JSON.parse(cleanedData)
-            console.log(response)
-            setEditorContent(response)
-        } catch (error) {
-            console.error("Error fetching data", error);
-        }
-    };
-
     return (
         <>
                 <Navbar />
-                    <div className = "mt-10 mx-10">
-                        <Progress />
-                    </div>
                     <div className = "flex items-start space-x-10 p-10 select-none">
-                        <div className = 'flex flex-col'>
-                            
-                            <div className = "mt-2 w-[20rem]">
-                                
-                                <h1 className = "text-sm font-bold w-fit border-b-2 p-1 font-sans">
+                        <div className = 'flex flex-col w-[20rem]'>
+                            <div className = "mt-2">
+                                <h1 className = "text-sm font-bold border-b-2 p-1 font-sans w-[20rem]">
                                     PROFESSOR INFORMATION
                                 </h1>
 
@@ -99,7 +74,7 @@ export default function resume ({}) {
                                         <div className = "bg-blue-500 h-2 w-2 rounded-full"></div>
                                         <p className = "text-xs font-sans font-medium">Professor Information</p>
                                     </div>
-                                    <div className = "border-gray-200 w-fit h-fit p-2 font-sans text-md rounded-md border-1">
+                                    <div className = "border-gray-200 w-[20rem] h-fit p-2 font-sans text-md rounded-md border-1">
                                         <p>{data.name}</p>
                                         <p>{data.email}</p>
                                         <p>{data.phone}</p>
@@ -111,7 +86,7 @@ export default function resume ({}) {
                                         <div className = "bg-purple-500 h-2 w-2 rounded-full"></div>
                                         <p className = "text-xs font-sans font-medium">Research Interests</p>
                                     </div>
-                                    <div className = "border-gray-200 w-fit h-fit p-2 font-sans text-md rounded-md border-1">
+                                    <div className = "border-gray-200 w-[20rem] h-fit p-2 font-sans text-md rounded-md border-1">
                                         {data.research_interests?.map((keyword, index) => (
                                                 <p key={index}>{keyword}</p>  
                                         ))}
@@ -122,28 +97,13 @@ export default function resume ({}) {
                                         <div className = "bg-red-500 h-2 w-2 rounded-full"></div>
                                         <p className = "text-xs font-sans font-medium">Feedback</p>
                                     </div>
-                                    <div className = "border-gray-200 p-2 font-sans text-md h-20 w-40 rounded-md border-1">
+                                    <div className = "border-gray-200 w-[20rem] p-2 font-sans text-md h-20 rounded-md border-1">
                                         {feedback?.result?.candidates?.[0]?.content?.parts?.[0]?.text ?? "No feedback yet"}
                                     </div>
                                 </div>
-                                
-                        <div>
-                            <button
-                                className="mt-5 font-extralight cursor-pointer text-white bg-blue-500 rounded-sm text-xs px-2 font-sans"
-                                onClick={() => handleSubmit(resumeFile)}
-                            >
-                                Change with AI
-                            </button>
-                            <button
-                                className="mt-5 font-extralight cursor-pointer text-white bg-blue-500 rounded-sm text-xs px-2 font-sans"
-                                onClick={() => handleSendData()}
-                            >
-                                Move to Next
-                            </button>
-                            </div>
                         </div>
-                        
-                        <Builder />
+                        <Builder researchInterests = {data.research_interests}/>
+                        <Editor />
                     </div>
                 </>
     )
