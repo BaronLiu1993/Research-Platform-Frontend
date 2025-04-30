@@ -5,6 +5,7 @@ import Employment from "./items/employment/employment";
 import Projects from "./items/project/projects";
 import Contact from "./items/contact/contact";
 import PersonalInfo from "./items/personal/personalinfo";
+import ResumeView from "./resumeview";
 import Skills from "./items/skills/skills"
 import Progress from "./progress";
 
@@ -14,6 +15,7 @@ export default function Editor({student_experience, student_projects, student_pe
         { component: <Projects project_data = {student_projects}/>, name: "Projects" },
         { component: <Contact contact_data = {student_contact}/>, name: "Contact" },
         { component: <PersonalInfo personal_details_data = {student_personal_details}/>, name: "Personal Info" },
+        
     ];
 
     const [currentPage, setCurrentPage] = useState(0);
@@ -59,7 +61,9 @@ export default function Editor({student_experience, student_projects, student_pe
                     Next
                 </button>
             </div>
+            <ResumeView />
         </div>
+        
         </>
     );
 }
