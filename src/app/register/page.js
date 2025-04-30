@@ -1,26 +1,20 @@
 'use client';
 
-import { useState } from 'react'
-import { handleRegister } from '../api/auth'
+//Libraries
+import { useActionState } from 'react';
+
+//Server Action
+import registerActions from './registerActions';
+
+//Components
 import DropdownMajor from '../components/dropdowns/dropdownmajor'
 import DropdownInterests from '../components/dropdowns/dropdowninterests'
 import DropdownYear from '../components/dropdowns/dropdownyear'
 import Navbar from '../components/navbar'
-import VerifyOtp from '../components/verify'
+import VerifyOtp from './verify'
 
 export default function Register() {
-  const [submitted, setSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    student_email: '',
-    student_password: '',
-    student_major: '',
-    student_firstname: '',
-    student_lastname: '',
-    student_year: '',
-    student_interests: [],
-    student_acceptedterms: false,
-  });
-
+  const [state, formAction] = useActionState(registerActions, { error: null, success: false})
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,7 +29,7 @@ export default function Register() {
   return (
     <>
       <Navbar />
-      <form className='flex flex-col justify-center items-center mt-20'>
+      <div className='flex flex-col justify-center items-center mt-20'>
         <div>
           <h1 className="font-sans space-x-0.5 tracking-wide font-semibold text-2xl">
             Think it. Make it.
@@ -45,24 +39,25 @@ export default function Register() {
           </h1>
         </div>
 
-        {submitted ? <VerifyOtp /> : 
-        <div className="mt-5 flex flex-col space-y-2">
+        {success ? <VerifyOtp /> : 
+        <form className="mt-5 flex flex-col space-y-2">
           <div className="flex justify-center items-center space-x-2">
             <div className="flex flex-col">
               <label className="font-sans text-xs font-semibold">University Email</label>
               <input
                 className="p-2 border-1 border-gray-200 bg-gray-50 rounded-md w-[20rem]"
-                value={formData.student_email}
-                onChange={(e) => setFormData({ ...formData, student_email: e.target.value })}
+                name = "student_email"
+                id = "student_email"
+                type = "email"
               />
             </div>
             <div className="flex flex-col">
               <label className="font-sans text-xs font-semibold">Password</label>
               <input
                 className="p-2 border-1 border-gray-200 bg-gray-50 rounded-md w-[20rem]"
-                type="password"
-                value={formData.student_password}
-                onChange={(e) => setFormData({ ...formData, student_password: e.target.value })}
+                name = "student_password"
+                id = "student_password"
+                type = "password"
               />
             </div>
           </div>
@@ -72,16 +67,16 @@ export default function Register() {
               <label className="font-sans text-xs font-semibold">First Name</label>
               <input
                 className="p-2 border-1 border-gray-200 bg-gray-50 rounded-md w-[20rem]"
-                value={formData.student_firstname}
-                onChange={(e) => setFormData({ ...formData, student_firstname: e.target.value })}
+                name = "student_firstname"
+                id = "student_firstname"
               />
             </div>
             <div className="flex flex-col">
               <label className="font-sans text-xs font-semibold">Last Name</label>
               <input
                 className="p-2 border-1 border-gray-200 bg-gray-50 rounded-md w-[20rem]"
-                value={formData.student_lastname}
-                onChange={(e) => setFormData({ ...formData, student_lastname: e.target.value })}
+                name = "student_lastname"
+                id = "student_lastname"
               />
             </div>
           </div>
@@ -91,10 +86,8 @@ export default function Register() {
               <label className="font-sans text-xs font-semibold">Year</label>
               <DropdownYear
                 className="w-[20rem]"
-                value={formData.student_year}
-                onChange={(selectedValue) =>
-                  setFormData((prev) => ({ ...prev, student_year: selectedValue }))
-                }
+                name = "student_year"
+                id = "student_year"
               />
             </div>
 
@@ -102,10 +95,8 @@ export default function Register() {
               <label className="font-sans text-xs font-semibold">Major</label>
               <DropdownMajor
                 className="w-[20rem]"
-                value={formData.student_major}
-                onChange={(selectedValue) =>
-                  setFormData((prev) => ({ ...prev, student_major: selectedValue }))
-                }
+                name = "student_major"
+                id = "student_major"
               />
             </div>
           </div>
@@ -113,17 +104,15 @@ export default function Register() {
           <div className="space-x-2 space-y-4 mt-4 flex flex-col">
           <div >
             <DropdownInterests
-              value={formData.student_interests}
-              onChange={(selected) =>
-                setFormData((prev) => ({ ...prev, student_interests: selected }))
-              }
+              name = "student_interests"
+              id = "student_interests"
             />
           </div>
           <div className = "space-x-2 flex">
             <input
               type="checkbox"
-              checked={formData.student_acceptedterms}
-              onChange={(e) => setFormData({ ...formData, student_acceptedterms: e.target.checked })}
+              name = "student_acceptedterms"
+              id = "student_acceptedterms"
             />
             <label className="font-sans text-md text-gray-400 text-sm">
               Agree to the Terms and Conditions
@@ -137,13 +126,9 @@ export default function Register() {
         >
           Continue
         </button>
-      </div>
-      
-      }
-      
-        
-
       </form>
+      }
+      </div>
     </>
   );
 }

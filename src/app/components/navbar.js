@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Placeholder from "../../../public/placeholder.png";
-import Link from "next/link";
 
 
 export default function navbar () {

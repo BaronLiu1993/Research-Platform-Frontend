@@ -1,9 +1,9 @@
 import Navbar from "./components/navbar";
-import Homecard from "./components/homecard";
+import Homecard from "./homepagecomponents/homecard";
 import Link from "next/link";
 import Resumehomecomponent from "./homepagecomponents/resumehomecomponent";
 import Emailhomecomponent from "./homepagecomponents/emailhomepage";
-import Footer from "./components/footer";
+import Footer from "./components/miscellaneous/footer";
 import KanbanHomepage from "./homepagecomponents/kanbanhomepage";
 import ResearchAreas from "./homepagecomponents/researchareas";
 

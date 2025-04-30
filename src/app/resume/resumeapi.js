@@ -1,4 +1,7 @@
-export async function getProfessorData({ url }) {
+"use server"
+
+import { removeSingleQuoteOrJson } from "../api/fixjson";
+export default async function getProfessorData({ url }) {
     if (!url) {
         console.error('URL is required');
         return;
@@ -20,7 +23,9 @@ export async function getProfessorData({ url }) {
         }
 
         const data = await response.json();
-        return data;  
+        const fixedResponse = removeSingleQuoteOrJson(data.result);
+        const professorDataObject = JSON.parse(fixedResponse);
+        return professorDataObject;  
 
     } catch (error) {
         console.error('Error fetching professor data:', error);

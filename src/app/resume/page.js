@@ -2,43 +2,31 @@
 
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import Image from "next/image";
 import { useRouter } from 'next/navigation'
 import Navbar from '../components/navbar';
 import WordProcessor from '../api/wordprocessor';
 
 import Editor from '../components/resume/editor';
 import Builder from '../components/resume/builder';
-
-import { removeSingleQuoteOrJson, removeSingleQuoteOrString } from '../api/fixjson';
-import { getProfessorData } from '../api/getProfessorData.js';
+import getProfessorData from './resumeapi';
 //Scans current resume for all keywords and then builds new resume with latex and the format given
 
 export default function resume ({}) {
     const searchParams = useSearchParams()
     const search = searchParams.get('url')
     const router = useRouter()
-
     const [data, setData] = useState({}); 
-
-
     const [researchInterests, setResearchInterests] = useState({})
     const [professorInformation, setProfessorInformation] = useState({})
     const [feedback, setFeedback] = useState("")
-    const [editorContent, setEditorContent] = useState(null)
-
-    
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const professor_url = search;
                 const response = await getProfessorData({ url: professor_url });
-                const fixedResponse = removeSingleQuoteOrJson(response.result);
-                const professorDataObject = JSON.parse(fixedResponse);
-                console.log(professorDataObject);
-                setData(professorDataObject);
-                setProfessorInformation(professorDataObject.email)
-                setResearchInterests(professorDataObject.research_interests);
+                setData(response);
+                setProfessorInformation(response.email)
+                setResearchInterests(response.research_interests);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }

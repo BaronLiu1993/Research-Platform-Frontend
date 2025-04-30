@@ -1,4 +1,3 @@
-'use client'
 import axios from 'axios'
 
 export async function handleRegister (formData) {
@@ -14,7 +13,7 @@ export async function handleRegister (formData) {
         console.error("Please Fill In Everything")
     }
 }
-
+/*
 export async function handleLogin(formData) {
     if (!formData?.email || !formData?.password) {
       throw new Error("Email and password are required");
@@ -28,7 +27,7 @@ export async function handleLogin(formData) {
       throw error;
     }
   }
-
+*/
 export async function verifyOtp (formData) {
     if (!formData?.code) {
         throw new Error("Code Required")
@@ -53,3 +52,4 @@ export async function resendCode() {
         }
     }
 }
+ 

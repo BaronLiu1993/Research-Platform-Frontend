@@ -3,9 +3,9 @@
 import { useState } from "react"
 import EmploymentForm from "./employmentform"
 
-export default function employment ({}) {
+export default function employment ({experience_data}) {
+    console.log(experience_data)
     const [employmentForms, setEmploymentForms] = useState([])
-
     const addEmploymentForm = () => {
         setEmploymentForms(prevForms => [
             ...prevForms,

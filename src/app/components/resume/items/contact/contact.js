@@ -1,4 +1,4 @@
-export default function Contact () {
+export default function Contact ({student_contact}) {
     return (
         <>
             <div className = "p-4 border-gray-400 border-1 bg-gray-50 rounded-md">

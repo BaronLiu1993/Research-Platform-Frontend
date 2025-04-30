@@ -1,19 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import Employment from "./items/employment";
-import Projects from "./items/projects";
-import Contact from "./items/contact";
-import PersonalInfo from "./items/personalinfo";
+import Employment from "./items/employment/employment";
+import Projects from "./items/project/projects";
+import Contact from "./items/contact/contact";
+import PersonalInfo from "./items/personal/personalinfo";
+import Skills from "./items/skills/skills"
 import Progress from "./progress";
 
-export default function Editor({experience, contact, projects, personalDetails}) {
-
+export default function Editor({student_experience, student_projects, student_personal_details, student_contact}) {
     const pages = [
-        { component: <Employment />, name: "Employment" },
-        { component: <Projects />, name: "Projects" },
-        { component: <Contact />, name: "Contact" },
-        { component: <PersonalInfo />, name: "Personal Info" },
+        { component: <Employment experience_data = {student_experience}/>, name: "Employment" },
+        { component: <Projects project_data = {student_projects}/>, name: "Projects" },
+        { component: <Contact contact_data = {student_contact}/>, name: "Contact" },
+        { component: <PersonalInfo personal_details_data = {student_personal_details}/>, name: "Personal Info" },
     ];
 
     const [currentPage, setCurrentPage] = useState(0);

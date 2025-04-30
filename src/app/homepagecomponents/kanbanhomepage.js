@@ -1,4 +1,4 @@
-import HomeKanban from "../components/homekanban"
+import HomeKanban from "./homekanban"
 
 export default function KanbanHomepage () {
     return (

@@ -1,31 +1,14 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Card from '../components/card';
+//Components
 import Navbar from '../components/navbar';
-import { fetchRepositoryData } from '../api/getRepository';
 import Recommendations from '../components/recommendations';
 import Sidebar from '../components/sidebar';
+import Card from '../components/repository/card';
 
-export default function Repository() {
-  const [data, setData] = useState([]);
-  const router = useRouter();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetchRepositoryData();
-      if (response && response.data) {
-        setData(response.data.slice(60, 70));
-      }
-    };
-    fetchData();
-  }, []);
-
-  const handleUrlSelection = (url) => {
-    router.push(`/resume?url=${encodeURIComponent(url)}`);
-  };
-
+export default async function Repository() {
+  const serverData = await fetch('http://localhost:8080/Taishan/');
+  const parsedResponse = await serverData.json();
+  const responses = parsedResponse.data
+  
   return (
     <>
       <Navbar />
@@ -35,24 +18,23 @@ export default function Repository() {
           <Sidebar />
         </div>
 
-        {/* Main Content - Scrollable */}
+        {/* Main Content, it is scrollable */}
         <div className="flex-1 overflow-y-auto p-5">
           <Recommendations />
           <div className="flex flex-col items-center">
             <h1 className="text-2xl font-sans font-semibold my-5">Discover Professors at UofT!</h1>
             <div className="grid grid-cols-3 gap-4">
-              {data.map((professor) => (
+            {responses.map((response) => (
                 <Card
-                  key={professor.id}
-                  name={professor.name}
-                  url={professor.url}
-                  school={professor.school}
-                  department={professor.department}
-                  faculty={professor.faculty}
-                  researchInterests={professor.research_interests}
-                  onUrlSelect={handleUrlSelection}
+                    key={response.id}
+                    name={response.name}
+                    url={response.url}
+                    school={response.school}
+                    department={response.department}
+                    faculty={response.faculty}
+                    researchInterests={response.research_interests}
                 />
-              ))}
+            ))}
             </div>
           </div>
         </div>

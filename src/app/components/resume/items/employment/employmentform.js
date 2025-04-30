@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
-import WordProcessor from "@/app/api/wordprocessor";
+import EmploymentWordProcessor from "./employmentwordprocessor";
 
 export default function EmploymentForm() {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +60,7 @@ export default function EmploymentForm() {
           </div>
           <div>
             <label className="text-xs font-semibold">Bulletin Points</label>
-            <WordProcessor className="w-full h-full" />
+            <EmploymentWordProcessor className="w-full h-full" />
           </div>
         </div>
       </div>

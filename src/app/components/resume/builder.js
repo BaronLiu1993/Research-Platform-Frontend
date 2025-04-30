@@ -1,12 +1,13 @@
+"use client"
+
 import { useState } from 'react'
-import ParseResume from '@/app/api/parseresume';
 import { removeSingleQuoteOrJson } from '@/app/api/fixjson';
+
+import ParseResume from '@/app/resume/parseresume';
 import Editor from './editor';
 
 export default function Builder ({researchInterests}) {
     const [resumeFile, setResumeFile] = useState(null);
-    const [] = useState(null)
-
     const [experience, setExperience] = useState({})
     const [contact, setContact] = useState({})
     const [projects, setProjects] = useState({})
@@ -80,7 +81,7 @@ export default function Builder ({researchInterests}) {
 
                     
                 </div>
-            </div>: <Editor />}
+            </div>: <Editor student_experience = {experience} student_projects = {projects} student_contact = {contact} student_personal_details = {personalDetails}/>}
             <div className = "mx-5 space-x-4">
                 {resumeFile && (
                     <button

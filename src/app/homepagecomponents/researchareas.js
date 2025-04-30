@@ -1,4 +1,4 @@
-import Homecard from "../components/homecard"
+import Homecard from "./homecard"
 
 export default function ResearchAreas () {
     return (
