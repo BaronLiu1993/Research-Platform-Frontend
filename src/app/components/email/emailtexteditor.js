@@ -1,9 +1,16 @@
-import { useEffect, useState } from 'react';
+
+import { 
+    ToggleGroup,
+    ToggleGroupItem,
+
+} from "@/shadcomponents/ui/toggle-group";
+import { useEffect } from 'react';
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
+import { Bold, Italic, Underline } from "lucide-react";
 
-export default function EmploymentWordProcessor({ content }) {
+export default function EmailTextEditor({ content }) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -12,7 +19,7 @@ export default function EmploymentWordProcessor({ content }) {
     content, 
     editorProps: {
       attributes: {
-        class: "min-h-[156px] border rounded-md bg-slate-50 py-2 px-3 font-sans",
+        class: "min-h-[10rem] font-light text-sm py-2 px-3 font-sans",
       },
     },
   });
@@ -31,44 +38,32 @@ export default function EmploymentWordProcessor({ content }) {
     <>
       <div>
         <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-          <div className="bg-gray-50 border-1 flex items-center space-x-2 p-2 rounded-md">
-            <button
+          <ToggleGroup type = "multiple" className = "bg-gray-300">
+            <ToggleGroupItem
+              value = "bold"
+              aria-label="Toggle bold"
               onClick={() => editor.chain().focus().toggleBold().run()}
               className={editor.isActive('bold') ? 'is-active' : ''}
             >
-              Bold
-            </button>
-            <button
+              <Bold />
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value = "italic"
+              aria-label="Toggle italic"
               onClick={() => editor.chain().focus().toggleItalic().run()}
               className={editor.isActive('italic') ? 'is-active' : ''}
             >
-              Italic
-            </button>
-            <button
+              <Italic />
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value = "underline"
+              aria-label="Toggle underline"
               onClick={() => editor.chain().focus().toggleStrike().run()}
               className={editor.isActive('strike') ? 'is-active' : ''}
             >
-              Strike
-            </button>
-            <button
-              onClick={() => editor.chain().focus().setTextColor('red').run()}
-              className={editor.isActive('textStyle') ? 'is-active' : ''}
-            >
-              Red BG
-            </button>
-            <button
-              onClick={() => editor.chain().focus().setTextColor('green').run()}
-              className={editor.isActive('textStyle') ? 'is-active' : ''}
-            >
-              Green BG
-            </button>
-            <button
-              onClick={() => editor.chain().focus().setTextColor('blue').run()}
-              className={editor.isActive('textStyle') ? 'is-active' : ''}
-            >
-              Blue BG
-            </button>
-          </div>
+              <Underline />
+            </ToggleGroupItem>
+          </ToggleGroup>
         </BubbleMenu>
       </div>
 

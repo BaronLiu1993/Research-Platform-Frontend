@@ -2,14 +2,6 @@ import { useEffect, useState } from 'react';
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
-import {
-  IconBold,
-  IconItalic,
-  IconStrike,
-  IconCircle,
-  IconSquare,
-  IconTextHeight,
-} from "@tabler/icons-react";
 
 export default function WordProcessor({ content }) {
   const editor = useEditor({

@@ -6,7 +6,7 @@ import Projects from "./items/project/projects";
 import Contact from "./items/contact/contact";
 import PersonalInfo from "./items/personal/personalinfo";
 import ResumeView from "./resumeview";
-import Skills from "./items/skills/skills"
+import Skills from "./items/skills/skills";
 import Progress from "./progress";
 
 export default function Editor({student_experience, student_projects, student_personal_details, student_contact}) {

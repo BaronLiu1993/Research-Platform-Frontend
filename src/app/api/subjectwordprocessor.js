@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import {
-  IconBold,
-  IconItalic,
-  IconStrike,
-} from "@tabler/icons-react";
 
 export default function SubjectWordProcessor({ content }) {
   const editor = useEditor({

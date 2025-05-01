@@ -35,14 +35,12 @@ export default function resume ({}) {
         fetchData();
     }, [search]);
 
-    /*
+    
     const handleSendDataToEmail = (url) => {
-        if (!researchInterests || !professorInformation) {
-          console.warn("No Data Attached")  
-        } 
-        router.push(`/resume/?url=${encodeURIComponent(url)}/email/?professor_interests=${encodeURIComponent(researchInterests)}?professor_information=${encodeURIComponent(professorInformation)}`);
+        router.push(`/email?url=${encodeURIComponent(url)}&professor_interests=${encodeURIComponent(researchInterests)}&professor_information=${encodeURIComponent(professorInformation)}`);
     }
-    */
+    
+    // Save a copy of the resume and then it will allow user to name it and that will be there resume for this one
 
     return (
         <>
@@ -88,6 +86,9 @@ export default function resume ({}) {
                                 </div>
                         </div>
                         <Builder researchInterests = {data.research_interests}/>
+                        <button onClick = {handleSendDataToEmail}>
+                            Email Page
+                        </button>
                     </div>
                     
                 </>

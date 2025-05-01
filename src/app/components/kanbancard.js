@@ -12,7 +12,6 @@ export default function KanbanCard({ title, description, id, column }) {
     },
   });
 
-  // Apply the transform style from dnd-kit
   const style = {
     transform: CSS.Translate.toString(transform),
   };

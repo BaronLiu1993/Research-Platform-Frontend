@@ -1,8 +1,7 @@
 //Components
 import Navbar from '../components/navbar';
 import Recommendations from '../components/recommendations';
-import Sidebar from '../components/sidebar';
-import Card from '../components/repository/card';
+import RepoCard from '../components/repository/repocard';
 
 export default async function Repository() {
   const serverData = await fetch('http://localhost:8080/Taishan/');
@@ -15,7 +14,7 @@ export default async function Repository() {
       <div className="flex h-[calc(100vh-4rem)] overflow-auto">
         {/* Sidebar - Fixed Width and Sticky */}
         <div className="p-5 sticky h-full overflow-y-auto bg-gray-50">
-          <Sidebar />
+            
         </div>
 
         {/* Main Content, it is scrollable */}
@@ -25,7 +24,7 @@ export default async function Repository() {
             <h1 className="text-2xl font-sans font-semibold my-5">Discover Professors at UofT!</h1>
             <div className="grid grid-cols-3 gap-4">
             {responses.map((response) => (
-                <Card
+                <RepoCard
                     key={response.id}
                     name={response.name}
                     url={response.url}
