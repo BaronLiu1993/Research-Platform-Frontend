@@ -64,11 +64,11 @@ export default function EmailTextEditor({ content }) {
   
       editor.chain()
         .focus()
-        .deleteRange({ from: selection.from, to: selection.from + typed.length }) // Overwrite
+        .deleteRange({ from: selection.from, to: selection.from + typed.length })
         .insertContentAt(selection.from, `<mark class="bg-yellow-100">${typed}</mark>`)
         .run();
   
-      await new Promise((res) => setTimeout(res, 10)); // typing speed
+      await new Promise((res) => setTimeout(res, 10));
     }
   
     setAiTyping(false);
