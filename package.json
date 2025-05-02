@@ -41,16 +41,19 @@
     "chroma-js": "^3.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
     "framer-motion": "^12.7.4",
     "lucide-react": "^0.503.0",
     "next": "15.2.4",
     "next-auth": "^5.0.0-beta.27",
     "pdfjs-dist": "^5.1.91",
     "react": "^19.1.0",
+    "react-day-picker": "^8.10.1",
     "react-dom": "^19.1.0",
     "react-select": "^5.10.1",
     "tailwind-merge": "^3.2.0",
-    "uoft_research": "file:"
+    "uoft_research": "file:",
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

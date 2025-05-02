@@ -1,5 +1,6 @@
 "use client"
 
+import { usePublicationStore } from "@/app/data/usePublicationStore"
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
 import {
@@ -22,6 +23,8 @@ import { Button } from "@/shadcomponents/ui/button"
 import { Progress } from "@/shadcomponents/ui/progress"
 
 export default function Publications() {
+  const { setSelectedPublication } = usePublicationStore()
+
   const searchParams = useSearchParams()
   const name = searchParams.get("name")
   const email = searchParams.get("email")
@@ -30,10 +33,28 @@ export default function Publications() {
   const [progress, setProgress] = useState(0)
   const [publications, setPublications] = useState([])
 
-  const fetchPublications = async () => {
+  async function integrateEditor () {
+    try {
+        
+        const res = await fetch("http://127.0.0.1:8000/email/ai-publication-insertion", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }, //Hard Coded for now change later 
+            body: JSON.stringify({ academic_publication: publications[0].url, interests: ["Biomedical Engineering"], related_skills: ["Python"]})
+        })
+        console.log(res.result)
+        setSelectedPublication(res.result)
+        //Change error handling to something else later
+    } catch (err) {
+        console.error(err)
+    }
+  }
+
+  async function fetchPublications () {
     setStatus("loading")
     setProgress(10)
-
+    //Clean up and separate into another component later
     try {
       const res = await fetch("http://127.0.0.1:8000/email/query-publications", {
         method: "POST",
@@ -50,12 +71,9 @@ export default function Publications() {
       }, 100)
 
       const data = await res.json()
-      console.log(data.result)
       const processedData = removeSingleQuoteOrJson(data.result)
       const response = JSON.parse(processedData)
-      console.log(response)
       setPublications(response)
-
       clearInterval(interval)
       setProgress(100)
 
@@ -112,7 +130,12 @@ export default function Publications() {
                         View Source
                       </Button>
                     </a>
-                    <Button className="text-xs font-sans">Incorporate</Button>
+                    <Button
+                        className="text-xs font-sans"
+                        onClick={integrateEditor}
+                    >
+                    Incorporate
+                    </Button>
                   </div>
                 </AccordionContent>
               </AccordionItem>

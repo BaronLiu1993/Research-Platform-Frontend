@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Highlight from '@tiptap/extension-highlight';
+"use client";
+
+import { useEffect, useState } from "react";
+import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Highlight from "@tiptap/extension-highlight";
 import { Bold, Italic, Underline } from "lucide-react";
 import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/shadcomponents/ui/toggle-group";
+import { usePublicationStore } from "@/app/data/usePublicationStore";
 
 export default function EmailTextEditor({ content }) {
+  const { selectedPublication, clearPublication } = usePublicationStore();
   const [aiTyping, setAiTyping] = useState(false);
 
   const editor = useEditor({
@@ -25,6 +29,7 @@ export default function EmailTextEditor({ content }) {
   });
 
   useEffect(() => {
+    console.log(selectedPublication)
     if (editor) {
       editor.commands.setContent(content);
     }
@@ -33,11 +38,10 @@ export default function EmailTextEditor({ content }) {
   const handleAIRewrite = async () => {
     const selection = editor.state.selection;
     const selectedText = editor.state.doc.textBetween(selection.from, selection.to);
-  
     if (!selectedText) return;
-  
+
     setAiTyping(true);
-  
+
     const response = await fetch("http://localhost:8000/ai-edit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -46,33 +50,31 @@ export default function EmailTextEditor({ content }) {
         style: "Make this more professional and fix grammar"
       }),
     });
-  
+
     const data = await response.json();
     const aiText = data.result;
-  
     if (!aiText) {
       setAiTyping(false);
       return;
     }
-  
-    // Clear the selected range
+
     editor.chain().focus().deleteRange({ from: selection.from, to: selection.to }).run();
-  
+
     let typed = "";
     for (let i = 0; i < aiText.length; i++) {
       typed += aiText[i];
-  
       editor.chain()
         .focus()
         .deleteRange({ from: selection.from, to: selection.from + typed.length })
         .insertContentAt(selection.from, `<mark class="bg-yellow-100">${typed}</mark>`)
         .run();
-  
+
       await new Promise((res) => setTimeout(res, 10));
     }
-  
+
     setAiTyping(false);
   };
+
   if (!editor) return <div>Loading editor...</div>;
 
   return (
