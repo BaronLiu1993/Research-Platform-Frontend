@@ -3,17 +3,12 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 
-
-
-
 import File from '../../../public/file.png'
 import Image from "next/image";
 
 import Email from '../components/email/email';
 import Navbar from '../components/navbar';
-import WordProcessor from '../api/wordprocessor';
-import SubjectWordProcessor from '../api/subjectwordprocessor';
-
+import Publications from '../components/email/publications';
 
 export default function email({ data }) {
     const searchParams = useSearchParams()
@@ -50,6 +45,7 @@ export default function email({ data }) {
         <>
             <Navbar />
             <Email />
+            
         </>
     )
 }

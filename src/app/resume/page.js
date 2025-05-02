@@ -17,15 +17,18 @@ export default function resume ({}) {
     const router = useRouter()
     const [data, setData] = useState({}); 
     const [researchInterests, setResearchInterests] = useState({})
-    const [professorInformation, setProfessorInformation] = useState({})
+    const [professorEmail, setProfessorEmail] = useState({})
+    const [professorName, setProfessorName] = useState({})
     const [feedback, setFeedback] = useState("")
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const professor_url = search;
                 const response = await getProfessorData({ url: professor_url });
                 setData(response);
-                setProfessorInformation(response.email)
+                setProfessorName(response.name)
+                setProfessorEmail(response.email)
                 setResearchInterests(response.research_interests);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -37,7 +40,7 @@ export default function resume ({}) {
 
     
     const handleSendDataToEmail = (url) => {
-        router.push(`/email?url=${encodeURIComponent(url)}&professor_interests=${encodeURIComponent(researchInterests)}&professor_information=${encodeURIComponent(professorInformation)}`);
+        router.push(`/email?url=${encodeURIComponent(url)}&professor_interests=${encodeURIComponent(researchInterests)}&name=${encodeURIComponent(professorName)}&email=${encodeURIComponent(professorEmail)}`);
     }
     
     // Save a copy of the resume and then it will allow user to name it and that will be there resume for this one
