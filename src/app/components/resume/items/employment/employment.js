@@ -31,7 +31,7 @@ export default function Employment({ experience_data }) {
   };
 
   return (
-    <div className="border rounded-md border-gray-400 p-8 space-y-5">
+    <div className=" border-gray-400 p-8 space-y-5">
       <div>
         <h1 className="font-sans text-md font-semibold">
           Employment History
@@ -42,11 +42,13 @@ export default function Employment({ experience_data }) {
       </div>
 
       {employmentForms.map((form) => (
-        <EmploymentForm
-          key={form.id}
-          data={form}
-          onChange={(updated) => handleFormChange(form.id, updated)}
+        <div className = "flex justify-center items-center" key={form.id}>
+          <EmploymentForm
+            key={form.id}
+            data={form}
+            onChange={(updated) => handleFormChange(form.id, updated)}
         />
+        </div>
       ))}
 
       <button

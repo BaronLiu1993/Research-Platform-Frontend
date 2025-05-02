@@ -39,11 +39,15 @@ export default function EmploymentForm({ data, onChange }) {
     <Accordion
       type="single"
       collapsible
-      className="w-full border font-sans border-muted rounded-xl bg-white shadow-sm"
+      className="w-full font-sans bg-white border rounded-md"
     >
       <AccordionItem value="employment-section">
         <AccordionTrigger className = "px-4 font-semibold text-lg">
-          {local.job_title || "Untitled Position"}
+          <div>
+            <div className = "">{local.job_title || "Untitled Position"}</div>
+            <div className = "text-sm font-extralight">{local.company || "Untitled Company"}</div>
+            <div></div>
+          </div>
         </AccordionTrigger>
 
         <AccordionContent>

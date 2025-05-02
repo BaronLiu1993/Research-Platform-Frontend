@@ -31,7 +31,7 @@ export default function Editor({student_experience, student_projects, student_pe
     return (
         <>
         <div className="w-full overflow-hidden">
-            <div className = "p-6">
+            <div className = "px-6">
                 <Progress />
             </div>
             <div
@@ -39,7 +39,7 @@ export default function Editor({student_experience, student_projects, student_pe
                 style={{ transform: `translateX(-${currentPage * 100}%)` }}
             >
                 {pages.map((page, index) => (
-                    <div key={index} className="w-full flex-shrink-0 p-4">
+                    <div key={index} className="w-full flex-shrink-0 px-4">
                         {page.component}
                     </div>
                 ))}
@@ -61,9 +61,9 @@ export default function Editor({student_experience, student_projects, student_pe
                     Next
                 </button>
             </div>
-            <ResumeView />
         </div>
-        
+        <ResumeView />
+
         </>
     );
 }

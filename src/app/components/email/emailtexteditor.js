@@ -4,11 +4,17 @@ import { useEffect, useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
+
+
+
 import { Bold, Italic, Underline } from "lucide-react";
 import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/shadcomponents/ui/toggle-group";
+
+import { Skeleton } from "@/shadcomponents/ui/skeleton";
+
 import { usePublicationStore } from "@/app/data/usePublicationStore";
 
 export default function EmailTextEditor({ content }) {
@@ -74,8 +80,13 @@ export default function EmailTextEditor({ content }) {
 
     setAiTyping(false);
   };
-
-  if (!editor) return <div>Loading editor...</div>;
+  if (!editor) {
+    return (
+      <div className="min-h-[30rem] w-full p-4">
+        <Skeleton className="w-full h-full rounded-xl" />
+      </div>
+    );
+  }
 
   return (
     <>

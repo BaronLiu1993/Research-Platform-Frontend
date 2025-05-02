@@ -3,7 +3,6 @@ import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
 
-
 export default function ResumeView({ content }) {
   const editor = useEditor({
     extensions: [

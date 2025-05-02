@@ -51,8 +51,8 @@ export default function resume ({}) {
                     <div className = "flex items-start space-x-10 p-10 select-none">
                         <div className = 'flex flex-col w-[20rem]'>
                             <div className = "mt-2">
-                                <h1 className = "text-sm font-bold border-b-2 p-1 font-sans w-[20rem]">
-                                    PROFESSOR INFORMATION
+                                <h1 className = "text-sm font-bold border-b-2 p-1 font-sans w-fit">
+                                    PROFESSOR PROFILE
                                 </h1>
 
                                 <div className = "rounded-2xl">
@@ -60,7 +60,7 @@ export default function resume ({}) {
                                         <div className = "bg-blue-500 h-2 w-2 rounded-full"></div>
                                         <p className = "text-xs font-sans font-medium">Professor Information</p>
                                     </div>
-                                    <div className = "border-gray-200 w-[20rem] h-fit p-2 font-sans text-md rounded-md border-1">
+                                    <div className = "border-gray-200 w-fit h-fit p-2 font-sans text-xs rounded-md border-1">
                                         <p>{data.name}</p>
                                         <p>{data.email}</p>
                                         <p>{data.phone}</p>
@@ -72,28 +72,22 @@ export default function resume ({}) {
                                         <div className = "bg-purple-500 h-2 w-2 rounded-full"></div>
                                         <p className = "text-xs font-sans font-medium">Research Interests</p>
                                     </div>
-                                    <div className = "border-gray-200 w-[20rem] h-fit p-2 font-sans text-md rounded-md border-1">
+                                    <div className = "border-gray-200 w-fit h-fit p-2 font-sans text-xs rounded-md border-1">
                                         {data.research_interests?.map((keyword, index) => (
                                                 <p key={index}>{keyword}</p>  
                                         ))}
                                     </div>
                                 </div>
         
-                                <div className = "text-lg my-2 font-sans font-semibold items-center space-x-2 flex items bg-red-200 w-fit rounded-2xl p-1 border-gray-200">
-                                        <div className = "bg-red-500 h-2 w-2 rounded-full"></div>
-                                        <p className = "text-xs font-sans font-medium">Feedback</p>
-                                    </div>
-                                    <div className = "border-gray-200 w-[20rem] p-2 font-sans text-md h-20 rounded-md border-1">
-                                        {feedback?.result?.candidates?.[0]?.content?.parts?.[0]?.text ?? "No feedback yet"}
-                                    </div>
+                                                
                                 </div>
                         </div>
                         <Builder researchInterests = {data.research_interests}/>
-                        <button onClick = {handleSendDataToEmail}>
-                            Email Page
-                        </button>
+                        
                     </div>
-                    
+                    <button onClick = {handleSendDataToEmail}>
+                            Email Page
+                    </button>
                 </>
     )
 }
