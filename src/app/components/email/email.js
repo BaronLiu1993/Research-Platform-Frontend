@@ -22,6 +22,12 @@ import {
     CardTitle,
 } from "@/shadcomponents/ui/card"
 
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+  } from "@/shadcomponents/ui/collapsible"
+
 
 import { Input } from "@/shadcomponents/ui/input";
 
@@ -46,6 +52,11 @@ import { Paperclip } from 'lucide-react';
 import { Clock2 } from 'lucide-react';
 
 import { FileText } from 'lucide-react';
+
+import { Send } from "lucide-react";
+
+import { Mails } from "lucide-react"
+
 
 export default function Email () {
   const searchParams = useSearchParams()
@@ -74,20 +85,36 @@ export default function Email () {
                 <CardContent className = "space-y-2 font-sans">
                 <div className="flex">
                     <Label className="mr-10 text-slate-400 font-sans">Interests</Label>
-                    <div className="font-sans text-xs flex gap-2 flex-wrap">
-                        
-                        {interests.split(',').map((interest, index) => {
-                        const colour = colours[index % colours.length];
-                        return (
-                        <span key={index} className={`px-2 py-1 rounded-md ${colour.bg} ${colour.text}`}>
-                            {interest.trim()}
-                        </span>
-                        )
-                        })}
-                    </div>
+                    <Collapsible>
+                        <CollapsibleTrigger className="flex gap-2 flex-wrap font-sans text-sm">
+                            {interests.split(',').slice(0, 5).map((interest, index) => {
+                            const colour = colours[index % colours.length];
+                            return (
+                                <span key={index} className={`px-2 rounded-md ${colour.bg} ${colour.text}`}>
+                                {interest.trim()}
+                                </span>
+                            );
+                            })}
+                        </CollapsibleTrigger>
+
+                        <CollapsibleContent className="flex gap-2 flex-wrap mt-2 font-sans text-sm">
+                            {interests.split(',').slice(3).map((interest, index) => {
+                            const actualIndex = index + 3; 
+                            const colour = colours[actualIndex % colours.length];
+                            return (
+                                <span key={actualIndex} className={`px-2 rounded-md ${colour.bg} ${colour.text}`}>
+                                {interest.trim()}
+                                </span>
+                            );
+                            })}
+                        </CollapsibleContent>
+                    </Collapsible>
                     </div>
                     <div className = "flex">
-                        <Label className ="mr-10 text-slate-400 font-sans ">To:</Label>
+                        <Label className ="mr-10 text-slate-400 font-sans ">
+                            <Send className = "h-7 w-7 border-1 p-1 rounded-md "/>
+                            <span>To</span>
+                        </Label>
                         <div className="flex items-center text-sm space-x-1 w-full">
                             <div className="text-sm flex items-center space-x-2 border-1 rounded-md w-full px-3">
                                 <span className="pr-1 font-semibold bg-purple-200 text-purple-800 px-1 rounded-2xl">{name}</span>
@@ -99,7 +126,10 @@ export default function Email () {
                         </div>
                     </div>
                     <div className = "flex">
-                        <Label className ="mr-5 text-slate-400 font-sans ">From:</Label>
+                        <Label className ="mr-5 text-slate-400 font-sans ">
+                            <Mails className ="border-1 rounded-md h-7 w-7 p-1"/>
+                            <span>From</span>
+                        </Label>
                         <Input />
                     </div>
                 </CardContent>
