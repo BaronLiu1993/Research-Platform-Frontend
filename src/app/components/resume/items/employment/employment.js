@@ -31,7 +31,7 @@ export default function Employment({ experience_data }) {
   };
 
   return (
-    <div className=" border-gray-400 p-8 space-y-5">
+    <div className=" border-gray-400 p-8 space-y-5 overflow-hidden">
       <div>
         <h1 className="font-sans text-md font-semibold">
           Employment History

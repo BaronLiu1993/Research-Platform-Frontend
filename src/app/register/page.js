@@ -15,17 +15,6 @@ import VerifyOtp from './verify'
 
 export default function Register() {
   const [state, formAction] = useActionState(registerActions, { error: null, success: false})
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      await handleRegister(formData);
-      setSubmitted(true);
-    } catch (error) {
-      console.error("Registration failed:", error);
-    }
-  };
-
   return (
     <>
       <Navbar />
@@ -39,8 +28,8 @@ export default function Register() {
           </h1>
         </div>
 
-        {success ? <VerifyOtp /> : 
-        <form className="mt-5 flex flex-col space-y-2">
+        {state.success ? <VerifyOtp /> : 
+        <form action = {formAction} className="mt-5 flex flex-col space-y-2">
           <div className="flex justify-center items-center space-x-2">
             <div className="flex flex-col">
               <label className="font-sans text-xs font-semibold">University Email</label>
@@ -122,7 +111,6 @@ export default function Register() {
         </div>
         <button
           className="bg-blue-500 active:bg-blue-400 hover:bg-blue-600 mt-5 text-white w-[20rem] rounded-md font-light font-sans py-2"
-          onClick={handleSubmit}
         >
           Continue
         </button>

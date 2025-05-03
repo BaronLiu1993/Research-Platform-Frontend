@@ -30,10 +30,7 @@ export default function Editor({student_experience, student_projects, student_pe
 
     return (
         <>
-        <div className="w-full overflow-hidden">
-            <div className = "px-6">
-                <Progress />
-            </div>
+        <div className=" max-w-[50rem] overflow-hidden">
             <div
                 className="flex transition-transform duration-500"
                 style={{ transform: `translateX(-${currentPage * 100}%)` }}
@@ -41,26 +38,28 @@ export default function Editor({student_experience, student_projects, student_pe
                 {pages.map((page, index) => (
                     <div key={index} className="w-full flex-shrink-0 px-4">
                         {page.component}
+                        <div className="flex justify-between mt-4">
+                            <button
+                                onClick={prevPage}
+                                disabled={currentPage === 0}
+                                className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+                            >
+                                Back
+                            </button>
+                            <button
+                                onClick={nextPage}
+                                disabled={currentPage === pages.length - 1}
+                                className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
+                    
                 ))}
             </div>
 
-            <div className="flex justify-between mt-4">
-                <button
-                    onClick={prevPage}
-                    disabled={currentPage === 0}
-                    className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
-                >
-                    Back
-                </button>
-                <button
-                    onClick={nextPage}
-                    disabled={currentPage === pages.length - 1}
-                    className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
-                >
-                    Next
-                </button>
-            </div>
+            
         </div>
         </>
     );
