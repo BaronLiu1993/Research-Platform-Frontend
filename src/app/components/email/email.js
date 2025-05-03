@@ -9,6 +9,8 @@ import EmailTextEditor from "./emailtexteditor";
 
 import Publications from "./publications";
 
+import { colours } from "@/app/data/colours";
+
 //Shad CN 
 
 import {
@@ -49,9 +51,9 @@ export default function Email () {
   const searchParams = useSearchParams()
   const name = searchParams.get("name")
   const email = searchParams.get("email")
+  const interests = searchParams.get("professor_interests")
   const [uploadedFile, setUploadedFile] = useState(null);
   const fileInputRef = useRef(null);
-
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -70,11 +72,25 @@ export default function Email () {
                     <h1>New Message</h1> 
                 </CardTitle>
                 <CardContent className = "space-y-2 font-sans">
+                <div className="flex">
+                    <Label className="mr-10 text-slate-400 font-sans">Interests</Label>
+                    <div className="font-sans text-xs flex gap-2 flex-wrap">
+                        
+                        {interests.split(',').map((interest, index) => {
+                        const colour = colours[index % colours.length];
+                        return (
+                        <span key={index} className={`px-2 py-1 rounded-md ${colour.bg} ${colour.text}`}>
+                            {interest.trim()}
+                        </span>
+                        )
+                        })}
+                    </div>
+                    </div>
                     <div className = "flex">
-                        <Label className ="mr-10 text-slate-400 font-semibold font-sans ">To:</Label>
+                        <Label className ="mr-10 text-slate-400 font-sans ">To:</Label>
                         <div className="flex items-center text-sm space-x-1 w-full">
-                            <div className="text-sm flex items-center space-x-0 border-1 rounded-md w-full px-3">
-                                <span className="pr-1 font-bold">{name}</span>
+                            <div className="text-sm flex items-center space-x-2 border-1 rounded-md w-full px-3">
+                                <span className="pr-1 font-semibold bg-purple-200 text-purple-800 px-1 rounded-2xl">{name}</span>
                                 <Input
                                     className="w-auto p-0 m-0 border-none shadow-none underline focus-visible:ring-0 focus:outline-none"
                                     defaultValue={email}
@@ -83,7 +99,7 @@ export default function Email () {
                         </div>
                     </div>
                     <div className = "flex">
-                        <Label className ="mr-5 text-slate-400 font-semibold font-sans ">From:</Label>
+                        <Label className ="mr-5 text-slate-400 font-sans ">From:</Label>
                         <Input />
                     </div>
                 </CardContent>
