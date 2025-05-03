@@ -62,8 +62,6 @@ export default function Editor({student_experience, student_projects, student_pe
                 </button>
             </div>
         </div>
-        <ResumeView />
-
         </>
     );
 }

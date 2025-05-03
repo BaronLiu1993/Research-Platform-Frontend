@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { removeSingleQuoteOrJson } from '@/app/api/fixjson';
 
 import ParseResume from '@/app/resume/parseresume';
+import ResumeView from './resumeview';
 import Editor from './editor';
 
 export default function Builder ({researchInterests}) {
@@ -13,6 +14,7 @@ export default function Builder ({researchInterests}) {
     const [projects, setProjects] = useState({})
     const [personalDetails, setPersonalDetails] = useState({})
     const [parsedResume, setParsedResume] = useState(false)
+    const [outputResume, setOutputResume] = useState(null)
 
     const handleParseResume = async () => {
             if (!resumeFile) {
@@ -23,11 +25,11 @@ export default function Builder ({researchInterests}) {
             try {
                 const interests = researchInterests
                 const resumeDataHTML = await ParseResume(file, interests);
-                console.log(resumeDataHTML.result)
                 const cleanedData = removeSingleQuoteOrJson(resumeDataHTML.result)
                 const response = JSON.parse(cleanedData)
                 
                 console.log(response)
+                setOutputResume(response)
                 setExperience(response.experience)
                 setContact(response.contact)
                 setProjects(response.projects)
@@ -90,7 +92,12 @@ export default function Builder ({researchInterests}) {
                     </div>
                     
                 </div>
-            </div>: <Editor student_experience = {experience} student_projects = {projects} student_contact = {contact} student_personal_details = {personalDetails}/>}
+            </div>: 
+                <div className = "flex space-x-2">
+                        <Editor student_experience = {experience} student_projects = {projects} student_contact = {contact} student_personal_details = {personalDetails}/>
+                        <ResumeView resume = {outputResume}/>
+                </div>            
+            }
             
         </>
     )

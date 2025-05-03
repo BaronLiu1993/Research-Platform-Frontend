@@ -19,7 +19,6 @@ export default function resume ({}) {
     const [researchInterests, setResearchInterests] = useState({})
     const [professorEmail, setProfessorEmail] = useState({})
     const [professorName, setProfessorName] = useState({})
-    const [feedback, setFeedback] = useState("")
 
     useEffect(() => {
         const fetchData = async () => {
