@@ -16,6 +16,7 @@ import {
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
 import { usePublicationStore } from "@/app/data/usePublicationStore";
+import { Button } from "@/shadcomponents/ui/button";
 
 export default function EmailTextEditor({ content }) {
   const { selectedPublication, clearPublication } = usePublicationStore();
@@ -91,6 +92,7 @@ export default function EmailTextEditor({ content }) {
   return (
     <>
       <div>
+        {/*
         <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
           <ToggleGroup type="multiple" className="bg-gray-200">
             <ToggleGroupItem
@@ -142,9 +144,94 @@ export default function EmailTextEditor({ content }) {
             </ToggleGroupItem>
           </ToggleGroup>
         </BubbleMenu>
+        */}
       </div>
+              
+      {/*The Built In Toolbar*/}
+      <div className = "mt-2">
+          <ToggleGroup type="multiple" className="bg-gray-200">
+            
+            <ToggleGroupItem
+              value="bold"
+              aria-label="Toggle bold"
+              onClick={() => editor.chain().focus().toggleBold().run()}
+              className={`py-1 text-xs transition ${
+                editor.isActive("bold")
+                  ? "bg-gray-200 text-white"
+                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
+              }`}
+            >
+              <Bold />
+            </ToggleGroupItem>
 
-      <EditorContent className="mt-10" editor={editor} />
+            <ToggleGroupItem
+              value="italic"
+              aria-label="Toggle italic"
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+              className={`py-1 text-xs transition ${
+                editor.isActive("italic")
+                  ? "bg-gray-200 text-white"
+                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
+              }`}
+            >
+              <Italic />
+            </ToggleGroupItem>
+
+            <ToggleGroupItem
+              value="underline"
+              aria-label="Toggle underline"
+              onClick={() => editor.chain().focus().toggleStrike().run()}
+              className={`py-1 text-xs transition ${
+                editor.isActive("bold")
+                  ? "bg-gray-200 text-white"
+                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
+              }`}
+            >
+              <Underline />
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="ai"
+              aria-label="AI Rewrite"
+              onClick={handleAIRewrite}
+              className="py-1 text-xs min-w-fit transition  hover:bg-green-200"
+            >
+                    <Button className = "bg-purple-200 text-black shadow-sm px-1 font-sans text-xs rounded-md">              
+                    ✨ Fix Grammar
+                    </Button>
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="ai"
+              aria-label="AI Rewrite"
+              onClick={handleAIRewrite}
+              className="py-1 text-xs min-w-fit transition  hover:bg-green-200"
+            >
+                    <Button className = "bg-purple-200 text-black shadow-sm px-1 font-sans text-xs rounded-md">              
+                    ✨ Fix Grammar
+                    </Button>
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="ai"
+              aria-label="AI Rewrite"
+              onClick={handleAIRewrite}
+              className="py-1 text-xs min-w-fit transition  hover:bg-green-200"
+            >
+                    <Button className = "bg-purple-200 text-black shadow-sm font-sans text-xs rounded-md p-0">              
+                    ✨ Restructure
+                    </Button>
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="ai"
+              aria-label="AI Rewrite"
+              onClick={handleAIRewrite}
+              className="py-1 text-xs min-w-fit transition  hover:bg-green-200"
+            >
+                    <Button className = "bg-purple-200 text-black shadow-sm px-1 font-sans text-xs rounded-md">              
+                    ✨ Fix Grammar
+                    </Button>
+            </ToggleGroupItem>
+          </ToggleGroup>
+          <EditorContent className="mt-2" editor={editor} />
+    </div>
 
       {aiTyping && (
         <div className="text-sm text-gray-500 mt-2 flex items-center gap-1">

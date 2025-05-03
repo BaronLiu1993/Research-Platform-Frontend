@@ -7,6 +7,7 @@ export default async function Repository() {
   const serverData = await fetch('http://localhost:8080/Taishan/');
   const parsedResponse = await serverData.json();
   const responses = parsedResponse.data
+  console.log(responses)
   
   return (
     <>
@@ -14,7 +15,7 @@ export default async function Repository() {
       <div className="flex h-[calc(100vh-4rem)] overflow-auto">
         {/* Sidebar - Fixed Width and Sticky */}
         <div className="p-5 sticky h-full overflow-y-auto bg-gray-50">
-            
+
         </div>
 
         {/* Main Content, it is scrollable */}

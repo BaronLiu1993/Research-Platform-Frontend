@@ -4,10 +4,13 @@ import { useState, useEffect } from "react";
 import KanbanCard from "../components/kanbancard"; 
 import Navbar from "../components/navbar";
 
-export default function Bookmark() {
-
+export default async function Bookmark() {
+  const serverData = await fetch('http://localhost:8080/auth/get-user', {
+    method: 'GET',
+    credentials: 'include', 
+  });
+  const parsedResponse = await serverData.json();
   
-
   return (
     <>
     <Navbar />
