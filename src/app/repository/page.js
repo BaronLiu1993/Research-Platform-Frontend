@@ -7,7 +7,6 @@ export default async function Repository() {
   const serverData = await fetch('http://localhost:8080/Taishan/');
   const parsedResponse = await serverData.json();
   const responses = parsedResponse.data
-  console.log(responses)
   
   return (
     <>
