@@ -5,7 +5,10 @@ import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 
+import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 
+import Publications from "./publications";
+import EmailSideBar from "./emailsidebar";
 
 import { Bold, Italic, Underline } from "lucide-react";
 import {
@@ -17,6 +20,8 @@ import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
 import { usePublicationStore } from "@/app/data/usePublicationStore";
 import { Button } from "@/shadcomponents/ui/button";
+import { Badge } from "@/shadcomponents/ui/badge";
+import Email from "./email";
 
 export default function EmailTextEditor({ content }) {
   const { selectedPublication, clearPublication } = usePublicationStore();
@@ -46,9 +51,7 @@ export default function EmailTextEditor({ content }) {
     const selection = editor.state.selection;
     const selectedText = editor.state.doc.textBetween(selection.from, selection.to);
     if (!selectedText) return;
-
     setAiTyping(true);
-
     const response = await fetch("http://localhost:8000/ai-edit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -91,150 +94,145 @@ export default function EmailTextEditor({ content }) {
 
   return (
     <>
-      <div>
-        {/*
-        <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-          <ToggleGroup type="multiple" className="bg-gray-200">
-            <ToggleGroupItem
-              value="ai"
-              aria-label="AI Rewrite"
-              onClick={handleAIRewrite}
-              className="py-1 text-xs transition bg-green-100 hover:bg-green-200"
-            >
-              ✨ AI Rewrite
-            </ToggleGroupItem>
+        <div className = "flex gap-2 font-sans">
+            <div className = "">
+                {/*
+                <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
+                <ToggleGroup type="multiple" className="bg-gray-200">
+                    <ToggleGroupItem
+                    value="ai"
+                    aria-label="AI Rewrite"
+                    onClick={handleAIRewrite}
+                    className="py-1 text-xs transition bg-green-100 hover:bg-green-200"
+                    >
+                    ✨ AI Rewrite
+                    </ToggleGroupItem>
 
-            <ToggleGroupItem
-              value="bold"
-              aria-label="Toggle bold"
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`py-1 text-xs transition ${
-                editor.isActive("bold")
-                  ? "bg-gray-200 text-white"
-                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
-              }`}
-            >
-              <Bold />
-            </ToggleGroupItem>
+                    <ToggleGroupItem
+                    value="bold"
+                    aria-label="Toggle bold"
+                    onClick={() => editor.chain().focus().toggleBold().run()}
+                    className={`py-1 text-xs transition ${
+                        editor.isActive("bold")
+                        ? "bg-gray-200 text-white"
+                        : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
+                    }`}
+                    >
+                    <Bold />
+                    </ToggleGroupItem>
 
-            <ToggleGroupItem
-              value="italic"
-              aria-label="Toggle italic"
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={`py-1 text-xs transition ${
-                editor.isActive("italic")
-                  ? "bg-gray-200 text-white"
-                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
-              }`}
-            >
-              <Italic />
-            </ToggleGroupItem>
+                    <ToggleGroupItem
+                    value="italic"
+                    aria-label="Toggle italic"
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    className={`py-1 text-xs transition ${
+                        editor.isActive("italic")
+                        ? "bg-gray-200 text-white"
+                        : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
+                    }`}
+                    >
+                    <Italic />
+                    </ToggleGroupItem>
 
-            <ToggleGroupItem
-              value="underline"
-              aria-label="Toggle underline"
-              onClick={() => editor.chain().focus().toggleStrike().run()}
-              className={`py-1 text-xs transition ${
-                editor.isActive("bold")
-                  ? "bg-gray-200 text-white"
-                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
-              }`}
-            >
-              <Underline />
-            </ToggleGroupItem>
-          </ToggleGroup>
-        </BubbleMenu>
-        */}
-      </div>
-              
-      {/*The Built In Toolbar*/}
-      <div className = "mt-2">
-          <ToggleGroup type="multiple" className="bg-gray-200">
-            
-            <ToggleGroupItem
-              value="bold"
-              aria-label="Toggle bold"
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`py-1 text-xs transition ${
-                editor.isActive("bold")
-                  ? "bg-gray-200 text-white"
-                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
-              }`}
-            >
-              <Bold />
-            </ToggleGroupItem>
+                    <ToggleGroupItem
+                    value="underline"
+                    aria-label="Toggle underline"
+                    onClick={() => editor.chain().focus().toggleStrike().run()}
+                    className={`py-1 text-xs transition ${
+                        editor.isActive("bold")
+                        ? "bg-gray-200 text-white"
+                        : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
+                    }`}
+                    >
+                    <Underline />
+                    </ToggleGroupItem>
+                </ToggleGroup>
+                </BubbleMenu>
+                */}
+            </div>
+                    
+            {/*The Built In Toolbar*/}
+            <div className = "mt-2 w-2/3">
+                <ToggleGroup type="multiple" className="bg-gray-200">
+                    
+                    <ToggleGroupItem
+                    value="bold"
+                    aria-label="Toggle bold"
+                    onClick={() => editor.chain().focus().toggleBold().run()}
+                    className={`py-1 text-xs transition ${
+                        editor.isActive("bold")
+                        ? "bg-gray-200 text-white"
+                        : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
+                    }`}
+                    >
+                    <Bold />
+                    </ToggleGroupItem>
 
-            <ToggleGroupItem
-              value="italic"
-              aria-label="Toggle italic"
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={`py-1 text-xs transition ${
-                editor.isActive("italic")
-                  ? "bg-gray-200 text-white"
-                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
-              }`}
-            >
-              <Italic />
-            </ToggleGroupItem>
+                    <ToggleGroupItem
+                    value="italic"
+                    aria-label="Toggle italic"
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    className={`py-1 text-xs transition ${
+                        editor.isActive("italic")
+                        ? "bg-gray-200 text-white"
+                        : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
+                    }`}
+                    >
+                    <Italic />
+                    </ToggleGroupItem>
 
-            <ToggleGroupItem
-              value="underline"
-              aria-label="Toggle underline"
-              onClick={() => editor.chain().focus().toggleStrike().run()}
-              className={`py-1 text-xs transition ${
-                editor.isActive("bold")
-                  ? "bg-gray-200 text-white"
-                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
-              }`}
-            >
-              <Underline />
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="ai"
-              aria-label="AI Rewrite"
-              onClick={handleAIRewrite}
-              className="py-1 text-xs min-w-fit transition  hover:bg-green-200"
-            >
-                    <Button className = "bg-purple-200 text-black shadow-sm px-1 font-sans text-xs rounded-md">              
-                    ✨ Fix Grammar
-                    </Button>
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="ai"
-              aria-label="AI Rewrite"
-              onClick={handleAIRewrite}
-              className="py-1 text-xs min-w-fit transition  hover:bg-green-200"
-            >
-                    <Button className = "bg-purple-200 text-black shadow-sm px-1 font-sans text-xs rounded-md">              
-                    ✨ Fix Grammar
-                    </Button>
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="ai"
-              aria-label="AI Rewrite"
-              onClick={handleAIRewrite}
-              className="py-1 text-xs min-w-fit transition  hover:bg-green-200"
-            >
-                    <Button className = "bg-purple-200 text-black shadow-sm font-sans text-xs rounded-md p-0">              
-                    ✨ Restructure
-                    </Button>
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="ai"
-              aria-label="AI Rewrite"
-              onClick={handleAIRewrite}
-              className="py-1 text-xs min-w-fit transition  hover:bg-green-200"
-            >
-                    <Button className = "bg-purple-200 text-black shadow-sm px-1 font-sans text-xs rounded-md">              
-                    ✨ Fix Grammar
-                    </Button>
-            </ToggleGroupItem>
-          </ToggleGroup>
-          <EditorContent className="mt-2" editor={editor} />
+                    <ToggleGroupItem
+                    value="underline"
+                    aria-label="Toggle underline"
+                    onClick={() => editor.chain().focus().toggleStrike().run()}
+                    className={`py-1 text-xs transition ${
+                        editor.isActive("bold")
+                        ? "bg-gray-200 text-white"
+                        : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
+                    }`}
+                    >
+                    <Underline />
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                    value="ai"
+                    aria-label="AI Rewrite"
+                    onClick={handleAIRewrite}
+                    className="py-1 text-xs min-w-fit"
+                    >
+                        <Badge className = "bg-blue-300 text-black"> ✨ Fix Grammar</Badge>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                        value="ai"
+                        aria-label="AI Rewrite"
+                        onClick={handleAIRewrite}
+                        className="py-1 text-xs min-w-fit"
+                    >
+                            <Badge className = "bg-green-300 text-black"> ✏️ Reword</Badge>
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                        value="ai"
+                        aria-label="AI Rewrite"
+                        onClick={handleAIRewrite}
+                        className="py-1 text-xs min-w-fit">
+                                <Popover>
+                                    <PopoverTrigger>
+                                        <Badge className = "bg-pink-300 text-black"> 🔬 Add Research</Badge>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-[30rem]">
+                                        <Publications />
+                                    </PopoverContent>
+                                </Popover>
+                                
+                    </ToggleGroupItem>
+                </ToggleGroup>
+                <EditorContent className="mt-2" editor={editor} />
+
+            </div>
+            <EmailSideBar className = "max-w-1/3"/>
     </div>
 
       {aiTyping && (
-        <div className="text-sm text-gray-500 mt-2 flex items-center gap-1">
+        <div className="text-sm text-gray-500 px-10 flex items-center gap-1 font-sans">
           AI is typing
           <span className="animate-bounce">.</span>
           <span className="animate-bounce [animation-delay:.2s]">.</span>

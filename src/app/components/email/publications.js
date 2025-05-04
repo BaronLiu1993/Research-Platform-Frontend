@@ -88,17 +88,17 @@ export default function Publications() {
   }
 
   return (
-    <Card className="w-full p-2 h-full border-0 shadow-none">
-      <div className="font-sans text-xl space-x-2">
+    <Card className="w-full p-2 h-full border-1 shadow-none">
+      <div className="font-sans text-sm space-x-2">
         Publications
-        <CardDescription className="font-sans">
+        <CardDescription className="font-sans text-xs">
           Personalise your cold email with the professors research.
         </CardDescription>
       </div>
 
       <div className="space-y-4">
         {status === "idle" && (
-          <Button onClick={fetchPublications}>Fetch Publications</Button>
+          <Button className = "text-xs" onClick={fetchPublications}>Fetch Publications</Button>
         )}
 
         {status === "loading" && (

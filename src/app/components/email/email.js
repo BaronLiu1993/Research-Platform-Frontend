@@ -35,11 +35,6 @@ import { Label } from "@/shadcomponents/ui/label";
 
 import { Button } from "@/shadcomponents/ui/button";
 
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/shadcomponents/ui/popover"
 
 // Lucide Icon
 
@@ -153,7 +148,7 @@ export default function Email () {
                         </div>
                         )}
                 </div>
-                <CardFooter className = "flex justify-between ml-[10rem]">
+                <CardFooter className = "flex justify-between ml-5">
                     <div className = "flex space-x-4 items-center">
                         <Trash2 className = "text-gray-400 hover:text-gray-700 h-5 w-5 cursor-pointer"/>
                         <Paperclip
@@ -167,16 +162,7 @@ export default function Email () {
                             className="hidden"
                         />
                         <Clock2 className = "text-gray-400 hover:text-gray-700 h-5 w-5 cursor-pointer"/>
-                        <Popover>
-                            <PopoverTrigger>
-                                <Button className="bg-purple-400">
-                                    Add Research
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[30rem]">
-                                <Publications />
-                            </PopoverContent>
-                        </Popover>
+                        
                     </div>
                     <div className = "space-x-2">
                         <Button className = "bg-white border font-sans border-gray-300 shadow-sm text-black hover:bg-white hover:text-black hover:shadow-md hover:border-gray-300 cursor-pointer">
