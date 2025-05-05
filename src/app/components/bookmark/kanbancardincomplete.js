@@ -8,16 +8,18 @@ export default function KanbanCardInComplete ({ title, description, id, column }
             {/* Cards Start Here */}
             <div>
                 <div className="border-1 rounded-md bg-white m-2 p-2 font-sans w-[15rem]">
-                    <div className = "flex justify-end p-1">
+                    <div className = "flex justify-between p-1">
+                        <h1 className = "text-xs font-extralight border-b-1 pb-1">Applied Science and Engineering</h1>
                         <button>
                             <X className = "h-4 w-4 text-red-500 hover:text-red-900" />
                         </button>
                     </div>
                     <h1 className="font-sans text-sm font-medium text-gray-800">
-                        {title}
+                        {title} 
+                        <span className = "font-light px-2 text-xs">University of Toronto</span>
                     </h1>
                     <p className="font-sans text-sm text-gray-500">{description}</p>
-
+                    <p className="font-sans text-xs text-gray-500">Mechanical and Industrial Engineering</p>
                     <p className ="text-xs font-light flex items-center">
                         <Calendar className = "h-6 w-6 p-1"/>
                         <span> July 26 2006</span>
