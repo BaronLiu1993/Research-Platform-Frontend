@@ -24,7 +24,7 @@ export default function UserProfile ({profile_data}) {
                     Track Your Applications
                     </p>
                 </div>
-                <div className = "space-y-3 border-1 w-fit h-fit p-6 rounded-md">
+                <div className = "gap-3 grid-cols-2 grid h-fit p-6 rounded-md">
                     {/*Personal Profile Information*/}
                     <div className = "rounded-md w-fit mx-10 flex">
                         <span className = "text-sm flex space-x-2 items-center text-gray-500 w-[10rem]">
@@ -50,7 +50,7 @@ export default function UserProfile ({profile_data}) {
                     <div className = "rounded-md w-fit mx-10 flex">
                         <span className = "text-sm flex space-x-2 items-center text-gray-500 w-[10rem]">
                             <Heart className = "h-7 w-7 border-1 p-1 rounded-md text-black"/>
-                            <h1>Research Interests</h1>
+                            <h1> Interests</h1>
                         </span>
                         <div className = "flex space-x-2">
                             {profile_data.student_interests.map((interests, index) => (
