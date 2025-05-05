@@ -1,7 +1,7 @@
-import KanbanCard from "../components/kanbancard"; 
 import { cookies } from 'next/headers';
 import Navbar from "../components/navbar";
 import UserProfile from "../components/bookmark/userprofile";
+import Kanban from '../components/bookmark/kanban';
 
 export default async function Bookmark() {
   const cookieStore = await cookies()
@@ -20,7 +20,6 @@ export default async function Bookmark() {
   const responses = await serverData.json()
   const studentData = responses.profile
 
-  console.log(responses);
 
   return (
     <>
@@ -28,6 +27,7 @@ export default async function Bookmark() {
       <div className= "w-full h-full">
         <UserProfile profile_data = {studentData}/>
       </div>
+      <Kanban />
     </>
   );
 }
