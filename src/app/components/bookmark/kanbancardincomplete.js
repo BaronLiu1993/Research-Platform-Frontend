@@ -2,7 +2,7 @@ import { X } from "lucide-react"
 import { Calendar } from "lucide-react"
 import { Badge } from "@/shadcomponents/ui/badge"
 
-export default function KanbanCardInComplete ({ title, description, id, column }) {
+export default function KanbanCardInComplete ({ id, title, description }) {
     return (
         <>
             {/* Cards Start Here */}
