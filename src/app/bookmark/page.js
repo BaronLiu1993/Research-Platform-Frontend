@@ -4,6 +4,8 @@ import Navbar from "../components/navbar";
 import Kanban from "../components/bookmark/kanban";
 import UserProfile from "../components/bookmark/userprofile";
 
+import { Badge } from "@/shadcomponents/ui/badge";
+
 export default async function Bookmark() {
   const cookieStore = await cookies();
   const access = cookieStore.get("accesstoken");
@@ -19,8 +21,15 @@ export default async function Bookmark() {
   return (
     <>
       <Navbar />
-      <UserProfile studentData={finalResponse}/>
-      <Kanban userID = {finalResponse.user_id} />
+      <div className="p-4 font-sans">
+        <div className="flex items-center justify-between gap-2 ml-12">
+        </div>
+        <div className = "flex">
+          <UserProfile studentData={finalResponse}/>
+          <Kanban userID={finalResponse.user_id} />
+        </div>
+      </div>
+
     </>
   );
 }

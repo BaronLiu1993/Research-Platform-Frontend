@@ -1,95 +1,154 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/navigation'
-import Navbar from '../components/navbar';
-import WordProcessor from '../api/wordprocessor';
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Navbar from "../components/navbar";
 
-import Editor from '../components/resume/editor';
-import Builder from '../components/resume/builder';
-import getProfessorData from './resumeapi';
+import Builder from "../components/resume/builder";
+import getProfessorData from "./resumeapi";
 //Scans current resume for all keywords and then builds new resume with latex and the format given
 
-export default function resume ({}) {
-    const searchParams = useSearchParams()
-    const search = searchParams.get('url')
-    const router = useRouter()
-    const [data, setData] = useState({}); 
-    const [researchInterests, setResearchInterests] = useState({})
-    const [professorEmail, setProfessorEmail] = useState({})
-    const [professorName, setProfessorName] = useState({})
+import { Button } from "@/shadcomponents/ui/button";
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const professor_url = search;
-                const response = await getProfessorData({ url: professor_url });
-                setData(response);
-                setProfessorName(response.name)
-                setProfessorEmail(response.email)
-                setResearchInterests(response.research_interests);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/shadcomponents/ui/collapsible";
 
-        fetchData();
-    }, [search]);
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+  } from "@/shadcomponents/ui/popover"
 
-    
-    const handleSendDataToEmail = (url) => {
-        router.push(`/email?url=${encodeURIComponent(url)}&professor_interests=${encodeURIComponent(researchInterests)}&name=${encodeURIComponent(professorName)}&email=${encodeURIComponent(professorEmail)}`);
-    }
-    
-    // Save a copy of the resume and then it will allow user to name it and that will be there resume for this one
+import { Badge } from "@/shadcomponents/ui/badge";
 
-    return (
-        <>
-                <Navbar />
-                    <div className = "flex items-start space-x-10 p-10 select-none">
-                        <div className = 'flex flex-col w-[20rem]'>
-                            <div className = "mt-2">
-                                <h1 className = "text-sm font-bold border-b-2 p-1 font-sans w-fit">
-                                    PROFESSOR PROFILE
-                                </h1>
+import { ChevronsUpDown } from "lucide-react";
 
-                                <div className = "rounded-2xl">
-                                    <div className = "font-sans font-semibold my-2 items-center space-x-2 flex items bg-blue-200 w-fit rounded-2xl p-1 border-gray-200">
-                                        <div className = "bg-blue-500 h-2 w-2 rounded-full"></div>
-                                        <p className = "text-xs font-sans font-medium">Professor Information</p>
-                                    </div>
-                                    <div className = "border-gray-200 w-fit h-fit p-2 font-sans text-xs rounded-md border-1">
-                                        <p>{data.name}</p>
-                                        <p>{data.email}</p>
-                                        <p>{data.phone}</p>
-                                    </div>
-                                </div>
+import { Clipboard } from "lucide-react";
 
-                                <div className = "rounded-2xl">
-                                    <div className = "font-sans font-semibold my-2 items-center space-x-2 flex items bg-purple-200 w-fit rounded-2xl p-1 border-gray-200">
-                                        <div className = "bg-purple-500 h-2 w-2 rounded-full"></div>
-                                        <p className = "text-xs font-sans font-medium">Research Interests</p>
-                                    </div>
-                                    <div className = "border-gray-200 w-fit h-fit p-2 font-sans text-xs rounded-md border-1">
-                                        {data.research_interests?.map((keyword, index) => (
-                                                <p key={index}>{keyword}</p>  
-                                        ))}
-                                    </div>
-                                </div>
-        
-                                                
-                                </div>
-                        </div>
-                        <Builder researchInterests = {data.research_interests}/>
-                        
+export default function resume({}) {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("url");
+  const router = useRouter();
+  const [data, setData] = useState({});
+  const [isInformationOpen, setIsInformationOpen] = useState(false);
+  const [isInterestsOpen, setIsInterestsOpen] = useState(false);
+  const [researchInterests, setResearchInterests] = useState({});
+  const [professorEmail, setProfessorEmail] = useState({});
+  const [professorName, setProfessorName] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const professor_url = search;
+        const response = await getProfessorData({ url: professor_url });
+        setData(response);
+        setProfessorName(response.name);
+        setProfessorEmail(response.email);
+        setResearchInterests(response.research_interests);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [search]);
+
+  const handleSendDataToEmail = (url) => {
+    router.push(
+      `/email?url=${encodeURIComponent(
+        url
+      )}&professor_interests=${encodeURIComponent(
+        researchInterests
+      )}&name=${encodeURIComponent(professorName)}&email=${encodeURIComponent(
+        professorEmail
+      )}`
+    );
+  };
+
+  // Save a copy of the resume and then it will allow user to name it and that will be there resume for this one
+
+  return (
+    <>
+      <Navbar />
+      <div className="flex items-start space-x-2 p-2 select-none bg-gray-100">
+        <div className="flex flex-col w-[20rem] bg-white p-4 rounded-xl shadow-md font-sans text-sm">
+          {/* Information Collapsible */}
+          <Collapsible
+            open={isInformationOpen}
+            onOpenChange={setIsInformationOpen}
+            className="space-y-1"
+          >
+            <div className="flex items-center justify-between bg-gray-100 p-1 rounded-md">
+              <Badge className="">
+                <Clipboard />
+                Researcher Info
+              </Badge>
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-6 w-6 p-0">
+                  <ChevronsUpDown className="h-4 w-4 text-gray-500" />
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+
+            <CollapsibleContent className="space-y-1">
+              <div className="px-3 py-2 rounded-md cursor-pointer">
+                {data.email}
+              </div>
+              <div className="px-3 py-2 rounded-md cursor-pointer">
+                {data.name}
+              </div>
+              <div className="px-3 py-2 rounded-md cursor-pointer">
+                {data.number}
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+
+          {/* Research Interests Collapsible */}
+          <Collapsible
+            open={isInterestsOpen}
+            onOpenChange={setIsInterestsOpen}
+            className="space-y-1 mt-4 font-sans"
+          >
+            <div className="flex items-center justify-between bg-gray-100 p-1 rounded-md">
+              <Badge className="">
+                <Clipboard />
+                Research Interests
+              </Badge>
+              <CollapsibleTrigger asChild className="">
+                <Button variant="ghost" size="icon" className="h-6 w-6 p-0">
+                  <ChevronsUpDown className="h-4 w-4" />
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+
+            <p>Test</p>
+
+            <CollapsibleContent className="space-y-1">
+              {data.research_interests?.map((keyword, index) => (
+                <Popover key={index}>
+                  <PopoverTrigger asChild>
+                    <div className="cursor-pointer rounded-md px-2 py-1 text-sm font-sans bg-gray-100 hover:bg-gray-200 transition-colors">
+                      {keyword}
                     </div>
-                    <button onClick = {handleSendDataToEmail}>
-                            Email Page
-                    </button>
-                </>
-    )
+                  </PopoverTrigger>
+                  <PopoverContent className="w-fit max-w-xs">
+                    <p className="text-sm text-muted-foreground">
+                      Placeholder popover for "{keyword}" — add detailed content
+                      here.
+                    </p>
+                  </PopoverContent>
+                </Popover>
+              ))}
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+        <Builder researchInterests={data.research_interests} />
+      </div>
+      <button onClick={handleSendDataToEmail}>Email Page</button>
+    </>
+  );
 }
-
-
-

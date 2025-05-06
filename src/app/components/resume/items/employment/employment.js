@@ -3,6 +3,13 @@
 import { useState } from "react";
 import EmploymentForm from "./employmentform";
 
+import { Button } from "@/shadcomponents/ui/button";
+
+import { Info } from "lucide-react"
+
+import { Grip } from "lucide-react"
+
+
 export default function Employment({ experience_data }) {
   const [employmentForms, setEmploymentForms] = useState(
     experience_data.map((item, i) => ({ id: i + 1, ...item }))
@@ -31,18 +38,26 @@ export default function Employment({ experience_data }) {
   };
 
   return (
-    <div className=" border-gray-400 p-8 space-y-5 overflow-hidden">
-      <div>
-        <h1 className="font-sans text-md font-semibold">
+    <div className=" border-gray-400 p-8 space-y-5 overflow-hidden font-sans">
+      <div className = "space-y-2">
+        <h1 className="font-sans text-2xl font-semibold">
           Employment History
         </h1>
-        <p className="text-gray-400 text-sm">
-          Show employers your past experience and what you have accomplished.…{" "}
+        <p className="text-sm ">
+          Show employers your past experience and what you have accomplished{" "}
+        </p>
+
+        <p className = "border-1 p-1 text-xs rounded-md bg-purple-100 flex items-center border-purple-200">
+          <Info className = "w-6 h-6 p-1 text-purple-500" />
+          <span className = "text-purple-500">
+          Click Here To See Our Tips for Using AI
+          </span>
         </p>
       </div>
 
       {employmentForms.map((form) => (
-        <div className = "flex justify-center items-center" key={form.id}>
+        <div className = "flex justify-center items-center space-x-2" key={form.id}>
+          <Grip className = "h-4 w-4 text-gray-400"/>
           <EmploymentForm
             key={form.id}
             data={form}
@@ -51,12 +66,12 @@ export default function Employment({ experience_data }) {
         </div>
       ))}
 
-      <button
+      <Button
         onClick={addEmploymentForm}
-        className="rounded-md w-full bg-blue-500 p-2 text-white font-sans font-extralight"
+        className="rounded-md w-fit bg-purple-400 p-2 text-white font-sans font-semibold mx-6 hover:bg-purple-300"
       >
         Add More +
-      </button>
+      </Button>
     </div>
   );
 }

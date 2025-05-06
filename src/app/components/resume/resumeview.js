@@ -139,7 +139,6 @@ export default function ResumeView({resume}) {
     }
   }, [editor, tiptapContent]);
 
-  // Show loading state while editor is initializing
   if (!editor) return <div>Loading editor...</div>;
 
   return (
@@ -159,7 +158,7 @@ export default function ResumeView({resume}) {
           </div>
         </BubbleMenu>
       </div>
-      <EditorContent editor={editor} />
+      <EditorContent className = "text-xs p-4" editor={editor} />
     </>
   );
 }

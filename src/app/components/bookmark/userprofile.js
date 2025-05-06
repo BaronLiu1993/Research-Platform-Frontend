@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-
 import { Badge } from "@/shadcomponents/ui/badge";
 
 import { Mail } from "lucide-react";
@@ -12,70 +10,54 @@ import { Heart } from "lucide-react";
 
 import Sidebar from "../sidebar";
 
-export default async function UserProfile({studentData}) {
-  
+export default async function UserProfile({ studentData }) {
   return (
-    <>
-      <div>
-        <Sidebar />
-        <div className="space-y-4 font-sans">
-          <div className="flex flex-col justify-center items-center mt-5">
-            <h1 className="font-sans text-2xl font-medium">
-              Welcome,{" "}
-              <span className="text-green-400">
-                {studentData.student_firstname} {studentData.student_lastname}
-              </span>
-            </h1>
-            <p className="font-sans text-sm">Track Your Applications</p>
-          </div>
-          <div className="gap-3 grid-cols-2 grid h-fit p-6 rounded-md">
-            {/*Personal Profile Information*/}
-            <div className="rounded-md w-fit mx-10 flex">
-              <span className="text-sm flex space-x-2 items-center text-gray-500 w-[10rem]">
-                <UserPen className="h-7 w-7 border-1 p-1 rounded-md text-black" />
-                <h1>Name</h1>
-              </span>
-              <Badge className="font-sans text-green-800 bg-green-200  text-xs">
-                {studentData.student_firstname} {studentData.student_lastname}
+    <div className="font-sans text-xs bg-gray-100 rounded-md w-[12rem]">
+      <div className="flex justify-center text-lg font-sans p-2 font-semibold">
+        <h1>User Profile</h1>
+      </div>
+      <div className="h-fit rounded-md">
+        {/* Name */}
+        <div className="rounded-md w-fit mx-2 flex items-center mb-2">
+          <Badge className="bg-green-200 text-green-800 text-xs px-2 py-1">
+            <Mail />
+            <span>
+              {" "}
+              {studentData.student_firstname} {studentData.student_lastname}{" "}
+            </span>
+          </Badge>
+        </div>
+
+        {/* Email */}
+        <div className="rounded-md w-fit mx-2 flex items-center mb-2">
+          <Badge className="bg-blue-200 text-blue-800 text-xs px-2 py-1">
+            <UserPen />
+            <span>{studentData.student_major}</span>
+          </Badge>
+        </div>
+
+        {/* Year */}
+        <div className="rounded-md w-fit mx-2 flex items-center mb-2">
+          <Badge className="bg-pink-200 text-pink-800 text-xs px-2 py-1">
+            <Calendar className="h-7 w-7" />
+            {studentData.student_year}
+          </Badge>
+        </div>
+
+        {/* Interests */}
+        <div className="rounded-md w-fit mx-2 mb-1">
+          <div className="gap-1">
+            {studentData.student_interests.map((interest, index) => (
+              <Badge
+                key={index}
+                className="bg-gray-200 text-black text-xs px-2 py-1"
+              >
+                {interest}
               </Badge>
-            </div>
-            <div className="rounded-md w-fit mx-10 flex">
-              <span className="text-sm flex space-x-2 items-center text-gray-500 w-[10rem]">
-                <Mail className="h-7 w-7 border-1 p-1 rounded-md text-black" />
-                <h1>Email</h1>
-              </span>
-              <Badge className="font-sans text-xs text-blue-800 bg-blue-200">
-                {studentData.student_major}{" "}
-              </Badge>
-            </div>
-            <div className="rounded-md w-fit mx-10 flex">
-              <span className="text-sm flex space-x-2 items-center text-gray-500 w-[10rem]">
-                <Calendar className="h-7 w-7 border-1 p-1 rounded-md text-black" />
-                <h1>Year</h1>
-              </span>
-              <Badge className="font-sans text-pink-800 bg-pink-200 text-xs">
-                {studentData.student_year}{" "}
-              </Badge>
-            </div>
-            <div className="rounded-md w-fit mx-10 flex">
-              <span className="text-sm flex space-x-2 items-center text-gray-500 w-[10rem]">
-                <Heart className="h-7 w-7 border-1 p-1 rounded-md text-black" />
-                <h1> Interests</h1>
-              </span>
-              <div className="flex space-x-2">
-                {studentData.student_interests.map((interests, index) => (
-                  <Badge
-                    key={index}
-                    className="font-sans bg-gray-200 text-black text-xs"
-                  >
-                    {interests}{" "}
-                  </Badge>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
