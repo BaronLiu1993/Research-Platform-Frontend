@@ -17,11 +17,15 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/shadcomponents/ui/dialog";
+
+import { Badge } from "@/shadcomponents/ui/badge"; 
 import { Button } from "@/shadcomponents/ui/button";
 
-// Assume mapResumeToTipTap function is defined in this file or imported
-// function mapResumeToTipTap(resume) { ... }
-// (Paste your working mapResumeToTipTap function here)
+import { Check } from "lucide-react";
+
+import { Hand } from 'lucide-react';
+
+
 function mapResumeToTipTap(resume) {
   if (!resume || typeof resume !== "object") {
     return {
@@ -195,10 +199,9 @@ export default function ResumeDisplayWrapper({ resume }) {
       TableHeader,
     ],
     content: tiptapContent,
-    editable: false, // Both views are read-only for this example
+    editable: false, 
     editorProps: {
       attributes: {
-        // This base class applies to the .ProseMirror element
         class: "prose-mirror-editor font-sans text-[10pt] leading-normal",
       },
     },
@@ -207,7 +210,6 @@ export default function ResumeDisplayWrapper({ resume }) {
   const miniatureEditor = useEditor(editorConfig);
   const zoomedEditor = useEditor(editorConfig);
 
-  // Effect to update editor content if 'resume' prop changes
   useEffect(() => {
     const newContent = mapResumeToTipTap(resume);
     if (miniatureEditor && JSON.stringify(miniatureEditor.getJSON()) !== JSON.stringify(newContent)) {
@@ -222,18 +224,33 @@ export default function ResumeDisplayWrapper({ resume }) {
     return <div>Loading resume preview...</div>;
   }
 
-  // --- Miniature Display Configuration ---
-  // Approximate dimensions for a standard page (e.g., 8.5in x 11in)
-  // We'll use a common pixel equivalent for web, e.g., 816px x 1056px
+
   const originalWidth = 816; // px
-  const originalHeight = 1400; // px
-  const scaleFactor = 0.25; 
+  const originalHeight = 1056; // px
+  const scaleFactor = 0.48; 
 
   const miniatureDisplayWidth = originalWidth * scaleFactor;
   const miniatureDisplayHeight = originalHeight * scaleFactor;
 
   return (
     <>
+      <div>
+      <div className = "mb-20 mx-5">
+        <div className = "flex space-x-2">
+        <h1 className = "font-sans text-purple-800 font-light">Resume Preview</h1>
+          <Badge className = "bg-gray-700">
+            <Hand />
+            Auto Saved
+          </Badge>
+        </div>
+        <p className="border-1 p-1 text-xs rounded-md bg-purple-100 flex items-center border-purple-200">
+              <Pen className="w-6 h-6 p-1 text-purple-500" />
+              <span className="text-purple-500">
+                Explore Keywords
+              </span>
+            </p>
+      </div>
+      
       <style jsx global>{`
         .ProseMirror {
           font-family: Helvetica, Arial, sans-serif;
@@ -260,7 +277,6 @@ export default function ResumeDisplayWrapper({ resume }) {
         .ProseMirror strong { font-weight: bold; }
       `}</style>
 
-      {/* Miniature Resume View */}
       <div
         onClick={() => setIsZoomedDialogOpen(true)}
         style={{
@@ -268,17 +284,16 @@ export default function ResumeDisplayWrapper({ resume }) {
           height: `${miniatureDisplayHeight}px`,
           overflow: 'hidden',
           cursor: 'pointer',
-          border: '1px solid #e0e0e0', // Softer border
           boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
           backgroundColor: 'white',
-          margin: '20px auto', // For demonstration, center it
         }}
         title="Click to view larger resume"
+        className = "rounded-md m-2 border-2 border-gray-200"
       >
         <div
           style={{
-            width: `${originalWidth}px`,   // Content's original intended width
-            height: `${originalHeight}px`, // Content's original intended height
+            width: `${originalWidth}px`,   
+            height: `${originalHeight}px`, 
             transform: `scale(${scaleFactor})`,
             transformOrigin: 'top left',
           }}
@@ -287,7 +302,6 @@ export default function ResumeDisplayWrapper({ resume }) {
         </div>
       </div>
 
-      {/* ShadCN Dialog for Zoomed View */}
       <Dialog open={isZoomedDialogOpen} onOpenChange={setIsZoomedDialogOpen}>
         <DialogContent className="sm:max-w-[90vw] md:max-w-[850px] lg:max-w-[900px] h-[90vh] flex flex-col p-0">
           <DialogHeader className="px-6 pt-6 pb-4 border-b">
@@ -297,7 +311,6 @@ export default function ResumeDisplayWrapper({ resume }) {
             </DialogDescription>
           </DialogHeader>
           <div className="flex-grow overflow-y-auto">
-            {/* ActualResumeContent already has its own padding and bg */}
             <ActualResumeContent editorInstance={zoomedEditor} />
           </div>
           <DialogFooter className="px-6 py-4 border-t">
@@ -307,6 +320,7 @@ export default function ResumeDisplayWrapper({ resume }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      </div>
     </>
   );
 }

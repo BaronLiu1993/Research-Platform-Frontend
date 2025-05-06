@@ -77,8 +77,7 @@ export default function resume({}) {
     <>
       <Navbar />
       <div className="flex items-start space-x-2 p-2 select-none bg-gray-100">
-        <div className="flex flex-col w-[20rem] bg-white p-4 rounded-xl shadow-md font-sans text-sm">
-          {/* Information Collapsible */}
+        <div className="flex flex-col w-[11rem] bg-white p-4 rounded-xl shadow-md font-sans text-sm">
           <Collapsible
             open={isInformationOpen}
             onOpenChange={setIsInformationOpen}
@@ -87,7 +86,7 @@ export default function resume({}) {
             <div className="flex items-center justify-between bg-gray-100 p-1 rounded-md">
               <Badge className="">
                 <Clipboard />
-                Researcher Info
+                Info
               </Badge>
               <CollapsibleTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-6 w-6 p-0">
@@ -118,13 +117,13 @@ export default function resume({}) {
             <p className="border-1 p-1 text-xs rounded-md bg-purple-100 flex items-center border-purple-200">
               <Pen className="w-6 h-6 p-1 text-purple-500" />
               <span className="text-purple-500">
-                Learn More About Their Research
+                Explore Keywords
               </span>
             </p>
-            <div className="flex items-center justify-between bg-gray-100 p-1 rounded-md">
+            <div className="flex font-sans items-center justify-between bg-gray-100 p-1 rounded-md">
               <Badge className="">
                 <Clipboard />
-                Research Interests
+                Interests
               </Badge>
               <CollapsibleTrigger asChild className="">
                 <Button variant="ghost" size="icon" className="h-6 w-6 p-0">
@@ -137,8 +136,8 @@ export default function resume({}) {
               {data.research_interests?.map((keyword, index) => (
                 <Popover key={index}>
                   <PopoverTrigger asChild>
-                    <div className="cursor-pointer rounded-md px-2 py-1 text-sm font-sans bg-gray-100 hover:bg-gray-200 transition-colors">
-                      {keyword}
+                    <div className="cursor-pointer rounded-md px-2 py-1 text-sm font-light font-sans bg-gray-100 hover:bg-gray-200 transition-colors space-y-2">
+                      <span>{keyword}</span>
                     </div>
                   </PopoverTrigger>
                   <PopoverContent className="w-fit max-w-xs p-4 space-y-3">

@@ -135,14 +135,14 @@ export default function Builder({ researchInterests }) {
           </div>
         </div>
       ) : (
-        <div className="flex space-x-2">
+        <div className="flex items-center space-x-2">
           <Editor
             student_experience={experience}
             student_projects={projects}
             student_contact={contact}
             student_personal_details={personalDetails}
           />
-          <ResumeView resume={outputResume} />
+          <ResumeView className = "mt-10" resume={outputResume} />
         </div>
       )}
       </div>
