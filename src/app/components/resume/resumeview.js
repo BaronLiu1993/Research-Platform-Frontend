@@ -1,8 +1,27 @@
-import { useEffect, useMemo } from "react";
-import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
+import TextAlign from '@tiptap/extension-text-align';
+import Table from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
 
+// ShadCN UI Components (adjust import path as per your setup)
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/shadcomponents/ui/dialog";
+import { Button } from "@/shadcomponents/ui/button";
+
+// Assume mapResumeToTipTap function is defined in this file or imported
+// function mapResumeToTipTap(resume) { ... }
+// (Paste your working mapResumeToTipTap function here)
 function mapResumeToTipTap(resume) {
   if (!resume || typeof resume !== "object") {
     return {
@@ -21,144 +40,273 @@ function mapResumeToTipTap(resume) {
     content: [],
   };
 
-  const pushHeading = (text, level = 2) => {
+  const pushHeading = (text, level = 2, attrs = {}) => {
     doc.content.push({
       type: "heading",
-      attrs: { level },
-      content: [{ type: "text", text }],
+      attrs: { level, ...attrs },
+      content: [{ type: "text", text, marks: [{ type: "bold" }] }],
     });
   };
 
-  const pushParagraph = (text) => {
-    doc.content.push({
-      type: "paragraph",
-      content: [{ type: "text", text }],
-    });
+  const pushParagraph = (text, marks = [], attrs = {}) => {
+    if (text && text.trim() !== "") {
+        doc.content.push({
+            type: "paragraph",
+            attrs,
+            content: [{ type: "text", text, marks }],
+        });
+    }
   };
 
   const pushBulletList = (items) => {
+    if (items && items.length > 0) {
+        doc.content.push({
+            type: "bulletList",
+            content: items.map((item) => ({
+            type: "listItem",
+            content: [
+                {
+                type: "paragraph",
+                content: [{ type: "text", text: item }],
+                },
+            ],
+            })),
+        });
+    }
+  };
+
+  const pushHeaderLineWithDate = (leftText, rightText, leftMarks = [], leftAttrs = {}, rightAttrs = {}) => {
     doc.content.push({
-      type: "bulletList",
-      content: items.map((item) => ({
-        type: "listItem",
-        content: [
-          {
-            type: "paragraph",
-            content: [{ type: "text", text: item }],
-          },
-        ],
-      })),
+      type: 'table',
+      content: [
+        {
+          type: 'tableRow',
+          content: [
+            { 
+              type: 'tableCell',
+              attrs: { colspan: 1, rowspan: 1 },
+              content: [{
+                type: 'paragraph',
+                attrs: { textAlign: 'left', ...leftAttrs },
+                content: [{ type: 'text', text: leftText, marks: leftMarks }],
+              }],
+            },
+            { 
+              type: 'tableCell',
+              attrs: { colspan: 1, rowspan: 1 },
+              content: [{
+                type: 'paragraph',
+                attrs: { textAlign: 'right', ...rightAttrs },
+                content: [{ type: 'text', text: rightText }],
+              }],
+            },
+          ],
+        },
+      ],
     });
   };
 
-  // Title
-  pushHeading(resume.name || "Untitled Resume", 1);
-
-  // Contact Information
-  pushHeading("Contact Information");
+  pushHeading(resume.name || "Your Name", 1, { textAlign: "center" });
   const contact = resume.contact_information || {};
-  const hasContact = Object.values(contact).some(Boolean);
-  if (hasContact) {
-    for (const [key, value] of Object.entries(contact)) {
-      if (value) pushParagraph(`${key}: ${value}`);
-    }
-  } else {
-    pushParagraph("No contact information provided.");
+  const contactLines = [];
+  if (contact.phone) contactLines.push(contact.phone);
+  if (contact.email) contactLines.push(contact.email);
+  if (contact.linkedin) contactLines.push(`linkedin: ${contact.linkedin}`);
+  if (contact.github) contactLines.push(`github: ${contact.github}`);
+  if (contact.website) contactLines.push(contact.website);
+  if (contactLines.length) {
+    pushParagraph(contactLines.join("  |  "), [], { textAlign: "center", class: "contact-info" });
   }
 
-  // Education
-  pushHeading("Education");
-  const education = resume.education || [];
-  if (education.length) {
-    education.forEach((edu) => {
-      pushParagraph(
-        `${edu.degree || "Degree"} - ${edu.school || "School"}, ${edu.location || "Location"} (${edu.end_date || "Date"})`
-      );
-      if (edu.details?.length) {
-        pushBulletList(edu.details);
-      } else {
-        pushBulletList(["No details provided."]);
-      }
+  if (resume.education && resume.education.length > 0) {
+    pushHeading("EDUCATION", 2, { class: "section-title" });
+    doc.content.push({ type: "horizontalRule" });
+    resume.education.forEach((edu) => {
+      const dateRange = `${edu.start_date ? `${edu.start_date} - ` : ""}${edu.end_date || "Present"}`;
+      pushHeaderLineWithDate(edu.school || "University Name", dateRange, [{ type: "bold" }]);
+      pushParagraph(edu.degree || "Degree Name", [{ type: "italic" }]);
+      pushParagraph(edu.location || "City, Country");
+      if (edu.details?.length) pushBulletList(edu.details);
     });
-  } else {
+  } else if (resume.education !== undefined) {
+    pushHeading("EDUCATION", 2, { class: "section-title" });
+    doc.content.push({ type: "horizontalRule" });
     pushParagraph("No education entries available.");
   }
 
-  // Experience
-  pushHeading("Experience");
-  const experience = resume.experience || [];
-  if (experience.length) {
-    experience.forEach((exp) => {
-      pushParagraph(
-        `${exp.job_title || "Job Title"} - ${exp.company || "Company"}, ${exp.location || "Location"} (${exp.start_date || "Start"} – ${exp.end_date || "End"})`
-      );
-      if (exp.description?.length) {
-        pushBulletList(exp.description);
-      } else {
-        pushBulletList(["No description provided."]);
-      }
+  if (resume.experience && resume.experience.length > 0) {
+    pushHeading("WORK EXPERIENCE", 2, { class: "section-title" });
+    doc.content.push({ type: "horizontalRule" });
+    resume.experience.forEach((exp) => {
+      const dateRange = `${exp.start_date ? `${exp.start_date} - ` : ""}${exp.end_date || "Present"}`;
+      pushHeaderLineWithDate(exp.job_title || "Job Title", dateRange, [{ type: "bold" }]);
+      pushParagraph(exp.company || "Company Name", [{ type: "italic" }]);
+      pushParagraph(exp.location || "City, Country");
+      if (exp.description?.length) pushBulletList(exp.description);
     });
-  } else {
+  } else if (resume.experience !== undefined) {
+    pushHeading("WORK EXPERIENCE", 2, { class: "section-title" });
+    doc.content.push({ type: "horizontalRule" });
     pushParagraph("No experience entries available.");
   }
 
-  // Skills
-  if (resume.skills?.length) {
-    pushHeading("Skills");
-    pushBulletList(resume.skills);
-  } else {
-    pushHeading("Skills");
-    pushParagraph("No skills listed.");
+  if (resume.projects?.length) {
+    pushHeading("EXTRACURRICULAR + PROJECTS", 2, { class: "section-title" });
+    doc.content.push({ type: "horizontalRule" });
+    resume.projects.forEach((project) => {
+      pushParagraph(project.name || "Project Name", [{ type: "bold" }]);
+      if (project.link) pushParagraph(project.link, [], { class: "project-link" });
+      if (project.description?.length) pushBulletList(project.description);
+    });
   }
 
+  if (resume.skills?.length) {
+    pushHeading("SKILLS", 2, { class: "section-title" });
+    doc.content.push({ type: "horizontalRule" });
+    const skillsText = resume.skills.join(", ");
+    pushParagraph(`Technical Skills: ${skillsText}`); 
+  }
   return doc;
 }
 
+// Reusable component for rendering the TipTap content
+function ActualResumeContent({ editorInstance }) {
+  if (!editorInstance) return null;
+  return (
+    <div className="px-8 py-10 bg-white"> {/* Standard padding for resume content */}
+      <EditorContent editor={editorInstance} />
+    </div>
+  );
+}
 
-export default function ResumeView({resume}) {
-  console.log(resume)
+export default function ResumeDisplayWrapper({ resume }) {
+  const [isZoomedDialogOpen, setIsZoomedDialogOpen] = useState(false);
   const tiptapContent = useMemo(() => mapResumeToTipTap(resume), [resume]);
 
-  const editor = useEditor({
+  // Base configuration for both editors
+  const editorConfig = {
     extensions: [
-      StarterKit,
-      Highlight.configure({ multicolor: true }), 
+      StarterKit.configure({ table: false }), // Explicitly manage table extension
+      Highlight.configure({ multicolor: true }),
+      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      Table.configure({ resizable: false }),
+      TableRow,
+      TableCell,
+      TableHeader,
     ],
     content: tiptapContent,
+    editable: false, // Both views are read-only for this example
     editorProps: {
       attributes: {
-        class: "min-h-[156px] border rounded-md bg-slate-50 py-2 px-3 font-sans",
+        // This base class applies to the .ProseMirror element
+        class: "prose-mirror-editor font-sans text-[10pt] leading-normal",
       },
     },
-  });
+  };
 
-  // Set content to the editor if it's available
+  const miniatureEditor = useEditor(editorConfig);
+  const zoomedEditor = useEditor(editorConfig);
+
+  // Effect to update editor content if 'resume' prop changes
   useEffect(() => {
-    if (editor && tiptapContent) {
-      editor.commands.setContent(tiptapContent);
+    const newContent = mapResumeToTipTap(resume);
+    if (miniatureEditor && JSON.stringify(miniatureEditor.getJSON()) !== JSON.stringify(newContent)) {
+      miniatureEditor.commands.setContent(newContent, false);
     }
-  }, [editor, tiptapContent]);
+    if (zoomedEditor && JSON.stringify(zoomedEditor.getJSON()) !== JSON.stringify(newContent)) {
+      zoomedEditor.commands.setContent(newContent, false);
+    }
+  }, [resume, miniatureEditor, zoomedEditor]); // re-run if resume changes
 
-  if (!editor) return <div>Loading editor...</div>;
+  if (!miniatureEditor || !zoomedEditor) {
+    return <div>Loading resume preview...</div>;
+  }
+
+  // --- Miniature Display Configuration ---
+  // Approximate dimensions for a standard page (e.g., 8.5in x 11in)
+  // We'll use a common pixel equivalent for web, e.g., 816px x 1056px
+  const originalWidth = 816; // px
+  const originalHeight = 1400; // px
+  const scaleFactor = 0.25; 
+
+  const miniatureDisplayWidth = originalWidth * scaleFactor;
+  const miniatureDisplayHeight = originalHeight * scaleFactor;
 
   return (
     <>
-      <div>
-        <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-          <div className="bg-gray-50 border-1 flex items-center space-x-2 p-2 rounded-md">
-            <button onClick={() => editor.chain().focus().toggleBold().run()}>
-              Bold
-            </button>
-            <button onClick={() => editor.chain().focus().toggleItalic().run()}>
-              Italic
-            </button>
-            <button onClick={() => editor.chain().focus().toggleStrike().run()}>
-              Strike
-            </button>
-          </div>
-        </BubbleMenu>
+      <style jsx global>{`
+        .ProseMirror {
+          font-family: Helvetica, Arial, sans-serif;
+          color: #212529;
+          line-height: 1.45;
+          /* min-height: unset; Remove fixed min-height if it interferes with scaling */
+        }
+        .ProseMirror:focus { outline: none; }
+        .ProseMirror h1 { font-size: 20pt; font-weight: 600; text-align: center; margin-bottom: 4px; line-height: 1.2; }
+        .ProseMirror p.contact-info { font-size: 9pt; text-align: center; color: #343a40; margin-top: 0; margin-bottom: 16px; line-height: 1.3; }
+        .ProseMirror h2.section-title, .ProseMirror h2 { font-size: 11pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 18px; margin-bottom: 0px; color: #212529; }
+        .ProseMirror hr { border: none; border-top: 1px solid #495057; margin-top: 2px; margin-bottom: 8px; }
+        .ProseMirror p { font-size: 10pt; margin-top: 1px; margin-bottom: 1px; }
+        .ProseMirror p.project-link { font-size: 9pt; color: #007bff; }
+        .ProseMirror ul { font-size: 10pt; list-style-type: disc; margin-top: 4px; margin-bottom: 4px; padding-left: 20px; }
+        .ProseMirror li { margin-top: 1px; margin-bottom: 1px; padding-left: 4px; }
+        .ProseMirror li p { margin: 0; }
+        .ProseMirror table { width: 100%; border-collapse: collapse; margin-top: 1px; margin-bottom: 1px; }
+        .ProseMirror td { border: none; padding: 0; vertical-align: top; font-size: 10pt; }
+        .ProseMirror td p { margin: 0; font-size: 10pt; }
+        .ProseMirror td p[data-text-align="right"] { text-align: right; }
+        .ProseMirror td p[data-text-align="left"] { text-align: left; }
+        .ProseMirror em { font-style: italic; }
+        .ProseMirror strong { font-weight: bold; }
+      `}</style>
+
+      {/* Miniature Resume View */}
+      <div
+        onClick={() => setIsZoomedDialogOpen(true)}
+        style={{
+          width: `${miniatureDisplayWidth}px`,
+          height: `${miniatureDisplayHeight}px`,
+          overflow: 'hidden',
+          cursor: 'pointer',
+          border: '1px solid #e0e0e0', // Softer border
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          backgroundColor: 'white',
+          margin: '20px auto', // For demonstration, center it
+        }}
+        title="Click to view larger resume"
+      >
+        <div
+          style={{
+            width: `${originalWidth}px`,   // Content's original intended width
+            height: `${originalHeight}px`, // Content's original intended height
+            transform: `scale(${scaleFactor})`,
+            transformOrigin: 'top left',
+          }}
+        >
+          <ActualResumeContent editorInstance={miniatureEditor} />
+        </div>
       </div>
-      <EditorContent className = "text-xs p-4" editor={editor} />
+
+      {/* ShadCN Dialog for Zoomed View */}
+      <Dialog open={isZoomedDialogOpen} onOpenChange={setIsZoomedDialogOpen}>
+        <DialogContent className="sm:max-w-[90vw] md:max-w-[850px] lg:max-w-[900px] h-[90vh] flex flex-col p-0">
+          <DialogHeader className="px-6 pt-6 pb-4 border-b">
+            <DialogTitle>{resume?.name || "Resume Preview"}</DialogTitle>
+            <DialogDescription>
+              Scroll to view the full document.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex-grow overflow-y-auto">
+            {/* ActualResumeContent already has its own padding and bg */}
+            <ActualResumeContent editorInstance={zoomedEditor} />
+          </div>
+          <DialogFooter className="px-6 py-4 border-t">
+            <Button variant="outline" onClick={() => setIsZoomedDialogOpen(false)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
