@@ -5,7 +5,6 @@ import Employment from "./items/employment/employment";
 import Projects from "./items/project/projects";
 import Contact from "./items/contact/contact";
 import PersonalInfo from "./items/personal/personalinfo";
-import ResumeView from "./resumeview";
 import Skills from "./items/skills/skills";
 import Progress from "./progress";
 import PageTabs from "./pagetabs";
@@ -60,14 +59,14 @@ export default function Editor({
                   <Button
                     onClick={prevPage}
                     disabled={currentPage === 0}
-                    className="text-xs h-6 w-4 bg-purple-400 font-bold cursor-pointer"
+                    className="text-xs h-6 w-4 bg-purple-400 hover:bg-purple-300 font-bold cursor-pointer"
                   >
                     {"<-"}
                   </Button>
                   <Button
                     onClick={nextPage}
                     disabled={currentPage === pages.length - 1}
-                    className="text-xs h-6 w-4 bg-purple-400 font-bold cursor-pointer"
+                    className="text-xs h-6 w-4 bg-purple-400 hover:bg-purple-300 font-bold cursor-pointer"
                   >
                     {"->"}
                   </Button>

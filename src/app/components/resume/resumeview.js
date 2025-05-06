@@ -234,19 +234,19 @@ export default function ResumeDisplayWrapper({ resume }) {
 
   return (
     <>
-      <div>
-      <div className = "mb-20 mx-5">
+      <div className = "border-l-1 p-4">
+      <div className = "mb-5 mx-5 space-y-2">
         <div className = "flex space-x-2">
         <h1 className = "font-sans text-purple-800 font-light">Resume Preview</h1>
           <Badge className = "bg-gray-700">
-            <Hand />
+            <Check />
             Auto Saved
           </Badge>
         </div>
         <p className="border-1 p-1 text-xs rounded-md bg-purple-100 flex items-center border-purple-200">
-              <Pen className="w-6 h-6 p-1 text-purple-500" />
+              <Hand className="w-6 h-6 p-1 text-purple-500" />
               <span className="text-purple-500">
-                Explore Keywords
+                Click Preview to Expand
               </span>
             </p>
       </div>
@@ -273,7 +273,7 @@ export default function ResumeDisplayWrapper({ resume }) {
         .ProseMirror td p { margin: 0; font-size: 10pt; }
         .ProseMirror td p[data-text-align="right"] { text-align: right; }
         .ProseMirror td p[data-text-align="left"] { text-align: left; }
-        .ProseMirror em { font-style: italic; }
+        .Prosore Your New Resume!eMirror em { font-style: italic; }
         .ProseMirror strong { font-weight: bold; }
       `}</style>
 

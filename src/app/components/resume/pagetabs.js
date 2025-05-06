@@ -22,7 +22,7 @@ export default function PageTabs({ pages, currentPage, setCurrentPage }) {
             key={index}
             ref={(el) => (tabRefs.current[index] = el)}
             onClick={() => setCurrentPage(index)}
-            className={`pb-2 transition-colors text-xs duration-300 font-semibold ${
+            className={`pb-2 transition-colors text-sm duration-300 font-light ${
               currentPage === index
                 ? "text-purple-500"
                 : "text-gray-400 hover:text-purple-500"

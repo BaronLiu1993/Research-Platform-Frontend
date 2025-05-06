@@ -31,7 +31,7 @@ export default function Builder({ researchInterests }) {
       console.log(response);
       setOutputResume(response);
       setExperience(response.experience);
-      setContact(response.contact);
+      setContact(response.contact_information);
       setProjects(response.projects);
       setPersonalDetails(response.skills);
       setParsedResume(true);
