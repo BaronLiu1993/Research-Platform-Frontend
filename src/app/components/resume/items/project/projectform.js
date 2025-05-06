@@ -1,69 +1,86 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
-import WordProcessor from "@/app/api/wordprocessor";
 
-export default function ProjectForm() {
-  const [isOpen, setIsOpen] = useState(false);
-  const contentRef = useRef(null);
-  const [height, setHeight] = useState("0px");
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/shadcomponents/ui/accordion";
+import { Input } from "@/shadcomponents/ui/input";
+import { Label } from "@/shadcomponents/ui/label";
 
-  useEffect(() => {
-    if (contentRef.current) {
-      setHeight(isOpen ? `${contentRef.current.scrollHeight}px` : "0px");
-    }
-  }, [isOpen]);
+import ProjectWordProcessor from "./projectwordprocessor";
+
+import { useState } from "react";
+
+export default function ProjectForm({ data = {}, onChange = () => {} }) {
+  const [local, setLocal] = useState(data);
+  console.log(local.bullets);
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    const updated = { ...local, [name]: value };
+    setLocal(updated);
+    onChange(updated);
+  };
+
+  const handleBulletsChange = (newBullets) => {
+    const updated = { ...local, bullets: newBullets };
+    setLocal(updated);
+    onChange(updated);
+  };
 
   return (
-    <div className="border border-gray-300 rounded-md">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex justify-between items-center p-4 hover:bg-gray-200"
-      >
-        <span className="font-sans font-semibold">Untitled</span>
-        <svg
-          className={`w-4 h-4 transform transition-transform duration-300 ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }`}
-          viewBox="0 0 20 20"
-        >
-          <path d="M5.5 7.5l4.5 4.5 4.5-4.5" stroke="currentColor" strokeWidth="2" fill="none" />
-        </svg>
-      </button>
-
-      <div
-        ref={contentRef}
-        style={{ maxHeight: height }}
-        className="overflow-hidden transition-all duration-300 ease-in-out"
-      >
-        <div className="p-6 flex flex-col gap-4">
-          <div className="flex flex-col">
-            <label className="text-xs font-semibold">Job Title</label>
-            <input className="p-2 border border-gray-200 bg-gray-50 rounded-md" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-xs font-semibold">Company</label>
-            <input className="p-2 border border-gray-200 bg-gray-50 rounded-md" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-xs font-semibold">Location</label>
-            <input className="p-2 border border-gray-200 bg-gray-50 rounded-md" />
-          </div>
-          <div className="flex gap-4">
-            <div className="flex flex-col flex-1">
-              <label className="text-xs font-semibold">Start Date</label>
-              <input className="p-2 border border-gray-200 bg-gray-50 rounded-md" />
-            </div>
-            <div className="flex flex-col flex-1">
-              <label className="text-xs font-semibold">End Date</label>
-              <input className="p-2 border border-gray-200 bg-gray-50 rounded-md" />
-            </div>
-          </div>
+    <Accordion
+      type="single"
+      collapsible
+      className="w-full font-sans bg-white border rounded-md p-2"
+    >
+      <AccordionItem value="project-section">
+        <AccordionTrigger className="px-4 py-2 font-semibold text-lg">
           <div>
-            <label className="text-xs font-semibold">Bulletin Points</label>
-            <WordProcessor className="w-full h-full" />
+            <div>{local.project_name || "Untitled Project"}</div>
+            <div className="text-sm font-extralight">
+              {local.achievements || "No achievements listed"}
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </AccordionTrigger>
+
+        <AccordionContent>
+          <div className="p-4 flex flex-col gap-4">
+            <div className="flex flex-col space-y-2">
+              <Label htmlFor="project_name">Project Name</Label>
+              <Input
+                id="project_name"
+                name="project_name"
+                value={local.project_name || ""}
+                onChange={handleInput}
+              />
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <Label htmlFor="achievements">Achievements</Label>
+              <Input
+                id="achievements"
+                name="achievements"
+                value={local.achievements || ""}
+                onChange={handleInput}
+              />
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <Label>Bullet Points</Label>
+              <ProjectWordProcessor
+                content={local.bullets || []}
+                onChange={(updatedBullets) => {
+                  handleBulletsChange(updatedBullets);
+                }}
+                className="w-full"
+              />
+            </div>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }

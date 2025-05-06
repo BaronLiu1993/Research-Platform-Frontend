@@ -9,6 +9,8 @@ import { Info } from "lucide-react"
 
 import { Grip } from "lucide-react"
 
+import { Trash } from "lucide-react";
+
 
 export default function Employment({ experience_data }) {
   const [employmentForms, setEmploymentForms] = useState(
@@ -43,7 +45,7 @@ export default function Employment({ experience_data }) {
         <h1 className="font-sans text-2xl font-semibold">
           Employment History
         </h1>
-        <p className="text-sm ">
+        <p className="text-sm font-sans text-gray-400">
           Show employers your past experience and what you have accomplished{" "}
         </p>
 
@@ -63,6 +65,7 @@ export default function Employment({ experience_data }) {
             data={form}
             onChange={(updated) => handleFormChange(form.id, updated)}
         />
+          <Trash className = "h-5 w-5 text-gray-400 hover:text-red-400 hover:bg-gray-50 rounded-md cursor-pointer"/>
         </div>
       ))}
 

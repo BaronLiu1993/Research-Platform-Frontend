@@ -10,12 +10,11 @@ import {
 import { Input } from "@/shadcomponents/ui/input";
 import { Label } from "@/shadcomponents/ui/label";
 
-
-
 import { useState, useEffect } from "react";
 import EmploymentWordProcessor from "./employmentwordprocessor";
 
 export default function EmploymentForm({ data, onChange }) {
+  console.log(data.description)
   const [local, setLocal] = useState(data);
 
   useEffect(() => {
@@ -112,8 +111,8 @@ export default function EmploymentForm({ data, onChange }) {
             <div className="flex flex-col space-y-2">
               <Label>Bullet Points</Label>
               <EmploymentWordProcessor
-                bullets={local.description}
-                onChange={handleDescriptionChange}
+                content={(local.bullets || []).join("\n• ")} 
+                
                 className="w-full"
               />
             </div>

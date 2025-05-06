@@ -1,0 +1,191 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import BulletList from '@tiptap/extension-bullet-list';
+import ListItem from '@tiptap/extension-list-item';
+import TaskList from '@tiptap/extension-task-list';
+import TaskItem from '@tiptap/extension-task-item';
+import Highlight from '@tiptap/extension-highlight';
+
+import { ToggleGroup, ToggleGroupItem } from '@/shadcomponents/ui/toggle-group';
+import { Skeleton } from '@/shadcomponents/ui/skeleton';
+import { Bold, Italic, Underline, List, CheckSquare } from 'lucide-react';
+
+export default function ProjectWordProcessor({ content, onChange }) {
+  const [aiTyping, setAiTyping] = useState(false);
+
+  const formatBullets = (bullets = []) => ({
+    type: 'doc',
+    content: [
+      {
+        type: 'bulletList',
+        content: bullets.map((text) => ({
+          type: 'listItem',
+          content: [
+            {
+              type: 'paragraph',
+              content: [{ type: 'text', text }],
+            },
+          ],
+        })),
+      },
+    ],
+  });
+
+  const extractBullets = (text = '') =>
+    text
+      .split('\n')
+      .map((line) => line.replace(/^•?\s*/, '').trim())
+      .filter(Boolean);
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        bulletList: false,
+        listItem: false,
+      }),
+      BulletList,
+      ListItem,
+      TaskList,
+      TaskItem,
+      Highlight.configure({ multicolor: true }),
+    ],
+    content: formatBullets(content),
+    editorProps: {
+      attributes: {
+        class:
+          'min-h-[156px] font-light text-sm py-2 px-3 font-sans whitespace-pre-line',
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (editor) {
+      editor.commands.setContent(formatBullets(content));
+    }
+  }, [content, editor]);
+  const handleAIRewrite = async () => {
+    const selection = editor?.state.selection;
+    const selectedText = editor?.state.doc.textBetween(
+      selection.from,
+      selection.to
+    );
+    if (!selectedText) return;
+
+    setAiTyping(true);
+    const aiText = selectedText; 
+
+    editor
+      ?.chain()
+      .focus()
+      .deleteRange({ from: selection.from, to: selection.to })
+      .insertContentAt(selection.from, aiText)
+      .run();
+
+    setAiTyping(false);
+  };
+
+  if (!editor) {
+    return (
+      <div className="min-h-[156px] w-full p-4">
+        <Skeleton className="w-full h-full rounded-xl" />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div>
+        <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
+          <ToggleGroup type="multiple" className="bg-gray-200 rounded-md p-1">
+            <ToggleGroupItem
+              value="ai"
+              aria-label="AI Rewrite"
+              onClick={handleAIRewrite}
+              className="py-1 px-2 text-xs bg-green-100 hover:bg-green-200 rounded"
+            >
+              ✨ AI Rewrite
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="bold"
+              aria-label="Toggle bold"
+              onClick={() => editor.chain().focus().toggleBold().run()}
+              className={`py-1 px-2 text-xs ${
+                editor.isActive('bold')
+                  ? 'bg-black text-white'
+                  : 'bg-gray-100 text-black hover:bg-gray-200'
+              }`}
+            >
+              <Bold size={14} />
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="italic"
+              aria-label="Toggle italic"
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+              className={`py-1 px-2 text-xs ${
+                editor.isActive('italic')
+                  ? 'bg-black text-white'
+                  : 'bg-gray-100 text-black hover:bg-gray-200'
+              }`}
+            >
+              <Italic size={14} />
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="underline"
+              aria-label="Toggle underline"
+              onClick={() => editor.chain().focus().toggleStrike().run()}
+              className={`py-1 px-2 text-xs ${
+                editor.isActive('strike')
+                  ? 'bg-black text-white'
+                  : 'bg-gray-100 text-black hover:bg-gray-200'
+              }`}
+            >
+              <Underline size={14} />
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="bulletList"
+              aria-label="Toggle bullet list"
+              onClick={() =>
+                editor.chain().focus().toggleBulletList().run()
+              }
+              className={`py-1 px-2 text-xs ${
+                editor.isActive('bulletList')
+                  ? 'bg-black text-white'
+                  : 'bg-gray-100 text-black hover:bg-gray-200'
+              }`}
+            >
+              <List size={14} />
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="taskList"
+              aria-label="Toggle task list"
+              onClick={() =>
+                editor.chain().focus().toggleTaskList().run()
+              }
+              className={`py-1 px-2 text-xs ${
+                editor.isActive('taskList')
+                  ? 'bg-black text-white'
+                  : 'bg-gray-100 text-black hover:bg-gray-200'
+              }`}
+            >
+              <CheckSquare size={14} />
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </BubbleMenu>
+      </div>
+
+      <EditorContent className="border rounded-md mt-2" editor={editor} />
+
+      {aiTyping && (
+        <div className="text-sm text-gray-500 mt-2 flex items-center gap-1">
+          AI is typing
+          <span className="animate-bounce">.</span>
+          <span className="animate-bounce [animation-delay:.2s]">.</span>
+          <span className="animate-bounce [animation-delay:.4s]">.</span>
+        </div>
+      )}
+    </>
+  );
+}

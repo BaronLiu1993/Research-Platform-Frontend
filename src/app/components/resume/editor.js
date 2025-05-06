@@ -60,14 +60,14 @@ export default function Editor({
                   <Button
                     onClick={prevPage}
                     disabled={currentPage === 0}
-                    className="text-xs bg-purple-400 font-bold cursor-pointer"
+                    className="text-xs h-6 w-4 bg-purple-400 font-bold cursor-pointer"
                   >
                     {"<-"}
                   </Button>
                   <Button
                     onClick={nextPage}
                     disabled={currentPage === pages.length - 1}
-                    className="text-xs bg-purple-400 font-bold cursor-pointer"
+                    className="text-xs h-6 w-4 bg-purple-400 font-bold cursor-pointer"
                   >
                     {"->"}
                   </Button>

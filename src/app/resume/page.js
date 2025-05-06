@@ -11,6 +11,8 @@ import getProfessorData from "./resumeapi";
 
 import { Button } from "@/shadcomponents/ui/button";
 
+import { Pen } from "lucide-react";
+
 import {
   Collapsible,
   CollapsibleContent,
@@ -18,10 +20,10 @@ import {
 } from "@/shadcomponents/ui/collapsible";
 
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-  } from "@/shadcomponents/ui/popover"
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/shadcomponents/ui/popover";
 
 import { Badge } from "@/shadcomponents/ui/badge";
 
@@ -113,6 +115,12 @@ export default function resume({}) {
             onOpenChange={setIsInterestsOpen}
             className="space-y-1 mt-4 font-sans"
           >
+            <p className="border-1 p-1 text-xs rounded-md bg-purple-100 flex items-center border-purple-200">
+              <Pen className="w-6 h-6 p-1 text-purple-500" />
+              <span className="text-purple-500">
+                Learn More About Their Research
+              </span>
+            </p>
             <div className="flex items-center justify-between bg-gray-100 p-1 rounded-md">
               <Badge className="">
                 <Clipboard />
@@ -125,8 +133,6 @@ export default function resume({}) {
               </CollapsibleTrigger>
             </div>
 
-            <p>Test</p>
-
             <CollapsibleContent className="space-y-1">
               {data.research_interests?.map((keyword, index) => (
                 <Popover key={index}>
@@ -135,11 +141,18 @@ export default function resume({}) {
                       {keyword}
                     </div>
                   </PopoverTrigger>
-                  <PopoverContent className="w-fit max-w-xs">
-                    <p className="text-sm text-muted-foreground">
-                      Placeholder popover for "{keyword}" — add detailed content
-                      here.
+                  <PopoverContent className="w-fit max-w-xs p-4 space-y-3">
+                    <h1 className="text-base font-semibold font-sans">
+                      Learn More
+                    </h1>
+                    <p className="text-xs font-light text-muted-foreground font-san leading-relaxed">
+                      Explore the professor’s research focus. You can query
+                      topics, view summaries, and dive deeper into specific
+                      areas of interest.
                     </p>
+                    <Badge className="text-sm font-sans cursor-pointer">
+                      Query Research
+                    </Badge>
                   </PopoverContent>
                 </Popover>
               ))}
