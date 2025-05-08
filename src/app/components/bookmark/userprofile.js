@@ -1,62 +1,47 @@
 import { Badge } from "@/shadcomponents/ui/badge";
-
-import { Mail } from "lucide-react";
-
-import { Calendar } from "lucide-react";
-
-import { UserPen } from "lucide-react";
-
-import { Heart } from "lucide-react";
-
-import Sidebar from "../sidebar";
+import { Mail, Calendar, UserCircle, BookOpen } from "lucide-react";
 
 export default async function UserProfile({ studentData }) {
   return (
-    <div className="font-sans text-xs bg-gray-100 rounded-md w-[12rem]">
-      <div className="flex justify-center text-lg font-sans p-2 font-semibold">
-        <h1>User Profile</h1>
+    <div className="font-sans bg-gray-100 rounded-lg p-5 shadow-sm w-[250px]">
+      <h1 className="text-xl font-bold text-center mb-5">User Profile</h1>
+      
+      {/* Name */}
+      <div className="mb-3">
+        <Badge className="w-full bg-green-100 hover:bg-green-200 text-green-800 flex items-center gap-2 p-2 pl-3 rounded-full border border-green-200">
+          <Mail className="h-4 w-4" />
+          <span className="font-medium truncate">
+            {studentData.student_firstname} {studentData.student_lastname}
+          </span>
+        </Badge>
       </div>
-      <div className="h-fit rounded-md">
-        {/* Name */}
-        <div className="rounded-md w-fit mx-2 flex items-center mb-2">
-          <Badge className="bg-green-200 text-green-800 text-xs px-2 py-1">
-            <Mail />
-            <span>
-              {" "}
-              {studentData.student_firstname} {studentData.student_lastname}{" "}
-            </span>
-          </Badge>
-        </div>
 
-        {/* Email */}
-        <div className="rounded-md w-fit mx-2 flex items-center mb-2">
-          <Badge className="bg-blue-200 text-blue-800 text-xs px-2 py-1">
-            <UserPen />
-            <span>{studentData.student_major}</span>
-          </Badge>
-        </div>
+      {/* Major */}
+      <div className="mb-3">
+        <Badge className="w-full bg-blue-100 hover:bg-blue-200 text-blue-800 flex items-center gap-2 p-2 pl-3 rounded-full border border-blue-200">
+          <UserCircle className="h-4 w-4" />
+          <span className="font-medium truncate">{studentData.student_major}</span>
+        </Badge>
+      </div>
 
-        {/* Year */}
-        <div className="rounded-md w-fit mx-2 flex items-center mb-2">
-          <Badge className="bg-pink-200 text-pink-800 text-xs px-2 py-1">
-            <Calendar className="h-7 w-7" />
-            {studentData.student_year}
-          </Badge>
-        </div>
+      {/* Year */}
+      <div className="mb-4">
+        <Badge className="w-full bg-pink-100 hover:bg-pink-200 text-pink-800 flex items-center gap-2 p-2 pl-3 rounded-full border border-pink-200">
+          <Calendar className="h-4 w-4" />
+          <span className="font-medium">{studentData.student_year}</span>
+        </Badge>
+      </div>
 
-        {/* Interests */}
-        <div className="rounded-md w-fit mx-2 mb-1">
-          <div className="gap-1">
-            {studentData.student_interests.map((interest, index) => (
-              <Badge
-                key={index}
-                className="bg-gray-200 text-black text-xs px-2 py-1"
-              >
-                {interest}
-              </Badge>
-            ))}
-          </div>
-        </div>
+      {/* Interests */}
+      <div className="space-y-2">
+        {studentData.student_interests.map((interest, index) => (
+          <Badge
+            key={index}
+            className="block w-full bg-gray-200 hover:bg-gray-300 text-gray-800 p-2 rounded-md border border-gray-300 text-center"
+          >
+            <span className="font-medium">{interest}</span>
+          </Badge>
+        ))}
       </div>
     </div>
   );

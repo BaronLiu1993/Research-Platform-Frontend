@@ -1,35 +1,62 @@
 import { cookies } from "next/headers";
-
 import Navbar from "../components/navbar";
 import Kanban from "../components/bookmark/kanban";
 import UserProfile from "../components/bookmark/userprofile";
 
-import { Badge } from "@/shadcomponents/ui/badge";
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/shadcomponents/ui/sidebar";
+import { AppSidebar } from "../components/sidebar";
+import { Separator } from "@/shadcomponents/ui/separator";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/shadcomponents/ui/breadcrumb";
 
 export default async function Bookmark() {
-  const cookieStore = await cookies();
+  const cookieStore = cookies();
   const access = cookieStore.get("accesstoken");
+
   const serverData = await fetch("http://localhost:8080/auth/get-user", {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${access.value}`,
+      Authorization: `Bearer ${access?.value}`,
       "Content-Type": "application/json",
     },
   });
+
   const responses = await serverData.json();
   const finalResponse = responses.profile;
-  return (
-    <>
-      <Navbar />
-      <div className="p-4 font-sans">
-        <div className="flex items-center justify-between gap-2 ml-12">
-        </div>
-        <div className = "flex">
-          <UserProfile studentData={finalResponse}/>
-          <Kanban userID={finalResponse.user_id} />
-        </div>
-      </div>
 
-    </>
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb className="font-sans">
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="#">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Bookmarked Professors</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </header>
+
+        <div className="flex flex-1 overflow-y-auto font-sans">
+          <div className="w-full flex p-6 space-x-6">
+            <UserProfile studentData={finalResponse} />
+            <Kanban userID={finalResponse.user_id} />
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

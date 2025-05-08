@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Navbar from '../components/navbar'
 
 export default function Login() {
   const [error, setError] = useState(null)
@@ -12,7 +11,7 @@ export default function Login() {
   useEffect(() => {
     if (success) router.push('/')
   }, [success])
-  
+
   const handleLogin = async (e) => {
     e.preventDefault()
     const form = e.target
@@ -40,7 +39,6 @@ export default function Login() {
 
   return (
     <>
-      <Navbar />
       <div className='flex flex-col justify-center items-center mt-20 font-sans'>
         <h1 className="font-sans tracking-wide font-bold text-2xl">Think it. Make it.</h1>
         <h1 className="font-sans tracking-wide font-bold text-xl text-gray-400">Start Now!</h1>

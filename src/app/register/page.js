@@ -10,14 +10,12 @@ import registerActions from './registerActions';
 import DropdownMajor from '../components/dropdowns/dropdownmajor'
 import DropdownInterests from '../components/dropdowns/dropdowninterests'
 import DropdownYear from '../components/dropdowns/dropdownyear'
-import Navbar from '../components/navbar'
 import VerifyOtp from './verify'
 
 export default function Register() {
   const [state, formAction] = useActionState(registerActions, { error: null, success: false})
   return (
     <>
-      <Navbar />
       <div className='flex flex-col justify-center items-center mt-20'>
         <div>
           <h1 className="font-sans space-x-0.5 tracking-wide font-semibold text-2xl">

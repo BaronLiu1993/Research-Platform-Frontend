@@ -1,53 +1,91 @@
+import * as React from "react";
+
+import { SearchForm } from "@/shadcomponents/ui/search-form";
+import { VersionSwitcher } from "@/shadcomponents/ui/version-switcher";
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarHeader,
-    SidebarGroupContent
-  } from "@/shadcomponents/ui/sidebar"
-  const items = [
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+} from "@/shadcomponents/ui/sidebar";
+
+import { Library } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
+import { MessageCircle } from 'lucide-react';
+import { Microscope } from 'lucide-react';
+import { Book } from 'lucide-react';
+
+
+const data = {
+  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+  navMain: [
     {
-      title: "Home",
+      title: "Getting Started",
       url: "#",
-      icon: Home,
+      items: [
+        {
+          title: "Research",
+          url: "#",
+          icon: <Library />,
+        },
+        {
+          title: "Dashboard",
+          url: "#",
+          icon: <LayoutDashboard />,
+        },
+        {
+            title: "Interview Preparation",
+            url: "#",
+            icon: <MessageCircle />, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate 
+          },
+          {
+            title: "Paid Research Funding",
+            url: "#",
+            icon: <Microscope />,
+          },
+          {
+            title: "Tips",
+            url: "#",
+            icon: <Book />,
+          },
+      ],
     },
-    {
-      title: "Inbox",
-      url: "#",
-      icon: Inbox,
-    },
-    {
-      title: "Calendar",
-      url: "#",
-      icon: Calendar,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: Search,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings,
-    },
-  ]
-   
-  export function AppSidebar() {
-    return (
-      <Sidebar>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Application</SidebarGroupLabel>
+  ],
+};
+
+export function AppSidebar({ ...props }) {
+  return (
+    <Sidebar className="font-sans" {...props}>
+      <SidebarHeader>
+        <VersionSwitcher
+          versions={data.versions}
+          defaultVersion={data.versions[0]}
+        />
+        <SearchForm />
+      </SidebarHeader>
+      <SidebarContent className="font-sans">
+        {data.navMain.map((item) => (
+          <SidebarGroup key={item.title}>
+            <SidebarGroupLabel className="">{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {items.map((item) => (
+                {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
+                    <SidebarMenuButton
+                      className="font-semibold"
+                      asChild
+                      isActive={item.isActive}
+                    >
                       <a href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
+                        {" "}
+                        {item.icon}
+                        {item.title}
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -55,7 +93,9 @@ import {
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-        </SidebarContent>
-      </Sidebar>
-    )
-  }
+        ))}
+      </SidebarContent>
+      <SidebarRail />
+    </Sidebar>
+  );
+}

@@ -1,31 +1,65 @@
-//Components
-import Navbar from '../components/navbar';
-import columns from './columns';
-import { DataTable } from './data-table';
+import { Separator } from "@/shadcomponents/ui/separator";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/shadcomponents/ui/breadcrumb";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/shadcomponents/ui/sidebar";
+
+import { AppSidebar } from "../components/sidebar";
+import columns from "./columns";
+import { DataTable } from "./data-table";
 
 export default async function Repository() {
-  const serverData = await fetch('http://localhost:8080/Taishan/');
+  const serverData = await fetch("http://localhost:8080/Taishan/");
   const parsedResponse = await serverData.json();
-  const responses = parsedResponse.data
-  
+  const responses = parsedResponse.data;
+
   return (
-    <>
-      <Navbar />
-      <div className="flex h-[calc(100vh-4rem)] bg-slate-50 overflow-auto">
-        <div className="p-5 sticky h-full overflow-y-auto bg-gray-50">
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+          <SidebarTrigger className="-ml-1" />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb className="font-sans">
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="#">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>UofT Professors Repository</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </header>
 
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-5">
+        <div className="flex-1 overflow-y-auto">
           <div className="flex flex-col">
-            <h1 className="text-2xl font-sans font-semibold border-b-1 p-4">Discover Professors at UofT!</h1>
-            <p></p>
-            <div className="">
+            <div className = "border-b-1 space-y-2">
+              <h1 className="text-2xl font-sans font-semibold px-6 pt-6">
+                Discover Professors at UofT!
+              </h1>
+              <p className="text-muted-foreground px-6 pb-6 font-sans">
+                Browse through faculty members across departments, explore their
+                research interests, and find the perfect mentor <br/> for your academic
+                journey. Start connecting with UofT professors today!
+              </p>{" "}
+            </div>
+            <div className="mt-4">
               <DataTable columns={columns} data={responses} />
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

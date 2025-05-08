@@ -75,7 +75,6 @@ export default function resume({}) {
 
   return (
     <>
-      <Navbar />
       <div className="flex items-start space-x-2 p-2 select-none bg-gray-100">
         <div className="flex flex-col w-[11rem] bg-white p-4 rounded-xl shadow-md font-sans text-sm">
           <Collapsible

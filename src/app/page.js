@@ -1,4 +1,3 @@
-import Navbar from "./components/navbar";
 import Homecard from "./homepagecomponents/homecard";
 import Link from "next/link";
 import Resumehomecomponent from "./homepagecomponents/resumehomecomponent";
@@ -11,7 +10,6 @@ export default function Home() {
   return (
     <>
       <div>
-          <Navbar />
           <div className = "flex flex-col justify-center items-center my-30 m-5">
             <h1 className = "font-sans font-bold text-6xl">
               <span className = "font-sans">Connecting University of Toronto <br /> Students with Researchers </span> 
