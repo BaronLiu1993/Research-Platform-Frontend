@@ -75,8 +75,9 @@ export default function resume({}) {
 
   return (
     <>
-      <div className="flex items-start space-x-2 p-2 select-none bg-gray-100">
-        <div className="flex flex-col w-[11rem] bg-white p-4 rounded-xl shadow-md font-sans text-sm">
+      <div className=" space-x-2 select-none bg-gray-100">
+        
+        {/*<div className="flex bg-white p-4 rounded-xl font-sans text-sm">
           <Collapsible
             open={isInformationOpen}
             onOpenChange={setIsInformationOpen}
@@ -107,12 +108,12 @@ export default function resume({}) {
             </CollapsibleContent>
           </Collapsible>
 
-          {/* Research Interests Collapsible */}
           <Collapsible
             open={isInterestsOpen}
             onOpenChange={setIsInterestsOpen}
             className="space-y-1 mt-4 font-sans"
           >
+
             <p className="border-1 p-1 text-xs rounded-md bg-purple-100 flex items-center border-purple-200">
               <Pen className="w-6 h-6 p-1 text-purple-500" />
               <span className="text-purple-500">
@@ -157,6 +158,7 @@ export default function resume({}) {
             </CollapsibleContent>
           </Collapsible>
         </div>
+        */}
         <Builder researchInterests={data.research_interests} />
       </div>
       <button onClick={handleSendDataToEmail}>Email Page</button>

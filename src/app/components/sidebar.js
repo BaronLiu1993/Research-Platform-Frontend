@@ -78,7 +78,7 @@ export function AppSidebar({ ...props }) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
-                      className="font-semibold"
+                      className="font-light"
                       asChild
                       isActive={item.isActive}
                     >
