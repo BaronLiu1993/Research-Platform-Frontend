@@ -1,6 +1,6 @@
 //Components
 import Navbar from '../components/navbar';
-import { columns } from './columns';
+import columns from './columns';
 import { DataTable } from './data-table';
 
 export default async function Repository() {
@@ -17,8 +17,9 @@ export default async function Repository() {
         </div>
 
         <div className="flex-1 overflow-y-auto p-5">
-          <div className="flex flex-col items-center">
-            <h1 className="text-2xl font-sans font-semibold my-5">Discover Professors at UofT!</h1>
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-sans font-semibold border-b-1 p-4">Discover Professors at UofT!</h1>
+            <p></p>
             <div className="">
               <DataTable columns={columns} data={responses} />
             </div>

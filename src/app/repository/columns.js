@@ -2,9 +2,12 @@
 
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/shadcomponents/ui/button";
+import { Badge } from "@/shadcomponents/ui/badge";
+import { Check } from "lucide-react";
+import { Briefcase } from 'lucide-react';
 import Link from "next/link";
 
-export const columns = [
+const columns = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -18,19 +21,7 @@ export const columns = [
       </Button>
     ),
   },
-  {
-    accessorKey: "url",
-    header: "Profile URL",
-    cell: ({ row }) => (
-      <Link
-        href={`/resume?url=${encodeURIComponent(row.getValue("url"))}`}
-        className="text-purple-600 hover:underline font-medium"
-      >
-        Connect
-      </Link>
-    ),
-    enableSorting: false,
-  },
+  
   {
     accessorKey: "school",
     header: ({ column }) => (
@@ -83,4 +74,23 @@ export const columns = [
       </Button>
     ),
   },
+  {
+    accessorKey: "url",
+    header: "Apply",
+    cell: ({ row }) => (
+      <Link
+        href={`/resume?url=${encodeURIComponent(row.getValue("url"))}`}
+        className="text-purple-600 hover:underline font-medium"
+      >
+        <Badge className = "bg-purple-400">
+            <Check />
+            Connect
+        </Badge>
+      </Link>
+    ),
+    enableSorting: false,
+  },
 ];
+
+
+export default columns;
