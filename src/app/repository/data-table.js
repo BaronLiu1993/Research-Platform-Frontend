@@ -9,11 +9,20 @@ import {
   ColumnFiltersState,
   VisibilityState,
   getFilteredRowModel,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 
-import { Info } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/shadcomponents/ui/pagination";
 
-import { Button } from "@/shadcomponents/ui/button";
+import { Info } from "lucide-react";
 
 import { Badge } from "@/shadcomponents/ui/badge";
 
@@ -51,6 +60,7 @@ export function DataTable({ columns, data }) {
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
+    getPaginationRowModel: getPaginationRowModel(),
 
     state: {
       sorting,
@@ -94,10 +104,12 @@ export function DataTable({ columns, data }) {
             </Badge>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Badge variant="outline" className="ml-auto font-sans text-gray-400 border-gray-200">
+                <Badge
+                  variant="outline"
+                  className="ml-auto font-sans text-gray-400 border-gray-200"
+                >
                   Columns
                   <ChevronDown />
-
                 </Badge>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -183,6 +195,58 @@ export function DataTable({ columns, data }) {
           )}
         </TableBody>
       </Table>
+
+      <div className="flex flex-col items-end justify-end space-y-2 py-4">
+
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  table.previousPage();
+                }}
+                className={
+                  !table.getCanPreviousPage()
+                    ? "pointer-events-none opacity-50"
+                    : ""
+                }
+              />
+            </PaginationItem>
+
+            {Array.from({ length: table.getPageCount() }).map((_, i) => (
+              <PaginationItem key={i}>
+                <PaginationLink
+                  href="#"
+                  isActive={i === table.getState().pagination.pageIndex}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    table.setPageIndex(i);
+                  }}
+                >
+                  {i + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationItem className = "rounded-md">
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  table.nextPage();
+                }}
+                className={
+                  !table.getCanNextPage()
+                    ? "pointer-events-none opacity-50"
+                    : ""
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 }

@@ -70,31 +70,10 @@ export default function Builder({ researchInterests }) {
 
   return (
     <>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb className="font-sans">
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>UofT Professors Repository</BreadcrumbPage>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Build Resume</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </header>
+      
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-md h-screen flex justify-center">
             {!parsedResume ? (
-              <div className="flex flex-col justify-center items-center">
+              <div className="flex flex-col mt-20">
                 <h1 className="p-4 text-4xl font-sans font-semibold">
                   Build Your New Resume!
                 </h1>
@@ -105,12 +84,12 @@ export default function Builder({ researchInterests }) {
                     className="shadow-sm rounded-md bg-white"
                   >
                     <AccordionItem value="item-1">
-                      <AccordionTrigger className="flex items-center w-[30rem] p-4 rounded-2xl">
+                      <AccordionTrigger className="flex items-center w-[32rem] p-4 rounded-2xl hover:no-underline hover:bg-gray-50 transition-colors cursor-pointer">
                         <div className="flex space-x-10 justify-center items-center cursor-pointer">
                           <File className="p-2 bg-purple-400 h-15 w-15 shadow-md text-white rounded-md" />
                           <div>
                             <p className="font-semibold text-xl text-purple-500 font-sans">
-                              I Already Have a Resume
+                              I Have a Resume
                             </p>
                             <p className="font-semibold text-gray-500 text-sm font-sans">
                               Supports PDF, JPG, PNG
@@ -118,9 +97,9 @@ export default function Builder({ researchInterests }) {
                           </div>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="p-4">
+                      <AccordionContent className="p-4 w-[32rem]">
                         <div className="bg-white">
-                          <label className="flex space-x-2 border-dashed border-2 items-center justify-center p-4 py-10 rounded-md w-[30rem]">
+                          <label className="flex space-x-2 border-dashed border-2 items-center justify-center p-4 py-10 rounded-md w-[30rem] ">
                             <input
                               type="file"
                               accept=".pdf"
@@ -164,12 +143,12 @@ export default function Builder({ researchInterests }) {
                     className="shadow-sm rounded-md bg-white"
                   >
                     <AccordionItem value="item-1">
-                      <AccordionTrigger className="flex items-center w-[30rem] p-4 rounded-2xl">
+                      <AccordionTrigger className="flex items-center w-[30rem] p-4 rounded-2xl hover:no-underline hover:bg-gray-50 transition-colors cursor-pointer">
                         <div className="flex space-x-10 justify-center items-center cursor-pointer">
-                          <File className="p-2 bg-purple-400 h-15 w-15 shadow-md text-white rounded-md" />
+                          <Hammer className="p-2 bg-blue-400 h-15 w-15 shadow-md text-white rounded-md" />
                           <div>
-                            <p className="font-semibold text-xl text-purple-500 font-sans">
-                              I Already Have a Resume
+                            <p className="font-semibold text-xl text-blue-500 font-sans">
+                              Email
                             </p>
                             <p className="font-semibold text-gray-500 text-sm font-sans">
                               Supports PDF, JPG, PNG
@@ -177,7 +156,7 @@ export default function Builder({ researchInterests }) {
                           </div>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="p-4">
+                      <AccordionContent className="p-4 w-[32rem]">
                         <div className="bg-white">
                           <label className="flex space-x-2 border-dashed border-2 items-center justify-center p-4 py-10 rounded-md w-[30rem]">
                             <input
@@ -231,8 +210,7 @@ export default function Builder({ researchInterests }) {
               </div>
             )}
           </div>
-        </SidebarInset>
-      </SidebarProvider>
+       
     </>
   );
 }

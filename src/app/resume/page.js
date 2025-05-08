@@ -31,13 +31,29 @@ import { ChevronsUpDown } from "lucide-react";
 
 import { Clipboard } from "lucide-react";
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/shadcomponents/ui/breadcrumb";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/shadcomponents/ui/sidebar";
+
+import { AppSidebar } from "@/app/components/sidebar";
+
+import { Separator } from "@/shadcomponents/ui/separator";
+
 export default function resume({}) {
   const searchParams = useSearchParams();
   const search = searchParams.get("url");
   const router = useRouter();
   const [data, setData] = useState({});
-  const [isInformationOpen, setIsInformationOpen] = useState(false);
-  const [isInterestsOpen, setIsInterestsOpen] = useState(false);
   const [researchInterests, setResearchInterests] = useState({});
   const [professorEmail, setProfessorEmail] = useState({});
   const [professorName, setProfessorName] = useState({});
@@ -75,9 +91,30 @@ export default function resume({}) {
 
   return (
     <>
-      <div className=" space-x-2 select-none bg-gray-100">
-        
-        {/*<div className="flex bg-white p-4 rounded-xl font-sans text-sm">
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb className="font-sans">
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">Home</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>UofT Professors Repository</BreadcrumbPage>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Build Resume</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </header>
+          <div className=" space-x-2 select-none bg-gray-100">
+            {/*<div className="flex bg-white p-4 rounded-xl font-sans text-sm">
           <Collapsible
             open={isInformationOpen}
             onOpenChange={setIsInformationOpen}
@@ -159,9 +196,11 @@ export default function resume({}) {
           </Collapsible>
         </div>
         */}
-        <Builder researchInterests={data.research_interests} />
-      </div>
-      <button onClick={handleSendDataToEmail}>Email Page</button>
+            <Builder researchInterests={data.research_interests} />
+          </div>
+          <button onClick={handleSendDataToEmail}>Email Page</button>
+        </SidebarInset>
+      </SidebarProvider>
     </>
   );
 }
