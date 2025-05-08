@@ -1,6 +1,5 @@
 //Components
 import Navbar from '../components/navbar';
-import RepoCard from '../components/repository/repocard';
 import { columns } from './columns';
 import { DataTable } from './data-table';
 

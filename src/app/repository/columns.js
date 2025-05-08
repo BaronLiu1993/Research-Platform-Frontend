@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
-import { ArrowUpDown } from "lucide-react"
-import { Button } from "@/shadcomponents/ui/button"
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "@/shadcomponents/ui/button";
+import Link from "next/link";
 
 export const columns = [
   {
@@ -9,7 +10,7 @@ export const columns = [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className = "font-sans font-semibold"
+        className="font-sans font-semibold"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Name
@@ -21,50 +22,47 @@ export const columns = [
     accessorKey: "url",
     header: "Profile URL",
     cell: ({ row }) => (
-      <a
-        href={row.getValue("url")}
-        className="text-blue-600 underline"
-        target="_blank"
-        rel="noopener noreferrer"
+      <Link
+        href={`/resume?url=${encodeURIComponent(row.getValue("url"))}`}
+        className="text-purple-600 hover:underline font-medium"
       >
-        View Profile
-      </a>
+        Connect
+      </Link>
     ),
-    enableSorting: false, 
+    enableSorting: false,
   },
   {
     accessorKey: "school",
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className = "font-sans font-semibold"
+        className="font-sans font-semibold"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         School
       </Button>
     ),
-    enableSorting: false, 
-
+    enableSorting: false,
   },
   {
     accessorKey: "department",
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className = "font-sans font-semibold"
+        className="font-sans font-semibold"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Department
       </Button>
     ),
-    enableSorting: false, 
+    enableSorting: false,
   },
   {
     accessorKey: "faculty",
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className = "font-sans font-semibold"
+        className="font-sans font-semibold"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Faculty
@@ -77,7 +75,7 @@ export const columns = [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className = "font-sans font-semibold"
+        className="font-sans font-semibold"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Research Interests
@@ -85,4 +83,4 @@ export const columns = [
       </Button>
     ),
   },
-]
+];
