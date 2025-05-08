@@ -84,22 +84,35 @@ const colourStyles = {
   }),
 }
 
-export default function DropdownInterests({ value, onChange }) {
+export default function DropdownInterests({ value, onChange, name, id }) {
+  // Fix: Safely handle the value prop
+  const selectedOptions = value && Array.isArray(value) 
+    ? uoftInterests.filter(option => value.includes(option.value))
+    : [];
+
+  // Handle changes and ensure we have a valid onChange function
+  const handleChange = (selectedOptions) => {
+    if (onChange && typeof onChange === 'function') {
+      const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
+      onChange(selectedValues);
+    }
+  };
+
   return (
-    <div className="w-[20rem]">
-      <label className="font-sans text-xs font-semibold">Research Interests</label>
+    <div className="w-full">
+      <label className="font-sans text-xs font-semibold" htmlFor={id}>Research Interests</label>
       <Select
         closeMenuOnSelect={false}
         components={animatedComponents}
         isMulti
         isSearchable
         options={uoftInterests}
-        value={uoftInterests.filter((option) => value.includes(option.value))}
-        onChange={(selectedOptions) => {
-            const selectedValues = selectedOptions.map((option) => option.value)
-            onChange(selectedValues)
-          }}
+        value={selectedOptions}
+        onChange={handleChange}
         styles={colourStyles}
+        name={name}
+        id={id}
+        className="mt-1"
       />
     </div>
   )
