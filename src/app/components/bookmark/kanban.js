@@ -1,7 +1,6 @@
 import KanbanCardInComplete from "./kanbancardincomplete";
 import KanbanCardInProgress from "./kanbancardinprogress";
 import KanbanCardCompleted from "./kanbancardcompleted";
-import UserProfile from "./userprofile";
 
 import { Plus } from "lucide-react";
 

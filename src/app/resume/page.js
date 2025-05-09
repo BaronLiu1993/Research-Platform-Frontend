@@ -9,28 +9,6 @@ import Builder from "../components/resume/builder";
 import getProfessorData from "./resumeapi";
 //Scans current resume for all keywords and then builds new resume with latex and the format given
 
-import { Button } from "@/shadcomponents/ui/button";
-
-import { Pen } from "lucide-react";
-
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/shadcomponents/ui/collapsible";
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shadcomponents/ui/popover";
-
-import { Badge } from "@/shadcomponents/ui/badge";
-
-import { ChevronsUpDown } from "lucide-react";
-
-import { Clipboard } from "lucide-react";
-
 import {
   Breadcrumb,
   BreadcrumbItem,

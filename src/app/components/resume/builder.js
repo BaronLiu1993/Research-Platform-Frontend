@@ -205,17 +205,14 @@ export default function Builder({ researchInterests }) {
             </div>
           </div>
         ) : (
-            <div className="flex mt-10 items-start space-x-6">
-            <div className="w-full max-w-2xl overflow-auto">
+          <div className="flex mt-10 items-start space-x-6">
+            <div className="w-screen">
               <Editor
                 student_experience={experience}
                 student_projects={projects}
                 student_contact={contact}
                 student_personal_details={personalDetails}
               />
-            </div>
-            <div className="flex-shrink-0">
-              <ResumeView resume={outputResume} />
             </div>
           </div>
         )}

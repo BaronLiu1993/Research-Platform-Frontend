@@ -9,7 +9,25 @@ import Skills from "./items/skills/skills";
 import Progress from "./progress";
 import PageTabs from "./pagetabs";
 
+import ResumeDisplayWrapper from "./resumeview";
+
 import { Button } from "@/shadcomponents/ui/button";
+
+const initialResumeState = {
+  name: "Your Name",
+  contact_information: {
+    email: "",
+    phone: "",
+    linkedin: "",
+    github: "",
+    website: "",
+  },
+  education: [],
+  experience: [],
+  projects: [],
+  skills: [],
+  personal_details: { name: "Your Name" }, 
+};
 
 export default function Editor({
   student_experience,
@@ -17,9 +35,35 @@ export default function Editor({
   student_personal_details,
   student_contact,
 }) {
+
+  const [resumeData, setResumeData] = useState(() => {
+    return {
+      ...initialResumeState,
+      projects: student_projects || initialResumeState.projects,
+      contact_information:
+        student_contact || initialResumeState.contact_information,
+      experience: student_experience || initialResumeState.experience,
+      contact: student_contact || initialResumeState.contact,
+    };
+  });
+
+  console.log(resumeData)
+  console.log(resumeData.experience)
+
+  const handleExperienceUpdate = (updatedExperienceArray) => {
+    setResumeData((prevData) => ({
+      ...prevData,
+      experience: updatedExperienceArray,
+    }));
+  };
   const pages = [
     {
-      component: <Employment experience_data={student_experience} />,
+      component: (
+        <Employment
+          experienceArray={resumeData.experience}
+          onExperienceArrayChange={handleExperienceUpdate}
+        />
+      ),
       name: "Employment",
     },
     {
@@ -47,7 +91,8 @@ export default function Editor({
 
   return (
     <>
-      <div className=" max-w-[30rem] overflow-hidden">
+    <div className = "flex border-1">
+      <div className=" min-w-[30rem] overflow-hidden">
         <div
           className="flex transition-transform duration-500"
           style={{ transform: `translateX(-${currentPage * 100}%)` }}
@@ -81,7 +126,12 @@ export default function Editor({
             </div>
           ))}
         </div>
+        
       </div>
+      <div>
+          <ResumeDisplayWrapper resume={resumeData} />
+        </div>
+        </div>
     </>
   );
 }

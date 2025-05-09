@@ -5,8 +5,6 @@ import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 
-
-
 import { Bold, Italic, Underline } from "lucide-react";
 import {
   ToggleGroup,

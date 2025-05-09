@@ -205,8 +205,21 @@ export default function ResumeDisplayWrapper({ resume }) {
     },
   };
 
-  const miniatureEditor = useEditor(editorConfig);
-  const zoomedEditor = useEditor(editorConfig);
+  const miniatureEditor = useEditor({
+    ...editorConfig,
+    content: {
+      type: "doc",
+      content: [{ type: "paragraph", content: [{ type: "text", text: "Loading..." }] }],
+    },
+  });
+  
+  const zoomedEditor = useEditor({
+    ...editorConfig,
+    content: {
+      type: "doc",
+      content: [{ type: "paragraph", content: [{ type: "text", text: "Loading..." }] }],
+    },
+  });
 
   useEffect(() => {
     const newContent = mapResumeToTipTap(resume);
@@ -223,8 +236,8 @@ export default function ResumeDisplayWrapper({ resume }) {
   }
 
 
-  const originalWidth = 816; // px
-  const originalHeight = 1056; // px
+  const originalWidth = 816; 
+  const originalHeight = 1056; 
   const scaleFactor = 0.50; 
 
   const miniatureDisplayWidth = originalWidth * scaleFactor;

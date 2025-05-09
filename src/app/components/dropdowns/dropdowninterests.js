@@ -85,12 +85,10 @@ const colourStyles = {
 }
 
 export default function DropdownInterests({ value, onChange, name, id }) {
-  // Fix: Safely handle the value prop
   const selectedOptions = value && Array.isArray(value) 
     ? uoftInterests.filter(option => value.includes(option.value))
     : [];
 
-  // Handle changes and ensure we have a valid onChange function
   const handleChange = (selectedOptions) => {
     if (onChange && typeof onChange === 'function') {
       const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
