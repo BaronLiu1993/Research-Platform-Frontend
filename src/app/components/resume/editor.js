@@ -31,7 +31,7 @@ export default function Editor({
       component: (
         <PersonalInfo personal_details_data={student_personal_details} />
       ),
-      name: "Personal Info",
+      name: "Info",
     },
   ];
 
@@ -47,7 +47,7 @@ export default function Editor({
 
   return (
     <>
-      <div className=" max-w-[40rem] overflow-hidden">
+      <div className=" max-w-[30rem] overflow-hidden">
         <div
           className="flex transition-transform duration-500"
           style={{ transform: `translateX(-${currentPage * 100}%)` }}

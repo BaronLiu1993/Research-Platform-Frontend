@@ -173,11 +173,10 @@ function mapResumeToTipTap(resume) {
   return doc;
 }
 
-// Reusable component for rendering the TipTap content
 function ActualResumeContent({ editorInstance }) {
   if (!editorInstance) return null;
   return (
-    <div className="px-8 py-10 bg-white"> {/* Standard padding for resume content */}
+    <div className="px-8 py-10 bg-white"> 
       <EditorContent editor={editorInstance} />
     </div>
   );
@@ -187,10 +186,9 @@ export default function ResumeDisplayWrapper({ resume }) {
   const [isZoomedDialogOpen, setIsZoomedDialogOpen] = useState(false);
   const tiptapContent = useMemo(() => mapResumeToTipTap(resume), [resume]);
 
-  // Base configuration for both editors
   const editorConfig = {
     extensions: [
-      StarterKit.configure({ table: false }), // Explicitly manage table extension
+      StarterKit.configure({ table: false }), 
       Highlight.configure({ multicolor: true }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Table.configure({ resizable: false }),
@@ -218,7 +216,7 @@ export default function ResumeDisplayWrapper({ resume }) {
     if (zoomedEditor && JSON.stringify(zoomedEditor.getJSON()) !== JSON.stringify(newContent)) {
       zoomedEditor.commands.setContent(newContent, false);
     }
-  }, [resume, miniatureEditor, zoomedEditor]); // re-run if resume changes
+  }, [resume, miniatureEditor, zoomedEditor]); 
 
   if (!miniatureEditor || !zoomedEditor) {
     return <div>Loading resume preview...</div>;
@@ -227,7 +225,7 @@ export default function ResumeDisplayWrapper({ resume }) {
 
   const originalWidth = 816; // px
   const originalHeight = 1056; // px
-  const scaleFactor = 0.48; 
+  const scaleFactor = 0.50; 
 
   const miniatureDisplayWidth = originalWidth * scaleFactor;
   const miniatureDisplayHeight = originalHeight * scaleFactor;

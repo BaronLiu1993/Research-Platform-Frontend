@@ -7,26 +7,10 @@ import ParseResume from "@/app/resume/parseresume";
 import ResumeView from "./resumeview";
 import Editor from "./editor";
 
-import { Upload } from "lucide-react";
+import { FileText } from "lucide-react";
 import { Hammer } from "lucide-react";
 import { File } from "lucide-react";
-
-import { Separator } from "@/shadcomponents/ui/separator";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/shadcomponents/ui/breadcrumb";
-import {
-  SidebarProvider,
-  SidebarInset,
-  SidebarTrigger,
-} from "@/shadcomponents/ui/sidebar";
-
-import { AppSidebar } from "@/app/components/sidebar";
+import { X } from "lucide-react";
 
 import {
   Accordion,
@@ -68,149 +52,174 @@ export default function Builder({ researchInterests }) {
     }
   };
 
+  const deleteFile = () => {
+    setResumeFile(null);
+  };
+
   return (
     <>
-      
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-md h-screen flex justify-center">
-            {!parsedResume ? (
-              <div className="flex flex-col mt-20">
-                <h1 className="p-4 text-4xl font-sans font-semibold">
-                  Build Your New Resume!
-                </h1>
-                <div className="space-y-4 rounded-md">
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="shadow-sm rounded-md bg-white"
-                  >
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger className="flex items-center w-[32rem] p-4 rounded-2xl hover:no-underline hover:bg-gray-50 transition-colors cursor-pointer">
-                        <div className="flex space-x-10 justify-center items-center cursor-pointer">
-                          <File className="p-2 bg-purple-400 h-15 w-15 shadow-md text-white rounded-md" />
-                          <div>
-                            <p className="font-semibold text-xl text-purple-500 font-sans">
-                              I Have a Resume
-                            </p>
-                            <p className="font-semibold text-gray-500 text-sm font-sans">
-                              Supports PDF, JPG, PNG
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-md flex justify-center">
+        {!parsedResume ? (
+          <div className="flex flex-col mt-20">
+            <h1 className="p-4 text-4xl font-sans font-semibold">
+              Build Your New Resume!
+            </h1>
+            <div className="space-y-4 rounded-md">
+              <Accordion
+                type="single"
+                collapsible
+                className="shadow-sm rounded-md bg-white"
+              >
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="flex items-center w-[32rem] p-4 rounded-2xl hover:no-underline hover:bg-gray-50 transition-colors cursor-pointer">
+                    <div className="flex space-x-10 justify-center items-center cursor-pointer">
+                      <File className="p-2 bg-purple-400 h-15 w-15 shadow-md text-white rounded-md" />
+                      <div>
+                        <p className="font-semibold text-xl text-purple-500 font-sans">
+                          I Have a Resume
+                        </p>
+                        <p className="font-semibold text-gray-500 text-sm font-sans">
+                          Supports PDF, JPG, PNG
+                        </p>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+
+                  {resumeFile ? (
+                    <AccordionContent>
+                      <div className="w-fit p-3 flex justify-center items-center space-x-4 ml-6 text-sm text-gray-500 border-1 bg-gray-50 font-sans rounded-md">
+                        <FileText className="h-6 w-6 text-red-600" />
+                        <div>
+                          <div className="text-black font-sans font-semibold">
+                            {resumeFile.name}
+                          </div>
+                          <div>{(resumeFile.size / 1024).toFixed(1)} KB</div>
+                        </div>
+                        <button
+                          onClick={deleteFile}
+                          className="cursor-pointer text-lg"
+                        >
+                          <X />
+                        </button>
+                      </div>
+                      <button
+                        className="mt-5 font-light cursor-pointer mx-8 text-white bg-blue-500 rounded-sm text-sm px-2 font-sans"
+                        onClick={() => handleParseResume(resumeFile)}
+                      >
+                        Parse Resume
+                      </button>
+                    </AccordionContent>
+                  ) : (
+                    <AccordionContent className="p-4 w-[32rem]">
+                      <div className="bg-white">
+                        <label className="flex space-x-2 border-dashed border-2 items-center justify-center p-4 py-10 rounded-md w-[30rem] ">
+                          <input
+                            type="file"
+                            accept=".pdf"
+                            className="font-sans font-medium font hidden"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files[0]) {
+                                setResumeFile(e.target.files[0]);
+                              }
+                            }}
+                          />
+                          <div className="flex flex-col justify-center items-center">
+                            <File className="text-purple-400 h-15 w-15" />
+                            <div className="">
+                              <p className="font-sans font-semibold text-gray-500 text-md">
+                                Drag and Drop Your Resume Here or <br />
+                                <span className="text-purple-700">
+                                  {" "}
+                                  Choose the File
+                                </span>{" "}
+                                to Upload
+                              </p>
+                            </div>
+                            <div className="mx-5 space-x-4"></div>
+                          </div>
+                        </label>
+                      </div>
+                    </AccordionContent>
+                  )}
+                </AccordionItem>
+              </Accordion>
+              <Accordion
+                type="single"
+                collapsible
+                className="shadow-sm rounded-md bg-white"
+              >
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="flex items-center w-[30rem] p-4 rounded-2xl hover:no-underline hover:bg-gray-50 transition-colors cursor-pointer">
+                    <div className="flex space-x-10 justify-center items-center cursor-pointer">
+                      <Hammer className="p-2 bg-blue-400 h-15 w-15 shadow-md text-white rounded-md" />
+                      <div>
+                        <p className="font-semibold text-xl text-blue-500 font-sans">
+                          Email
+                        </p>
+                        <p className="font-semibold text-gray-500 text-sm font-sans">
+                          Supports PDF, JPG, PNG
+                        </p>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="p-4 w-[32rem]">
+                    <div className="bg-white">
+                      <label className="flex space-x-2 border-dashed border-2 items-center justify-center p-4 py-10 rounded-md w-[30rem]">
+                        <input
+                          type="file"
+                          accept=".pdf"
+                          className="font-sans font-medium font hidden"
+                          onChange={(e) => {
+                            if (e.target.files && e.target.files[0]) {
+                              setResumeFile(e.target.files[0]);
+                            }
+                          }}
+                        />
+                        <div className="flex flex-col justify-center items-center">
+                          <File className="text-purple-400 h-15 w-15" />
+                          <div className="">
+                            <p className="font-sans font-semibold text-gray-500 text-md">
+                              Drag and Drop Your Resume Here or <br />
+                              <span className="text-purple-700">
+                                {" "}
+                                Choose the File
+                              </span>{" "}
+                              to Upload
                             </p>
                           </div>
+                          <div className="mx-5 space-x-4"></div>
+                          {resumeFile && (
+                            <button
+                              className="mt-5 font-light cursor-pointer text-white bg-blue-500 rounded-sm text-sm px-2 font-sans"
+                              onClick={() => handleParseResume(resumeFile)}
+                            >
+                              Parse Resume
+                            </button>
+                          )}
                         </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="p-4 w-[32rem]">
-                        <div className="bg-white">
-                          <label className="flex space-x-2 border-dashed border-2 items-center justify-center p-4 py-10 rounded-md w-[30rem] ">
-                            <input
-                              type="file"
-                              accept=".pdf"
-                              className="font-sans font-medium font hidden"
-                              onChange={(e) => {
-                                if (e.target.files && e.target.files[0]) {
-                                  setResumeFile(e.target.files[0]);
-                                }
-                              }}
-                            />
-                            <div className="flex flex-col justify-center items-center">
-                              <File className="text-purple-400 h-15 w-15" />
-                              <div className="">
-                                <p className="font-sans font-semibold text-gray-500 text-md">
-                                  Drag and Drop Your Resume Here or <br />
-                                  <span className="text-purple-700">
-                                    {" "}
-                                    Choose the File
-                                  </span>{" "}
-                                  to Upload
-                                </p>
-                              </div>
-                              <div className="mx-5 space-x-4"></div>
-                              {resumeFile && (
-                                <button
-                                  className="mt-5 font-light cursor-pointer text-white bg-blue-500 rounded-sm text-sm px-2 font-sans"
-                                  onClick={() => handleParseResume(resumeFile)}
-                                >
-                                  Parse Resume
-                                </button>
-                              )}
-                            </div>
-                          </label>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="shadow-sm rounded-md bg-white"
-                  >
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger className="flex items-center w-[30rem] p-4 rounded-2xl hover:no-underline hover:bg-gray-50 transition-colors cursor-pointer">
-                        <div className="flex space-x-10 justify-center items-center cursor-pointer">
-                          <Hammer className="p-2 bg-blue-400 h-15 w-15 shadow-md text-white rounded-md" />
-                          <div>
-                            <p className="font-semibold text-xl text-blue-500 font-sans">
-                              Email
-                            </p>
-                            <p className="font-semibold text-gray-500 text-sm font-sans">
-                              Supports PDF, JPG, PNG
-                            </p>
-                          </div>
-                        </div>
-                      </AccordionTrigger>
-                      <AccordionContent className="p-4 w-[32rem]">
-                        <div className="bg-white">
-                          <label className="flex space-x-2 border-dashed border-2 items-center justify-center p-4 py-10 rounded-md w-[30rem]">
-                            <input
-                              type="file"
-                              accept=".pdf"
-                              className="font-sans font-medium font hidden"
-                              onChange={(e) => {
-                                if (e.target.files && e.target.files[0]) {
-                                  setResumeFile(e.target.files[0]);
-                                }
-                              }}
-                            />
-                            <div className="flex flex-col justify-center items-center">
-                              <File className="text-purple-400 h-15 w-15" />
-                              <div className="">
-                                <p className="font-sans font-semibold text-gray-500 text-md">
-                                  Drag and Drop Your Resume Here or <br />
-                                  <span className="text-purple-700">
-                                    {" "}
-                                    Choose the File
-                                  </span>{" "}
-                                  to Upload
-                                </p>
-                              </div>
-                              <div className="mx-5 space-x-4"></div>
-                              {resumeFile && (
-                                <button
-                                  className="mt-5 font-light cursor-pointer text-white bg-blue-500 rounded-sm text-sm px-2 font-sans"
-                                  onClick={() => handleParseResume(resumeFile)}
-                                >
-                                  Parse Resume
-                                </button>
-                              )}
-                            </div>
-                          </label>
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <Editor
-                  student_experience={experience}
-                  student_projects={projects}
-                  student_contact={contact}
-                  student_personal_details={personalDetails}
-                />
-                <ResumeView className="mt-10" resume={outputResume} />
-              </div>
-            )}
+                      </label>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
           </div>
-       
+        ) : (
+            <div className="flex mt-10 items-start space-x-6">
+            <div className="w-full max-w-2xl overflow-auto">
+              <Editor
+                student_experience={experience}
+                student_projects={projects}
+                student_contact={contact}
+                student_personal_details={personalDetails}
+              />
+            </div>
+            <div className="flex-shrink-0">
+              <ResumeView resume={outputResume} />
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }
