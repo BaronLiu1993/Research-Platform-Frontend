@@ -1,33 +1,31 @@
 import axios from 'axios'
 
-export async function handleRegister (formData) {
-    console.log(formData)
-    if (formData) {
-        try {
-            const response = await axios.post('http://localhost:8080/auth/register', formData);
-            return response
-        } catch (error) {
-            console.error("Error during login", error)
-        }
-    } else {
-        console.error("Please Fill In Everything")
-    }
-}
-/*
-export async function handleLogin(formData) {
-    if (!formData?.email || !formData?.password) {
-      throw new Error("Email and password are required");
+export async function handleRegister(formData) {
+    if (!formData) {
+      throw new Error("Please fill in all required fields.");
     }
   
     try {
-      const response = await axios.post('http://localhost:8080/auth/login', formData);
-      return response.data; 
+      const response = await fetch('http://localhost:8080/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData?.message || 'Registration failed.');
+      }
+  
+      return await response.json();
     } catch (error) {
-      console.error("API login error:", error);
+      console.error("Error during registration:", error);
       throw error;
     }
   }
-*/
+
 export async function verifyOtp (formData) {
     if (!formData?.code) {
         throw new Error("Code Required")

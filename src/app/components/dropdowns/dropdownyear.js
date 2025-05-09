@@ -57,7 +57,7 @@ const colourStyles = {
     ...styles,
     borderRadius: '0.5rem',
     marginTop: '0.25rem',
-    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', // shadow-lg
+    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', 
     backgroundColor: 'white',
     overflow: 'hidden',
     fontFamily: 'ui-sans-serif, system-ui, sans-serif',

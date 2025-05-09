@@ -5,13 +5,7 @@ import { useRouter } from 'next/navigation'
 
 export default function Login() {
   const [error, setError] = useState(null)
-  const [success, setSuccess] = useState(false)
   const router = useRouter()
-
-  useEffect(() => {
-    if (success) router.push('/')
-  }, [success])
-
   const handleLogin = async (e) => {
     e.preventDefault()
     const form = e.target
@@ -27,7 +21,7 @@ export default function Login() {
       })
 
       if (response.ok) {
-        setSuccess(true)
+        router.push("/repository"); 
       } else {
         const data = await response.json()
         setError(data.message || 'Login failed')

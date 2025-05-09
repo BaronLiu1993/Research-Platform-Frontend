@@ -1,42 +1,72 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { verifyOtp, resendCode } from "../api/auth"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { verifyOtp, resendCode } from "../api/auth";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/shadcomponents/ui/input-otp";
 
+export default function VerifyOtp({ email }) {
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
+  const router = useRouter();
+  async function handleVerify() {
+    setIsVerifying(true);
+    try {
+      await verifyOtp({ email, code });
+      setError("");
+      router.push("/login"); 
+    } catch (err) {
+      setError("Invalid code. Please try again.");
+    } finally {
+      setIsVerifying(false);
+    }
+  }
 
-export default function VerifyOtp ({ email}) {
-    const [code, setCode] = useState('');
-    async function handleVerify () {
-        try {
-          await verifyOtp({ email, code });
-          setVerified(true);
-          setError('');
-        } catch (err) {
-          console.error('Invalid code. Please try again.');
-        }
-      };
-    
+  return (
+    <div className="flex flex-col items-center font-sans justify-center mt-20 space-y-6">
+      <div className="space-y-2 text-center">
+        <h2 className="text-xl font-semibold">Check your inbox</h2>
+        <p className="text-xs text-gray-500">
+          We sent code to your UofT email.
+        </p>
+      </div>
 
-    return (
-        <>
-        <div className = "flex flex-col mt-20">
-                <label className = "font-sans text-xs font-semibold">Verification Code</label>
-                <div className = "flex">
-                    <input
-                    className="p-2 border-1 border-gray-200 bg-gray-50 rounded-md w-[20rem]"
-                    type="text"
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                    />
-                    
-                </div>
-                <p className = "font-sans text-xs mt-4">We Sent a Verification Code to You!</p>
-                <button
-                    className="bg-blue-500 active:bg-blue-400 hover:bg-blue-600 mt-5 text-white w-[20rem] rounded-md font-light font-sans py-2"
-                >
-                Continue
-                </button>
-          </div>
-        </>
-    )
+      <div className="space-y-4">
+        <label className="block text-sm font-medium text-gray-700 text-center">
+          Enter the 6-digit code
+        </label>
+
+        <InputOTP maxLength={6} value={code} onChange={setCode}>
+          <InputOTPGroup>
+            {[...Array(6)].map((_, i) => (
+              <InputOTPSlot key={i} index={i} />
+            ))}
+          </InputOTPGroup>
+        </InputOTP>
+
+        {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+
+        <button
+          disabled={isVerifying || code.length < 6}
+          onClick={handleVerify}
+          className="w-full bg-blue-600 text-white rounded-md py-2 hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isVerifying ? "Verifying..." : "Continue"}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => resendCode(email)}
+          className="text-sm text-blue-500 hover:underline mt-2"
+        >
+          Resend Code
+        </button>
+      </div>
+    </div>
+  );
 }

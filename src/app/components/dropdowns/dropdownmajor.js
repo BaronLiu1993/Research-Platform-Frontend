@@ -4,7 +4,6 @@ import chroma from 'chroma-js'
 import Select from 'react-select'
 import { uoftStemMajors } from '@/app/data/uoftStemMajors'
 
-// Dot style for selected options
 const dot = (color = 'transparent') => ({
   alignItems: 'center',
   display: 'flex',
