@@ -13,10 +13,7 @@ import {
 
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
-import { usePublicationStore } from "@/app/data/usePublicationStore";
-
 export default function EmploymentWordProcessor({ content }) {
-  const { selectedPublication, clearPublication } = usePublicationStore();
   const [aiTyping, setAiTyping] = useState(false);
 
   const editor = useEditor({
@@ -33,7 +30,6 @@ export default function EmploymentWordProcessor({ content }) {
   });
 
   useEffect(() => {
-    console.log(selectedPublication)
     if (editor) {
       editor.commands.setContent(content);
     }

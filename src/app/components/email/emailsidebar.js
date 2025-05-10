@@ -1,7 +1,8 @@
 import { Accordion, AccordionTrigger, AccordionHeader } from "@/shadcomponents/ui/accordion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shadcomponents/ui/card"
 
-export default function EmailSideBar () {
+export default function EmailSideBar ({publications}) {
+    console.log(publications)
     return (
         <>
             <div className = "border-l-1 p-7 space-y-5">

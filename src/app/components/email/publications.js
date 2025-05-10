@@ -1,10 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePublicationStore } from "@/app/data/usePublicationStore";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Card, CardDescription, CardHeader } from "@/shadcomponents/ui/card";
 import {
   Accordion,
   AccordionContent,
@@ -15,44 +13,21 @@ import { removeSingleQuoteOrJson } from "@/app/api/fixjson";
 import { Button } from "@/shadcomponents/ui/button";
 import { Progress } from "@/shadcomponents/ui/progress";
 
-export default function Publications() {
-  const { setSelectedPublication } = usePublicationStore();
-
+export default function Publications({ publication_data }) {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const email = searchParams.get("email");
-
   const [status, setStatus] = useState("idle");
   const [progress, setProgress] = useState(0);
   const [publications, setPublications] = useState([]);
 
-  async function integrateEditor() {
-    try {
-      const res = await fetch(
-        "http://127.0.0.1:8000/email/ai-publication-insertion",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            academic_publication: publications[0].url,
-            interests: ["Biomedical Engineering"],
-            related_skills: ["Python"],
-          }),
-        }
-      );
-      const data = await res.json();
-      setSelectedPublication(data.result);
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  const sendInputPublication = (publication) => {
+    publication_data(publication);
+  };
 
   async function fetchPublications() {
     setStatus("loading");
     setProgress(10);
-
     try {
       const res = await fetch(
         "http://127.0.0.1:8000/email/query-publications",
@@ -144,9 +119,9 @@ export default function Publications() {
                     <Button
                       size="sm"
                       className="text-xs font-sans max-w-[50%]"
-                      onClick={integrateEditor}
+                      onClick={sendInputPublication(pub)}
                     >
-                      Incorporate
+                      Load Publication
                     </Button>
                   </div>
                 </AccordionContent>

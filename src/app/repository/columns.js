@@ -6,20 +6,19 @@ import { Badge } from "@/shadcomponents/ui/badge";
 import { Check } from "lucide-react";
 import { EllipsisVertical } from "lucide-react";
 import Link from "next/link";
+
+import { saveToKanban } from "./savetokanban";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/shadcomponents/ui/dropdown-menu"
+} from "@/shadcomponents/ui/dropdown-menu";
 
 const columns = [
   {
@@ -27,9 +26,9 @@ const columns = [
     header: "",
     cell: ({ row }) => (
       <h1>
-        <DropdownMenu className = "font-sans">
+        <DropdownMenu className="font-sans">
           <DropdownMenuTrigger asChild>
-            <EllipsisVertical className = "h-4 w-4 text-gray-500"/>
+            <EllipsisVertical className="h-4 w-4 text-gray-500" />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 font-sans">
             <DropdownMenuLabel>Professor Details</DropdownMenuLabel>
@@ -40,10 +39,15 @@ const columns = [
                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                Visit Page
+                <Link
+                  href={row.getValue("url")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Visit Professor
+                </Link>
                 <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
               </DropdownMenuItem>
-              
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -19,14 +19,23 @@ import { ToggleGroup, ToggleGroupItem } from "@/shadcomponents/ui/toggle-group";
 
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
-import { usePublicationStore } from "@/app/data/usePublicationStore";
-import { Button } from "@/shadcomponents/ui/button";
 import { Badge } from "@/shadcomponents/ui/badge";
-import Email from "./email";
 
-export default function EmailTextEditor({ content }) {
-  const { selectedPublication, clearPublication } = usePublicationStore();
+import { prompts } from "./AIwriters";
+
+export default function EmailTextEditor({
+  content,
+  research_interests
+}) {
   const [aiTyping, setAiTyping] = useState(false);
+
+  const [publicationData, setPublicationData] = useState([]);
+
+  const handlePublicationData = (data) => {
+    setPublicationData(data);
+  };
+
+  console.log(research_interests);
 
   const editor = useEditor({
     extensions: [StarterKit, Highlight.configure({ multicolor: true })],
@@ -39,13 +48,12 @@ export default function EmailTextEditor({ content }) {
   });
 
   useEffect(() => {
-    console.log(selectedPublication);
     if (editor) {
       editor.commands.setContent(content);
     }
   }, [content, editor]);
 
-  const handleAIRewrite = async () => {
+  const handleAIRewrite = async (prompt) => {
     const selection = editor.state.selection;
     const selectedText = editor.state.doc.textBetween(
       selection.from,
@@ -58,7 +66,7 @@ export default function EmailTextEditor({ content }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         text: selectedText,
-        style: "write hi",
+        style: prompt,
       }),
     });
 
@@ -207,7 +215,7 @@ export default function EmailTextEditor({ content }) {
             <ToggleGroupItem
               value="ai"
               aria-label="AI Rewrite"
-              onClick={handleAIRewrite}
+              onClick={() => handleAIRewrite(prompts[0])}
               className="py-1 text-xs min-w-fit"
             >
               <Badge className="bg-blue-300 text-black"> ✨ Fix Grammar</Badge>
@@ -215,7 +223,7 @@ export default function EmailTextEditor({ content }) {
             <ToggleGroupItem
               value="ai"
               aria-label="AI Rewrite"
-              onClick={handleAIRewrite}
+              onClick={() => handleAIRewrite(prompts[1])}
               className="py-1 text-xs min-w-fit"
             >
               <Badge className="bg-green-300 text-black"> ✏️ Reword</Badge>
@@ -223,26 +231,42 @@ export default function EmailTextEditor({ content }) {
             <ToggleGroupItem
               value="ai"
               aria-label="AI Rewrite"
-              onClick={handleAIRewrite}
+              onClick={() =>
+                handleAIRewrite(
+                  `${prompts[2]}. These are the professors interests ${research_interests}. Return ONLY the TEXT.`
+                )
+              }
+              className="py-1 text-xs min-w-fit"
+            >
+              <Badge className="bg-green-300 text-black"> ✏️ Personalise</Badge>
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="ai"
+              aria-label="AI Rewrite"
+              onClick={() =>
+                handleAIRewrite(
+                  `${prompts[2]}. These are the professors interests ${research_interests}.`
+                )
+              }
               className="py-1 text-xs min-w-fit"
             >
               <Popover>
                 <PopoverTrigger asChild>
-                  <button>
+                  <div>
                     <Badge className="bg-pink-300 text-black cursor-pointer">
                       🔬 Add Research
                     </Badge>
-                  </button>
+                  </div>
                 </PopoverTrigger>
                 <PopoverContent className="max-w-full w-[95%] sm:w-[32rem] z-50 p-2">
-                  <Publications />
+                  <Publications publication_data = {handlePublicationData}/>
                 </PopoverContent>
               </Popover>
             </ToggleGroupItem>
           </ToggleGroup>
           <EditorContent className="mt-2" editor={editor} />
         </div>
-        <EmailSideBar className="max-w-1/3" />
+        <EmailSideBar publications = {publicationData} className="max-w-1/3" />
       </div>
 
       {aiTyping && (
