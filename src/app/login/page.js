@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 
 export default function Login() {
   const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(false)
   const router = useRouter()
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -20,7 +21,18 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       })
 
-      if (response.ok) {
+      const cookieStore = await cookies();
+      const access = cookieStore.get("accesstoken");
+
+      const followUp = await fetch(`http://localhost:8080/auth/get-user-id/`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      })
+      
+      console.log(followUp)
+      if (followUp.ok) {
+        setSuccess(true)
         router.push("/repository"); 
       } else {
         const data = await response.json()
