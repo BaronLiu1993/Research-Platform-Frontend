@@ -20,18 +20,20 @@ export default async function Kanban({ userID }) {
   );
   const responses = await serverData.json();
   const finalResponse = responses.data;
-  const inProgressResponses = finalResponse.in_progress;
-  const inProgressResponsesLength = inProgressResponses.length;
+  if (!finalResponse) {
+    return null; 
+  }
+  const inProgressResponses = finalResponse.in_progress || [];
+  const inProgressResponsesLength = inProgressResponses.length || 0;
 
-  const inCompleteResponses = finalResponse.in_complete;
-  const inCompleteResponsesLength = inCompleteResponses.length;
+  const inCompleteResponses = finalResponse.in_complete || [];
+  const inCompleteResponsesLength = inCompleteResponses.length || 0;
 
-  const completedResponses = finalResponse.completed;
-  const completedResponsesLength = completedResponses.length;
+  const completedResponses = finalResponse.completed || [];
+  const completedResponsesLength = completedResponses.length || 0;
 
-  const followUpResponses = finalResponse.follow_up;
-  const followUpResponsesLength = followUpResponses.length;
-  console.log(inProgressResponses);
+  const followUpResponses = finalResponse.follow_up || [];
+  const followUpResponsesLength = followUpResponses.length || 0;
 
   return (
     <>
@@ -47,7 +49,6 @@ export default async function Kanban({ userID }) {
             </div>
           </div>
           <div className="flex space-x-2.5 p-2">
-            {/*First Kanban Starts Here*/}
             <div className="bg-gray-100 rounded-md">
               <div>
                 <div className="flex items-center justify-between">

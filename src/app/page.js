@@ -18,7 +18,8 @@ export default function Home() {
           <div className="my-4">
             <div className="flex justify-center flex-col items-center">
               <p className="text-gray-600 font-sans">
-                Find research opportunities, tailor emails, and build resumes — all in one place.
+                Find research opportunities, tailor emails, and build resumes —
+                all in one place.
               </p>
               <p className="text-gray-600 font-sans">
                 Explore a Catalogue of 800+ Professors

@@ -15,19 +15,8 @@ import {
 
 export default async function Bookmark() {
   const cookieStore = await cookies();
-  const access = cookieStore.get("accesstoken");
-
-  const serverData = await fetch("http://localhost:8080/auth/get-user-id", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${access?.value}`,
-      "Content-Type": "application/json",
-    },
-  });
-
-  const responses = await serverData.json();
-  console.log(responses)
-
+  const user_id = cookieStore.get("user_id");
+  console.log(user_id)
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -50,7 +39,7 @@ export default async function Bookmark() {
 
         <div className="flex flex-1 overflow-y-auto font-sans">
           <div className="w-full flex p-6 space-x-6">
-            <Kanban userID={responses.user_id} />
+            <Kanban userID={user_id} />
           </div>
         </div>
       </SidebarInset>

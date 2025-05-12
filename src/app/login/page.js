@@ -21,15 +21,14 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       })
 
-      const cookieStore = await cookies();
-      const access = cookieStore.get("accesstoken");
-
-      const followUp = await fetch(`http://localhost:8080/auth/get-user-id/`, {
+      const followUp = await fetch(`http://localhost:8080/auth/get-user-id`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          "Content-Type": "application/json",
+        },
         credentials: 'include',
       })
-      
+
       console.log(followUp)
       if (followUp.ok) {
         setSuccess(true)
