@@ -7,7 +7,7 @@ import { Check } from "lucide-react";
 import { EllipsisVertical } from "lucide-react";
 import Link from "next/link";
 
-import { saveToKanban } from "./savetokanban";
+import { saveToKanban } from "@/app/repository/savetokanban";
 
 import {
   DropdownMenu,

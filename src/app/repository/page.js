@@ -13,10 +13,17 @@ import {
   SidebarTrigger,
 } from "@/shadcomponents/ui/sidebar";
 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/shadcomponents/ui/carousel"
 
 import { AppSidebar } from "../components/sidebar";
-import columns from "./columns";
-import { DataTable } from "./data-table";
+import columns from "../components/repository/columns";
+import { DataTable } from "../components/repository/data-table";
 
 export default async function Repository() {
   const serverData = await fetch("http://localhost:8080/Taishan/");
@@ -45,19 +52,27 @@ export default async function Repository() {
 
         <div className="flex-1 overflow-y-auto">
           <div className="flex flex-col">
-            <div className = "border-b-1 space-y-2">
+            
+            <div className="border-b-1 space-y-2">
+              <h1 className="text-2xl font-sans font-semibold px-6 pt-6">
+                You Might Be Interested In...
+              </h1>
+              <p className="text-muted-foreground px-6 pb-6 font-sans">
+              We've curated a few suggestions that align with your research interests—take a look!
+              </p>{" "}
+            </div>
+            <div className="border-b-1 space-y-2">
               <h1 className="text-2xl font-sans font-semibold px-6 pt-6">
                 Discover Professors at UofT!
               </h1>
               <p className="text-muted-foreground px-6 pb-6 font-sans">
                 Browse through faculty members across departments, explore their
-                research interests, and find the perfect mentor <br/> for your academic
-                journey. Start connecting with UofT professors today!
+                research interests, and find the perfect mentor <br /> for your
+                academic journey. Start connecting with UofT professors today!
               </p>{" "}
             </div>
             <div className="mt-4">
               <DataTable columns={columns} data={responses} />
-              
             </div>
           </div>
         </div>
