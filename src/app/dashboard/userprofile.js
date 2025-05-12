@@ -3,7 +3,13 @@
 import { useState } from "react";
 
 import { Badge } from "@/shadcomponents/ui/badge";
-import { Mail, Calendar, UserCircle, LayoutDashboard } from "lucide-react";
+import {
+  Mail,
+  Calendar,
+  UserCircle,
+  LayoutDashboard,
+  Bell,
+} from "lucide-react";
 import { Input } from "@/shadcomponents/ui/input";
 import { Button } from "@/shadcomponents/ui/button";
 import { Switch } from "@/shadcomponents/ui/switch";
@@ -11,11 +17,12 @@ import { Switch } from "@/shadcomponents/ui/switch";
 export default function UserProfile({ studentData }) {
   const [enabled, setEnabled] = useState(false);
   return (
-    <div className="font-sans p-10">
-      <h1 className="text-lg font-semibold mb-5">Dashboard</h1>
+    <>
+      <div className="flex">
+        <div className="font-sans p-10">
+          <h1 className="text-lg font-semibold mb-5">Dashboard</h1>
 
-      <div className = "flex">
-        <div>
+          <div></div>
           <div className="flex space-x-2 items-center my-5">
             <LayoutDashboard className="h-8 w-8" />
             <div>
@@ -80,55 +87,48 @@ export default function UserProfile({ studentData }) {
             ✓ Save
           </Button>
         </div>
-        <div className="bg-violet-100 rounded-md m-5 p-5">
-          <div className="flex items-center space-x-2 my-2 bg-purple-300 w-fit p-1 rounded-4xl">
-            <div className="bg-purple-600 h-2 w-2 rounded-full"></div>
-            <h1 className="text-xs font-sans font-medium">In Progress</h1>
-          </div>
-          <h1 className="font-sans text-xl font-medium">
-            Powered by AI, Edit, Reformat and Fix Your Resume
-          </h1>
-          <ul className="font-sans mt-5 font-light">
-            <li>🧠 Tailor your Resume with Keywords</li>
-            <li>🧾Get Specific Feedback on Your Resume for Each Lab</li>
-            <li>📄 Build Beautiful Resumes with LaTeX without Knowing LateX</li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="space-y-2 mt-6 border-t-1 py-6">
-        <h1 className="text-lg font-semibold mb-5">Notifications</h1>
-        <div className=" flex space-x-10">
-          <div
-            className={`border ${
-              enabled ? "border-black" : "border-gray-200"
-            } flex justify-center w-fit items-center p-4 space-x-4 rounded-md cursor-pointer shadow-sma`}
-            onClick={() => setEnabled(!enabled)}
-          >
-            <Mail />
+        <div className="space-y-2 mt-6 border-l-1 p-12 font-sans">
+          <div className="flex space-x-2 items-center my-5">
+            <Bell className="h-8 w-8" />
             <div>
-              <h2 className="font-semibold">Email Messages</h2>
-              <p className="text-sm">Receive a one-time passcode</p>
-              <p className="text-sm">via SMS each time you login</p>
+              <h1 className="font-semibold text-sm">Notification Settings</h1>
+              <h2 className="text-gray-500 text-xs">
+                Get Updated on the Latest Postings
+              </h2>
             </div>
-            <Switch checked={enabled} onCheckedChange={setEnabled} />
           </div>
-          <div
-            className={`border ${
-              enabled ? "border-black" : "border-gray-200"
-            } flex justify-center w-fit items-center p-4 space-x-4 rounded-md cursor-pointer shadow-sma`}
-            onClick={() => setEnabled(!enabled)}
-          >
-            <Mail />
-            <div>
-              <h2 className="font-semibold">Email Messages</h2>
-              <p className="text-sm">Receive a one-time passcode</p>
-              <p className="text-sm">via SMS each time you login</p>
+          <div className="space-x-10 space-y-12">
+            <div
+              className={`border ${
+                enabled ? "border-black" : "border-gray-200"
+              } flex justify-center w-fit items-center p-4 space-x-4 rounded-md cursor-pointer shadow-sma`}
+              onClick={() => setEnabled(!enabled)}
+            >
+              <Mail />
+              <div>
+                <h2 className="font-semibold">Email Messages</h2>
+                <p className="text-sm">Receive a one-time passcode</p>
+                <p className="text-sm">via SMS each time you login</p>
+              </div>
+              <Switch checked={enabled} onCheckedChange={setEnabled} />
             </div>
-            <Switch checked={enabled} onCheckedChange={setEnabled} />
+            <div
+              className={`border ${
+                enabled ? "border-black" : "border-gray-200"
+              } flex justify-center w-fit items-center p-4 space-x-4 rounded-md cursor-pointer shadow-sma`}
+              onClick={() => setEnabled(!enabled)}
+            >
+              <Mail />
+              <div>
+                <h2 className="font-semibold">Email Messages</h2>
+                <p className="text-sm">Receive a one-time passcode</p>
+                <p className="text-sm">via SMS each time you login</p>
+              </div>
+              <Switch checked={enabled} onCheckedChange={setEnabled} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -19,11 +19,12 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/shadcomponents/ui/carousel"
+} from "@/shadcomponents/ui/carousel";
 
 import { AppSidebar } from "../components/sidebar";
 import columns from "../components/repository/columns";
 import { DataTable } from "../components/repository/data-table";
+import Recommendations from "../components/repository/recommendations";
 
 export default async function Repository() {
   const serverData = await fetch("http://localhost:8080/Taishan/");
@@ -52,14 +53,15 @@ export default async function Repository() {
 
         <div className="flex-1 overflow-y-auto">
           <div className="flex flex-col">
-            
             <div className="border-b-1 space-y-2">
               <h1 className="text-2xl font-sans font-semibold px-6 pt-6">
                 You Might Be Interested In...
               </h1>
               <p className="text-muted-foreground px-6 pb-6 font-sans">
-              We've curated a few suggestions that align with your research interests—take a look!
+                We've curated a few suggestions that align with your research
+                interests—take a look!
               </p>{" "}
+              <Recommendations />
             </div>
             <div className="border-b-1 space-y-2">
               <h1 className="text-2xl font-sans font-semibold px-6 pt-6">

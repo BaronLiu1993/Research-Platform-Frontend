@@ -16,7 +16,6 @@ import {
 export default async function Bookmark() {
   const cookieStore = await cookies();
   const user_id = cookieStore.get("user_id");
-  console.log(user_id)
   return (
     <SidebarProvider>
       <AppSidebar />
