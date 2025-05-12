@@ -15,7 +15,6 @@ export default async function ParseResume(pdfFile, keywordsObj) {
     });
     return response.data;
   } catch (error) {
-    console.error(error);
     return null;
   }
 }
