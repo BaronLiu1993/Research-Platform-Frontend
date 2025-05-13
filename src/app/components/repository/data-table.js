@@ -70,7 +70,7 @@ export function DataTable({ columns, data }) {
           }
           className="max-w-xs font-sans text-sm"
         />
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex flex-wrap gap-2 items-center py-2">
           <p className="text-xs font-sans bg-purple-100 text-purple-600 px-2 py-1 rounded-md border border-purple-200 flex items-center">
             <Info className="w-4 h-4 mr-1" />
             Sorted By:{" "}
@@ -108,7 +108,7 @@ export function DataTable({ columns, data }) {
                   </DropdownMenuCheckboxItem>
                 ))}
             </DropdownMenuContent>
-          </DropdownMenu>S
+          </DropdownMenu>
         </div>
       </div>
 
@@ -151,7 +151,7 @@ export function DataTable({ columns, data }) {
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="px-2 py-2 text-sm">
+                  <TableCell key={cell.id} className="px-2 py-2 text-md font-semibold">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
