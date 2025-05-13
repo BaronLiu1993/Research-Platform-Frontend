@@ -11,6 +11,7 @@ export default function KanbanButton({
   professor_school,
   professor_faculty,
   professor_department,
+  user_id
 }) {
   const handleClick = async () => {
     await saveToKanban(
@@ -20,7 +21,8 @@ export default function KanbanButton({
       professor_school,
       professor_faculty,
       professor_department,
-      "" // comments
+      user_id,
+      "" 
     );
   };
 

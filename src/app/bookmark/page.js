@@ -38,7 +38,7 @@ export default async function Bookmark() {
 
         <div className="flex flex-1 overflow-y-auto font-sans">
           <div className="w-full flex p-6 space-x-6">
-            <Kanban userID={user_id} />
+            <Kanban user_id={user_id} />
           </div>
         </div>
       </SidebarInset>

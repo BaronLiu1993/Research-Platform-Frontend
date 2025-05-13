@@ -5,8 +5,10 @@ export async function saveToKanban(
     professor_school,
     professor_faculty,
     professor_department,
+    user_id,
     comments 
   ) {
+    
     const data = {
       professor_data: {
         name: professor_name || "",
@@ -15,13 +17,12 @@ export async function saveToKanban(
         school: professor_school || "",
         faculty: professor_faculty || "",
         department: professor_department || "",
-        comments: "", 
+        comments: comments || "", 
       },
-    };
-  
+    };  
     try {
       const response = await fetch(
-        "http://localhost:8080/kanban/add-in-progress",
+        `http://localhost:8080/kanban/add-in-progress/${user_id.value}`,
         {
           method: "POST",
           headers: {
@@ -29,14 +30,12 @@ export async function saveToKanban(
           },
           body: JSON.stringify(data),
         }
-      );
-  
+      );  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
   
       const result = await response.json();
-      console.log("Success:", result);
       return result;
     } catch (error) {
       console.error("Failed to post professor data:", error);

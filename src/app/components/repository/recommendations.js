@@ -10,11 +10,7 @@ import {
 
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Button } from "@/shadcomponents/ui/button";
-
-import { Book, Bookmark } from "lucide-react";
-
 import KanbanButton from "./kanbanbutton";
-import Kanban from "../bookmark/kanban";
 
 export default async function Recommendations() {
   const cookieStore = await cookies();
@@ -55,6 +51,7 @@ export default async function Recommendations() {
                         professor_school={response.school}
                         professor_faculty={response.faculty}
                         professor_department={response.department}
+                        user_id = {user_id}
                       />
                     </div>
                     <h2 className="text-xs text-purple-500 font-semibold">

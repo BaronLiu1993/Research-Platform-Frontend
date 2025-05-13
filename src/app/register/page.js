@@ -33,12 +33,10 @@ export default function Register() {
 
     try {
       const response = await handleRegister(formData);
-      console.log(response)
       setSubmitted(true);
     } catch (err) {
       const message = err?.message || "Registration failed. Please try again.";
       setError(message);
-      console.error("Registration failed:", err);
     }
   };
 

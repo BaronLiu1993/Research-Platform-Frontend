@@ -8,9 +8,9 @@ import { Badge } from "@/shadcomponents/ui/badge";
 
 import { EllipsisVertical } from "lucide-react";
 
-export default async function Kanban({ userID }) {
+export default async function Kanban({ user_id }) {
   const serverData = await fetch(
-    `http://localhost:8080/kanban/get-all-or-create/${userID}`,
+    `http://localhost:8080/kanban/get-all-or-create/${user_id.value}`,
     {
       method: "GET",
       headers: {
