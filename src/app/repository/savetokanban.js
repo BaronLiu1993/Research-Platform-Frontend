@@ -1,4 +1,5 @@
 export async function saveToKanban(
+    professor_id,
     professor_name,
     professor_url,
     professor_research_interests,
@@ -11,6 +12,7 @@ export async function saveToKanban(
     
     const data = {
       professor_data: {
+        id: professor_id || null,
         name: professor_name || "",
         url: professor_url || "",
         research_interests: professor_research_interests || [""],

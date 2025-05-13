@@ -5,6 +5,7 @@ import { Bookmark } from "lucide-react";
 import { saveToKanban } from "@/app/repository/savetokanban";
 
 export default function KanbanButton({
+  professor_id,
   professor_name,
   professor_url,
   professor_research_interests,
@@ -15,6 +16,7 @@ export default function KanbanButton({
 }) {
   const handleClick = async () => {
     await saveToKanban(
+      professor_id,
       professor_name,
       professor_url,
       professor_research_interests,

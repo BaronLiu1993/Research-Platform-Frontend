@@ -36,6 +36,7 @@ export default async function Recommendations() {
           className="font-sans"
         >
           <CarouselContent className="gap-1 flex">
+
             {responses.matches.map((response, index) => (
               <CarouselItem
                 key={index}
@@ -45,6 +46,7 @@ export default async function Recommendations() {
                   <div className="space-y-2">
                     <div className="flex justify-end">
                       <KanbanButton
+                        professor_id={response.professor_id}
                         professor_name={response.name}
                         professor_url={response.url}
                         professor_research_interests={response.research_interests}
