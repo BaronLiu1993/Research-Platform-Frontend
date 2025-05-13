@@ -41,7 +41,6 @@ const columns = [
     header: "",
     cell: ({ row }) => {
       const data = row.original;
-      console.log(data.user_id)
       return (
       <h1>
         <DropdownMenu className="font-sans">

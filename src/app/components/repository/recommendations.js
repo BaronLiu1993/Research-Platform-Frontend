@@ -13,6 +13,9 @@ import { Button } from "@/shadcomponents/ui/button";
 
 import { Book, Bookmark } from "lucide-react";
 
+import KanbanButton from "./kanbanbutton";
+import Kanban from "../bookmark/kanban";
+
 export default async function Recommendations() {
   const cookieStore = await cookies();
   const user_id = cookieStore.get("user_id");
@@ -45,14 +48,14 @@ export default async function Recommendations() {
                 <div className="shadow-md max-w-[20rem] border rounded-md p-3 h-full flex flex-col justify-between space-y-3">
                   <div className="space-y-2">
                     <div className="flex justify-end">
-                      <Button
-                        className="bg-gray-50 text-gray-500 border hover:bg-gray-100"
-                        variant="outline"
-                        size="sm"
-                      >
-                        <span className="text-xs mr-1">Save</span>
-                        <Bookmark className="w-3 h-3" />
-                      </Button>
+                      <KanbanButton
+                        professor_name={response.name}
+                        professor_url={response.url}
+                        professor_research_interests={response.research_interests}
+                        professor_school={response.school}
+                        professor_faculty={response.faculty}
+                        professor_department={response.department}
+                      />
                     </div>
                     <h2 className="text-xs text-purple-500 font-semibold">
                       {response.school}
@@ -76,7 +79,6 @@ export default async function Recommendations() {
                       size="sm"
                     >
                       <span className="text-xs mr-1">Apply</span>
-                      <Bookmark className="w-3 h-3" />
                     </Button>
                   </div>
                 </div>
