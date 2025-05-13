@@ -45,12 +45,12 @@ const data = {
       items: [
         {
           title: "Research",
-          url: "#",
+          url: "/repository",
           icon: <Library />,
         },
         {
           title: "Dashboard",
-          url: "#",
+          url: "/dashboard",
           icon: <LayoutDashboard />,
         },
         {
