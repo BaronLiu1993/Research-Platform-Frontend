@@ -6,8 +6,6 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
-  ColumnFiltersState,
-  VisibilityState,
   getFilteredRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
@@ -15,19 +13,14 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/shadcomponents/ui/pagination";
 
-import { Info } from "lucide-react";
-
+import { Info, ChevronDown } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
-
-import { ChevronDown } from "lucide-react";
-
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -61,89 +54,71 @@ export function DataTable({ columns, data }) {
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     getPaginationRowModel: getPaginationRowModel(),
-
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-    },
+    state: { sorting, columnFilters, columnVisibility },
   });
 
   return (
-    <div className="rounded-md">
-      <div className="flex items-center p-4">
-        <div className="space-y-3">
-          <Input
-            placeholder="Filter research interests..."
-            value={
-              table.getColumn("research_interests")?.getFilterValue() ?? ""
-            }
-            onChange={(event) =>
-              table
-                .getColumn("research_interests")
-                ?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm font-sans"
-          />
-          <div className="flex space-x-2">
-            <p className="border-1 p-1 text-xs font-sans rounded-md bg-purple-100 text-purple-500 flex items-center border-purple-200">
-              <Info className="w-6 h-6 p-1 text-purple-500" />
-              <span>Sorted By:</span>
-              <span className="ml-1 text-purple-600 font-bold">
-                Research Interests
-              </span>
-            </p>
+    <div className="rounded-md px-4 py-2">
+      <div className="flex flex-col gap-2 pb-2">
+        <Input
+          placeholder="Filter research interests..."
+          value={table.getColumn("research_interests")?.getFilterValue() ?? ""}
+          onChange={(event) =>
+            table
+              .getColumn("research_interests")
+              ?.setFilterValue(event.target.value)
+          }
+          className="max-w-xs font-sans text-sm"
+        />
+        <div className="flex flex-wrap gap-2 items-center">
+          <p className="text-xs font-sans bg-purple-100 text-purple-600 px-2 py-1 rounded-md border border-purple-200 flex items-center">
+            <Info className="w-4 h-4 mr-1" />
+            Sorted By:{" "}
+            <span className="ml-1 font-bold">Research Interests</span>
+          </p>
 
-            <Badge className="bg-white border-1 border-gray-200 text-gray-400">
-              Faculty
-              <ChevronDown />
-            </Badge>
-            <Badge className="bg-white border-1 border-gray-200 text-gray-400">
-              Department
-              <ChevronDown />
-            </Badge>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Badge
-                  variant="outline"
-                  className="ml-auto font-sans text-gray-400 border-gray-200"
-                >
-                  Columns
-                  <ChevronDown />
-                </Badge>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table
-                  .getAllColumns()
-                  .filter((column) => column.getCanHide())
-                  .map((column) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
-                      >
-                        {column.id}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <Badge className="bg-white border text-gray-500 px-2 py-1">
+            Faculty <ChevronDown className="w-3 h-3 ml-1" />
+          </Badge>
+          <Badge className="bg-white border text-gray-500 px-2 py-1">
+            Department <ChevronDown className="w-3 h-3 ml-1" />
+          </Badge>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Badge
+                variant="outline"
+                className="text-gray-500 border px-2 py-1"
+              >
+                Columns <ChevronDown className="w-3 h-3 ml-1" />
+              </Badge>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((col) => col.getCanHide())
+                .map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(val) => column.toggleVisibility(!!val)}
+                    className="capitalize"
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
+            </DropdownMenuContent>
+          </DropdownMenu>S
         </div>
       </div>
 
-      <Table className="border-1 rounded-md">
+      <Table className="text-sm w-full">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 const canSort = header.column.getCanSort();
-                const sortDirection = header.column.getIsSorted();
-
+                const sortDir = header.column.getIsSorted();
                 return (
                   <TableHead
                     key={header.id}
@@ -152,15 +127,17 @@ export function DataTable({ columns, data }) {
                         ? header.column.getToggleSortingHandler()
                         : undefined
                     }
-                    className={canSort ? "cursor-pointer select-none" : ""}
+                    className={
+                      canSort ? "cursor-pointer select-none text-xs" : "text-xs"
+                    }
                   >
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-                    {sortDirection === "asc"
+                    {sortDir === "asc"
                       ? " 🔼"
-                      : sortDirection === "desc"
+                      : sortDir === "desc"
                       ? " 🔽"
                       : ""}
                   </TableHead>
@@ -172,12 +149,9 @@ export function DataTable({ columns, data }) {
         <TableBody>
           {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} className="p-4">
+              <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className="px-4 py-6 font-sans font-light"
-                  >
+                  <TableCell key={cell.id} className="px-2 py-2 text-sm">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -187,7 +161,7 @@ export function DataTable({ columns, data }) {
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="h-24 text-center font-sans"
+                className="text-center text-xs py-6"
               >
                 No results.
               </TableCell>
@@ -196,10 +170,9 @@ export function DataTable({ columns, data }) {
         </TableBody>
       </Table>
 
-      <div className="flex flex-col items-end justify-end space-y-2 py-4">
-
+      <div className="flex justify-end mt-2">
         <Pagination>
-          <PaginationContent>
+          <PaginationContent className="gap-1">
             <PaginationItem>
               <PaginationPrevious
                 href="#"
@@ -224,13 +197,14 @@ export function DataTable({ columns, data }) {
                     e.preventDefault();
                     table.setPageIndex(i);
                   }}
+                  className="text-xs"
                 >
                   {i + 1}
                 </PaginationLink>
               </PaginationItem>
             ))}
 
-            <PaginationItem className = "rounded-md">
+            <PaginationItem>
               <PaginationNext
                 href="#"
                 onClick={(e) => {
