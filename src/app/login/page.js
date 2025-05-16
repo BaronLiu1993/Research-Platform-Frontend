@@ -12,7 +12,6 @@ export default function Login() {
     const form = e.target
     const email = (form.email).value
     const password = (form.password).value
-
     try {
       const response = await fetch('http://localhost:8080/auth/login', {
         method: 'POST',
@@ -29,7 +28,6 @@ export default function Login() {
         credentials: 'include',
       })
 
-      console.log(followUp)
       if (followUp.ok) {
         setSuccess(true)
         router.push("/repository"); 

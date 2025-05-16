@@ -27,32 +27,11 @@ import { AppSidebar } from "@/app/components/sidebar";
 
 import { Separator } from "@/shadcomponents/ui/separator";
 
-export default function resume({}) {
-  const searchParams = useSearchParams();
-  const search = searchParams.get("url");
+export default function resume() {
   const router = useRouter();
-  const [data, setData] = useState({});
-  const [researchInterests, setResearchInterests] = useState({});
-  const [professorEmail, setProfessorEmail] = useState({});
-  const [professorName, setProfessorName] = useState({});
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const professor_url = search;
-        const response = await getProfessorData({ url: professor_url });
-        setData(response);
-        setProfessorName(response.name);
-        setProfessorEmail(response.email);
-        setResearchInterests(response.research_interests);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [search]);
-
+  const query = router.query()
+  const research_interests = query.research_interests
+  console.log(research_interests)
   const handleSendDataToEmail = (url) => {
     router.push(
       `/email?url=${encodeURIComponent(

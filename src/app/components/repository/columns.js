@@ -204,7 +204,10 @@ const columns = [
 
             <DialogFooter>
               <Link
-                href={`/resume?url=${encodeURIComponent(data.url)}`}
+                href={{
+                  pathname: `/resume/${data.name}`,
+                  query: data.research_interests
+                }}
                 className="w-full flex justify-end"
               >
                 <Button className="">
