@@ -1,3 +1,4 @@
+// EmploymentWordProcessor.jsx or .tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -13,28 +14,28 @@ import {
 
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
-export default function EmploymentWordProcessor({ content }) {
+export default function EmploymentWordProcessor({ value, onChange, id }) {
   const [aiTyping, setAiTyping] = useState(false);
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Highlight.configure({ multicolor: true }),
-    ],
-    immediatelyRender: false,
-    content,
+    extensions: [StarterKit, Highlight.configure({ multicolor: true })],
+    content: value || "",
     editorProps: {
       attributes: {
         class: "min-h-[156px] font-light text-sm py-2 px-3 font-sans",
       },
     },
+    onUpdate({ editor }) {
+      const html = editor.getHTML();
+      onChange?.(html); 
+    },
   });
 
   useEffect(() => {
-    if (editor) {
-      editor.commands.setContent(content);
+    if (editor && value !== editor.getHTML()) {
+      editor.commands.setContent(value || "");
     }
-  }, [content, editor]);
+  }, [value]);
 
   const handleAIRewrite = async () => {
     const selection = editor.state.selection;
@@ -48,33 +49,22 @@ export default function EmploymentWordProcessor({ content }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         text: selectedText,
-        style: "Make this more professional and fix grammar"
+        style: "Make this more professional and fix grammar",
       }),
     });
 
     const data = await response.json();
     const aiText = data.result;
+
     if (!aiText) {
       setAiTyping(false);
       return;
     }
 
-    editor.chain().focus().deleteRange({ from: selection.from, to: selection.to }).run();
-
-    let typed = "";
-    for (let i = 0; i < aiText.length; i++) {
-      typed += aiText[i];
-      editor.chain()
-        .focus()
-        .deleteRange({ from: selection.from, to: selection.from + typed.length })
-        .insertContentAt(selection.from, `<mark class="bg-yellow-100">${typed}</mark>`)
-        .run();
-
-      await new Promise((res) => setTimeout(res, 10));
-    }
-
+    editor.chain().focus().deleteRange({ from: selection.from, to: selection.to }).insertContent(aiText).run();
     setAiTyping(false);
   };
+
   if (!editor) {
     return (
       <div className="min-h-[156px] w-full p-4">
@@ -101,11 +91,6 @@ export default function EmploymentWordProcessor({ content }) {
               value="bold"
               aria-label="Toggle bold"
               onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`py-1 text-xs transition ${
-                editor.isActive("bold")
-                  ? "bg-gray-200 text-white"
-                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
-              }`}
             >
               <Bold />
             </ToggleGroupItem>
@@ -114,11 +99,6 @@ export default function EmploymentWordProcessor({ content }) {
               value="italic"
               aria-label="Toggle italic"
               onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={`py-1 text-xs transition ${
-                editor.isActive("italic")
-                  ? "bg-gray-200 text-white"
-                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
-              }`}
             >
               <Italic />
             </ToggleGroupItem>
@@ -127,11 +107,6 @@ export default function EmploymentWordProcessor({ content }) {
               value="underline"
               aria-label="Toggle underline"
               onClick={() => editor.chain().focus().toggleStrike().run()}
-              className={`py-1 text-xs transition ${
-                editor.isActive("bold")
-                  ? "bg-gray-200 text-white"
-                  : "bg-gray-200 text-black border-gray-300 hover:bg-gray-100"
-              }`}
             >
               <Underline />
             </ToggleGroupItem>

@@ -56,6 +56,13 @@ export default function Editor({
     }));
   };
 
+  const handleProjectUpdate = (updatedProjectsArray) => {
+    setResumeData(prev => ({
+      ...prev,
+      projects: updatedProjectsArray
+    }));
+  };
+
   const pages = [
     {
       component: (
@@ -67,8 +74,13 @@ export default function Editor({
       name: "Employment",
     },
     {
-      component: <Projects project_data={student_projects} />,
-      name: "Projects",
+      component: (
+        <Projects 
+          projectArray={resumeData.projects}  
+          onProjectsArrayChange={handleProjectUpdate}
+        />
+      ),
+      name: "Projects"
     },
     { component: <Contact contact_data={student_contact} />, name: "Contact" },
     {

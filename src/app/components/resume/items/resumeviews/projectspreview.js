@@ -5,7 +5,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 export function ProjectsPreview({ projects }) {
-  const content = useMemo(() => {
+    const content = useMemo(() => {
     const doc = { type: "doc", content: [] };
     if (projects.length) {
       doc.content.push({ type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "PROJECTS" }] });

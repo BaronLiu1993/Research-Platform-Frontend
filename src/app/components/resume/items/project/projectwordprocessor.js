@@ -13,32 +13,8 @@ import { ToggleGroup, ToggleGroupItem } from '@/shadcomponents/ui/toggle-group';
 import { Skeleton } from '@/shadcomponents/ui/skeleton';
 import { Bold, Italic, Underline, List, CheckSquare } from 'lucide-react';
 
-export default function ProjectWordProcessor({ content, onChange }) {
+export default function ProjectWordProcessor({ value, onChange }) {
   const [aiTyping, setAiTyping] = useState(false);
-
-  const formatBullets = (bullets = []) => ({
-    type: 'doc',
-    content: [
-      {
-        type: 'bulletList',
-        content: bullets.map((text) => ({
-          type: 'listItem',
-          content: [
-            {
-              type: 'paragraph',
-              content: [{ type: 'text', text }],
-            },
-          ],
-        })),
-      },
-    ],
-  });
-
-  const extractBullets = (text = '') =>
-    text
-      .split('\n')
-      .map((line) => line.replace(/^•?\s*/, '').trim())
-      .filter(Boolean);
 
   const editor = useEditor({
     extensions: [
@@ -52,20 +28,25 @@ export default function ProjectWordProcessor({ content, onChange }) {
       TaskItem,
       Highlight.configure({ multicolor: true }),
     ],
-    content: formatBullets(content),
+    content: value || '',
     editorProps: {
       attributes: {
         class:
           'min-h-[156px] font-light text-sm py-2 px-3 font-sans whitespace-pre-line',
       },
     },
+    onUpdate({ editor }) {
+      const html = editor.getHTML();
+      onChange?.(html);
+    },
   });
 
   useEffect(() => {
-    if (editor) {
-      editor.commands.setContent(formatBullets(content));
+    if (editor && value !== editor.getHTML()) {
+      editor.commands.setContent(value || '');
     }
-  }, [content, editor]);
+  }, [value]);
+
   const handleAIRewrite = async () => {
     const selection = editor?.state.selection;
     const selectedText = editor?.state.doc.textBetween(
@@ -75,7 +56,18 @@ export default function ProjectWordProcessor({ content, onChange }) {
     if (!selectedText) return;
 
     setAiTyping(true);
-    const aiText = selectedText; 
+
+    const response = await fetch('http://localhost:8000/ai-edit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: selectedText,
+        style: 'Rewrite this text clearly and concisely in bullet-point format.',
+      }),
+    });
+
+    const data = await response.json();
+    const aiText = data.result || selectedText;
 
     editor
       ?.chain()
@@ -147,9 +139,7 @@ export default function ProjectWordProcessor({ content, onChange }) {
             <ToggleGroupItem
               value="bulletList"
               aria-label="Toggle bullet list"
-              onClick={() =>
-                editor.chain().focus().toggleBulletList().run()
-              }
+              onClick={() => editor.chain().focus().toggleBulletList().run()}
               className={`py-1 px-2 text-xs ${
                 editor.isActive('bulletList')
                   ? 'bg-black text-white'
@@ -161,9 +151,7 @@ export default function ProjectWordProcessor({ content, onChange }) {
             <ToggleGroupItem
               value="taskList"
               aria-label="Toggle task list"
-              onClick={() =>
-                editor.chain().focus().toggleTaskList().run()
-              }
+              onClick={() => editor.chain().focus().toggleTaskList().run()}
               className={`py-1 px-2 text-xs ${
                 editor.isActive('taskList')
                   ? 'bg-black text-white'

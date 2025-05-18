@@ -1,45 +1,54 @@
 "use client";
 
-import { useState, useEffect, useTransition } from "react";
+import { useState, useEffect, useTransition, useRef, useCallback } from "react";
 import { Button } from "@/shadcomponents/ui/button";
 import { Info, Trash2, GripVertical } from "lucide-react";
 import EmploymentForm from "./employmentform";
 
+const debounce = (fn, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+};
+
 export default function EmploymentSection({ experienceArray, onExperienceArrayChange }) {
   const [isPending, startTransition] = useTransition();
   const [localExperienceForms, setLocalExperienceForms] = useState([]);
-  
+  const debouncedUpdateParent = useRef(
+    debounce((updatedForms) => {
+      startTransition(() => {
+        const cleaned = updatedForms.map(({ _localId, key, ...d }) => d);
+        onExperienceArrayChange(cleaned);
+      });
+    }, 300)
+  ).current;
+
   useEffect(() => {
     setLocalExperienceForms(prev => {
-      const map = Object.fromEntries(prev.map(f => [f.key, f]));      
+      const map = Object.fromEntries(prev.map(f => [f.key, f]));
       return experienceArray.map((exp, i) => {
         const key = exp.id ?? i;
         if (map[key]) return map[key];
         return { 
           ...exp, 
           key, 
-          _localId: `exp-${key}-${Date.now()}` 
+          _localId: `exp-${key}` 
         };
       });
     });
   }, [experienceArray]);
-  
-  const strip = ({ _localId, key, ...d }) => d;
-  
-  const scheduleParentUpdate = (updatedForms) => {
-    const cleaned = updatedForms.map(strip);
-    startTransition(() => {
-      onExperienceArrayChange(cleaned);
-    });
-  };
 
-  const handleChange = (localId, updatedFields) => {
-    const updatedForms = localExperienceForms.map(form =>
-      form._localId === localId ? { ...form, ...updatedFields } : form
-    );
-    setLocalExperienceForms(updatedForms);
-    scheduleParentUpdate(updatedForms);
-  };
+  const handleChange = useCallback((localId, updatedFields) => {
+    setLocalExperienceForms(prevForms => {
+      const updatedForms = prevForms.map(form =>
+        form._localId === localId ? { ...form, ...updatedFields } : form
+      );
+      debouncedUpdateParent(updatedForms);
+      return updatedForms;
+    });
+  }, [debouncedUpdateParent]);
 
   const handleAddExperience = () => {
     const newForm = {
@@ -54,13 +63,17 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
     };
     const updatedForms = [...localExperienceForms, newForm];
     setLocalExperienceForms(updatedForms);
-    scheduleParentUpdate(updatedForms);
+    startTransition(() => {
+      debouncedUpdateParent(updatedForms);
+    })
   };
 
   const handleRemoveExperience = (localId) => {
     const updatedForms = localExperienceForms.filter(f => f._localId !== localId);
     setLocalExperienceForms(updatedForms);
-    scheduleParentUpdate(updatedForms);
+    startTransition(() => {
+      debouncedUpdateParent(updatedForms);
+    })
   };
 
   return (
@@ -76,7 +89,7 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
         </p>
       </div>
       
-      {localExperienceForms.map((experienceWithId, index) => (
+      {localExperienceForms.map((experienceWithId) => (
         <div key={experienceWithId._localId} className="flex justify-center items-center space-x-2">
           <GripVertical className="h-4 w-4 text-gray-400" />
           <div className="flex-grow">

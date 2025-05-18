@@ -8,6 +8,8 @@ import { ContactPreview } from "./items/resumeviews/contactspreview";;
 import { InfoPreview } from "./items/resumeviews/infopreview";;
 
 function ResumeDisplayWrapperInner({ resume }) {
+  console.log("Received resume data:", resume); // ✅ Use this to debug
+
   return (
     <div className="prose-mirror-editor font-sans text-[10pt] leading-normal">
       {/*<NameHeader 
@@ -23,6 +25,7 @@ function ResumeDisplayWrapperInner({ resume }) {
 }
 
 const ResumeDisplayWrapper = React.memo(ResumeDisplayWrapperInner, (a, b) => {
+  
   return (
     a.resume.experience === b.resume.experience &&
     a.resume.projects === b.resume.projects &&
