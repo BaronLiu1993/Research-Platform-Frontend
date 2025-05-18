@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { Button } from "@/shadcomponents/ui/button";
 import { Info, Trash2, GripVertical } from "lucide-react";
 import EmploymentForm from "./employmentform";
 
 export default function EmploymentSection({ experienceArray, onExperienceArrayChange }) {
+  const [isPending, startTransition] = useTransition();
   const [localExperienceForms, setLocalExperienceForms] = useState([]);
   
   useEffect(() => {
@@ -25,20 +26,23 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
   
   const strip = ({ _localId, key, ...d }) => d;
   
-  const handleChange = (localId, updatedFormData) => {
-    const updatedForms = localExperienceForms.map(form => 
-      form._localId === localId ? { ...form, ...updatedFormData } : form
-    );
-    
-    setLocalExperienceForms(updatedForms);
-    
-    const cleanedData = updatedForms.map(strip);
-    onExperienceArrayChange(cleanedData);
+  const scheduleParentUpdate = (updatedForms) => {
+    const cleaned = updatedForms.map(strip);
+    startTransition(() => {
+      onExperienceArrayChange(cleaned);
+    });
   };
-  
-  // Handler for adding a new experience
+
+  const handleChange = (localId, updatedFields) => {
+    const updatedForms = localExperienceForms.map(form =>
+      form._localId === localId ? { ...form, ...updatedFields } : form
+    );
+    setLocalExperienceForms(updatedForms);
+    scheduleParentUpdate(updatedForms);
+  };
+
   const handleAddExperience = () => {
-    const newExperienceEntry = {
+    const newForm = {
       job_title: "",
       company: "",
       location: "",
@@ -48,27 +52,15 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
       _localId: `exp-new-${Date.now()}`,
       key: `new-${Date.now()}`
     };
-    
-    // Update local state first
-    const updatedForms = [...localExperienceForms, newExperienceEntry];
+    const updatedForms = [...localExperienceForms, newForm];
     setLocalExperienceForms(updatedForms);
-    
-    // Then notify parent with cleaned data
-    const cleanedData = updatedForms.map(strip);
-    onExperienceArrayChange(cleanedData);
+    scheduleParentUpdate(updatedForms);
   };
-  
-  // Handler for removing an experience
-  const handleRemoveExperience = (formLocalId) => {
-    // Update local state first
-    const updatedForms = localExperienceForms.filter(form => 
-      form._localId !== formLocalId
-    );
+
+  const handleRemoveExperience = (localId) => {
+    const updatedForms = localExperienceForms.filter(f => f._localId !== localId);
     setLocalExperienceForms(updatedForms);
-    
-    // Then notify parent with cleaned data
-    const cleanedData = updatedForms.map(strip);
-    onExperienceArrayChange(cleanedData);
+    scheduleParentUpdate(updatedForms);
   };
 
   return (

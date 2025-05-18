@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { Input } from "@/shadcomponents/ui/input";
 import { Label } from "@/shadcomponents/ui/label";
 import EmploymentWordProcessor from "./employmentwordprocessor";
@@ -14,7 +14,7 @@ import {
 } from "@/shadcomponents/ui/accordion";
 
 export default function EmploymentForm({ id, data, onChange }) {
-  
+  const [isPending, startTransition] = useTransition();
   const [formData, setFormData] = useState({
     job_title: "",
     company: "",
