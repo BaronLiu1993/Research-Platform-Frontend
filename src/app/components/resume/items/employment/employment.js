@@ -1,54 +1,74 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import EmploymentForm from "./employmentform";
 import { Button } from "@/shadcomponents/ui/button";
 import { Info, Trash2, GripVertical } from "lucide-react";
+import EmploymentForm from "./employmentform";
 
-export default function ExperienceSection({ experienceArray, onExperienceArrayChange }) {
+export default function EmploymentSection({ experienceArray, onExperienceArrayChange }) {
   const [localExperienceForms, setLocalExperienceForms] = useState([]);
-
+  
   useEffect(() => {
-    setLocalExperienceForms(
-      experienceArray.map((exp, index) => ({
-        ...exp,
-        _localId: exp.id || `exp-${Date.now()}-${index}`,
-      }))
-    );
+    setLocalExperienceForms(prev => {
+      const map = Object.fromEntries(prev.map(f => [f.key, f]));      
+      return experienceArray.map((exp, i) => {
+        const key = exp.id ?? i;
+        if (map[key]) return map[key];
+        return { 
+          ...exp, 
+          key, 
+          _localId: `exp-${key}-${Date.now()}` 
+        };
+      });
+    });
   }, [experienceArray]);
-
-  const stripLocalId = (formWithId) => {
-    const { _localId, ...data } = formWithId;
-    return data;
+  
+  const strip = ({ _localId, key, ...d }) => d;
+  
+  const handleChange = (localId, updatedFormData) => {
+    const updatedForms = localExperienceForms.map(form => 
+      form._localId === localId ? { ...form, ...updatedFormData } : form
+    );
+    
+    setLocalExperienceForms(updatedForms);
+    
+    const cleanedData = updatedForms.map(strip);
+    onExperienceArrayChange(cleanedData);
   };
-
+  
+  // Handler for adding a new experience
   const handleAddExperience = () => {
-    const newExperienceEntryRaw = {
+    const newExperienceEntry = {
       job_title: "",
       company: "",
       location: "",
       start_date: "",
       end_date: "",
       description: [""],
+      _localId: `exp-new-${Date.now()}`,
+      key: `new-${Date.now()}`
     };
-    const updatedDataArray = [...localExperienceForms.map(stripLocalId), newExperienceEntryRaw];
-    onExperienceArrayChange(updatedDataArray);
+    
+    // Update local state first
+    const updatedForms = [...localExperienceForms, newExperienceEntry];
+    setLocalExperienceForms(updatedForms);
+    
+    // Then notify parent with cleaned data
+    const cleanedData = updatedForms.map(strip);
+    onExperienceArrayChange(cleanedData);
   };
-
-  const handleFormChange = (formLocalId, changedFields) => {
-    const updatedDataArray = localExperienceForms.map((form) =>
-      form._localId === formLocalId
-        ? stripLocalId({ ...form, ...changedFields })
-        : stripLocalId(form)
-    );
-    onExperienceArrayChange(updatedDataArray);
-  };
-
+  
+  // Handler for removing an experience
   const handleRemoveExperience = (formLocalId) => {
-    const updatedDataArray = localExperienceForms
-      .filter((form) => form._localId !== formLocalId)
-      .map(stripLocalId);
-    onExperienceArrayChange(updatedDataArray);
+    // Update local state first
+    const updatedForms = localExperienceForms.filter(form => 
+      form._localId !== formLocalId
+    );
+    setLocalExperienceForms(updatedForms);
+    
+    // Then notify parent with cleaned data
+    const cleanedData = updatedForms.map(strip);
+    onExperienceArrayChange(cleanedData);
   };
 
   return (
@@ -63,16 +83,16 @@ export default function ExperienceSection({ experienceArray, onExperienceArrayCh
           <span className="text-purple-500">Click Here To See Our Tips for Using AI</span>
         </p>
       </div>
-
+      
       {localExperienceForms.map((experienceWithId, index) => (
         <div key={experienceWithId._localId} className="flex justify-center items-center space-x-2">
           <GripVertical className="h-4 w-4 text-gray-400" />
           <div className="flex-grow">
             <EmploymentForm
-              data={stripLocalId(experienceWithId)}
-              onChange={(changedFields) =>
-                handleFormChange(experienceWithId._localId, changedFields)
-              }
+              key={experienceWithId._localId}
+              id={experienceWithId._localId}
+              data={experienceWithId}
+              onChange={handleChange}
             />
           </div>
           <Trash2
@@ -81,7 +101,7 @@ export default function ExperienceSection({ experienceArray, onExperienceArrayCh
           />
         </div>
       ))}
-
+      
       <Button
         onClick={handleAddExperience}
         className="rounded-md w-fit bg-purple-400 p-2 text-white font-sans font-semibold mx-6 hover:bg-purple-300"

@@ -21,6 +21,7 @@ export default function EmploymentWordProcessor({ content }) {
       StarterKit,
       Highlight.configure({ multicolor: true }),
     ],
+    immediatelyRender: false,
     content,
     editorProps: {
       attributes: {

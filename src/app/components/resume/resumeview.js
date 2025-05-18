@@ -1,4 +1,39 @@
-import React, { useEffect, useMemo, useState } from "react";
+"use client";
+
+import React from "react";
+import { NameHeader } from "./items/resumeviews/nameheader";
+import { ExperiencePreview } from "./items/resumeviews/experiencepreview";
+import { ProjectsPreview } from "./items/resumeviews/projectspreview";
+import { ContactPreview } from "./items/resumeviews/contactspreview";;
+import { InfoPreview } from "./items/resumeviews/infopreview";;
+
+function ResumeDisplayWrapperInner({ resume }) {
+  return (
+    <div className="prose-mirror-editor font-sans text-[10pt] leading-normal">
+      {/*<NameHeader 
+        name={resume.name} 
+        contact={resume.contact_information} 
+      />*/}
+      <ExperiencePreview experience={resume.experience} />
+      <ProjectsPreview projects={resume.projects} />
+      <ContactPreview contact={resume.contact_information} />
+      <InfoPreview personal={resume.personal_details || {}} />
+    </div>
+  );
+}
+
+const ResumeDisplayWrapper = React.memo(ResumeDisplayWrapperInner, (a, b) => {
+  return (
+    a.resume.experience === b.resume.experience &&
+    a.resume.projects === b.resume.projects &&
+    a.resume.contact_information === b.resume.contact_information  &&
+    a.resume.personal_details === b.resume.personal_details
+  );
+});
+
+export default ResumeDisplayWrapper;
+
+{/*import React, { useEffect, useMemo, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
@@ -197,6 +232,7 @@ export default function ResumeDisplayWrapper({ resume }) {
       TableHeader,
     ],
     content: tiptapContent,
+    immediatelyRender: false,
     editable: false, 
     editorProps: {
       attributes: {
@@ -206,6 +242,7 @@ export default function ResumeDisplayWrapper({ resume }) {
   };
 
   const miniatureEditor = useEditor({
+    immediatelyRender: false,
     ...editorConfig,
     content: {
       type: "doc",
@@ -214,6 +251,7 @@ export default function ResumeDisplayWrapper({ resume }) {
   });
   
   const zoomedEditor = useEditor({
+    immediatelyRender: false,
     ...editorConfig,
     content: {
       type: "doc",
@@ -267,7 +305,7 @@ export default function ResumeDisplayWrapper({ resume }) {
           font-family: Helvetica, Arial, sans-serif;
           color: #212529;
           line-height: 1.45;
-          /* min-height: unset; Remove fixed min-height if it interferes with scaling */
+
         }
         .ProseMirror:focus { outline: none; }
         .ProseMirror h1 { font-size: 20pt; font-weight: 600; text-align: center; margin-bottom: 4px; line-height: 1.2; }
@@ -334,4 +372,4 @@ export default function ResumeDisplayWrapper({ resume }) {
       </div>
     </>
   );
-}
+} */}

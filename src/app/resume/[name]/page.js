@@ -1,12 +1,8 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from 'next/navigation';
 import { useRouter } from "next/navigation";
-import Navbar from "../components/navbar";
-
-import Builder from "../components/resume/builder";
-import getProfessorData from "./resumeapi";
+import Builder from "@/app/components/resume/builder";
 //Scans current resume for all keywords and then builds new resume with latex and the format given
 
 import {
@@ -17,6 +13,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/shadcomponents/ui/breadcrumb";
+
 import {
   SidebarProvider,
   SidebarInset,
@@ -28,21 +25,21 @@ import { AppSidebar } from "@/app/components/sidebar";
 import { Separator } from "@/shadcomponents/ui/separator";
 
 export default function resume() {
-  const router = useRouter();
-  const query = router.query()
-  const research_interests = query.research_interests
-  console.log(research_interests)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const research_interests = searchParams.getAll("research_interests")
   const handleSendDataToEmail = (url) => {
     router.push(
       `/email?url=${encodeURIComponent(
         url
       )}&professor_interests=${encodeURIComponent(
-        researchInterests
+        research_interests
       )}&name=${encodeURIComponent(professorName)}&email=${encodeURIComponent(
         professorEmail
       )}`
     );
   };
+  
 
   // Save a copy of the resume and then it will allow user to name it and that will be there resume for this one
 
@@ -71,10 +68,9 @@ export default function resume() {
             </Breadcrumb>
           </header>
           <div className=" space-x-2 select-none bg-gray-100">
-            
-            <Builder researchInterests={data.research_interests} />
+            <Builder researchInterests={research_interests}/>
           </div>
-          <button onClick={handleSendDataToEmail}>Email Page</button>
+          {/*<button onClick={handleSendDataToEmail}>Email Page</button>*/}
         </SidebarInset>
       </SidebarProvider>
     </>

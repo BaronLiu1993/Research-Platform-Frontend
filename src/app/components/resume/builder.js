@@ -4,7 +4,6 @@ import { useState } from "react";
 import { removeSingleQuoteOrJson } from "@/app/api/fixjson";
 
 import ParseResume from "@/app/resume/parseresume";
-import ResumeView from "./resumeview";
 import Editor from "./editor";
 
 import { FileText } from "lucide-react";
@@ -18,6 +17,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
+import ResumeDisplayWrapper from "./resumeview";
 
 export default function Builder({ researchInterests }) {
   const [resumeFile, setResumeFile] = useState(null);
@@ -35,12 +35,9 @@ export default function Builder({ researchInterests }) {
     }
     const file = resumeFile;
     try {
-      const interests = researchInterests;
-      const resumeDataHTML = await ParseResume(file, interests);
+      const resumeDataHTML = await ParseResume(file);
       const cleanedData = removeSingleQuoteOrJson(resumeDataHTML.result);
       const response = JSON.parse(cleanedData);
-
-      console.log(response);
       setOutputResume(response);
       setExperience(response.experience);
       setContact(response.contact_information);

@@ -15,8 +15,6 @@ import { useState } from "react";
 
 export default function ProjectForm({ data = {}, onChange = () => {} }) {
   const [local, setLocal] = useState(data);
-  console.log(local.bullets);
-
   const handleInput = (e) => {
     const { name, value } = e.target;
     const updated = { ...local, [name]: value };

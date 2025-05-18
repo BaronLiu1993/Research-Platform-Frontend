@@ -6,12 +6,12 @@ import Projects from "./items/project/projects";
 import Contact from "./items/contact/contact";
 import PersonalInfo from "./items/personal/personalinfo";
 import Skills from "./items/skills/skills";
-import Progress from "./progress";
 import PageTabs from "./pagetabs";
-
 import ResumeDisplayWrapper from "./resumeview";
 
 import { Button } from "@/shadcomponents/ui/button";
+
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const initialResumeState = {
   name: "Your Name",
@@ -41,21 +41,21 @@ export default function Editor({
       ...initialResumeState,
       projects: student_projects || initialResumeState.projects,
       contact_information:
-        student_contact || initialResumeState.contact_information,
+      student_contact || initialResumeState.contact_information,
       experience: student_experience || initialResumeState.experience,
       contact: student_contact || initialResumeState.contact,
     };
   });
 
-  console.log(resumeData)
-  console.log(resumeData.experience)
+  
 
   const handleExperienceUpdate = (updatedExperienceArray) => {
-    setResumeData((prevData) => ({
-      ...prevData,
-      experience: updatedExperienceArray,
+    setResumeData(prev => ({
+      ... prev,
+      experience: updatedExperienceArray
     }));
   };
+
   const pages = [
     {
       component: (
@@ -106,14 +106,14 @@ export default function Editor({
                     disabled={currentPage === 0}
                     className="text-xs h-6 w-4 bg-purple-400 hover:bg-purple-300 font-bold cursor-pointer"
                   >
-                    {"<-"}
+                    <ArrowLeft />
                   </Button>
                   <Button
                     onClick={nextPage}
                     disabled={currentPage === pages.length - 1}
                     className="text-xs h-6 w-4 bg-purple-400 hover:bg-purple-300 font-bold cursor-pointer"
                   >
-                    {"->"}
+                    <ArrowRight />
                   </Button>
                 </div>
                 <PageTabs
@@ -131,7 +131,7 @@ export default function Editor({
       <div>
           <ResumeDisplayWrapper resume={resumeData} />
         </div>
-        </div>
+      </div>
     </>
   );
 }
