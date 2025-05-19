@@ -61,12 +61,15 @@ export default function Editor({
     }));
   };
 
+
   const handleContactUpdate = (updatedContactsArray) => {
     setResumeData((prev) => ({
       ...prev,
-      contact: updatedContactsArray,
+      contact_information: updatedContactsArray,
     }));
+    
   };
+  console.log()
 
   const pages = [
     {

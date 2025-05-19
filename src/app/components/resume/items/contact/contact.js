@@ -27,8 +27,14 @@ export default function Contact({ contactArray = {}, onContactArrayChange = () =
   ).current;
 
   useEffect(() => {
-    if (JSON.stringify(contactArray) !== JSON.stringify(localContactData)) {
-      setLocalContactData(contactArray || {});
+    if (!contactArray) return;
+  
+    const isSame = Object.entries(contactArray).every(
+      ([key, value]) => localContactData[key] === value
+    );
+  
+    if (!isSame) {
+      setLocalContactData(contactArray);
     }
   }, [contactArray]);
   
