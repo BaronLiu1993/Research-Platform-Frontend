@@ -26,7 +26,7 @@ const initialResumeState = {
   experience: [],
   projects: [],
   skills: [],
-  personal_details: { name: "Your Name" }, 
+  personal_details: { name: "Your Name" },
 };
 
 export default function Editor({
@@ -35,31 +35,36 @@ export default function Editor({
   student_personal_details,
   student_contact,
 }) {
-
   const [resumeData, setResumeData] = useState(() => {
     return {
       ...initialResumeState,
       projects: student_projects || initialResumeState.projects,
       contact_information:
-      student_contact || initialResumeState.contact_information,
+        student_contact || initialResumeState.contact_information,
       experience: student_experience || initialResumeState.experience,
-      contact: student_contact || initialResumeState.contact,
     };
   });
 
-  
+  console.log(resumeData.contact_information)
 
   const handleExperienceUpdate = (updatedExperienceArray) => {
-    setResumeData(prev => ({
-      ... prev,
-      experience: updatedExperienceArray
+    setResumeData((prev) => ({
+      ...prev,
+      experience: updatedExperienceArray,
     }));
   };
 
   const handleProjectUpdate = (updatedProjectsArray) => {
-    setResumeData(prev => ({
+    setResumeData((prev) => ({
       ...prev,
-      projects: updatedProjectsArray
+      projects: updatedProjectsArray,
+    }));
+  };
+
+  const handleContactUpdate = (updatedContactsArray) => {
+    setResumeData((prev) => ({
+      ...prev,
+      contact: updatedContactsArray,
     }));
   };
 
@@ -75,14 +80,22 @@ export default function Editor({
     },
     {
       component: (
-        <Projects 
-          projectArray={resumeData.projects}  
+        <Projects
+          projectArray={resumeData.projects}
           onProjectsArrayChange={handleProjectUpdate}
         />
       ),
-      name: "Projects"
+      name: "Projects",
     },
-    { component: <Contact contact_data={student_contact} />, name: "Contact" },
+    {
+      component: (
+        <Contact
+          contactArray={resumeData.contact_information}
+          onContactArrayChange={handleContactUpdate}
+        />
+      ),
+      name: "Contact",
+    },
     {
       component: (
         <PersonalInfo personal_details_data={student_personal_details} />
@@ -103,44 +116,43 @@ export default function Editor({
 
   return (
     <>
-    <div className = "flex border-1">
-      <div className=" min-w-[30rem] overflow-hidden">
-        <div
-          className="flex transition-transform duration-500"
-          style={{ transform: `translateX(-${currentPage * 100}%)` }}
-        >
-          {pages.map((page, index) => (
-            <div key={index} className="w-full flex-shrink-0 px-4 font-sans">
-              <div className="flex justify-between items-center mt-6 mx-6">
-                <div className="space-x-2 flex">
-                  <Button
-                    onClick={prevPage}
-                    disabled={currentPage === 0}
-                    className="text-xs h-6 w-4 bg-purple-400 hover:bg-purple-300 font-bold cursor-pointer"
-                  >
-                    <ArrowLeft />
-                  </Button>
-                  <Button
-                    onClick={nextPage}
-                    disabled={currentPage === pages.length - 1}
-                    className="text-xs h-6 w-4 bg-purple-400 hover:bg-purple-300 font-bold cursor-pointer"
-                  >
-                    <ArrowRight />
-                  </Button>
+      <div className="flex border-1">
+        <div className=" max-w-[40rem] overflow-hidden">
+          <div
+            className="flex transition-transform duration-500"
+            style={{ transform: `translateX(-${currentPage * 100}%)` }}
+          >
+            {pages.map((page, index) => (
+              <div key={index} className="w-full flex-shrink-0 px-4 font-sans">
+                <div className="flex justify-between items-center mt-6 mx-6">
+                  <div className="space-x-2 flex">
+                    <Button
+                      onClick={prevPage}
+                      disabled={currentPage === 0}
+                      className="text-xs h-6 w-4 bg-purple-400 hover:bg-purple-300 font-bold cursor-pointer"
+                    >
+                      <ArrowLeft />
+                    </Button>
+                    <Button
+                      onClick={nextPage}
+                      disabled={currentPage === pages.length - 1}
+                      className="text-xs h-6 w-4 bg-purple-400 hover:bg-purple-300 font-bold cursor-pointer"
+                    >
+                      <ArrowRight />
+                    </Button>
+                  </div>
+                  <PageTabs
+                    pages={pages}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                  />
                 </div>
-                <PageTabs
-                  pages={pages}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                />
+                <div>{page.component}</div>
               </div>
-              <div>{page.component}</div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-        
-      </div>
-      <div>
+        <div>
           <ResumeDisplayWrapper resume={resumeData} />
         </div>
       </div>

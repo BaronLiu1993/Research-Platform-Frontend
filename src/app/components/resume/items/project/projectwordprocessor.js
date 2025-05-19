@@ -32,7 +32,7 @@ export default function ProjectWordProcessor({ value, onChange }) {
     editorProps: {
       attributes: {
         class:
-          'min-h-[156px] font-light text-sm py-2 px-3 font-sans whitespace-pre-line',
+          'font-sans font-light text-sm leading-snug max-h-[156px] overflow-y-auto whitespace-pre-line p-2',
       },
     },
     onUpdate({ editor }) {
@@ -81,90 +81,91 @@ export default function ProjectWordProcessor({ value, onChange }) {
 
   if (!editor) {
     return (
-      <div className="min-h-[156px] w-full p-4">
+      <div className="min-h-[156px] min-w-full p-4">
         <Skeleton className="w-full h-full rounded-xl" />
       </div>
     );
   }
 
   return (
-    <>
-      <div>
-        <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-          <ToggleGroup type="multiple" className="bg-gray-200 rounded-md p-1">
-            <ToggleGroupItem
-              value="ai"
-              aria-label="AI Rewrite"
-              onClick={handleAIRewrite}
-              className="py-1 px-2 text-xs bg-green-100 hover:bg-green-200 rounded"
-            >
-              ✨ AI Rewrite
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="bold"
-              aria-label="Toggle bold"
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`py-1 px-2 text-xs ${
-                editor.isActive('bold')
-                  ? 'bg-black text-white'
-                  : 'bg-gray-100 text-black hover:bg-gray-200'
-              }`}
-            >
-              <Bold size={14} />
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="italic"
-              aria-label="Toggle italic"
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={`py-1 px-2 text-xs ${
-                editor.isActive('italic')
-                  ? 'bg-black text-white'
-                  : 'bg-gray-100 text-black hover:bg-gray-200'
-              }`}
-            >
-              <Italic size={14} />
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="underline"
-              aria-label="Toggle underline"
-              onClick={() => editor.chain().focus().toggleStrike().run()}
-              className={`py-1 px-2 text-xs ${
-                editor.isActive('strike')
-                  ? 'bg-black text-white'
-                  : 'bg-gray-100 text-black hover:bg-gray-200'
-              }`}
-            >
-              <Underline size={14} />
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="bulletList"
-              aria-label="Toggle bullet list"
-              onClick={() => editor.chain().focus().toggleBulletList().run()}
-              className={`py-1 px-2 text-xs ${
-                editor.isActive('bulletList')
-                  ? 'bg-black text-white'
-                  : 'bg-gray-100 text-black hover:bg-gray-200'
-              }`}
-            >
-              <List size={14} />
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="taskList"
-              aria-label="Toggle task list"
-              onClick={() => editor.chain().focus().toggleTaskList().run()}
-              className={`py-1 px-2 text-xs ${
-                editor.isActive('taskList')
-                  ? 'bg-black text-white'
-                  : 'bg-gray-100 text-black hover:bg-gray-200'
-              }`}
-            >
-              <CheckSquare size={14} />
-            </ToggleGroupItem>
-          </ToggleGroup>
-        </BubbleMenu>
-      </div>
+    <div className="font-sans">
+      <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
+        <ToggleGroup type="multiple" className="bg-gray-200 rounded-md p-1">
+          <ToggleGroupItem
+            value="ai"
+            aria-label="AI Rewrite"
+            onClick={handleAIRewrite}
+            className="py-1 px-2 text-xs bg-green-100 hover:bg-green-200 rounded"
+          >
+            ✨ AI Rewrite
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="bold"
+            aria-label="Toggle bold"
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className={`py-1 px-2 text-xs ${
+              editor.isActive('bold')
+                ? 'bg-black text-white'
+                : 'bg-gray-100 text-black hover:bg-gray-200'
+            }`}
+          >
+            <Bold size={14} />
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="italic"
+            aria-label="Toggle italic"
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            className={`py-1 px-2 text-xs ${
+              editor.isActive('italic')
+                ? 'bg-black text-white'
+                : 'bg-gray-100 text-black hover:bg-gray-200'
+            }`}
+          >
+            <Italic size={14} />
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="underline"
+            aria-label="Toggle underline"
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            className={`py-1 px-2 text-xs ${
+              editor.isActive('strike')
+                ? 'bg-black text-white'
+                : 'bg-gray-100 text-black hover:bg-gray-200'
+            }`}
+          >
+            <Underline size={14} />
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="bulletList"
+            aria-label="Toggle bullet list"
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className={`py-1 px-2 text-xs ${
+              editor.isActive('bulletList')
+                ? 'bg-black text-white'
+                : 'bg-gray-100 text-black hover:bg-gray-200'
+            }`}
+          >
+            <List size={14} />
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="taskList"
+            aria-label="Toggle task list"
+            onClick={() => editor.chain().focus().toggleTaskList().run()}
+            className={`py-1 px-2 text-xs ${
+              editor.isActive('taskList')
+                ? 'bg-black text-white'
+                : 'bg-gray-100 text-black hover:bg-gray-200'
+            }`}
+          >
+            <CheckSquare size={14} />
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </BubbleMenu>
 
-      <EditorContent className="border rounded-md mt-2" editor={editor} />
+      <EditorContent
+        className="border rounded-md mt-2 font-sans font-light text-sm leading-snug max-h-[156px] overflow-y-auto"
+        editor={editor}
+      />
 
       {aiTyping && (
         <div className="text-sm text-gray-500 mt-2 flex items-center gap-1">
@@ -174,6 +175,6 @@ export default function ProjectWordProcessor({ value, onChange }) {
           <span className="animate-bounce [animation-delay:.4s]">.</span>
         </div>
       )}
-    </>
+    </div>
   );
 }

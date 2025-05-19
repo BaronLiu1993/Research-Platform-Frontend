@@ -77,7 +77,7 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
   };
 
   return (
-    <div className="border-gray-400 p-8 space-y-5 overflow-hidden font-sans">
+    <div className="border-gray-400 p-8 w-[40rem] space-y-5 overflow-hidden font-sans">
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold">Employment History</h1>
         <p className="text-sm text-gray-400">
@@ -101,7 +101,7 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
             />
           </div>
           <Trash2
-            className="h-5 w-5 text-gray-400 hover:text-red-400 hover:bg-gray-50 rounded-md cursor-pointer"
+            className="h-4 w-4 text-gray-400 hover:text-red-400 hover:bg-gray-50 rounded-md cursor-pointer"
             onClick={() => handleRemoveExperience(experienceWithId._localId)}
           />
         </div>

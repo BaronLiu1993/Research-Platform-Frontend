@@ -1,21 +1,20 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Input } from "@/shadcomponents/ui/input";
+import { Label } from "@/shadcomponents/ui/label";
+import ProjectWordProcessor from "./projectwordprocessor";
+import { Button } from "@/shadcomponents/ui/button";
+import { PlusCircle, XCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
-import { Input } from "@/shadcomponents/ui/input";
-import { Label } from "@/shadcomponents/ui/label";
-import { Button } from "@/shadcomponents/ui/button";
-import { PlusCircle, XCircle } from "lucide-react";
-import ProjectWordProcessor from "./projectwordprocessor";
 
-function ProjectForm({ id, data = {}, onChange }) {
+function ProjectsForm({ id, data, onChange }) {
   const lastDataIdRef = useRef(null);
-
   const [formData, setFormData] = useState({
     project_name: "",
     achievements: "",
@@ -37,9 +36,9 @@ function ProjectForm({ id, data = {}, onChange }) {
 
   const push = useCallback(
     (fields) => {
-      const updated = { ...formData, ...fields };
-      setFormData(updated);
-      onChange(id, updated);
+      const updatedFormData = { ...formData, ...fields };
+      setFormData(updatedFormData);
+      onChange(id, updatedFormData);
     },
     [formData, id, onChange]
   );
@@ -52,20 +51,20 @@ function ProjectForm({ id, data = {}, onChange }) {
     [push]
   );
 
-  const handleBulletChange = useCallback(
+  const handleDescriptionChange = useCallback(
     (idx, value) => {
-      const newBullets = [...formData.bullets];
-      newBullets[idx] = value;
-      push({ bullets: newBullets });
+      const newDesc = [...formData.bullets];
+      newDesc[idx] = value;
+      push({ bullets: newDesc });
     },
     [formData.bullets, push]
   );
 
-  const addBulletPoint = useCallback(() => {
+  const addDescriptionPoint = useCallback(() => {
     push({ bullets: [...formData.bullets, ""] });
   }, [formData.bullets, push]);
 
-  const removeBulletPoint = useCallback(
+  const removeDescriptionPoint = useCallback(
     (idx) => {
       push({
         bullets: formData.bullets.filter((_, i) => i !== idx),
@@ -74,24 +73,22 @@ function ProjectForm({ id, data = {}, onChange }) {
     [formData.bullets, push]
   );
 
-  const baseId = useMemo(() => (
-    formData.project_name?.replace(/\s+/g, "-").toLowerCase() || `project-form-${id}`
-  ), [id]); 
-  
+  const baseId =
+    formData.project_name.replace(/\s+/g, "-").toLowerCase() || `proj-form-${id}`;
 
   return (
     <Accordion
       type="single"
       collapsible
       defaultValue={`item-${baseId}`}
-      className="w-full font-sans bg-white border rounded-md"
+      className="w-full max-w-3xl font-sans bg-white border rounded-md"
     >
       <AccordionItem value={`item-${baseId}`}>
         <AccordionTrigger className="px-4 font-semibold text-lg hover:no-underline">
           <div className="flex flex-col text-left w-full">
             <div>{formData.project_name || "New Project"}</div>
             <div className="text-sm font-extralight text-gray-500">
-              {formData.achievements || "Achievements Summary"}
+              {formData.achievements || "Achievements"}
             </div>
           </div>
         </AccordionTrigger>
@@ -100,45 +97,60 @@ function ProjectForm({ id, data = {}, onChange }) {
           <div className="p-4 flex flex-col gap-4">
             {["project_name", "achievements"].map((field) => (
               <div className="flex flex-col space-y-2" key={field}>
-                <Label htmlFor={`${baseId}-${field}`}>
-                  {field
-                    .replace("_", " ")
-                    .replace(/^\w/, (c) => c.toUpperCase())}
+                <Label className = "font-sans text-sm font-bold" htmlFor={`${baseId}-${field}`}>
+                  {field === "project_name" ? "Project Name" : "Achievements"}
                 </Label>
-                <Input
-                  id={`${baseId}-${field}`}
-                  name={field}
-                  value={formData[field]}
-                  onChange={handleInputChange}
-                />
+                {field === "achievements" ? (
+                  <textarea
+                    id={`${baseId}-${field}`}
+                    name={field}
+                    className="border rounded px-3 py-2 resize-none"
+                    rows={3}
+                    value={formData[field]}
+                    onChange={handleInputChange}
+                  />
+                ) : (
+                  <Input
+                    id={`${baseId}-${field}`}
+                    name={field}
+                    value={formData[field]}
+                    onChange={handleInputChange}
+                  />
+                )}
               </div>
             ))}
 
             <div className="flex flex-col space-y-2">
-              <Label>Bullet Points</Label>
+              <Label
+                className = "font-sans text-sm font-bold"
+              >
+                Description
+              </Label>
               {formData.bullets.map((point, idx) => {
-                const handleChange = useCallback(
-                  (val) => handleBulletChange(idx, val),
-                  [idx, handleBulletChange]
-                );
-
                 const handleRemove = useCallback(
-                  () => removeBulletPoint(idx),
-                  [idx, removeBulletPoint]
+                  () => removeDescriptionPoint(idx),
+                  [idx, removeDescriptionPoint]
                 );
 
                 return (
-                  <div key={idx} className="flex items-center space-x-2">
-                    <ProjectWordProcessor
-                      id={`${baseId}-bullet-${idx}`}
-                      content={point}
-                      onChange={handleChange}
-                    />
+                  <div
+                    key={idx}
+                    className="flex items-start gap-2 w-full"
+                  >
+                    <div className="flex-grow min-w-0">
+                      <ProjectWordProcessor
+                        id={`${baseId}-desc-${idx}`}
+                        className="w-full"
+                        value={point}
+                        onChange={(val) => handleDescriptionChange(idx, val)}
+                      />
+                    </div>
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={handleRemove}
                       aria-label="Remove bullet"
+                      className="mt-1"
                     >
                       <XCircle />
                     </Button>
@@ -148,8 +160,8 @@ function ProjectForm({ id, data = {}, onChange }) {
               <Button
                 variant="outline"
                 size="sm"
-                className="mt-2"
-                onClick={addBulletPoint}
+                className="mt-2 self-start"
+                onClick={addDescriptionPoint}
               >
                 <PlusCircle className="mr-2" /> Add Bullet Point
               </Button>
@@ -161,4 +173,4 @@ function ProjectForm({ id, data = {}, onChange }) {
   );
 }
 
-export default React.memo(ProjectForm);
+export default React.memo(ProjectsForm);

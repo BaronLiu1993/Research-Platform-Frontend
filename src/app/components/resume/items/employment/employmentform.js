@@ -12,10 +12,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
-import { form } from "@heroui/theme";
 
 function EmploymentForm({ id, data, onChange }) {
   const lastDataIdRef = useRef(null);
+
   const [formData, setFormData] = useState({
     job_title: "",
     company: "",
@@ -25,6 +25,8 @@ function EmploymentForm({ id, data, onChange }) {
     description: [""],
     ...data,
   });
+
+  const [openItem, setOpenItem] = useState(null); 
 
   useEffect(() => {
     if (data?.id !== lastDataIdRef.current) {
@@ -80,17 +82,15 @@ function EmploymentForm({ id, data, onChange }) {
     [formData.description, push]
   );
 
-  const baseId =
-    formData.job_title.replace(/\s+/g, "-").toLowerCase() || `exp-form-${id}`;
-
   return (
     <Accordion
       type="single"
       collapsible
-      defaultValue={`item-${baseId}`}
-      className="w-full font-sans bg-white border rounded-md"
+      value={openItem}
+      onValueChange={setOpenItem}
+      className="w-[32rem] font-sans bg-white border rounded-md"
     >
-      <AccordionItem value={`item-${baseId}`}>
+      <AccordionItem value={`item-${id}`}>
         <AccordionTrigger className="px-4 font-semibold text-lg hover:no-underline">
           <div className="flex flex-col text-left w-full">
             <div>{formData.job_title || "New Position"}</div>
@@ -104,13 +104,16 @@ function EmploymentForm({ id, data, onChange }) {
           <div className="p-4 flex flex-col gap-4">
             {["job_title", "company", "location"].map((field) => (
               <div className="flex flex-col space-y-2" key={field}>
-                <Label htmlFor={`${baseId}-${field}`}>
+                <Label
+                  className="font-sans text-sm font-bold"
+                  htmlFor={`${id}-${field}`}
+                >
                   {field
                     .replace("_", " ")
                     .replace(/^\w/, (c) => c.toUpperCase())}
                 </Label>
                 <Input
-                  id={`${baseId}-${field}`}
+                  id={`${id}-${field}`}
                   name={field}
                   value={formData[field]}
                   onChange={handleInputChange}
@@ -121,13 +124,16 @@ function EmploymentForm({ id, data, onChange }) {
             <div className="grid grid-cols-2 gap-4">
               {["start_date", "end_date"].map((field) => (
                 <div className="flex flex-col space-y-2" key={field}>
-                  <Label htmlFor={`${baseId}-${field}`}>
+                  <Label
+                    className="font-sans text-sm font-bold"
+                    htmlFor={`${id}-${field}`}
+                  >
                     {field
                       .replace("_", " ")
                       .replace(/^\w/, (c) => c.toUpperCase())}
                   </Label>
                   <Input
-                    id={`${baseId}-${field}`}
+                    id={`${id}-${field}`}
                     name={field}
                     value={formData[field]}
                     onChange={handleInputChange}
@@ -137,22 +143,15 @@ function EmploymentForm({ id, data, onChange }) {
             </div>
 
             <div className="flex flex-col space-y-2">
-              <Label>Description</Label>
+              <Label className="font-sans text-sm font-bold">
+                Description
+              </Label>
               {formData.description.map((point, idx) => {
-                const handleDescChange = useCallback(
-                  (val) => handleDescriptionChange(idx, val),
-                  [idx, handleDescriptionChange]
-                );
-
-                const handleRemove = useCallback(
-                  () => removeDescriptionPoint(idx),
-                  [idx, removeDescriptionPoint]
-                );
-
+                const handleRemove = () => removeDescriptionPoint(idx);
                 return (
                   <div key={idx} className="flex items-center space-x-2">
                     <EmploymentWordProcessor
-                      id={`${baseId}-desc-${idx}`}
+                      id={`${id}-desc-${idx}`}
                       value={point}
                       onChange={(val) => handleDescriptionChange(idx, val)}
                     />
