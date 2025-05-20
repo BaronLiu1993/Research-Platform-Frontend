@@ -220,8 +220,8 @@ export default function EmailTextEditor({
                     <Microscope className="h-4 w-4 text-pink-500" /> Add Research
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-full w-[95vw] sm:w-[32rem] z-50">
-                <Publications publication_data={handlePublicationData} />
+              <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
+                <Publications/>
               </PopoverContent>
             </Popover>
           </div>

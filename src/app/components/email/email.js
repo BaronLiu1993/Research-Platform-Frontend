@@ -3,9 +3,10 @@
 import { useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 
+import { getUserId } from "@/app/email/emailapi";
+
 // Component imports
 import EmailTextEditor from "./emailtexteditor";
-// import Publications from "./publications"; // Not directly used here, but available for EmailTextEditor
 
 import { colours } from "@/app/data/colours"; // Assuming this provides { bg: string, text: string }
 
@@ -35,13 +36,12 @@ import {
   MailPlus,
 } from "lucide-react";
 
-export default function Email() {
+export default function Email({student_information}) {
   const searchParams = useSearchParams();
   const name = searchParams.get("name") || "Recipient Name";
   const email = searchParams.get("email") || "recipient@example.com";
   const interestsString = searchParams.get("professor_interests") || "Topic A, Topic B, Topic C, Topic D, Topic E, Topic F";
   const interests = interestsString.split(",").map(i => i.trim()).filter(i => i);
-
 
   const [uploadedFile, setUploadedFile] = useState(null);
   const fileInputRef = useRef(null);

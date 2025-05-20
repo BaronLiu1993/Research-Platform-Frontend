@@ -1,10 +1,21 @@
 "use server"
 
-export default async function WriteEmail ({ formData}) {
+import { cookies } from "next/headers";
+
+export async function getUserId() {
     try {
-        const response = await axios.post("http://127.0.0.1:8000/email/write", formData)
-        return response
-    } catch (e) {
-        console.error(`Error Message: ${e}`)
+        const cookieStore = await cookies();
+        const access = cookieStore.get("accesstoken");
+        const serverData = await fetch("http://localhost:8080/auth/get-user", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${access.value}`,
+            "Content-Type": "application/json",
+          },
+        });
+        const responses = await serverData.json();
+        return responses
+    } catch (err) {
+        console.log(err)
     }
 }

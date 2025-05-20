@@ -1,5 +1,6 @@
 import { Accordion, AccordionTrigger, AccordionHeader } from "@/shadcomponents/ui/accordion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shadcomponents/ui/card"
+import { Info } from "lucide-react"
 
 export default function EmailSideBar ({publications}) {
     console.log(publications)
@@ -7,7 +8,20 @@ export default function EmailSideBar ({publications}) {
         <>
             <div className = "border-l-1 p-7 space-y-5">
                 <Card>
-                    
+                <CardTitle className = "font-sans ">
+                        <CardContent className = "text-sm flex space-x-2">
+                            <div className = "h-4 w-4 bg-red-500"></div>
+                            <span>Publications</span>
+                        </CardContent>
+                        <CardDescription className="text-xs ml-5">
+                            <h2 className = "flex">
+                                <Info />
+                                <span className = "text-xs">Please Cross Reference Publications for Accuracy</span>
+                            </h2>
+
+                            <h2>Review Publications Added</h2>
+                        </CardDescription>
+                    </CardTitle>
                 </Card>
                 <Card className = "w-[13rem] ">
                     <CardTitle className = "font-sans ">

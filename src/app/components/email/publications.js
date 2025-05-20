@@ -1,17 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/shadcomponents/ui/accordion";
-import { removeSingleQuoteOrJson } from "@/app/api/fixjson";
-import { Button } from "@/shadcomponents/ui/button";
-import { Progress } from "@/shadcomponents/ui/progress";
+import { Switch } from "@/shadcomponents/ui/switch";
+import { Label } from "@/shadcomponents/ui/label";
 
 export default function Publications({ publication_data }) {
   const searchParams = useSearchParams();
@@ -60,75 +52,17 @@ export default function Publications({ publication_data }) {
 
   return (
     <div className="w-fit border font-san bg-white rounded-md shadow-none p-4 flex flex-col justify-start items-start space-y-2">
-      <div className="text-sm flex flex-col justify-start items-start font-sans">
-        <h1 className = "font-semibold">
-          Publications
-        </h1>
-        <h2 className="text-xs font-light">
-          Personalise your cold email with the professor’s research.
-        </h2>
-      </div>
-
-      <div className=" text-sm break-words">
-        {status === "idle" && (
-          <Button size="xs" className="text-xs p-1 cursor-pointer" onClick={fetchPublications}>
-            Fetch Publications
-          </Button>
-        )}
-
-        {status === "loading" && (
-          <div>
-            <p className="text-sm text-gray-500 font-sans mb-2">
-              Fetching publications...
-            </p>
-            <Progress value={progress} />
-          </div>
-        )}
-
-        {status === "done" && publications.length > 0 && (
-          <Accordion type="single" collapsible className="w-full space-y-2">
-            {publications.map((pub, idx) => (
-              <AccordionItem
-                key={idx}
-                value={`item-${idx}`}
-                className="border-b"
-              >
-                <AccordionTrigger className="text-sm font-sans break-words flex  justify-center items-center">
-                  <div className="h-3 w-3 bg-green-400 rounded-full mr-2 flex-shrink-0"></div>
-                  <span className="whitespace-normal break-words text-left w-full">
-                    {pub.title}
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent className="mt-2 space-y-2 text-xs font-light font-sans break-words">
-                  <p className="whitespace-pre-wrap">{pub.summary}</p>
-                  <div className="flex justify-end space-x-2 flex-wrap p-2">
-                    <Link
-                      href={pub.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="max-w-[50%]"
-                    >
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs font-sans w-full"
-                      >
-                        View Source
-                      </Button>
-                    </Link>
-                    <Button
-                      size="sm"
-                      className="text-xs font-sans max-w-[50%]"
-                      onClick={sendInputPublication(pub)}
-                    >
-                      Load Publication
-                    </Button>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        )}
+      <div className="text-sm flex justify-start items-start font-sans">
+        <div>
+          <h1 className="font-semibold">Publications Mode</h1>
+          <h2 className="text-xs font-light">
+            Personalise your email with the professor's publications that best
+            align with your interests and skills.
+          </h2>
+        </div>
+        <div className="flex space-x-2">
+          <Switch id="airplane-mode" />
+        </div>
       </div>
     </div>
   );
