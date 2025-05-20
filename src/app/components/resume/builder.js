@@ -26,7 +26,6 @@ export default function Builder({ researchInterests }) {
   const [projects, setProjects] = useState({});
   const [personalDetails, setPersonalDetails] = useState({});
   const [parsedResume, setParsedResume] = useState(false);
-  const [outputResume, setOutputResume] = useState(null);
 
   const handleParseResume = async () => {
     if (!resumeFile) {
@@ -38,7 +37,6 @@ export default function Builder({ researchInterests }) {
       const resumeDataHTML = await ParseResume(file);
       const cleanedData = removeSingleQuoteOrJson(resumeDataHTML.result);
       const response = JSON.parse(cleanedData);
-      setOutputResume(response);
       setExperience(response.experience);
       setContact(response.contact_information);
       setProjects(response.projects);

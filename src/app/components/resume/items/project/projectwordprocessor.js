@@ -1,17 +1,26 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import BulletList from '@tiptap/extension-bullet-list';
-import ListItem from '@tiptap/extension-list-item';
-import TaskList from '@tiptap/extension-task-list';
-import TaskItem from '@tiptap/extension-task-item';
-import Highlight from '@tiptap/extension-highlight';
+import React, { useEffect, useState } from "react";
+import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import BulletList from "@tiptap/extension-bullet-list";
+import ListItem from "@tiptap/extension-list-item";
+import TaskList from "@tiptap/extension-task-list";
+import TaskItem from "@tiptap/extension-task-item";
+import Highlight from "@tiptap/extension-highlight";
 
-import { ToggleGroup, ToggleGroupItem } from '@/shadcomponents/ui/toggle-group';
-import { Skeleton } from '@/shadcomponents/ui/skeleton';
-import { Bold, Italic, Underline, List, CheckSquare } from 'lucide-react';
+import { ToggleGroup, ToggleGroupItem } from "@/shadcomponents/ui/toggle-group";
+import { Skeleton } from "@/shadcomponents/ui/skeleton";
+import {
+  Bold,
+  Italic,
+  Underline,
+  List,
+  CheckSquare,
+  Wand,
+  Sparkle,
+  Brain,
+} from "lucide-react";
 
 export default function ProjectWordProcessor({ value, onChange }) {
   const [aiTyping, setAiTyping] = useState(false);
@@ -28,11 +37,11 @@ export default function ProjectWordProcessor({ value, onChange }) {
       TaskItem,
       Highlight.configure({ multicolor: true }),
     ],
-    content: value || '',
+    content: value || "",
     editorProps: {
       attributes: {
         class:
-          'font-sans font-light text-sm leading-snug max-h-[156px] overflow-y-auto whitespace-pre-line p-2',
+          "font-sans font-light text-sm leading-snug max-h-[156px] overflow-y-auto whitespace-pre-line p-2",
       },
     },
     onUpdate({ editor }) {
@@ -43,7 +52,7 @@ export default function ProjectWordProcessor({ value, onChange }) {
 
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value || '');
+      editor.commands.setContent(value || "");
     }
   }, [value]);
 
@@ -57,12 +66,13 @@ export default function ProjectWordProcessor({ value, onChange }) {
 
     setAiTyping(true);
 
-    const response = await fetch('http://localhost:8000/ai-edit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("http://localhost:8000/ai-edit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         text: selectedText,
-        style: 'Rewrite this text clearly and concisely in bullet-point format.',
+        style:
+          "Rewrite this text clearly and concisely in bullet-point format.",
       }),
     });
 
@@ -89,81 +99,73 @@ export default function ProjectWordProcessor({ value, onChange }) {
 
   return (
     <div className="font-sans">
-      <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-        <ToggleGroup type="multiple" className="bg-gray-200 rounded-md p-1">
+      <BubbleMenu
+        editor={editor}
+        tippyOptions={{ duration: 100 }}
+        className="font-sans w-[30rem]"
+      >
+        <ToggleGroup type="multiple" className="bg-gray-100 rounded-sm p-1">
+          <div>
           <ToggleGroupItem
             value="ai"
             aria-label="AI Rewrite"
             onClick={handleAIRewrite}
-            className="py-1 px-2 text-xs bg-green-100 hover:bg-green-200 rounded"
+            className="py-1 px-2 text-xs hover:bg-gray-200 rounded-md"
           >
-            ✨ AI Rewrite
+            <Wand />
+            Improve Wording
           </ToggleGroupItem>
           <ToggleGroupItem
-            value="bold"
-            aria-label="Toggle bold"
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`py-1 px-2 text-xs ${
-              editor.isActive('bold')
-                ? 'bg-black text-white'
-                : 'bg-gray-100 text-black hover:bg-gray-200'
-            }`}
+            value="ai"
+            aria-label="AI Rewrite"
+            onClick={handleAIRewrite}
+            className="py-1 px-2 text-xs hover:bg-gray-200 rounded-md"
           >
-            <Bold size={14} />
+            <Sparkle />
+            Grammar
           </ToggleGroupItem>
           <ToggleGroupItem
-            value="italic"
-            aria-label="Toggle italic"
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`py-1 px-2 text-xs ${
-              editor.isActive('italic')
-                ? 'bg-black text-white'
-                : 'bg-gray-100 text-black hover:bg-gray-200'
-            }`}
+            value="ai"
+            aria-label="AI Rewrite"
+            onClick={handleAIRewrite}
+            className="py-1 px-2 text-xs hover:bg-gray-200 rounded-md"
           >
-            <Italic size={14} />
+            <Brain />
+            Generate Ideas
           </ToggleGroupItem>
-          <ToggleGroupItem
-            value="underline"
-            aria-label="Toggle underline"
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`py-1 px-2 text-xs ${
-              editor.isActive('strike')
-                ? 'bg-black text-white'
-                : 'bg-gray-100 text-black hover:bg-gray-200'
-            }`}
-          >
-            <Underline size={14} />
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            value="bulletList"
-            aria-label="Toggle bullet list"
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={`py-1 px-2 text-xs ${
-              editor.isActive('bulletList')
-                ? 'bg-black text-white'
-                : 'bg-gray-100 text-black hover:bg-gray-200'
-            }`}
-          >
-            <List size={14} />
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            value="taskList"
-            aria-label="Toggle task list"
-            onClick={() => editor.chain().focus().toggleTaskList().run()}
-            className={`py-1 px-2 text-xs ${
-              editor.isActive('taskList')
-                ? 'bg-black text-white'
-                : 'bg-gray-100 text-black hover:bg-gray-200'
-            }`}
-          >
-            <CheckSquare size={14} />
-          </ToggleGroupItem>
+          </div>
+
+          <div className = "border-l-1">
+            <ToggleGroupItem
+              value="bold"
+              aria-label="Toggle bold"
+              onClick={() => editor.chain().focus().toggleBold().run()}
+              className={`py-1 px-2 text-xs hover:bg-gray-200 rounded-md`}
+            >
+              <Bold size={8} className ="font-bold" />
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="italic"
+              aria-label="Toggle italic"
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+              className={`py-1 px-2 text-xs hover:bg-gray-200 rounded-md`}
+            >
+              <Italic size={8} />
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="underline"
+              aria-label="Toggle underline"
+              onClick={() => editor.chain().focus().toggleStrike().run()}
+              className={`py-1 px-2 text-xs hover:bg-gray-200 rounded-md`}
+            >
+              <Underline size={8} />
+            </ToggleGroupItem>
+          </div>
         </ToggleGroup>
       </BubbleMenu>
 
       <EditorContent
-        className="border rounded-md mt-2 font-sans font-light text-sm leading-snug max-h-[156px] overflow-y-auto"
+        className="border rounded-md mt-2 font-sans font-light text-sm leading-snug min-w-[20rem] overflow-auto"
         editor={editor}
       />
 

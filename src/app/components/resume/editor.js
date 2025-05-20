@@ -5,7 +5,6 @@ import Employment from "./items/employment/employment";
 import Projects from "./items/project/projects";
 import Contact from "./items/contact/contact";
 import PersonalInfo from "./items/personal/personalinfo";
-import Skills from "./items/skills/skills";
 import PageTabs from "./pagetabs";
 import ResumeDisplayWrapper from "./resumeview";
 
@@ -45,8 +44,6 @@ export default function Editor({
     };
   });
 
-  console.log(resumeData.contact_information)
-
   const handleExperienceUpdate = (updatedExperienceArray) => {
     setResumeData((prev) => ({
       ...prev,
@@ -69,7 +66,6 @@ export default function Editor({
     }));
     
   };
-  console.log()
 
   const pages = [
     {

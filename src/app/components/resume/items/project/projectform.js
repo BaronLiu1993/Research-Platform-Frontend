@@ -15,6 +15,8 @@ import {
 
 function ProjectsForm({ id, data, onChange }) {
   const lastDataIdRef = useRef(null);
+  const [openItem, setOpenItem] = useState(null);
+
   const [formData, setFormData] = useState({
     project_name: "",
     achievements: "",
@@ -53,9 +55,9 @@ function ProjectsForm({ id, data, onChange }) {
 
   const handleDescriptionChange = useCallback(
     (idx, value) => {
-      const newDesc = [...formData.bullets];
-      newDesc[idx] = value;
-      push({ bullets: newDesc });
+      const newBullets = [...formData.bullets];
+      newBullets[idx] = value;
+      push({ bullets: newBullets });
     },
     [formData.bullets, push]
   );
@@ -73,14 +75,14 @@ function ProjectsForm({ id, data, onChange }) {
     [formData.bullets, push]
   );
 
-  const baseId =
-    formData.project_name.replace(/\s+/g, "-").toLowerCase() || `proj-form-${id}`;
+  const baseId = `proj-form-${id}`;
 
   return (
     <Accordion
       type="single"
       collapsible
-      defaultValue={`item-${baseId}`}
+      value={openItem}
+      onValueChange={setOpenItem}
       className="w-full max-w-3xl font-sans bg-white border rounded-md"
     >
       <AccordionItem value={`item-${baseId}`}>
@@ -97,7 +99,10 @@ function ProjectsForm({ id, data, onChange }) {
           <div className="p-4 flex flex-col gap-4">
             {["project_name", "achievements"].map((field) => (
               <div className="flex flex-col space-y-2" key={field}>
-                <Label className = "font-sans text-sm font-bold" htmlFor={`${baseId}-${field}`}>
+                <Label
+                  className="font-sans text-sm font-bold"
+                  htmlFor={`${baseId}-${field}`}
+                >
                   {field === "project_name" ? "Project Name" : "Achievements"}
                 </Label>
                 {field === "achievements" ? (
@@ -121,22 +126,17 @@ function ProjectsForm({ id, data, onChange }) {
             ))}
 
             <div className="flex flex-col space-y-2">
-              <Label
-                className = "font-sans text-sm font-bold"
-              >
-                Description
+              <Label className="font-sans text-sm font-bold">
+                <h1>Description</h1>
+                <p className="font-sans text-xs bg-purple-100 p-1 rounded-md text-purple-500 font-extralight">
+                  Highlight Text and Rewrite With AI
+                </p>
               </Label>
-              {formData.bullets.map((point, idx) => {
-                const handleRemove = useCallback(
-                  () => removeDescriptionPoint(idx),
-                  [idx, removeDescriptionPoint]
-                );
 
+              {formData.bullets.map((point, idx) => {
+                const handleRemove = () => removeDescriptionPoint(idx);
                 return (
-                  <div
-                    key={idx}
-                    className="flex items-start gap-2 w-full"
-                  >
+                  <div key={idx} className="flex items-center gap-2 w-full">
                     <div className="flex-grow min-w-0">
                       <ProjectWordProcessor
                         id={`${baseId}-desc-${idx}`}
@@ -157,6 +157,7 @@ function ProjectsForm({ id, data, onChange }) {
                   </div>
                 );
               })}
+
               <Button
                 variant="outline"
                 size="sm"

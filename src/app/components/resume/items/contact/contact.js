@@ -12,11 +12,14 @@ const debounce = (fn, delay) => {
   };
 };
 
-export default function Contact({ contactArray = {}, onContactArrayChange = () => {} }) {
+export default function Contact({
+  contactArray = {},
+  onContactArrayChange = () => {},
+}) {
   const [isPending, startTransition] = useTransition();
   const [localContactData, setLocalContactData] = useState(contactArray || {});
-  console.log(contactArray)
-  console.log(localContactData)
+  console.log(contactArray);
+  console.log(localContactData);
 
   const debouncedUpdateParent = useRef(
     debounce((updatedContact) => {
@@ -28,29 +31,33 @@ export default function Contact({ contactArray = {}, onContactArrayChange = () =
 
   useEffect(() => {
     if (!contactArray) return;
-  
+
     const isSame = Object.entries(contactArray).every(
       ([key, value]) => localContactData[key] === value
     );
-  
+
     if (!isSame) {
       setLocalContactData(contactArray);
     }
   }, [contactArray]);
-  
 
-  const handleFieldChange = useCallback((field, value) => {
-    setLocalContactData((prev) => {
-      const updated = { ...prev, [field]: value };
-      debouncedUpdateParent(updated);
-      return updated;
-    });
-  }, [debouncedUpdateParent]);
+  const handleFieldChange = useCallback(
+    (field, value) => {
+      setLocalContactData((prev) => {
+        const updated = { ...prev, [field]: value };
+        debouncedUpdateParent(updated);
+        return updated;
+      });
+    },
+    [debouncedUpdateParent]
+  );
 
   return (
     <div className="p-8 rounded-md">
       <div>
-        <h1 className="font-sans text-2xl font-semibold">Contact Information</h1>
+        <h1 className="font-sans text-2xl font-semibold">
+          Contact Information
+        </h1>
         <p className="text-sm font-sans text-gray-400">
           Show employers where they can contact you
         </p>
@@ -58,7 +65,9 @@ export default function Contact({ contactArray = {}, onContactArrayChange = () =
 
       <div className="py-6 flex flex-col space-y-4">
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label className="font-sans text-sm font-bold" htmlFor="email">
+            Email
+          </Label>
           <Input
             id="email"
             value={localContactData.email || ""}
@@ -67,7 +76,9 @@ export default function Contact({ contactArray = {}, onContactArrayChange = () =
         </div>
 
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="linkedin">LinkedIn</Label>
+          <Label className="font-sans text-sm font-bold" htmlFor="linkedin">
+            LinkedIn
+          </Label>
           <Input
             id="linkedin"
             value={localContactData.linkedin || ""}
@@ -76,7 +87,9 @@ export default function Contact({ contactArray = {}, onContactArrayChange = () =
         </div>
 
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="phone">Phone Number</Label>
+          <Label className="font-sans text-sm font-bold" htmlFor="phone">
+            Phone Number
+          </Label>
           <Input
             id="phone"
             value={localContactData.phone || ""}
@@ -85,7 +98,9 @@ export default function Contact({ contactArray = {}, onContactArrayChange = () =
         </div>
 
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="country">Country</Label>
+          <Label className="font-sans text-sm font-bold" htmlFor="country">
+            Country
+          </Label>
           <Input
             id="country"
             value={localContactData.country || ""}
@@ -95,7 +110,9 @@ export default function Contact({ contactArray = {}, onContactArrayChange = () =
 
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex flex-col flex-1 space-y-2">
-            <Label htmlFor="province">Province</Label>
+            <Label className="font-sans text-sm font-bold" htmlFor="province">
+              Province
+            </Label>
             <Input
               id="province"
               value={localContactData.province || ""}
@@ -104,7 +121,9 @@ export default function Contact({ contactArray = {}, onContactArrayChange = () =
           </div>
 
           <div className="flex flex-col flex-1 space-y-2">
-            <Label htmlFor="address">Address</Label>
+            <Label className="font-sans text-sm font-bold" htmlFor="address">
+              Address
+            </Label>
             <Input
               id="address"
               value={localContactData.address || ""}
@@ -114,7 +133,9 @@ export default function Contact({ contactArray = {}, onContactArrayChange = () =
         </div>
 
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="university">University</Label>
+          <Label className="font-sans text-sm font-bold" htmlFor="university">
+            University
+          </Label>
           <Input
             id="university"
             value={localContactData.university || "University of Toronto"}
@@ -125,3 +146,4 @@ export default function Contact({ contactArray = {}, onContactArrayChange = () =
     </div>
   );
 }
+

@@ -10,8 +10,6 @@ import { Badge } from "@/shadcomponents/ui/badge";
 import { Check, Hand } from "lucide-react";
 
 function ResumeDisplayWrapperInner({ resume }) {
-  console.log(resume)
-  console.log(resume.contact_information)
   return (
     <>
       <div className = "border-l-1">

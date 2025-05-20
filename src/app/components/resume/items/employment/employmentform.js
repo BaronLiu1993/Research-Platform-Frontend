@@ -26,7 +26,7 @@ function EmploymentForm({ id, data, onChange }) {
     ...data,
   });
 
-  const [openItem, setOpenItem] = useState(null); 
+  const [openItem, setOpenItem] = useState(null);
 
   useEffect(() => {
     if (data?.id !== lastDataIdRef.current) {
@@ -144,7 +144,10 @@ function EmploymentForm({ id, data, onChange }) {
 
             <div className="flex flex-col space-y-2">
               <Label className="font-sans text-sm font-bold">
-                Description
+                <h1>Description</h1>
+                <p className="font-sans text-xs bg-purple-100 p-1 rounded-md text-purple-500 font-extralight">
+                  Highlight Text and Rewrite With AI
+                </p>
               </Label>
               {formData.description.map((point, idx) => {
                 const handleRemove = () => removeDescriptionPoint(idx);

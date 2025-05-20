@@ -80,12 +80,12 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
     <div className="border-gray-400 p-8 w-[40rem] space-y-5 overflow-hidden font-sans">
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold">Employment History</h1>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-gray-600">
           Show employers your past experience and what you have accomplished
         </p>
         <p className="border p-2 text-xs rounded-md bg-purple-100 flex items-center border-purple-200">
           <Info className="w-5 h-5 mr-2 text-purple-500" />
-          <span className="text-purple-500">Click Here To See Our Tips for Using AI</span>
+          <span className="text-purple-500">Click Here To See Our Tips for Using AI Responsibly</span>
         </p>
       </div>
       
