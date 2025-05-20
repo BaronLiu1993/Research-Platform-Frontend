@@ -181,7 +181,7 @@ export default function EmailTextEditor({
               <PopoverTrigger asChild>
                 <button className={`${toggleItemClasses(false)} flex items-center gap-1.5 text-sm px-2`}>
                   <Sparkles className="h-4 w-4 text-purple-500" />
-                  AI Tools
+                  Extra Revisions
                 </button>
               </PopoverTrigger>
               <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-2 w-64 z-50 space-y-1">
@@ -217,7 +217,7 @@ export default function EmailTextEditor({
             <Popover>
               <PopoverTrigger asChild>
                 <button className={`${toggleItemClasses(false)} flex items-center gap-1.5 text-sm px-2`}>
-                    <Microscope className="h-4 w-4 text-pink-500" /> Add Research
+                    <Microscope className="h-4 w-4 text-pink-500" /> Publication Mode
                 </button>
               </PopoverTrigger>
               <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
