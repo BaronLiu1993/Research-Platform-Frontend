@@ -6,6 +6,7 @@ import { ExperiencePreview } from "./items/resumeviews/experiencepreview";
 import { ProjectsPreview } from "./items/resumeviews/projectspreview";
 import { ContactPreview } from "./items/resumeviews/contactspreview";
 import { InfoPreview } from "./items/resumeviews/infopreview";
+import { EducationPreview } from "./items/resumeviews/educationpreview";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Check, Hand } from "lucide-react";
 
@@ -31,13 +32,11 @@ function ResumeDisplayWrapperInner({ resume }) {
           </p>
         </div>
         <div className="prose-mirror-editor font-sans text-[6pt] p-10 m-3 border-1 rounded-md leading-normal bg-white ">
-          {/*<NameHeader 
-        name={resume.name} 
-        contact={resume.contact_information} 
-      />*/}
+          <NameHeader first_name = {resume.personal_information[0].first_name} last_name = {resume.personal_information[0].last_name}/>
+          <EducationPreview school = {resume.personal_information[0].school} degree = {resume.personal_information[0].degree} start_date = {resume.personal_information[0].start_date} end_date = {resume.personal_information[0].end_date} relevant_course = {resume.personal_information[0].relevant_course} />
+          <ContactPreview contact={resume.contact_information} />
           <ExperiencePreview experience={resume.experience} />
           <ProjectsPreview projects={resume.projects} />
-          <ContactPreview contact={resume.contact_information} />
           <InfoPreview personal={resume.personal_information} />
         </div>
       </div>
