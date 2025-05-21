@@ -38,7 +38,7 @@ function ResumeDisplayWrapperInner({ resume }) {
           <ExperiencePreview experience={resume.experience} />
           <ProjectsPreview projects={resume.projects} />
           <ContactPreview contact={resume.contact_information} />
-          <InfoPreview personal={resume.personal_details || {}} />
+          <InfoPreview personal={resume.personal_information} />
         </div>
       </div>
     </>
@@ -50,7 +50,7 @@ const ResumeDisplayWrapper = React.memo(ResumeDisplayWrapperInner, (a, b) => {
     a.resume.experience === b.resume.experience &&
     a.resume.projects === b.resume.projects &&
     a.resume.contact_information === b.resume.contact_information &&
-    a.resume.personal_details === b.resume.personal_details
+    a.resume.personal_information === b.resume.personal_information
   );
 });
 

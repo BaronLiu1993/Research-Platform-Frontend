@@ -11,6 +11,7 @@ import ResumeDisplayWrapper from "./resumeview";
 import { Button } from "@/shadcomponents/ui/button";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import resume from "@/app/resume/[name]/page";
 
 const initialResumeState = {
   name: "Your Name",
@@ -23,14 +24,14 @@ const initialResumeState = {
   },
   experience: [],
   projects: [],
-  personal_details: [],
+  personal_information: [],
 };
 
 export default function Editor({
   student_experience,
   student_projects,
-  student_personal_details,
   student_contact,
+  student_personal_information,
 }) {
   const [resumeData, setResumeData] = useState(() => {
     return {
@@ -39,7 +40,7 @@ export default function Editor({
       contact_information:
         student_contact || initialResumeState.contact_information,
       experience: student_experience || initialResumeState.experience,
-      info: personal_details || initialResumeState.personal_details
+      personal_information: student_personal_information?.[0] || {}
     };
   });
 
@@ -57,22 +58,20 @@ export default function Editor({
     }));
   };
 
-
   const handleContactUpdate = (updatedContactsArray) => {
     setResumeData((prev) => ({
       ...prev,
       contact_information: updatedContactsArray,
     }));
-    
   };
 
   const handleInfoUpdate = (updatedInfoArray) => {
     setResumeData((prev) => ({
       ...prev,
-      contact_information: updatedInfoArray
+      personal_information: updatedInfoArray
     }))
   }
-
+  console.log(resumeData.personal_information)
   const pages = [
     {
       component: (
@@ -103,7 +102,10 @@ export default function Editor({
     },
     {
       component: (
-        <PersonalInfo personal_details_data={student_personal_details} />
+        <PersonalInfo 
+        personalInfoData={resumeData.personal_information} 
+        onPersonalInfoChange={handleInfoUpdate}
+        />
       ),
       name: "Info",
     },

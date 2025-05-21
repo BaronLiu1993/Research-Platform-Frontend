@@ -17,14 +17,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
-import ResumeDisplayWrapper from "./resumeview";
 
-export default function Builder({ researchInterests }) {
+export default function Builder() {
   const [resumeFile, setResumeFile] = useState(null);
   const [experience, setExperience] = useState({});
   const [contact, setContact] = useState({});
   const [projects, setProjects] = useState({});
-  const [personalDetails, setPersonalDetails] = useState({});
+  const [personalInformation, setPersonalInformation] = useState({});
   const [parsedResume, setParsedResume] = useState(false);
 
   const handleParseResume = async () => {
@@ -32,7 +31,9 @@ export default function Builder({ researchInterests }) {
       console.warn("No file selected!");
       return;
     }
+
     const file = resumeFile;
+
     try {
       const resumeDataHTML = await ParseResume(file);
       const cleanedData = removeSingleQuoteOrJson(resumeDataHTML.result);
@@ -40,8 +41,9 @@ export default function Builder({ researchInterests }) {
       setExperience(response.experience);
       setContact(response.contact_information);
       setProjects(response.projects);
-      setPersonalDetails(response.skills);
+      setPersonalInformation(response.personal_information);
       setParsedResume(true);
+      console.log(parsedResume)
     } catch (error) {
       console.error("Error fetching data", error);
     }
@@ -206,7 +208,7 @@ export default function Builder({ researchInterests }) {
                 student_experience={experience}
                 student_projects={projects}
                 student_contact={contact}
-                student_personal_details={personalDetails}
+                student_personal_information={personalInformation}
               />
             </div>
           </div>

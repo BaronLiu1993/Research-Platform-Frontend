@@ -4,8 +4,9 @@ import { useState, useEffect, useRef, useTransition, useCallback } from "react";
 import { Label } from "@/shadcomponents/ui/label";
 import { Input } from "@/shadcomponents/ui/input";
 import { Textarea } from "@/shadcomponents/ui/textarea";
-import DropdownSkills from "@/app/components/dropdowns/dropdownskills";
 import HonoursInput from "@/app/components/dropdowns/dropdownhonours";
+import SkillsInput from "@/app/components/dropdowns/dropdownskills";
+import CoursesInput from "@/app/components/dropdowns/dropdowncourses";
 
 const debounce = (fn, delay) => {
   let timer;
@@ -16,11 +17,14 @@ const debounce = (fn, delay) => {
 };
 
 export default function PersonalInfo({
-  personalInfo = {},
+  personalInfoData = {},
   onPersonalInfoChange = () => {},
 }) {
+
+  console.log(personalInfoData)
   const [isPending, startTransition] = useTransition();
-  const [localData, setLocalData] = useState(personalInfo || {});
+  const [localData, setLocalData] = useState(personalInfoData);
+
   const debouncedUpdateParent = useRef(
     debounce((updated) => {
       startTransition(() => {
@@ -30,11 +34,16 @@ export default function PersonalInfo({
   ).current;
 
   useEffect(() => {
-    const isSame = Object.entries(personalInfo).every(
+    if (!personalInfoData) return;
+  
+    const isSame = Object.entries(personalInfoData).every(
       ([key, value]) => localData[key] === value
     );
-    if (!isSame) setLocalData(personalInfo);
-  }, [personalInfo]);
+  
+    if (!isSame) {
+      setLocalData(personalInfoData);
+    }
+  }, [personalInfoData]);
 
   const handleChange = useCallback(
     (field, value) => {
@@ -52,7 +61,7 @@ export default function PersonalInfo({
       <div>
         <h1 className="font-sans text-2xl font-semibold">Personal Information</h1>
         <p className="text-sm font-sans text-gray-400">
-          Show employers where they can contact you
+          Show employers your educational experience
         </p>
       </div>
 
@@ -77,26 +86,26 @@ export default function PersonalInfo({
 
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex flex-col flex-1 space-y-2">
-            <Label htmlFor="start_year" className="font-sans text-sm font-bold">Start Year</Label>
+            <Label htmlFor="start_date" className="font-sans text-sm font-bold">Start Date</Label>
             <Input
-              id="start_year"
-              value={localData.start_year || ""}
-              onChange={(e) => handleChange("start_year", e.target.value)}
+              id="start_date"
+              value={localData.start_date || ""}
+              onChange={(e) => handleChange("start_date", e.target.value)}
             />
           </div>
           <div className="flex flex-col flex-1 space-y-2">
-            <Label htmlFor="end_year" className="font-sans text-sm font-bold">End Year</Label>
+            <Label htmlFor="end_date" className="font-sans text-sm font-bold">End Date</Label>
             <Input
-              id="end_year"
-              value={localData.end_year || ""}
-              onChange={(e) => handleChange("end_year", e.target.value)}
+              id="end_date"
+              value={localData.end_date || ""}
+              onChange={(e) => handleChange("end_date", e.target.value)}
             />
           </div>
         </div>
 
         <div className="flex flex-col space-y-2">
           <Label htmlFor="skills" className="font-sans text-sm font-bold">Skills</Label>
-          <DropdownSkills
+          <SkillsInput
             value={localData.skills || []}
             onChange={(val) => handleChange("skills", val)}
           />
@@ -119,34 +128,40 @@ export default function PersonalInfo({
           </div>
 
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="major" className="font-sans text-sm font-bold">Major</Label>
+            <Label htmlFor="degree" className="font-sans text-sm font-bold">Degree</Label>
             <Textarea
-              id="major"
-              placeholder="Enter your major(s)"
+              id="degree"
+              placeholder="Enter your degree"
               className="text-sm"
-              value={localData.major || ""}
-              onChange={(e) => handleChange("major", e.target.value)}
+              value={localData.degree || ""}
+              onChange={(e) => handleChange("degree", e.target.value)}
             />
           </div>
 
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="courses" className="font-sans text-sm font-bold">Relevant Courses</Label>
+            <Label htmlFor="school" className="font-sans text-sm font-bold">School</Label>
             <Textarea
-              id="courses"
-              placeholder="List relevant courses"
+              id="school"
+              placeholder="Enter your school"
               className="text-sm"
-              value={localData.courses || ""}
-              onChange={(e) => handleChange("courses", e.target.value)}
+              value={localData.school || ""}
+              onChange={(e) => handleChange("school", e.target.value)}
             />
           </div>
-
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="honours" className="font-sans text-sm font-bold">Honours & Scholarships</Label>
-            <HonoursInput
-              value={localData.honours || []}
-              onChange={(val) => handleChange("honours", val)}
-            />
-          </div>
+        </div>
+        <div className="flex flex-col space-y-2">
+          <Label htmlFor="courses" className="font-sans text-sm font-bold">Courses</Label>
+          <HonoursInput
+            value={localData.relevant_course || []}
+            onChange={(val) => handleChange("honours", val)}
+          />
+        </div>
+        <div className="flex flex-col space-y-2">
+          <Label htmlFor="awards" className="font-sans text-sm font-bold">Skills</Label>
+          <HonoursInput
+            value={localData.awards || []}
+            onChange={(val) => handleChange("honours", val)}
+          />
         </div>
       </div>
     </div>

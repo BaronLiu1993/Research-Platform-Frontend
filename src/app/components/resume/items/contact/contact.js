@@ -85,6 +85,27 @@ export default function Contact({
             onChange={(e) => handleFieldChange("linkedin", e.target.value)}
           />
         </div>
+        <div className="flex flex-col space-y-2">
+          <Label className="font-sans text-sm font-bold" htmlFor="github">
+            Github
+          </Label>
+          <Input
+            id="github"
+            value={localContactData.github || ""}
+            onChange={(e) => handleFieldChange("github", e.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col space-y-2">
+          <Label className="font-sans text-sm font-bold" htmlFor="github">
+            Website
+          </Label>
+          <Input
+            id="website"
+            value={localContactData.website || ""}
+            onChange={(e) => handleFieldChange("website", e.target.value)}
+          />
+        </div>
 
         <div className="flex flex-col space-y-2">
           <Label className="font-sans text-sm font-bold" htmlFor="phone">
