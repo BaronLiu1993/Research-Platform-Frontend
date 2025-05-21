@@ -197,7 +197,7 @@ const columns = [
             </div>
             <div className="space-y-2 p-2">
               <Label className="text-right font-semibold">Description</Label>
-              <div className="border-2 rounded-md border-gray-100 p-4 font-light">
+              <div className="border-2 rounded-md border-gray-100 p-4 font-extralight text-xs">
                 {data.bio || "No bio available."}
               </div>
             </div>
