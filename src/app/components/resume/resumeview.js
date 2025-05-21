@@ -5,15 +5,15 @@ import { NameHeader } from "./items/resumeviews/nameheader";
 import { ExperiencePreview } from "./items/resumeviews/experiencepreview";
 import { ProjectsPreview } from "./items/resumeviews/projectspreview";
 import { ContactPreview } from "./items/resumeviews/contactspreview";
-import { InfoPreview } from "./items/resumeviews/infopreview";
 import { EducationPreview } from "./items/resumeviews/educationpreview";
+import { SkillsPreview } from "./items/resumeviews/skillspreview";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Check, Hand } from "lucide-react";
 
 function ResumeDisplayWrapperInner({ resume }) {
   return (
     <>
-      <div className = "border-l-1">
+      <div className="border-l-1">
         <div className="p-4">
           <div className="mb-5 mx-5 space-y-2">
             <div className="flex space-x-2">
@@ -32,12 +32,23 @@ function ResumeDisplayWrapperInner({ resume }) {
           </p>
         </div>
         <div className="prose-mirror-editor font-sans text-[6pt] p-10 m-3 border-1 rounded-md leading-normal bg-white ">
-          <NameHeader first_name = {resume.personal_information[0].first_name} last_name = {resume.personal_information[0].last_name}/>
-          <EducationPreview school = {resume.personal_information[0].school} degree = {resume.personal_information[0].degree} start_date = {resume.personal_information[0].start_date} end_date = {resume.personal_information[0].end_date} relevant_course = {resume.personal_information[0].relevant_course} />
+          <NameHeader
+            first_name={resume.personal_information[0].first_name}
+            last_name={resume.personal_information[0].last_name}
+          />
           <ContactPreview contact={resume.contact_information} />
+          <EducationPreview
+            school={resume.personal_information[0].school}
+            degree={resume.personal_information[0].degree}
+            start_date={resume.personal_information[0].start_date}
+            end_date={resume.personal_information[0].end_date}
+            gpa={resume.personal_information[0].gpa}
+            relevant_course={resume.personal_information[0].relevant_course}
+            awards={resume.personal_information[0].awards}
+          />
           <ExperiencePreview experience={resume.experience} />
           <ProjectsPreview projects={resume.projects} />
-          <InfoPreview personal={resume.personal_information} />
+          <SkillsPreview skills={resume.personal_information[0].skills} />
         </div>
       </div>
     </>
@@ -54,4 +65,3 @@ const ResumeDisplayWrapper = React.memo(ResumeDisplayWrapperInner, (a, b) => {
 });
 
 export default ResumeDisplayWrapper;
-

@@ -20,7 +20,7 @@ function _ExperiencePreview({ experience }) {
   }, [experience]);
 
   return (
-    <div className = "w-fit font-serif">
+    <div className = "w-full font-serif">
       <h2 className="text-[16px] font-semibold tracking-wide uppercase border-b border-gray-400">
         Experience
       </h2>
