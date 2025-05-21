@@ -7,7 +7,11 @@ module.exports = {
     "./node_modules/@heroui/theme/dist/components/(input-otp|form).js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        cmubi: ['cmubi', 'sans-serif']
+      }
+    },
   },
   darkMode: "class",
   plugins: [heroui()],
