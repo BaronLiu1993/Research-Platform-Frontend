@@ -28,6 +28,13 @@ export function InfoPreview({ personal }) {
     immediatelyRender: false,
   });
 
+  // Update editor content when `content` changes after initial mount
+  useEffect(() => {
+    if (editor && content) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
+
   if (!editor) return null;
   return <EditorContent editor={editor} />;
 }

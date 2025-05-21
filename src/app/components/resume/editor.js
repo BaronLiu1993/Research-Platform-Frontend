@@ -33,6 +33,7 @@ export default function Editor({
   student_contact,
   student_personal_information,
 }) {
+  console.log(student_personal_information);
   const [resumeData, setResumeData] = useState(() => {
     return {
       ...initialResumeState,
@@ -40,7 +41,8 @@ export default function Editor({
       contact_information:
         student_contact || initialResumeState.contact_information,
       experience: student_experience || initialResumeState.experience,
-      personal_information: student_personal_information?.[0] || {}
+      personal_information:
+        student_personal_information || initialResumeState.personal_information,
     };
   });
 
@@ -68,10 +70,10 @@ export default function Editor({
   const handleInfoUpdate = (updatedInfoArray) => {
     setResumeData((prev) => ({
       ...prev,
-      personal_information: updatedInfoArray
-    }))
-  }
-  console.log(resumeData.personal_information)
+      personal_information: updatedInfoArray,
+    }));
+  };
+
   const pages = [
     {
       component: (
@@ -102,9 +104,9 @@ export default function Editor({
     },
     {
       component: (
-        <PersonalInfo 
-        personalInfoData={resumeData.personal_information} 
-        onPersonalInfoChange={handleInfoUpdate}
+        <PersonalInfo
+          personalInfoData={resumeData.personal_information[0] || {}}
+          onPersonalInfoChange={(updatedObj) => handleInfoUpdate([updatedObj])}
         />
       ),
       name: "Info",

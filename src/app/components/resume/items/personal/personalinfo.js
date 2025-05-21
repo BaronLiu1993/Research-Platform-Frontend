@@ -20,8 +20,6 @@ export default function PersonalInfo({
   personalInfoData = {},
   onPersonalInfoChange = () => {},
 }) {
-
-  console.log(personalInfoData)
   const [isPending, startTransition] = useTransition();
   const [localData, setLocalData] = useState(personalInfoData);
 
@@ -35,11 +33,11 @@ export default function PersonalInfo({
 
   useEffect(() => {
     if (!personalInfoData) return;
-  
+
     const isSame = Object.entries(personalInfoData).every(
       ([key, value]) => localData[key] === value
     );
-  
+
     if (!isSame) {
       setLocalData(personalInfoData);
     }
@@ -49,17 +47,20 @@ export default function PersonalInfo({
     (field, value) => {
       setLocalData((prev) => {
         const updated = { ...prev, [field]: value };
-        debouncedUpdateParent(updated);
+        setTimeout(() => debouncedUpdateParent(updated), 0);
         return updated;
       });
     },
     [debouncedUpdateParent]
   );
+  
 
   return (
     <div className="p-8 rounded-md">
       <div>
-        <h1 className="font-sans text-2xl font-semibold">Personal Information</h1>
+        <h1 className="font-sans text-2xl font-semibold">
+          Personal Information
+        </h1>
         <p className="text-sm font-sans text-gray-400">
           Show employers your educational experience
         </p>
@@ -67,7 +68,9 @@ export default function PersonalInfo({
 
       <div className="py-6 flex flex-col space-y-4">
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="first_name" className="font-sans text-sm font-bold">First Name</Label>
+          <Label htmlFor="first_name" className="font-sans text-sm font-bold">
+            First Name
+          </Label>
           <Input
             id="first_name"
             value={localData.first_name || ""}
@@ -76,7 +79,9 @@ export default function PersonalInfo({
         </div>
 
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="last_name" className="font-sans text-sm font-bold">Last Name</Label>
+          <Label htmlFor="last_name" className="font-sans text-sm font-bold">
+            Last Name
+          </Label>
           <Input
             id="last_name"
             value={localData.last_name || ""}
@@ -86,7 +91,9 @@ export default function PersonalInfo({
 
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex flex-col flex-1 space-y-2">
-            <Label htmlFor="start_date" className="font-sans text-sm font-bold">Start Date</Label>
+            <Label htmlFor="start_date" className="font-sans text-sm font-bold">
+              Start Date
+            </Label>
             <Input
               id="start_date"
               value={localData.start_date || ""}
@@ -94,7 +101,9 @@ export default function PersonalInfo({
             />
           </div>
           <div className="flex flex-col flex-1 space-y-2">
-            <Label htmlFor="end_date" className="font-sans text-sm font-bold">End Date</Label>
+            <Label htmlFor="end_date" className="font-sans text-sm font-bold">
+              End Date
+            </Label>
             <Input
               id="end_date"
               value={localData.end_date || ""}
@@ -104,7 +113,9 @@ export default function PersonalInfo({
         </div>
 
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="skills" className="font-sans text-sm font-bold">Skills</Label>
+          <Label htmlFor="skills" className="font-sans text-sm font-bold">
+            Skills
+          </Label>
           <SkillsInput
             value={localData.skills || []}
             onChange={(val) => handleChange("skills", val)}
@@ -113,7 +124,9 @@ export default function PersonalInfo({
 
         <div className="flex flex-col space-y-4">
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="gpa" className="font-sans text-sm font-bold">GPA</Label>
+            <Label htmlFor="gpa" className="font-sans text-sm font-bold">
+              GPA
+            </Label>
             <Input
               type="number"
               id="gpa"
@@ -128,7 +141,9 @@ export default function PersonalInfo({
           </div>
 
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="degree" className="font-sans text-sm font-bold">Degree</Label>
+            <Label htmlFor="degree" className="font-sans text-sm font-bold">
+              Degree
+            </Label>
             <Textarea
               id="degree"
               placeholder="Enter your degree"
@@ -139,7 +154,9 @@ export default function PersonalInfo({
           </div>
 
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="school" className="font-sans text-sm font-bold">School</Label>
+            <Label htmlFor="school" className="font-sans text-sm font-bold">
+              School
+            </Label>
             <Textarea
               id="school"
               placeholder="Enter your school"
@@ -150,17 +167,21 @@ export default function PersonalInfo({
           </div>
         </div>
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="courses" className="font-sans text-sm font-bold">Courses</Label>
-          <HonoursInput
+          <Label htmlFor="courses" className="font-sans text-sm font-bold">
+            Courses
+          </Label>
+          <CoursesInput
             value={localData.relevant_course || []}
-            onChange={(val) => handleChange("honours", val)}
+            onChange={(val) => handleChange("relevant_course", val)}
           />
         </div>
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="awards" className="font-sans text-sm font-bold">Skills</Label>
+          <Label htmlFor="awards" className="font-sans text-sm font-bold">
+            Awards
+          </Label>
           <HonoursInput
             value={localData.awards || []}
-            onChange={(val) => handleChange("honours", val)}
+            onChange={(val) => handleChange("awards", val)}
           />
         </div>
       </div>
