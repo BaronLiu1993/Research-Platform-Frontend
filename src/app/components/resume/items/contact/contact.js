@@ -131,17 +131,6 @@ export default function Contact({
             />
           </div>
         </div>
-
-        <div className="flex flex-col space-y-2">
-          <Label className="font-sans text-sm font-bold" htmlFor="university">
-            University
-          </Label>
-          <Input
-            id="university"
-            value={localContactData.university || "University of Toronto"}
-            onChange={(e) => handleFieldChange("university", e.target.value)}
-          />
-        </div>
       </div>
     </div>
   );

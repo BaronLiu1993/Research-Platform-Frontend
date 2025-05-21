@@ -21,11 +21,9 @@ const initialResumeState = {
     github: "",
     website: "",
   },
-  education: [],
   experience: [],
   projects: [],
-  skills: [],
-  personal_details: { name: "Your Name" },
+  personal_details: [],
 };
 
 export default function Editor({
@@ -41,6 +39,7 @@ export default function Editor({
       contact_information:
         student_contact || initialResumeState.contact_information,
       experience: student_experience || initialResumeState.experience,
+      info: personal_details || initialResumeState.personal_details
     };
   });
 
@@ -66,6 +65,13 @@ export default function Editor({
     }));
     
   };
+
+  const handleInfoUpdate = (updatedInfoArray) => {
+    setResumeData((prev) => ({
+      ...prev,
+      contact_information: updatedInfoArray
+    }))
+  }
 
   const pages = [
     {
