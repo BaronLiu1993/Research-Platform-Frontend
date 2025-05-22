@@ -8,7 +8,7 @@ export function ConnectionManager() {
   function disconnect() {
     socket.disconnect();
   }
-
+  
   return (
     <>
       <button onClick={ connect }>Connect</button>

@@ -1,9 +1,11 @@
+"use client"
+
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
 import { ConnectionManager } from "./connectionmanager";
 import { ConnectionState } from "./connectionstate";
 
-export default function ConnectionComponent() {
+export default function ConnectionComponent({}) {
     const [isConnected, setIsConnected] = useState(socket.connected)
     const [events, setEvents] = useState(null)
 
@@ -21,9 +23,9 @@ export default function ConnectionComponent() {
 
         }
 
-        socket.io('connect', onConnect)
-        socket.io('disconnect', onDisconnect)
-        socket.io('event', eventChange)
+        socket.on('connect', onConnect)
+        socket.on('disconnect', onDisconnect)
+        socket.on('event', eventChange)
 
         return () => {
             socket.off('connect', onConnect)
@@ -37,7 +39,8 @@ export default function ConnectionComponent() {
 
     return (
         <>
-            <div>test</div>
+            <ConnectionState isConnected={ isConnected } />
+            <ConnectionManager />
         </>
     )
 }
