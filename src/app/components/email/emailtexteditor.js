@@ -13,36 +13,43 @@ import {
 
 import Publications from "./publications";
 import GoogleCaledar from "./googlecalendar";
-import EmailSideBar from "./emailsidebar"; 
+import EmailSideBar from "./emailsidebar";
 
-import { Bold, Italic, UnderlineIcon, Sparkles, Wand2, FileText, Microscope, Pencil, CheckSquare, Calendar } from "lucide-react"; 
+import {
+  Bold,
+  Italic,
+  UnderlineIcon,
+  Sparkles,
+  Wand2,
+  Microscope,
+  Pencil,
+  CheckSquare,
+  Calendar,
+  Atom,
+} from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/shadcomponents/ui/toggle-group";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import { prompts } from "./AIwriters";
+import DeepThink from "./deepthink";
+import { Template } from "./template";
 
-export default function EmailTextEditor({
-  content,
-  research_interests
-}) {
+export default function EmailTextEditor({ content, research_interests }) {
   const [aiTyping, setAiTyping] = useState(false);
   const [publicationData, setPublicationData] = useState([]);
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Highlight.configure({ multicolor: true }),
-    ],
+    extensions: [StarterKit, Highlight.configure({ multicolor: true })],
     content,
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none min-h-[30rem] w-full font-sans text-gray-800 py-3 px-4 bg-white rounded-b-md border border-gray-200", 
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none min-h-[30rem] w-full font-sans text-gray-800 py-3 px-4 bg-white rounded-b-md border border-gray-200",
       },
     },
   });
 
   useEffect(() => {
-    if (editor && content !== editor.getHTML()) { 
+    if (editor && content !== editor.getHTML()) {
       editor.commands.setContent(content);
     }
   }, [content, editor]);
@@ -96,19 +103,27 @@ export default function EmailTextEditor({
         editor
           .chain()
           .focus()
-          .insertContentAt(currentPos + i, `<mark data-mark-id="${markId}" class="bg-blue-100 text-blue-700 rounded px-0.5">${char}</mark>`)
+          .insertContentAt(
+            currentPos + i,
+            `<mark data-mark-id="${markId}" class="bg-blue-100 text-blue-700 rounded px-0.5">${char}</mark>`
+          )
           .run();
-        await new Promise((res) => setTimeout(res, 10)); 
+        await new Promise((res) => setTimeout(res, 10));
       }
 
       editor
         .chain()
         .focus()
-        .deleteRange({ from: selection.from, to: selection.from + aiText.length })
+        .deleteRange({
+          from: selection.from,
+          to: selection.from + aiText.length,
+        })
         .insertContentAt(selection.from, aiText)
-        .setTextSelection({from: selection.from, to: selection.from + aiText.length}) 
+        .setTextSelection({
+          from: selection.from,
+          to: selection.from + aiText.length,
+        })
         .run();
-
     } catch (error) {
       console.error("Error during AI rewrite:", error);
     } finally {
@@ -132,6 +147,10 @@ export default function EmailTextEditor({
     <>
       <div className="flex flex-col md:flex-row gap-4 font-sans w-full">
         <div className="w-full md:w-2/3">
+          {/*Make UI Design Link to Documentation Here*/}
+          <div>
+            <h1></h1>
+          </div>
           <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-t-md flex flex-wrap items-center gap-1">
             <ToggleGroup type="multiple">
               <ToggleGroupItem
@@ -155,7 +174,7 @@ export default function EmailTextEditor({
               </ToggleGroupItem>
 
               <ToggleGroupItem
-                value="strike" 
+                value="strike"
                 aria-label="Toggle strikethrough"
                 onClick={() => editor.chain().focus().toggleStrike().run()}
                 className={toggleItemClasses(editor.isActive("strike"))}
@@ -165,13 +184,17 @@ export default function EmailTextEditor({
               </ToggleGroupItem>
             </ToggleGroup>
 
-            <div className="h-5 w-px bg-gray-300 mx-1"></div> 
-            
-            <Popover className = "max-w-[5rem]">
+            <div className="h-5 w-px bg-gray-300 mx-1"></div>
+
+            <Popover className="max-w-[5rem]">
               <PopoverTrigger asChild>
-                <button className={`${toggleItemClasses(false)} flex items-center gap-1.5 text-sm px-2`}>
+                <button
+                  className={`${toggleItemClasses(
+                    false
+                  )} flex items-center gap-1.5 bg-gray-100 rounded-4xl border-2 text-sm px-2 font-semibold`}
+                >
                   <Sparkles className="h-4 w-4 text-purple-500" />
-                  Extra Revisions
+                  <span> Extra Revisions</span>
                 </button>
               </PopoverTrigger>
               <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-2 w-64 z-50 space-y-1">
@@ -203,32 +226,57 @@ export default function EmailTextEditor({
               </PopoverContent>
             </Popover>
 
-
             <Popover>
               <PopoverTrigger asChild>
-                <button className={`${toggleItemClasses(false)} flex items-center gap-1.5 text-sm px-2`}>
-                    <Microscope className="h-4 w-4 text-pink-500" /> Publication Mode
+                <button
+                  className={`${toggleItemClasses(
+                    false
+                  )} flex items-center gap-1.5 text-sm px-2 bg-gray-100 rounded-full border-2 font-semibold font-semibold`}
+                >
+                  <Microscope className="h-4 w-4 text-pink-500" /> Publication
+                  Mode
                 </button>
               </PopoverTrigger>
               <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                <Publications/>
+                <Publications />
               </PopoverContent>
             </Popover>
 
-
             <Popover>
               <PopoverTrigger asChild>
-                <button className={`${toggleItemClasses(false)} flex items-center gap-1.5 text-sm px-2`}>
-                    <Calendar className="h-4 w-4 text-green-500" /> Sync With Google Calendar
+                <button
+                  className={`${toggleItemClasses(
+                    false
+                  )} flex items-center gap-1.5 text-sm px-2 bg-gray-100 rounded-4xl border-2 font-semibold`}
+                >
+                  <Calendar className="h-4 w-4 text-green-500" /> Google Calendar
                 </button>
               </PopoverTrigger>
               <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                <GoogleCaledar/>
+                <GoogleCaledar />
+              </PopoverContent>
+            </Popover>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  className={`${toggleItemClasses(
+                    false
+                  )} flex items-center gap-1.5 text-sm px-2 bg-gray-100 rounded-4xl border-2 font-semibold`}
+                >
+                  <Atom className="h-4 w-4 text-blue-500" /> Deep Think
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
+                <DeepThink />
               </PopoverContent>
             </Popover>
           </div>
 
-          <EditorContent editor={editor} />
+          {/*<EditorContent editor={editor} />*/}
+          <div className = "max-w-full border-1 p-10">
+              <Template className = ""/>
+          </div>
           {aiTyping && (
             <div className="text-xs text-gray-500 px-4 py-1.5 flex items-center gap-1.5 font-sans border-t border-gray-200">
               <Wand2 className="h-3.5 w-3.5 text-purple-500 animate-pulse" />
@@ -240,7 +288,7 @@ export default function EmailTextEditor({
           )}
         </div>
         <div className="w-full md:w-1/3">
-             <EmailSideBar publications={publicationData} /> 
+          <EmailSideBar publications={publicationData} />
         </div>
       </div>
     </>
