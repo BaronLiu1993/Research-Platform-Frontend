@@ -14,6 +14,7 @@ import {
 import Publications from "./publications";
 import GoogleCaledar from "./googlecalendar";
 import EmailSideBar from "./emailsidebar";
+import ConnectionComponent from "../websockets/connectioncomponent";
 
 import {
   Bold,
@@ -75,7 +76,6 @@ export default function EmailTextEditor({ content, research_interests }) {
       });
 
       if (!response.ok) {
-        // Handle HTTP errors
         console.error("AI edit request failed:", response.status);
         setAiTyping(false);
         return;
@@ -231,7 +231,7 @@ export default function EmailTextEditor({ content, research_interests }) {
                 <button
                   className={`${toggleItemClasses(
                     false
-                  )} flex items-center gap-1.5 text-sm px-2 bg-gray-100 rounded-full border-2 font-semibold font-semibold`}
+                  )} flex items-center gap-1.5 text-sm px-2 bg-gray-100 rounded-full border-2 font-semibold`}
                 >
                   <Microscope className="h-4 w-4 text-pink-500" /> Publication
                   Mode
@@ -272,7 +272,7 @@ export default function EmailTextEditor({ content, research_interests }) {
               </PopoverContent>
             </Popover>
           </div>
-
+          <ConnectionComponent />
           {/*<EditorContent editor={editor} />*/}
           <div className = "max-w-full border-1 p-10">
               <Template className = ""/>

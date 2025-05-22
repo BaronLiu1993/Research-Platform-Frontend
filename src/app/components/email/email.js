@@ -30,6 +30,7 @@ export default function Email({student_information}) {
   const email = searchParams.get("email") || "recipient@example.com";
   const interestsString = searchParams.get("professor_interests") || "Topic A, Topic B, Topic C, Topic D, Topic E, Topic F";
   const interests = interestsString.split(",").map(i => i.trim()).filter(i => i);
+  
   const [uploadedFile, setUploadedFile] = useState(null);
   const fileInputRef = useRef(null);
 

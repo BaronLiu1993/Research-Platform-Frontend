@@ -1,4 +1,5 @@
 import { Button } from "@/shadcomponents/ui/button";
+import { Dialog } from "@/shadcomponents/ui/dialog";
 import { Textarea } from "@/shadcomponents/ui/textarea";
 
 import {
@@ -53,19 +54,21 @@ export function Template() {
 
         <div className="flex flex-col gap-2">
           <div className="w-full max-w-2xl">
-            {/*These are all going to be dialog boxes that people can view and then insert a template from a website that is known to work and why is it good and thing like that*/}
             <h2 className="text-lg font-medium text-gray-800 mb-4">
               Suggested Template Choices
             </h2>
             <div className="flex flex-wrap gap-3">
               <Button variant="outline" className="rounded-full">
-                Mystical Forest Portal
+                UofT Template
+                <Dialog>
+                  
+                </Dialog>
               </Button>
               <Button variant="outline" className="rounded-full">
-                Neon City Streets
+                UC Berkeley Template
               </Button>
               <Button variant="outline" className="rounded-full">
-                Lotus Temple
+                Harvard Template
               </Button>
             </div>
             <div className="flex items-center mt-4 text-sm text-gray-600">
