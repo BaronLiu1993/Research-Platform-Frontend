@@ -12,12 +12,12 @@ import {
 } from "@radix-ui/react-popover";
 
 import Publications from "./publications";
-import EmailSideBar from "./emailsidebar"; // Assuming this component will also be styled
+import GoogleCaledar from "./googlecalendar";
+import EmailSideBar from "./emailsidebar"; 
 
-import { Bold, Italic, UnderlineIcon, Sparkles, Wand2, FileText, Microscope, Pencil, CheckSquare } from "lucide-react"; // Added UnderlineIcon, Sparkles, Wand2
+import { Bold, Italic, UnderlineIcon, Sparkles, Wand2, FileText, Microscope, Pencil, CheckSquare, Calendar } from "lucide-react"; 
 import { ToggleGroup, ToggleGroupItem } from "@/shadcomponents/ui/toggle-group";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
-import { Badge } from "@/shadcomponents/ui/badge";
 import { prompts } from "./AIwriters";
 
 export default function EmailTextEditor({
@@ -26,10 +26,6 @@ export default function EmailTextEditor({
 }) {
   const [aiTyping, setAiTyping] = useState(false);
   const [publicationData, setPublicationData] = useState([]);
-
-  const handlePublicationData = (data) => {
-    setPublicationData(data);
-  };
 
   const editor = useEditor({
     extensions: [
@@ -40,13 +36,13 @@ export default function EmailTextEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none min-h-[30rem] w-full font-sans text-gray-800 py-3 px-4 bg-white rounded-b-md border border-gray-200", // Notion-like editor area
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none min-h-[30rem] w-full font-sans text-gray-800 py-3 px-4 bg-white rounded-b-md border border-gray-200", 
       },
     },
   });
 
   useEffect(() => {
-    if (editor && content !== editor.getHTML()) { // Only update if content actually changed
+    if (editor && content !== editor.getHTML()) { 
       editor.commands.setContent(content);
     }
   }, [content, editor]);
@@ -92,7 +88,6 @@ export default function EmailTextEditor({
         .deleteRange({ from: selection.from, to: selection.to })
         .run();
 
-      // Improved typing effect with proper mark removal
       const markId = `ai-highlight-${Date.now()}`;
       let currentPos = selection.from;
 
@@ -103,17 +98,15 @@ export default function EmailTextEditor({
           .focus()
           .insertContentAt(currentPos + i, `<mark data-mark-id="${markId}" class="bg-blue-100 text-blue-700 rounded px-0.5">${char}</mark>`)
           .run();
-        await new Promise((res) => setTimeout(res, 10)); // Adjust speed as needed
+        await new Promise((res) => setTimeout(res, 10)); 
       }
-      // Once typing is done, remove the per-character highlights and insert final text
-      // This is a bit complex with Tiptap's mark system if we want to remove them cleanly without leaving empty marks.
-      // A simpler approach is to replace the whole highlighted segment once after "typing".
+
       editor
         .chain()
         .focus()
         .deleteRange({ from: selection.from, to: selection.from + aiText.length })
         .insertContentAt(selection.from, aiText)
-        .setTextSelection({from: selection.from, to: selection.from + aiText.length}) // Select the newly inserted text
+        .setTextSelection({from: selection.from, to: selection.from + aiText.length}) 
         .run();
 
     } catch (error) {
@@ -132,7 +125,6 @@ export default function EmailTextEditor({
     );
   }
 
-  // Common class for ToggleGroupItem for Notion feel
   const toggleItemClasses = (isActive) =>
     `p-1.5 data-[state=on]:bg-gray-200 data-[state=on]:text-gray-800 hover:bg-gray-100 text-gray-600 rounded-sm transition-colors`;
 
@@ -140,7 +132,6 @@ export default function EmailTextEditor({
     <>
       <div className="flex flex-col md:flex-row gap-4 font-sans w-full">
         <div className="w-full md:w-2/3">
-          {/* Toolbar */}
           <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-t-md flex flex-wrap items-center gap-1">
             <ToggleGroup type="multiple">
               <ToggleGroupItem
@@ -164,7 +155,7 @@ export default function EmailTextEditor({
               </ToggleGroupItem>
 
               <ToggleGroupItem
-                value="strike" // Corrected to strike for Underline icon behavior
+                value="strike" 
                 aria-label="Toggle strikethrough"
                 onClick={() => editor.chain().focus().toggleStrike().run()}
                 className={toggleItemClasses(editor.isActive("strike"))}
@@ -174,10 +165,9 @@ export default function EmailTextEditor({
               </ToggleGroupItem>
             </ToggleGroup>
 
-            <div className="h-5 w-px bg-gray-300 mx-1"></div> {/* Separator */}
+            <div className="h-5 w-px bg-gray-300 mx-1"></div> 
             
-            {/* AI Tools Group */}
-            <Popover>
+            <Popover className = "max-w-[5rem]">
               <PopoverTrigger asChild>
                 <button className={`${toggleItemClasses(false)} flex items-center gap-1.5 text-sm px-2`}>
                   <Sparkles className="h-4 w-4 text-purple-500" />
@@ -187,14 +177,14 @@ export default function EmailTextEditor({
               <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-2 w-64 z-50 space-y-1">
                 <button
                   onClick={() => handleAIRewrite(prompts[0])}
-                  className="w-full text-left text-sm p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
+                  className="w-full text-left text-xs p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
                   disabled={aiTyping || !editor.state.selection.content().size}
                 >
                   <CheckSquare className="h-4 w-4 text-blue-500" /> Fix Grammar
                 </button>
                 <button
                   onClick={() => handleAIRewrite(prompts[1])}
-                  className="w-full text-left text-sm p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
+                  className="w-full text-left text-xs p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
                   disabled={aiTyping || !editor.state.selection.content().size}
                 >
                   <Pencil className="h-4 w-4 text-green-500" /> Reword
@@ -205,7 +195,7 @@ export default function EmailTextEditor({
                       `${prompts[2]}. These are the professors interests ${research_interests}. Return ONLY the TEXT.`
                     )
                   }
-                  className="w-full text-left text-sm p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
+                  className="w-full text-left text-xs p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
                   disabled={aiTyping || !editor.state.selection.content().size}
                 >
                   <Wand2 className="h-4 w-4 text-indigo-500" /> Personalise
@@ -224,11 +214,21 @@ export default function EmailTextEditor({
                 <Publications/>
               </PopoverContent>
             </Popover>
+
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className={`${toggleItemClasses(false)} flex items-center gap-1.5 text-sm px-2`}>
+                    <Calendar className="h-4 w-4 text-green-500" /> Sync With Google Calendar
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
+                <GoogleCaledar/>
+              </PopoverContent>
+            </Popover>
           </div>
 
-          {/* Editor Content Area */}
           <EditorContent editor={editor} />
-
           {aiTyping && (
             <div className="text-xs text-gray-500 px-4 py-1.5 flex items-center gap-1.5 font-sans border-t border-gray-200">
               <Wand2 className="h-3.5 w-3.5 text-purple-500 animate-pulse" />

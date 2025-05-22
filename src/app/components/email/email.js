@@ -3,35 +3,23 @@
 import { useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { getUserId } from "@/app/email/emailapi";
-
 // Component imports
 import EmailTextEditor from "./emailtexteditor";
 
-import { colours } from "@/app/data/colours"; // Assuming this provides { bg: string, text: string }
-
 // Shad CN
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/shadcomponents/ui/collapsible";
+import { Badge } from "@/shadcomponents/ui/badge";
 import { Input } from "@/shadcomponents/ui/input";
-import { Label } from "@/shadcomponents/ui/label"; // Keep for structure if needed, but style will be minimal
+import { Label } from "@/shadcomponents/ui/label"; 
 import { Button } from "@/shadcomponents/ui/button";
+
 
 // Lucide Icons
 import {
-  Sparkles, // Re-using for consistency if applicable, or MessageSquare
   Trash2,
   Paperclip,
   Clock2,
   FileText,
   AirplayIcon, 
-  Mails,
-  User, 
-  ChevronDown,
-  ChevronUp,
   XIcon, 
   MailPlus,
 } from "lucide-react";
@@ -42,10 +30,8 @@ export default function Email({student_information}) {
   const email = searchParams.get("email") || "recipient@example.com";
   const interestsString = searchParams.get("professor_interests") || "Topic A, Topic B, Topic C, Topic D, Topic E, Topic F";
   const interests = interestsString.split(",").map(i => i.trim()).filter(i => i);
-
   const [uploadedFile, setUploadedFile] = useState(null);
   const fileInputRef = useRef(null);
-  const [isInterestsOpen, setIsInterestsOpen] = useState(false);
 
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
@@ -54,10 +40,10 @@ export default function Email({student_information}) {
     }
   };
 
-  const deleteFile = () => { // Removed event argument as it's not used
+  const deleteFile = () => { 
     setUploadedFile(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Reset file input
+      fileInputRef.current.value = "";
     }
   };
 
@@ -65,9 +51,7 @@ export default function Email({student_information}) {
 
 
   return (
-    // Main container with Notion-like page styling
-    <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8 font-sans bg-white text-gray-800">
-      {/* Header Section */}
+    <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8 font-sans bg-white text-gray-800">
       <div className="mb-6 pb-4 border-b border-gray-200">
         <div className="flex items-center text-2xl font-semibold text-gray-700">
           <MailPlus className="h-7 w-7 mr-3 text-blue-500" />
@@ -80,53 +64,32 @@ export default function Email({student_information}) {
         {/* Interests */}
         {interests && interests.length > 0 && (
           <div className="flex flex-col sm:flex-row sm:items-start justify-center items-center">
-            <Label className="w-full sm:w-24 text-sm text-gray-500 shrink-0">Interests</Label>
+            <Label className="w-full sm:w-24 text-sm font-bold shrink-0">Interests</Label>
             <div className="flex-grow">
-              <Collapsible open={isInterestsOpen} onOpenChange={setIsInterestsOpen}>
+              <div>
                 <div className="flex flex-wrap gap-1.5">
-                  {interests.slice(0, 3).map((interest, index) => {
-                    const colour = colours[index % colours.length];
+                  {interests.map((interest, index) => {
                     return (
-                      <span
+                      <Badge
                         key={index}
-                        className={`px-2 py-0.5 text-xs rounded-full ${colour.bg} ${colour.text} font-medium`}
+                        className={`px-2 py-0.5 text-xs rounded-full font-medium`}
                       >
                         {interest}
-                      </span>
+                      </Badge>
                     );
                   })}
-                  {interests.length > 3 && (
-                     <CollapsibleTrigger asChild>
-                        <button className="text-xs text-blue-600 hover:text-blue-700 flex items-center bg-gray-100 hover:bg-gray-200 px-2 py-0.5 rounded-full">
-                            {isInterestsOpen ? 'Show Less' : `+${interests.length - 3} more`}
-                            {isInterestsOpen ? <ChevronUp className="h-3 w-3 ml-1" /> : <ChevronDown className="h-3 w-3 ml-1" />}
-                        </button>
-                    </CollapsibleTrigger>
-                  )}
+                  
                 </div>
-                <CollapsibleContent className="flex gap-1.5 flex-wrap mt-1.5">
-                  {interests.slice(3).map((interest, index) => {
-                    const actualIndex = index + 3;
-                    const colour = colours[actualIndex % colours.length];
-                    return (
-                      <span
-                        key={actualIndex}
-                        className={`px-2 py-0.5 text-xs rounded-full ${colour.bg} ${colour.text} font-medium`}
-                      >
-                        {interest}
-                      </span>
-                    );
-                  })}
-                </CollapsibleContent>
-              </Collapsible>
+                
+              </div>
             </div>
           </div>
         )}
 
         {/* To Field */}
         <div className="flex flex-col sm:flex-row sm:items-center">
-          <Label htmlFor="to-email" className="w-full sm:w-24 text-sm text-gray-500 mb-1 sm:mb-0 shrink-0 flex items-center">
-            <User className="h-4 w-4 mr-1.5 text-gray-400" /> To
+          <Label htmlFor="to-email" className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center">
+             Send To...
           </Label>
           <div className="flex-grow flex items-center space-x-2 border border-gray-300 rounded-md px-3 py-1.5 bg-white focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
             {name && (
@@ -145,20 +108,19 @@ export default function Email({student_information}) {
 
         {/* From Field */}
         <div className="flex flex-col sm:flex-row sm:items-center">
-          <Label htmlFor="from-email" className="w-full sm:w-24 text-sm text-gray-500 mb-1 sm:mb-0 shrink-0 flex items-center">
-            <Mails className="h-4 w-4 mr-1.5 text-gray-400" /> From
+          <Label htmlFor="from-email" className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center">
+            From...
           </Label>
           <Input
             id="from-email"
             className="flex-grow border border-gray-300 rounded-md px-3 py-1.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm"
             placeholder="your-email@example.com"
-            // Add value and onChange if this needs to be controlled
           />
         </div>
         
         {/* Subject Field */}
         <div className="flex flex-col sm:flex-row sm:items-center py-2">
-          <Label htmlFor="subject" className="w-full sm:w-24 text-sm text-gray-500 mb-1 sm:mb-0 shrink-0">Subject</Label>
+          <Label htmlFor="subject" className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0">Subject</Label>
           <Input
             id="subject"
             className="flex-grow border border-gray-300 rounded-md px-3 py-1.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm font-medium"
@@ -168,12 +130,10 @@ export default function Email({student_information}) {
         </div>
       </div>
 
-      {/* Email Body Editor */}
       <div className="mb-6">
         <EmailTextEditor content={initialContent} research_interests={interestsString} />
       </div>
 
-      {/* Attachments */}
       {uploadedFile && (
         <div className="mb-6 p-3 flex items-center space-x-3 border border-gray-200 bg-gray-50 rounded-md w-fit">
           <FileText className="h-5 w-5 text-red-500 shrink-0" />
@@ -191,7 +151,6 @@ export default function Email({student_information}) {
         </div>
       )}
 
-      {/* Footer Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-center pt-4 border-t border-gray-200 gap-3">
         <div className="flex space-x-2 items-center">
           <button
