@@ -18,12 +18,16 @@ import {
   Plus,
 } from "lucide-react";
 
-export function Template() {
+export function Template({ onUpdate, sendEmail }) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [events, setEvents] = useState([]);
-  const [publications, setPublications] = useState([]);
-  console.log(events)
+  const [displayedMessage, setDisplayedMessage] = useState("");
+  const [messageIndex, setMessageIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [typingComplete, setTypingComplete] = useState(false);
+  const [isDataSent, setIsDataSent] = useState(false);
 
+  //hard coded for now, but most of this will be passed down through props and then given
   const input = {
     thread_id: "22f5df0a-95d1-458e-8d6e-061359b38959",
     user_id: "704bb4a9-ef60-480b-9ffc-07ba31e703b4",
@@ -41,29 +45,39 @@ export function Template() {
     function onConnect() {
       setIsConnected(true);
     }
-  
+
     function onDisconnect() {
       setIsConnected(false);
     }
-  
-    function onProgress(data) {
-      setEvents((prev) => [...prev, data.message]);
+
+    function onProgress(data) {  
+      if ("publication_data" in data.message) {
+        const pubData = data.message.publication_data;
+        if (pubData.length > 0) {
+          onUpdate(pubData);
+        } 
+      } else if ("email_data" in data.message) {
+        const emailData = data.message.email_data
+        sendEmail(emailData)
+      } else {
+        setEvents((prev) => [...prev, data.message]);
+      }
     }
-  
+
     function onError(data) {
       setEvents((prev) => [...prev, `Error: ${data.error} - ${data.details}`]);
     }
-  
+
     const handleBeforeUnload = () => {
       socket.disconnect();
     };
-  
+
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("ai_email_progress", onProgress);
     socket.on("ai_email_error", onError);
     window.addEventListener("beforeunload", handleBeforeUnload);
-  
+
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
@@ -72,11 +86,41 @@ export function Template() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
-  
+
+  //Animation Use Effect
+  useEffect(() => {
+    if (messageIndex < events.length) {
+      const currentMessage = events[messageIndex];
+      const messageText = currentMessage.message || currentMessage;
+
+      if (charIndex < messageText.length) {
+        const typingTimer = setTimeout(() => {
+          setDisplayedMessage((prev) => prev + messageText.charAt(charIndex));
+          setCharIndex((prev) => prev + 1);
+        }, 15);
+        return () => clearTimeout(typingTimer);
+      } else {
+        setTypingComplete(true);
+        const nextMessageTimer = setTimeout(() => {
+          setMessageIndex((prev) => prev + 1);
+          setCharIndex(0);
+          setDisplayedMessage("");
+          setTypingComplete(false);
+        }, 400);
+        return () => clearTimeout(nextMessageTimer);
+      }
+    }
+  }, [events, messageIndex, charIndex]);
 
   const sendData = () => {
     if (socket.connected) {
+      setEvents([]);
+      setDisplayedMessage("");
+      setMessageIndex(0);
+      setCharIndex(0);
+      setTypingComplete(false);
       socket.emit("ai_email_pipeline", input);
+      setIsDataSent(true);
     } else {
       console.warn("Socket not connected yet.");
     }
@@ -107,23 +151,29 @@ export function Template() {
         </div>
 
         <div className="relative mb-4">
-          <div>
-            <ul className="mt-4 space-y-2">
-              {events.map((msg, index) => (
-                <li
-                  key={index}
-                  className="text-sm font-mono bg-gray-100 p-2 rounded"
-                >
-                  {msg.message || msg}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-col justify-end items-end">
+          {!isDataSent ? (
             <Textarea
               placeholder="Loaded Template Here"
               className="w-full p-3 pr-10 min-h-[100px] resize-none border-gray-300 focus-visible:ring-offset-0 focus-visible:ring-transparent"
             />
+          ) : (
+            <div className="min-h-[6rem] min-w-[20rem] bg-gray-100 rounded-md p-4 items-center">
+              {messageIndex < events.length && (
+                <div
+                  className={`text-sm font-mono bg-gray-100 min-h-[3rem] min-w-[20rem] rounded transition-all duration-500 ease-in-out ${
+                    typingComplete ? "animate-flashcard" : ""
+                  }`}
+                  style={{
+                    animationFillMode: typingComplete ? "forwards" : "none",
+                  }}
+                >
+                  {displayedMessage}
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="flex flex-col justify-end items-end">
             <Button
               onClick={sendData}
               className="cursor-pointer w-fit border px-4 py-2 rounded hover:bg-blue-400 mt-4 bg-blue-500 text-white"
@@ -131,13 +181,6 @@ export function Template() {
               Send Data
             </Button>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-2 top-2 text-gray-500"
-          >
-            <Sparkles className="h-5 w-5" />
-          </Button>
         </div>
 
         <div className="flex flex-col gap-2">

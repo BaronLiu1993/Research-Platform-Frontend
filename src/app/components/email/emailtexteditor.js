@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
@@ -33,25 +33,68 @@ import { prompts } from "./AIwriters";
 import DeepThink from "./deepthink";
 import { Template } from "./template";
 
-export default function EmailTextEditor({ content, research_interests }) {
+export default function EmailTextEditor({ research_interests }) {
   const [aiTyping, setAiTyping] = useState(false);
+  const [publications, setPublications] = useState([]);
+  const [content, setContent] = useState(null);
+  const [subject, setSubject] = useState(null);
+  const [sentData, setSentData] = useState(false);
+  const [typedContent, setTypedContent] = useState(""); n
+  const typingTimeoutRef = useRef(null); 
+
+  const handleSetPublications = (data) => {
+    setPublications(data);
+  };
+
+  const handleSetEmail = (data) => {
+    setContent(data.body);
+    setSubject(data.subject);
+    setSentData(true);
+  };
 
   const editor = useEditor({
     extensions: [StarterKit, Highlight.configure({ multicolor: true })],
-    content,
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none min-h-[30rem] w-full font-sans text-gray-800 py-3 px-4 bg-white rounded-b-md border border-gray-200",
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-xl text-sm font-light focus:outline-none min-h-[30rem] w-full font-sans text-gray-800 py-3 px-4 bg-white rounded-b-md border border-gray-200",
       },
+    },
+    content: "",
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML());
     },
   });
 
   useEffect(() => {
-    if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content);
+    if (editor && content && sentData) {
+      setTypedContent(""); 
+      let i = 0;
+      const typeCharacter = () => {
+        if (i < content.length) {
+          setTypedContent((prev) => prev + content.charAt(i));
+          i++;
+          typingTimeoutRef.current = setTimeout(typeCharacter, 10); // Adjust typing speed here (milliseconds per character)
+        } else {
+          editor.commands.setContent(content);
+        }
+      };
+      typeCharacter();
     }
-  }, [content, editor]);
+
+    return () => {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+    };
+  }, [content, editor, sentData]);
+
+  useEffect(() => {
+    if (editor && typedContent && sentData) {
+      editor.commands.setContent(typedContent, false); 
+    }
+  }, [editor, typedContent, sentData]);
+
 
   const handleAIRewrite = async (prompt) => {
     if (!editor) return;
@@ -145,7 +188,6 @@ export default function EmailTextEditor({ content, research_interests }) {
     <>
       <div className="flex flex-col md:flex-row gap-4 font-sans w-full">
         <div className="w-full md:w-2/3">
-          
           <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-t-md flex flex-wrap items-center gap-1">
             <ToggleGroup type="multiple">
               <ToggleGroupItem
@@ -268,9 +310,17 @@ export default function EmailTextEditor({ content, research_interests }) {
               </PopoverContent>
             </Popover>
           </div>
-          {/*<EditorContent editor={editor} />*/}
-          <div className="max-w-full border-1 p-10">
-            <Template className="" />
+
+          <div className="max-w-full border-1">
+            {sentData ? (
+              <EditorContent editor={editor} />
+            ) : (
+              <Template
+                onUpdate={handleSetPublications}
+                sendEmail={handleSetEmail}
+                className="p-10"
+              />
+            )}
           </div>
           {aiTyping && (
             <div className="text-xs text-gray-500 px-4 py-1.5 flex items-center gap-1.5 font-sans border-t border-gray-200">
@@ -283,7 +333,7 @@ export default function EmailTextEditor({ content, research_interests }) {
           )}
         </div>
         <div className="w-full md:w-1/3">
-          <EmailSideBar />
+          <EmailSideBar publications={publications} />
         </div>
       </div>
     </>

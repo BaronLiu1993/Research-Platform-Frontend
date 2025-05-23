@@ -48,8 +48,6 @@ export default function Email({student_information}) {
     }
   };
 
-  const initialContent = `<p>Dear Professor ${name || 'Name'},</p><p><br></p><p>I am writing to express my interest in your research on [mention specific area from their interests below, e.g., ${interests[0] || 'their primary research area'}].</p><p><br></p><p>I am particularly interested in...</p><p><br></p><p>My own background is in...</p><p><br></p><p>Would you be open to a brief virtual meeting to discuss potential opportunities or your work further?</p><p><br></p><p>Thank you for your time and consideration.</p><p><br></p><p>Sincerely,</p><p>[Your Name]</p>`;
-
 
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8 font-sans bg-white text-gray-800">
@@ -97,7 +95,6 @@ export default function Email({student_information}) {
               </span>
             )}
             <Input
-              id="to-email"
               className="w-full p-0 m-0 border-none shadow-none focus-visible:ring-0 text-sm text-gray-700 bg-transparent"
               defaultValue={email}
               placeholder="recipient@example.com"
@@ -130,7 +127,7 @@ export default function Email({student_information}) {
       </div>
 
       <div className="mb-6">
-        <EmailTextEditor content={initialContent} research_interests={interestsString} />
+        <EmailTextEditor research_interests={interestsString} />
       </div>
 
       {uploadedFile && (

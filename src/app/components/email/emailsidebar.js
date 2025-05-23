@@ -1,8 +1,9 @@
 import {
-  Accordion,
-  AccordionTrigger,
-  AccordionHeader,
-} from "@/shadcomponents/ui/accordion";
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/shadcomponents/ui/hover-card";
+import { Badge } from "@/shadcomponents/ui/badge";
 import {
   Card,
   CardContent,
@@ -11,6 +12,7 @@ import {
   CardTitle,
 } from "@/shadcomponents/ui/card";
 import { Info } from "lucide-react";
+import { Button } from "@/shadcomponents/ui/button";
 
 export default function EmailSideBar({ publications }) {
   console.log(publications);
@@ -24,28 +26,52 @@ export default function EmailSideBar({ publications }) {
         <Card>
           <CardTitle className="font-sans ">
             <CardDescription className="text-xs mx-5">
-              <h1 className="text-sm flex space-x-2 text-black">Publications</h1>
-              <h2 className = "font-normal">Review Publications Added for Relevance and Accuracy</h2>
+              <h1 className="text-sm flex space-x-2 text-black">
+                Publications
+              </h1>
+              <h2 className="font-normal">
+                Review Publications Added for Relevance and Accuracy
+              </h2>
             </CardDescription>
           </CardTitle>
-          <CardContent className="flex justify-center items-center gap-2 rounded-md p-3 border-1 bg-gray-100 mx-2">
-            <div>
-              <p className="text-gray-400 text-xs">Research</p>
-              <p className="text-xs font-bold">
-                Laser interstitial thermal therapy of lung lesions near large
-                vessels: a numerical study
-              </p>
-            </div>
-          </CardContent>
-          <CardContent className="flex justify-center items-center gap-2 rounded-md p-3 border-1 bg-gray-100 mx-2">
-            <div>
-              <p className="text-gray-400 text-xs">Research</p>
-              <p className="text-xs font-bold">
-                Laser interstitial thermal therapy of lung lesions near large
-                vessels: a numerical study
-              </p>
-            </div>
-          </CardContent>
+
+          <div className="space-y-4">
+            {publications.map((pub) => (
+              <CardContent
+                key={pub.id}
+                className="flex justify-center items-center gap-2 rounded-md p-3 border-1 bg-gray-100 mx-2"
+              >
+                <div className="space-y-2">
+                  <div>
+                    <p className="text-gray-500 text-xs">Research</p>
+                    <h1 className="text-xs font-bold">{pub.title}</h1>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <HoverCard>
+                      <HoverCardTrigger className="cursor-pointer">
+                        <Badge className = "drop-shadow-2xl">Authors</Badge>
+                      </HoverCardTrigger>
+                      <HoverCardContent>
+                        <div className="flex">
+                          {pub.authors.map((author, index) => (
+                            <div className="text-xs font-sans font-semibold" key={index}>
+                              {author}
+                            </div>
+                          ))}
+                        </div>
+                      </HoverCardContent>
+                    </HoverCard>
+                    <Badge >
+                      <a href = {pub.link} target = "_blank"> Link </a>
+                    </Badge>
+                    <p className="text-xs text-gray-800">
+                      {pub.publication_date}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            ))}
+          </div>
         </Card>
 
         <Card className="w-[13rem] ">

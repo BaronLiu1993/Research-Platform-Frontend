@@ -30,7 +30,6 @@ export default function resume() {
   const research_interests = searchParams.getAll("research_interests")
   const professor_name = searchParams.get("professor_name")
   const professor_email = searchParams.get("professor_email")
-  const professor_id = searchParams.get("professor_id")
   
   
   const handleSendDataToEmail = (url) => {
