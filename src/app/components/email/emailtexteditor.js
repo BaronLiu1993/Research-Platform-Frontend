@@ -14,7 +14,6 @@ import {
 import Publications from "./publications";
 import GoogleCaledar from "./googlecalendar";
 import EmailSideBar from "./emailsidebar";
-import ConnectionComponent from "../websockets/connectioncomponent";
 
 import {
   Bold,
@@ -36,7 +35,6 @@ import { Template } from "./template";
 
 export default function EmailTextEditor({ content, research_interests }) {
   const [aiTyping, setAiTyping] = useState(false);
-  const [publicationData, setPublicationData] = useState([]);
 
   const editor = useEditor({
     extensions: [StarterKit, Highlight.configure({ multicolor: true })],
@@ -147,10 +145,7 @@ export default function EmailTextEditor({ content, research_interests }) {
     <>
       <div className="flex flex-col md:flex-row gap-4 font-sans w-full">
         <div className="w-full md:w-2/3">
-          {/*Make UI Design Link to Documentation Here*/}
-          <div>
-            <h1></h1>
-          </div>
+          
           <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-t-md flex flex-wrap items-center gap-1">
             <ToggleGroup type="multiple">
               <ToggleGroupItem
@@ -249,7 +244,8 @@ export default function EmailTextEditor({ content, research_interests }) {
                     false
                   )} flex items-center gap-1.5 text-sm px-2 bg-gray-100 rounded-4xl border-2 font-semibold`}
                 >
-                  <Calendar className="h-4 w-4 text-green-500" /> Google Calendar
+                  <Calendar className="h-4 w-4 text-green-500" /> Google
+                  Calendar
                 </button>
               </PopoverTrigger>
               <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
@@ -272,10 +268,9 @@ export default function EmailTextEditor({ content, research_interests }) {
               </PopoverContent>
             </Popover>
           </div>
-          <ConnectionComponent />
           {/*<EditorContent editor={editor} />*/}
-          <div className = "max-w-full border-1 p-10">
-              <Template className = ""/>
+          <div className="max-w-full border-1 p-10">
+            <Template className="" />
           </div>
           {aiTyping && (
             <div className="text-xs text-gray-500 px-4 py-1.5 flex items-center gap-1.5 font-sans border-t border-gray-200">
@@ -288,7 +283,7 @@ export default function EmailTextEditor({ content, research_interests }) {
           )}
         </div>
         <div className="w-full md:w-1/3">
-          <EmailSideBar publications={publicationData} />
+          <EmailSideBar />
         </div>
       </div>
     </>

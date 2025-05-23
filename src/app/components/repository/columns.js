@@ -206,7 +206,7 @@ const columns = [
               <Link
                 href={{
                   pathname: `/resume/${data.name}`,
-                  query: {research_interests: data.research_interests, professor_email: data.email, professor_name: data.name}
+                  query: {research_interests: data.research_interests, professor_email: data.email, professor_name: data.name, professor_id: data.id}
                 }}
                 className="w-full flex justify-end"
               >

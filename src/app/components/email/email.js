@@ -60,9 +60,7 @@ export default function Email({student_information}) {
         </div>
       </div>
 
-      {/* Email Meta Section */}
       <div className="space-y-4 mb-6">
-        {/* Interests */}
         {interests && interests.length > 0 && (
           <div className="flex flex-col sm:flex-row sm:items-start justify-center items-center">
             <Label className="w-full sm:w-24 text-sm font-bold shrink-0">Interests</Label>

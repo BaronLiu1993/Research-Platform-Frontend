@@ -1,6 +1,12 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
 import { Button } from "@/shadcomponents/ui/button";
 import { Dialog } from "@/shadcomponents/ui/dialog";
 import { Textarea } from "@/shadcomponents/ui/textarea";
+
+import { socket } from "../websockets/socket";
 
 import {
   ChevronsUpDown,
@@ -13,6 +19,69 @@ import {
 } from "lucide-react";
 
 export function Template() {
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [events, setEvents] = useState([]);
+  const [publications, setPublications] = useState([]);
+  console.log(events)
+
+  const input = {
+    thread_id: "22f5df0a-95d1-458e-8d6e-061359b38959",
+    user_id: "704bb4a9-ef60-480b-9ffc-07ba31e703b4",
+    professor_id: 10,
+    draft: "Dear Professor, I'm interested in your research...",
+    motivation: "I have prior research experience and am eager to explore NLP.",
+    resume_points: [
+      "Worked on GPT-based summarization.",
+      "Published paper on attention mechanisms.",
+      "Led a student ML club at UofT.",
+    ],
+  };
+
+  useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+    }
+  
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+  
+    function onProgress(data) {
+      setEvents((prev) => [...prev, data.message]);
+    }
+  
+    function onError(data) {
+      setEvents((prev) => [...prev, `Error: ${data.error} - ${data.details}`]);
+    }
+  
+    const handleBeforeUnload = () => {
+      socket.disconnect();
+    };
+  
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    socket.on("ai_email_progress", onProgress);
+    socket.on("ai_email_error", onError);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+  
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("ai_email_progress", onProgress);
+      socket.off("ai_email_error", onError);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+  
+
+  const sendData = () => {
+    if (socket.connected) {
+      socket.emit("ai_email_pipeline", input);
+    } else {
+      console.warn("Socket not connected yet.");
+    }
+  };
+
   return (
     <div className="min-h-screen font-sans bg-white flex flex-col items-center py-12">
       <div className="text-center mb-8">
@@ -27,7 +96,6 @@ export function Template() {
         </p>
       </div>
 
-      {/* Chat Input Section */}
       <div className="w-full max-w-2xl font-sans bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <Button variant="ghost" className="text-gray-600 flex items-center">
@@ -39,10 +107,30 @@ export function Template() {
         </div>
 
         <div className="relative mb-4">
-          <Textarea
-            placeholder="Loaded Template Here"
-            className="w-full p-3 pr-10 min-h-[100px] resize-none border-gray-300 focus-visible:ring-offset-0 focus-visible:ring-transparent"
-          />
+          <div>
+            <ul className="mt-4 space-y-2">
+              {events.map((msg, index) => (
+                <li
+                  key={index}
+                  className="text-sm font-mono bg-gray-100 p-2 rounded"
+                >
+                  {msg.message || msg}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="flex flex-col justify-end items-end">
+            <Textarea
+              placeholder="Loaded Template Here"
+              className="w-full p-3 pr-10 min-h-[100px] resize-none border-gray-300 focus-visible:ring-offset-0 focus-visible:ring-transparent"
+            />
+            <Button
+              onClick={sendData}
+              className="cursor-pointer w-fit border px-4 py-2 rounded hover:bg-blue-400 mt-4 bg-blue-500 text-white"
+            >
+              Send Data
+            </Button>
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -60,9 +148,7 @@ export function Template() {
             <div className="flex flex-wrap gap-3">
               <Button variant="outline" className="rounded-full">
                 UofT Template
-                <Dialog>
-                  
-                </Dialog>
+                <Dialog></Dialog>
               </Button>
               <Button variant="outline" className="rounded-full">
                 UC Berkeley Template
@@ -75,7 +161,7 @@ export function Template() {
               <RefreshCw className="h-4 w-4 mr-2" /> Refresh Templates
             </div>
           </div>
-          <div className = "flex justify-end gap-2">
+          <div className="flex justify-end gap-2">
             <Button variant="outline" className="flex items-center gap-2">
               <Lightbulb className="h-4 w-4" /> Suggest
             </Button>
