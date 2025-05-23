@@ -5,14 +5,14 @@ import { Input } from "@/shadcomponents/ui/input";
 import { Label } from "@/shadcomponents/ui/label";
 import EmploymentWordProcessor from "./employmentwordprocessor";
 import { Button } from "@/shadcomponents/ui/button";
-import { CirclePlus, PlusCircle, XCircle } from "lucide-react";
+import { CirclePlus, Plus, PlusCircle, X, XCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
-import { Badge } from "@/shadcomponents/ui/badge";
+import { toast } from "sonner";
 
 function EmploymentForm({
   id,
@@ -41,6 +41,13 @@ function EmploymentForm({
         removeResumePoint(point);
       } else {
         sendResumePoint(point);
+        toast("Resume Point Has Been Added", {
+          description: point,
+          action: {
+            label: "Undo",
+            onClick: () => removeResumePoint(point),
+          },
+        });
       }
     },
     [loadedResumePoints, sendResumePoint, removeResumePoint]
@@ -183,21 +190,21 @@ function EmploymentForm({
                       />
                       {isPointLoaded ? (
                         <Button
-                          className="absolute bottom-3 right-9 z-10 cursor-pointer"
-                          variant="ghost"
+                          className="absolute text-xs w-fit h-fit p-1 bottom-5 right-5 z-10 cursor-pointer bg-red-600 hover:bg-red-400"
                           size="icon"
                           onClick={() => handleToggleResumePoint(point)}
                         >
-                          <Badge className="bg-red-600">Remove</Badge>
+                          <X />
+                          Remove
                         </Button>
                       ) : (
                         <Button
-                          className="absolute bottom-3 right-12 z-10 cursor-pointer"
-                          variant="ghost"
+                          className="absolute text-xs w-fit h-fit p-1 bottom-5 right-5 z-10 cursor-pointer"
                           size="icon"
                           onClick={() => handleToggleResumePoint(point)}
                         >
-                          <Badge className="bg-gray-900 hover:bg-gray-600">Add to Email</Badge>
+                          <Plus />
+                          Add to Email
                         </Button>
                       )}
                     </div>

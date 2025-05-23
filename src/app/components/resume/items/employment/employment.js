@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useTransition, useRef, useCallback } from "react";
 import { Button } from "@/shadcomponents/ui/button";
-import { Info, Trash2, GripVertical } from "lucide-react";
+import { Info, Trash2, GripVertical, Sheet } from "lucide-react";
 import EmploymentForm from "./employmentform";
 
 const debounce = (fn, delay) => {
@@ -21,14 +21,18 @@ export default function EmploymentSection({
   const [localExperienceForms, setLocalExperienceForms] = useState([]);
   const [loadedResumePoints, setLoadedResumePoints] = useState([]);
 
-  const handleLoadingResumePoints = useCallback((data) => {
-    setLoadedResumePoints((prevPoints) => [...prevPoints, data]);
-  }, [loadedResumePoints]); 
+  const handleLoadingResumePoints = useCallback(
+    (data) => {
+      setLoadedResumePoints((prevPoints) => [...prevPoints, data]);
+    },
+    [loadedResumePoints]
+  );
 
   const handleRemoveResumePoint = useCallback((pointToRemove) => {
     setLoadedResumePoints((prevPoints) => {
-      const updatedPoints = prevPoints.filter(point => point !== pointToRemove);
-      console.log("Removed Resume Point:", updatedPoints); //Keep Point For Now
+      const updatedPoints = prevPoints.filter(
+        (point) => point !== pointToRemove
+      );
       return updatedPoints;
     });
   }, []);
@@ -113,19 +117,23 @@ export default function EmploymentSection({
         </p>
       </div>
 
-      {/* Optional: Display loaded resume points for debugging */}
-      {loadedResumePoints.length > 0 && (
-        <div className="mt-4 p-3 bg-blue-50 rounded-md border border-blue-200">
-          <h2 className="text-lg font-semibold text-blue-800 mb-2">
-            Loaded Resume Points:
-          </h2>
-          <ul className="list-disc list-inside text-blue-700 text-sm">
-            {loadedResumePoints.map((point, index) => (
-              <li key={index}>{point}</li>
-            ))}
-          </ul>
+      <div className="mt-4 p-3 bg-slate-50 rounded-md border border-slate-200 font-sans">
+        <h2 className="text-md font-semibold text-black mb-2 flex gap-2">
+          <Sheet />
+          <span>Loaded Resume Points</span>
+        </h2>
+        <div className=" text-gray-800 text-sm px-4">
+          {loadedResumePoints.length === 0 ? (
+            <h1>No Points Loaded</h1>
+          ) : (
+            loadedResumePoints.map((point, index) => (
+              <div className = "list-disc list-item" key={index}>
+                <h1 className = "text-xs">{point}</h1>
+              </div>
+            ))
+          )}
         </div>
-      )}
+      </div>
 
       {localExperienceForms.map((experienceWithId) => (
         <div
