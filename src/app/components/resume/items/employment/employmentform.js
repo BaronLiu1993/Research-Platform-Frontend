@@ -5,17 +5,24 @@ import { Input } from "@/shadcomponents/ui/input";
 import { Label } from "@/shadcomponents/ui/label";
 import EmploymentWordProcessor from "./employmentwordprocessor";
 import { Button } from "@/shadcomponents/ui/button";
-import { PlusCircle, XCircle } from "lucide-react";
+import { CirclePlus, PlusCircle, XCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
+import { Badge } from "@/shadcomponents/ui/badge";
 
-function EmploymentForm({ id, data, onChange }) {
+function EmploymentForm({
+  id,
+  data,
+  onChange,
+  sendResumePoint,
+  loadedResumePoints,
+  removeResumePoint,
+}) {
   const lastDataIdRef = useRef(null);
-
   const [formData, setFormData] = useState({
     job_title: "",
     company: "",
@@ -28,6 +35,16 @@ function EmploymentForm({ id, data, onChange }) {
 
   const [openItem, setOpenItem] = useState(null);
 
+  const handleToggleResumePoint = useCallback(
+    (point) => {
+      if (loadedResumePoints.includes(point)) {
+        removeResumePoint(point);
+      } else {
+        sendResumePoint(point);
+      }
+    },
+    [loadedResumePoints, sendResumePoint, removeResumePoint]
+  );
   useEffect(() => {
     if (data?.id !== lastDataIdRef.current) {
       lastDataIdRef.current = data?.id;
@@ -75,11 +92,15 @@ function EmploymentForm({ id, data, onChange }) {
 
   const removeDescriptionPoint = useCallback(
     (idx) => {
+      const pointToRemove = formData.description[idx];
+      if (loadedResumePoints.includes(pointToRemove)) {
+        removeResumePoint(pointToRemove);
+      }
       push({
         description: formData.description.filter((_, i) => i !== idx),
       });
     },
-    [formData.description, push]
+    [formData.description, push, loadedResumePoints, removeResumePoint]
   );
 
   return (
@@ -151,13 +172,35 @@ function EmploymentForm({ id, data, onChange }) {
               </Label>
               {formData.description.map((point, idx) => {
                 const handleRemove = () => removeDescriptionPoint(idx);
+                const isPointLoaded = loadedResumePoints.includes(point);
                 return (
                   <div key={idx} className="flex items-center space-x-2">
-                    <EmploymentWordProcessor
-                      id={`${id}-desc-${idx}`}
-                      value={point}
-                      onChange={(val) => handleDescriptionChange(idx, val)}
-                    />
+                    <div className="relative w-full">
+                      <EmploymentWordProcessor
+                        id={`${id}-desc-${idx}`}
+                        value={point}
+                        onChange={(val) => handleDescriptionChange(idx, val)}
+                      />
+                      {isPointLoaded ? (
+                        <Button
+                          className="absolute bottom-3 right-9 z-10 cursor-pointer"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleToggleResumePoint(point)}
+                        >
+                          <Badge className="bg-red-600">Remove</Badge>
+                        </Button>
+                      ) : (
+                        <Button
+                          className="absolute bottom-3 right-12 z-10 cursor-pointer"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleToggleResumePoint(point)}
+                        >
+                          <Badge className="bg-gray-900 hover:bg-gray-600">Add to Email</Badge>
+                        </Button>
+                      )}
+                    </div>
                     <Button
                       variant="ghost"
                       size="icon"

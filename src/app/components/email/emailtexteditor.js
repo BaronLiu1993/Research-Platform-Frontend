@@ -39,7 +39,7 @@ export default function EmailTextEditor({ research_interests }) {
   const [content, setContent] = useState(null);
   const [subject, setSubject] = useState(null);
   const [sentData, setSentData] = useState(false);
-  const [typedContent, setTypedContent] = useState(""); n
+  const [typedContent, setTypedContent] = useState(""); 
   const typingTimeoutRef = useRef(null); 
 
   const handleSetPublications = (data) => {

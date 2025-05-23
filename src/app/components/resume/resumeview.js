@@ -24,7 +24,6 @@ function ResumeDisplayWrapperInner({ resume }) {
     try {
       setLoading(true);
 
-      // Step 1: Capture HTML to canvas
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
@@ -32,7 +31,6 @@ function ResumeDisplayWrapperInner({ resume }) {
 
       const imgData = canvas.toDataURL("image/png");
 
-      // Step 2: Create PDF
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
@@ -41,7 +39,6 @@ function ResumeDisplayWrapperInner({ resume }) {
       const imgRatio = imgProps.height / imgProps.width;
       const imgHeight = pdfWidth * imgRatio;
 
-      // If image overflows one page, scale and split manually (optional)
       if (imgHeight <= pdfHeight) {
         pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight);
       } else {

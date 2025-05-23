@@ -202,7 +202,7 @@ export default function Builder() {
             </div>
           </div>
         ) : (
-          <div className="flex mt-10 items-start space-x-6">
+          <div className="flex items-start space-x-6">
             <div className="w-screen">
               <Editor
                 student_experience={experience}

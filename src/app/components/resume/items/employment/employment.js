@@ -13,9 +13,26 @@ const debounce = (fn, delay) => {
   };
 };
 
-export default function EmploymentSection({ experienceArray, onExperienceArrayChange }) {
+export default function EmploymentSection({
+  experienceArray,
+  onExperienceArrayChange,
+}) {
   const [isPending, startTransition] = useTransition();
   const [localExperienceForms, setLocalExperienceForms] = useState([]);
+  const [loadedResumePoints, setLoadedResumePoints] = useState([]);
+
+  const handleLoadingResumePoints = useCallback((data) => {
+    setLoadedResumePoints((prevPoints) => [...prevPoints, data]);
+  }, [loadedResumePoints]); 
+
+  const handleRemoveResumePoint = useCallback((pointToRemove) => {
+    setLoadedResumePoints((prevPoints) => {
+      const updatedPoints = prevPoints.filter(point => point !== pointToRemove);
+      console.log("Removed Resume Point:", updatedPoints); //Keep Point For Now
+      return updatedPoints;
+    });
+  }, []);
+
   const debouncedUpdateParent = useRef(
     debounce((updatedForms) => {
       startTransition(() => {
@@ -26,29 +43,32 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
   ).current;
 
   useEffect(() => {
-    setLocalExperienceForms(prev => {
-      const map = Object.fromEntries(prev.map(f => [f.key, f]));
+    setLocalExperienceForms((prev) => {
+      const map = Object.fromEntries(prev.map((f) => [f.key, f]));
       return experienceArray.map((exp, i) => {
         const key = exp.id ?? i;
         if (map[key]) return map[key];
-        return { 
-          ...exp, 
-          key, 
-          _localId: `exp-${key}` 
+        return {
+          ...exp,
+          key,
+          _localId: `exp-${key}`,
         };
       });
     });
   }, [experienceArray]);
 
-  const handleChange = useCallback((localId, updatedFields) => {
-    setLocalExperienceForms(prevForms => {
-      const updatedForms = prevForms.map(form =>
-        form._localId === localId ? { ...form, ...updatedFields } : form
-      );
-      debouncedUpdateParent(updatedForms);
-      return updatedForms;
-    });
-  }, [debouncedUpdateParent]);
+  const handleChange = useCallback(
+    (localId, updatedFields) => {
+      setLocalExperienceForms((prevForms) => {
+        const updatedForms = prevForms.map((form) =>
+          form._localId === localId ? { ...form, ...updatedFields } : form
+        );
+        debouncedUpdateParent(updatedForms);
+        return updatedForms;
+      });
+    },
+    [debouncedUpdateParent]
+  );
 
   const handleAddExperience = () => {
     const newForm = {
@@ -59,21 +79,23 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
       end_date: "",
       description: [""],
       _localId: `exp-new-${Date.now()}`,
-      key: `new-${Date.now()}`
+      key: `new-${Date.now()}`,
     };
     const updatedForms = [...localExperienceForms, newForm];
     setLocalExperienceForms(updatedForms);
     startTransition(() => {
       debouncedUpdateParent(updatedForms);
-    })
+    });
   };
 
   const handleRemoveExperience = (localId) => {
-    const updatedForms = localExperienceForms.filter(f => f._localId !== localId);
+    const updatedForms = localExperienceForms.filter(
+      (f) => f._localId !== localId
+    );
     setLocalExperienceForms(updatedForms);
     startTransition(() => {
       debouncedUpdateParent(updatedForms);
-    })
+    });
   };
 
   return (
@@ -85,12 +107,31 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
         </p>
         <p className="border p-2 text-xs rounded-md bg-purple-100 flex items-center border-purple-200">
           <Info className="w-5 h-5 mr-2 text-purple-500" />
-          <span className="text-purple-500">Click Here To See Our Tips for Using AI Responsibly</span>
+          <span className="text-purple-500">
+            Click Here To See Our Tips for Using AI Responsibly
+          </span>
         </p>
       </div>
-      
+
+      {/* Optional: Display loaded resume points for debugging */}
+      {loadedResumePoints.length > 0 && (
+        <div className="mt-4 p-3 bg-blue-50 rounded-md border border-blue-200">
+          <h2 className="text-lg font-semibold text-blue-800 mb-2">
+            Loaded Resume Points:
+          </h2>
+          <ul className="list-disc list-inside text-blue-700 text-sm">
+            {loadedResumePoints.map((point, index) => (
+              <li key={index}>{point}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {localExperienceForms.map((experienceWithId) => (
-        <div key={experienceWithId._localId} className="flex justify-center items-center space-x-2">
+        <div
+          key={experienceWithId._localId}
+          className="flex justify-center items-center space-x-2"
+        >
           <GripVertical className="h-4 w-4 text-gray-400" />
           <div className="flex-grow">
             <EmploymentForm
@@ -98,6 +139,9 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
               id={experienceWithId._localId}
               data={experienceWithId}
               onChange={handleChange}
+              loadedResumePoints={loadedResumePoints}
+              sendResumePoint={handleLoadingResumePoints}
+              removeResumePoint={handleRemoveResumePoint}
             />
           </div>
           <Trash2
@@ -106,7 +150,7 @@ export default function EmploymentSection({ experienceArray, onExperienceArrayCh
           />
         </div>
       ))}
-      
+
       <Button
         onClick={handleAddExperience}
         className="rounded-md w-fit bg-purple-400 p-2 text-white font-sans font-semibold mx-6 hover:bg-purple-300"
