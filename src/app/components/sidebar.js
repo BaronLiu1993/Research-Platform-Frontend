@@ -74,7 +74,7 @@ const data = {
 };
 
 const languages = [
-  { label: "中文", value: "zh" },
+  { label: "中文", value: "ch" },
   { label: "한국어", value: "ko" },
   { label: "English", value: "en" },
 ];

@@ -9,9 +9,8 @@ import EmailTextEditor from "./emailtexteditor";
 // Shad CN
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Input } from "@/shadcomponents/ui/input";
-import { Label } from "@/shadcomponents/ui/label"; 
+import { Label } from "@/shadcomponents/ui/label";
 import { Button } from "@/shadcomponents/ui/button";
-
 
 // Lucide Icons
 import {
@@ -19,20 +18,26 @@ import {
   Paperclip,
   Clock2,
   FileText,
-  AirplayIcon, 
-  XIcon, 
+  AirplayIcon,
+  XIcon,
   MailPlus,
 } from "lucide-react";
+import { sub } from "date-fns";
 
-export default function Email({student_information}) {
+export default function Email({ student_data }) {
   const searchParams = useSearchParams();
   const name = searchParams.get("name") || "Recipient Name";
   const email = searchParams.get("email") || "recipient@example.com";
-  const interestsString = searchParams.get("professor_interests") || "Topic A, Topic B, Topic C, Topic D, Topic E, Topic F";
-  const interests = interestsString.split(",").map(i => i.trim()).filter(i => i);
-  
+  const interestsString =
+    searchParams.get("professor_interests") ||
+    "Topic A, Topic B, Topic C";
+  const interests = interestsString.split(",")
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [subject, setSubject] = useState("")
   const fileInputRef = useRef(null);
+  const handleSendSubject = (data) => {
+    setSubject(data)
+  }
 
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
@@ -41,13 +46,12 @@ export default function Email({student_information}) {
     }
   };
 
-  const deleteFile = () => { 
+  const deleteFile = () => {
     setUploadedFile(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
-
 
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8 font-sans bg-white text-gray-800">
@@ -58,10 +62,12 @@ export default function Email({student_information}) {
         </div>
       </div>
 
-      <div className="space-y-4 mb-6">
+      <div className="space-y-4 mb-6 font-sans">
         {interests && interests.length > 0 && (
           <div className="flex flex-col sm:flex-row sm:items-start justify-center items-center">
-            <Label className="w-full sm:w-24 text-sm font-bold shrink-0">Interests</Label>
+            <Label className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center tracking-wider">
+              Interests
+            </Label>
             <div className="flex-grow">
               <div>
                 <div className="flex flex-wrap gap-1.5">
@@ -75,73 +81,82 @@ export default function Email({student_information}) {
                       </Badge>
                     );
                   })}
-                  
                 </div>
-                
               </div>
             </div>
           </div>
         )}
 
-        {/* To Field */}
         <div className="flex flex-col sm:flex-row sm:items-center">
-          <Label htmlFor="to-email" className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center">
-             Send To...
+          <Label
+            htmlFor="to-email"
+            className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center tracking-wider"
+          >
+            Send To...
           </Label>
           <div className="flex-grow flex items-center space-x-2 border border-gray-300 rounded-md px-3 py-1.5 bg-white focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
             {name && (
-              <span className="text-sm font-medium bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md whitespace-nowrap">
+              <span className="text-sm font-medium bg-purple-100 text-purple-700 shadow-md border-2 border-purple-400 px-2 py-0.5 rounded-md whitespace-nowrap">
                 {name}
               </span>
             )}
             <Input
-              className="w-full p-0 m-0 border-none shadow-none focus-visible:ring-0 text-sm text-gray-700 bg-transparent"
+              className="w-full p-0 m-0 border-none shadow-none focus-visible:ring-0 text-sm text-gray-700 font-semibold bg-transparent"
               defaultValue={email}
               placeholder="recipient@example.com"
             />
           </div>
         </div>
 
-        {/* From Field */}
         <div className="flex flex-col sm:flex-row sm:items-center">
-          <Label htmlFor="from-email" className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center">
+          <Label
+            htmlFor="from-email"
+            className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center tracking-wider"
+          >
             From...
           </Label>
           <Input
             id="from-email"
-            className="flex-grow border border-gray-300 rounded-md px-3 py-1.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm"
+            defaultValue = {student_data.student_email}
+            className="flex-grow border border-gray-300 rounded-md px-3 py-1.5 text-sm text-gray-700 font-semibold  shadow-sm"
             placeholder="your-email@example.com"
           />
         </div>
-        
-        {/* Subject Field */}
+
         <div className="flex flex-col sm:flex-row sm:items-center py-2">
-          <Label htmlFor="subject" className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0">Subject</Label>
+          <Label
+            htmlFor="subject"
+            className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center tracking-wider"
+          >
+            Subject
+          </Label>
           <Input
             id="subject"
             className="flex-grow border border-gray-300 rounded-md px-3 py-1.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm font-medium"
-            defaultValue={`Research Inquiry: ${name} - [Your Name/Topic]`}
-            placeholder="Email Subject"
+            placeholder={`Research Inquiry: Professor ${name} - [Your Name/Topic]`}
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
           />
         </div>
       </div>
 
       <div className="mb-6">
-        <EmailTextEditor research_interests={interestsString} />
+        <EmailTextEditor student_data = {student_data} research_interests={interestsString} sendSubject={handleSendSubject}/>
       </div>
 
       {uploadedFile && (
         <div className="mb-6 p-3 flex items-center space-x-3 border border-gray-200 bg-gray-50 rounded-md w-fit">
           <FileText className="h-5 w-5 text-red-500 shrink-0" />
           <div className="text-sm">
-            <div className="text-gray-800 font-medium">
-              {uploadedFile.name}
-            </div>
+            <div className="text-gray-800 font-medium">{uploadedFile.name}</div>
             <div className="text-xs text-gray-500">
               {(uploadedFile.size / 1024).toFixed(1)} KB
             </div>
           </div>
-          <button onClick={deleteFile} className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-200">
+          <button
+            onClick={deleteFile}
+            className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-200"
+          >
             <XIcon className="h-4 w-4" />
           </button>
         </div>
@@ -162,18 +177,30 @@ export default function Email({student_information}) {
             onChange={handleFileUpload}
             className="hidden"
           />
-          <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md" aria-label="Schedule send">
+          <button
+            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md"
+            aria-label="Schedule send"
+          >
             <Clock2 className="h-5 w-5" />
           </button>
-          <button className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-md" aria-label="Discard email">
+          <button
+            className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-md"
+            aria-label="Discard email"
+          >
             <Trash2 className="h-5 w-5" />
           </button>
         </div>
         <div className="flex space-x-2">
-          <Button variant="outline" className="text-sm text-gray-700 border-gray-300 hover:bg-gray-50">
+          <Button
+            variant="outline"
+            className="text-sm text-gray-700 border-gray-300 hover:bg-gray-50"
+          >
             Remind me
           </Button>
-          <Button variant="ghost" className="text-sm text-gray-700 hover:bg-gray-100">
+          <Button
+            variant="ghost"
+            className="text-sm text-gray-700 hover:bg-gray-100"
+          >
             Save Draft
           </Button>
           <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium flex items-center gap-1.5">

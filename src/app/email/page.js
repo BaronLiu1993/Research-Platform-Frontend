@@ -1,9 +1,6 @@
-"use client"
+"use server"
 
-import { useState } from "react";
-
-import { useSearchParams } from "next/navigation";
-
+import { cookies } from "next/headers";
 import { Separator } from "@/shadcomponents/ui/separator";
 import {
   Breadcrumb,
@@ -23,14 +20,17 @@ import { AppSidebar } from "@/app/components/sidebar";
 
 import Email from "../components/email/email";
 
-export default function email({ data }) {
-  const searchParams = useSearchParams();
-  const [subjectWordContent, setSubjectWordContent] = useState("");
-  const [bodyWordContent, setBodyWordContent] = useState("");
-
-
-  // Create Personalised Email and Send Also Automate the Sending Here
-  // Attach Transcript and Resume Here
+export default async function email() {
+  const cookieStore = await cookies();
+  const access = cookieStore.get("accesstoken");
+  const serverData = await fetch("http://localhost:8080/auth/get-user-id-email", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${access.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const responses = await serverData.json();
   return (
     <>
       <SidebarProvider>
@@ -59,7 +59,7 @@ export default function email({ data }) {
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <Email/>
+          <Email student_data = {responses} />
         </SidebarInset>
       </SidebarProvider>
     </>

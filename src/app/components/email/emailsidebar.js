@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import {
   HoverCard,
   HoverCardContent,
@@ -8,21 +12,31 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/shadcomponents/ui/card";
-import { Info } from "lucide-react";
-import { Button } from "@/shadcomponents/ui/button";
+
+import { Info, X } from "lucide-react";
 
 export default function EmailSideBar({ publications }) {
-  console.log(publications);
+  const [visible, setVisible] = useState(true);
   return (
     <>
       <div className="border-l-1 p-7 space-y-5">
-        <h2 className="flex space-x-2 font-semibold border-2 text-xs font-sans items-center px-2 bg-red-200 rounded-md text-red-500">
-          <Info className="h-4 w-4" />
-          <span className="">Please Cross Reference Publications</span>
-        </h2>
+        {visible ? (
+          <div className="flex items-center space-x-2 border-2 border-red-900 bg-red-300 rounded-md px-4 py-2 text-red-800 font-sans text-xs font-bold">
+            <Info className="h-6 w-6" />
+            <span>Please Cross Reference Publications for Accuracy</span>
+            <button
+              onClick={() => setVisible(false)}
+              aria-label="Close message"
+              className="ml-auto text-red-800 hover:text-red-900 hover:cursor"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        ) : (
+          <div></div>
+        )}
         <Card>
           <CardTitle className="font-sans ">
             <CardDescription className="text-xs mx-5">
@@ -49,20 +63,26 @@ export default function EmailSideBar({ publications }) {
                   <div className="flex items-center space-x-2">
                     <HoverCard>
                       <HoverCardTrigger className="cursor-pointer">
-                        <Badge className = "drop-shadow-2xl">Authors</Badge>
+                        <Badge className="drop-shadow-2xl">Authors</Badge>
                       </HoverCardTrigger>
                       <HoverCardContent>
                         <div className="flex">
                           {pub.authors.map((author, index) => (
-                            <div className="text-xs font-sans font-semibold" key={index}>
+                            <div
+                              className="text-xs font-sans font-semibold"
+                              key={index}
+                            >
                               {author}
                             </div>
                           ))}
                         </div>
                       </HoverCardContent>
                     </HoverCard>
-                    <Badge >
-                      <a href = {pub.link} target = "_blank"> Link </a>
+                    <Badge>
+                      <a href={pub.link} target="_blank">
+                        {" "}
+                        Link{" "}
+                      </a>
                     </Badge>
                     <p className="text-xs text-gray-800">
                       {pub.publication_date}

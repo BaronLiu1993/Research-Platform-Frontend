@@ -33,14 +33,13 @@ import { prompts } from "./AIwriters";
 import DeepThink from "./deepthink";
 import { Template } from "./template";
 
-export default function EmailTextEditor({ research_interests }) {
+export default function EmailTextEditor({ student_data, research_interests, sendSubject }) {
   const [aiTyping, setAiTyping] = useState(false);
   const [publications, setPublications] = useState([]);
   const [content, setContent] = useState(null);
-  const [subject, setSubject] = useState(null);
   const [sentData, setSentData] = useState(false);
-  const [typedContent, setTypedContent] = useState(""); 
-  const typingTimeoutRef = useRef(null); 
+  const [typedContent, setTypedContent] = useState("");
+  const typingTimeoutRef = useRef(null);
 
   const handleSetPublications = (data) => {
     setPublications(data);
@@ -48,7 +47,7 @@ export default function EmailTextEditor({ research_interests }) {
 
   const handleSetEmail = (data) => {
     setContent(data.body);
-    setSubject(data.subject);
+    sendSubject(data.subject);
     setSentData(true);
   };
 
@@ -68,13 +67,13 @@ export default function EmailTextEditor({ research_interests }) {
 
   useEffect(() => {
     if (editor && content && sentData) {
-      setTypedContent(""); 
+      setTypedContent("");
       let i = 0;
       const typeCharacter = () => {
         if (i < content.length) {
           setTypedContent((prev) => prev + content.charAt(i));
           i++;
-          typingTimeoutRef.current = setTimeout(typeCharacter, 10); // Adjust typing speed here (milliseconds per character)
+          typingTimeoutRef.current = setTimeout(typeCharacter, 10); 
         } else {
           editor.commands.setContent(content);
         }
@@ -91,10 +90,9 @@ export default function EmailTextEditor({ research_interests }) {
 
   useEffect(() => {
     if (editor && typedContent && sentData) {
-      editor.commands.setContent(typedContent, false); 
+      editor.commands.setContent(typedContent, false);
     }
   }, [editor, typedContent, sentData]);
-
 
   const handleAIRewrite = async (prompt) => {
     if (!editor) return;
@@ -181,6 +179,7 @@ export default function EmailTextEditor({ research_interests }) {
     );
   }
 
+  //For Toggling CSS with Tailwind
   const toggleItemClasses = (isActive) =>
     `p-1.5 data-[state=on]:bg-gray-200 data-[state=on]:text-gray-800 hover:bg-gray-100 text-gray-600 rounded-sm transition-colors`;
 
@@ -318,6 +317,7 @@ export default function EmailTextEditor({ research_interests }) {
               <Template
                 onUpdate={handleSetPublications}
                 sendEmail={handleSetEmail}
+                student_data={student_data}
                 className="p-10"
               />
             )}

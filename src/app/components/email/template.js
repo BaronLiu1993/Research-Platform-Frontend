@@ -1,26 +1,25 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
-import { Button } from "@/shadcomponents/ui/button";
-import { Dialog } from "@/shadcomponents/ui/dialog";
-import { Textarea } from "@/shadcomponents/ui/textarea";
-
+import { v4 as uuidv4 } from "uuid";
 import { socket } from "../websockets/socket";
-
 import { usePointStore } from "@/app/store/usePointStore";
 
+import { Button } from "@/shadcomponents/ui/button";
+import { Textarea } from "@/shadcomponents/ui/textarea";
 import {
-  ChevronsUpDown,
-  SquarePen,
-  Grid3X3,
-  Lightbulb,
-  Sparkles,
-  RefreshCw,
-  Plus,
-} from "lucide-react";
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shadcomponents/ui/dialog";
 
-export function Template({ onUpdate, sendEmail }) {
+import { SquarePen, Grid3X3, Lightbulb, RefreshCw } from "lucide-react";
+import { emailPrompts } from "./prompts";
+
+export function Template({ onUpdate, sendEmail, student_data }) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [events, setEvents] = useState([]);
   const [displayedMessage, setDisplayedMessage] = useState("");
@@ -28,21 +27,16 @@ export function Template({ onUpdate, sendEmail }) {
   const [charIndex, setCharIndex] = useState(0);
   const [typingComplete, setTypingComplete] = useState(false);
   const [isDataSent, setIsDataSent] = useState(false);
-  const loadedResumePoints = usePointStore((state) => state.loadedResumePoints)
-  
-  console.log(loadedResumePoints)
-  const input = {
-    thread_id: "22f5df0a-95d1-458e-8d6e-061359b38959",
-    user_id: "704bb4a9-ef60-480b-9ffc-07ba31e703b4",
+  const loadedResumePoints = usePointStore((state) => state.loadedResumePoints);
+
+  const [input, setInput] = useState({
+    thread_id: uuidv4(),
+    user_id: student_data.user_id || "",
     professor_id: 10,
     draft: "Dear Professor, I'm interested in your research...",
-    motivation: "I have prior research experience and am eager to explore NLP.",
-    resume_points: [
-      "Worked on GPT-based summarization.",
-      "Published paper on attention mechanisms.",
-      "Led a student ML club at UofT.",
-    ],
-  };
+    motivation: student_data.student_motivation || "",
+    resume_points: loadedResumePoints,
+  });
 
   useEffect(() => {
     function onConnect() {
@@ -53,15 +47,15 @@ export function Template({ onUpdate, sendEmail }) {
       setIsConnected(false);
     }
 
-    function onProgress(data) {  
+    function onProgress(data) {
       if ("publication_data" in data.message) {
         const pubData = data.message.publication_data;
         if (pubData.length > 0) {
           onUpdate(pubData);
-        } 
+        }
       } else if ("email_data" in data.message) {
-        const emailData = data.message.email_data
-        sendEmail(emailData)
+        const emailData = data.message.email_data;
+        sendEmail(emailData);
       } else {
         setEvents((prev) => [...prev, data.message]);
       }
@@ -191,10 +185,30 @@ export function Template({ onUpdate, sendEmail }) {
               Suggested Template Choices
             </h2>
             <div className="flex flex-wrap gap-3">
-              <Button variant="outline" className="rounded-full">
-                UofT Template
-                <Dialog></Dialog>
-              </Button>
+              {" "}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="rounded-full">
+                    UofT Template
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Sample Email – UofT Template</DialogTitle>
+                    <DialogDescription>
+                      <div>
+                        <p>{emailPrompts["University of Toronto"]}</p>
+                        <Button onClick = {() => setInput((prev) => ({
+                          ...prev,
+                          draft: emailPrompts["University of Toronto"]
+                        }))}>
+                            Set Prompt
+                        </Button>
+                      </div>
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
               <Button variant="outline" className="rounded-full">
                 UC Berkeley Template
               </Button>
