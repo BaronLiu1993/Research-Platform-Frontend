@@ -5,7 +5,8 @@ import { Input } from "@/shadcomponents/ui/input";
 import { Label } from "@/shadcomponents/ui/label";
 import EmploymentWordProcessor from "./employmentwordprocessor";
 import { Button } from "@/shadcomponents/ui/button";
-import { CirclePlus, Plus, PlusCircle, X, XCircle } from "lucide-react";
+import { Plus, PlusCircle, X, XCircle } from "lucide-react";
+import { usePointStore } from "@/app/store/usePointStore";
 import {
   Accordion,
   AccordionContent,
@@ -34,13 +35,16 @@ function EmploymentForm({
   });
 
   const [openItem, setOpenItem] = useState(null);
-
+  const addResumeZustandPoint = usePointStore((state) => state.addResumePoint)
+  const removeResumeZustandPoint = usePointStore((state) => state.removeResumePoint)
   const handleToggleResumePoint = useCallback(
     (point) => {
       if (loadedResumePoints.includes(point)) {
         removeResumePoint(point);
+        removeResumeZustandPoint(point)
       } else {
         sendResumePoint(point);
+        addResumeZustandPoint(point)
         toast("Resume Point Has Been Added", {
           description: point,
           action: {
@@ -50,7 +54,7 @@ function EmploymentForm({
         });
       }
     },
-    [loadedResumePoints, sendResumePoint, removeResumePoint]
+    [loadedResumePoints, sendResumePoint, removeResumePoint, addResumeZustandPoint, removeResumeZustandPoint]
   );
   useEffect(() => {
     if (data?.id !== lastDataIdRef.current) {

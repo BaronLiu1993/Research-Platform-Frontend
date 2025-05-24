@@ -8,6 +8,8 @@ import { Textarea } from "@/shadcomponents/ui/textarea";
 
 import { socket } from "../websockets/socket";
 
+import { usePointStore } from "@/app/store/usePointStore";
+
 import {
   ChevronsUpDown,
   SquarePen,
@@ -26,8 +28,9 @@ export function Template({ onUpdate, sendEmail }) {
   const [charIndex, setCharIndex] = useState(0);
   const [typingComplete, setTypingComplete] = useState(false);
   const [isDataSent, setIsDataSent] = useState(false);
-
-  //hard coded for now, but most of this will be passed down through props and then given
+  const loadedResumePoints = usePointStore((state) => state.loadedResumePoints)
+  
+  console.log(loadedResumePoints)
   const input = {
     thread_id: "22f5df0a-95d1-458e-8d6e-061359b38959",
     user_id: "704bb4a9-ef60-480b-9ffc-07ba31e703b4",
@@ -87,7 +90,6 @@ export function Template({ onUpdate, sendEmail }) {
     };
   }, []);
 
-  //Animation Use Effect
   useEffect(() => {
     if (messageIndex < events.length) {
       const currentMessage = events[messageIndex];

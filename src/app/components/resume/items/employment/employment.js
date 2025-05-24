@@ -13,7 +13,7 @@ const debounce = (fn, delay) => {
   };
 };
 
-export default function EmploymentSection({
+export default function Employment({
   experienceArray,
   onExperienceArrayChange,
 }) {
