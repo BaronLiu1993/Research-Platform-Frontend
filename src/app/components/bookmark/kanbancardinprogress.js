@@ -42,7 +42,7 @@ export default function KanbanCardInProgress({
   }) : "N/A";
 
   return (
-    <div className="border border-gray-200 rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow w-full p-3.5 font-sans">
+    <div className="rounded-md bg-white w-full p-3.5 font-sans">
       <div className="flex justify-between items-start mb-2">
         <h2 className="font-semibold text-gray-800 text-sm leading-tight break-words">
           {title || "Untitled Application"}
