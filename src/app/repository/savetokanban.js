@@ -1,3 +1,5 @@
+"use server"
+
 export async function saveToKanban(
     professor_id,
     professor_name,

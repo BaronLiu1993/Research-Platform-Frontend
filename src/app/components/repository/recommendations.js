@@ -36,45 +36,54 @@ export default async function Recommendations() {
           className="font-sans"
         >
           <CarouselContent className="gap-1 flex">
-
             {responses.matches.map((response, index) => (
               <CarouselItem
                 key={index}
                 className=" flex-shrink-0 sm:basis-1/2 md:basis-1/3 lg:basis-1/3"
               >
-                <div className="shadow-md max-w-[20rem] border rounded-md p-3 h-full flex flex-col justify-between space-y-3">
-                  <div className="space-y-2">
-                    <div className="flex justify-end">
+                <div className="shadow-md max-w-[20rem] border rounded-md p-3 h-full flex flex-col justify-between space-y-10">
+                  <div className="p-2">
+                    <div className="flex justify-end ">
                       <KanbanButton
                         professor_id={response.professor_id}
                         professor_name={response.name}
                         professor_url={response.url}
-                        professor_research_interests={response.research_interests}
+                        professor_research_interests={
+                          response.research_interests
+                        }
                         professor_school={response.school}
                         professor_faculty={response.faculty}
                         professor_department={response.department}
-                        user_id = {user_id}
+                        user_id={user_id}
                       />
                     </div>
-                    <h2 className="text-xs text-purple-500 font-semibold">
-                      {response.school}
-                    </h2>
-                    <h1 className="text-sm font-medium">{response.name}</h1>
-                    <h2 className="text-xs text-gray-600">
-                      {response.faculty}
-                    </h2>
-                    <div className="flex flex-wrap gap-1">
-                      {response.research_interests.map((interest, i) => (
-                        <Badge key={i} className="text-xs">
-                          {interest}
-                        </Badge>
-                      ))}
+                    <div className = "space-y-2">
+                      <div>
+                        <h2 className="text-sm text-purple-500 font-semibold">
+                          {response.name}
+                        </h2>
+                        <h1 className="text-md font-semibold">
+                          {response.faculty}
+                        </h1>
+                        <h2 className="text-xs font-semibold text-gray-600">
+                          {response.school}
+                        </h2>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {response.research_interests.map((interest, i) => (
+                          <Badge
+                            key={i}
+                            className="text-xs bg-gray-200 text-black"
+                          >
+                            {interest}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                  <div className="flex justify-end">
+                  <div className="flex justify-end border-t-1 pt-5">
                     <Button
-                      className="bg-gray-50 text-gray-500 border hover:bg-gray-100"
-                      variant="outline"
+                      className="cursor-pointer hover:bg-gray-100"
                       size="sm"
                     >
                       <span className="text-xs mr-1">Apply</span>

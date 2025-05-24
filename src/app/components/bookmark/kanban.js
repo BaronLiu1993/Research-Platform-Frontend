@@ -1,3 +1,5 @@
+"use server";
+
 import KanbanCardInComplete from "./kanbancardincomplete";
 import KanbanCardInProgress from "./kanbancardinprogress";
 import KanbanCardCompleted from "./kanbancardcompleted";
@@ -12,7 +14,6 @@ import {
   ListChecks,
   Settings2,
   Columns,
-  PlusCircle,
   Tag,
   CalendarDays,
   Users,
@@ -109,12 +110,12 @@ export default async function Kanban({ user_id }) {
       statusKey: "follow_up",
       data: followUpResponses,
       cardComponent: KanbanCardCompleted,
-    }, 
+    },
   ];
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 font-sans overflow-hidden">
-      <div className = "border-b border-gray-200">
+      <div className="border-b border-gray-200">
         <div className="px-4 pt-3 bg-white flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <Columns className="h-5 w-5 text-gray-500" />
@@ -123,7 +124,7 @@ export default async function Kanban({ user_id }) {
             </h1>
           </div>
         </div>
-        <h2 className= "px-4 py-3 text-sm font-sans font-light text-gray-400">
+        <h2 className="px-4 py-3 text-sm font-sans font-light text-gray-400">
           Discover, track, and land the perfect research role, faster than ever.
         </h2>
       </div>

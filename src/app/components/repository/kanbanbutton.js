@@ -30,12 +30,12 @@ export default function KanbanButton({
 
   return (
     <Button
-      className="bg-gray-50 text-gray-500 border cursor-pointer"
+      className="bg-gray-50 text-gray-400 border cursor-pointer max-h-[1.5rem]"
       variant="outline"
       size="sm"
       onClick={handleClick}
     >
-      <span className="text-xs mr-1">Save To Kanban</span>
+      <span className="text-xs ">Save</span>
       <Bookmark className="w-3 h-3" />
     </Button>
   );

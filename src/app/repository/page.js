@@ -1,3 +1,5 @@
+"use server"
+
 import { cookies } from "next/headers";
 
 import { Separator } from "@/shadcomponents/ui/separator";

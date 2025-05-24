@@ -1,6 +1,7 @@
-import UserProfile from "./userprofile";
-import { cookies } from "next/headers";
+"use server"
 
+import { cookies } from "next/headers";
+import UserProfile from "./userprofile";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,9 +15,7 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from "@/shadcomponents/ui/sidebar";
-
 import { AppSidebar } from "@/app/components/sidebar";
-
 import { Separator } from "@/shadcomponents/ui/separator";
 
 export default async function Dashboard() {

@@ -1,3 +1,5 @@
+"use server"
+
 import { cookies } from "next/headers";
 import Kanban from "../components/bookmark/kanban";
 
