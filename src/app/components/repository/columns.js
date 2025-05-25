@@ -1,5 +1,6 @@
 "use client";
 
+import KanbanButton from "./kanbanbutton";
 import { Button } from "@/shadcomponents/ui/button";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
@@ -15,7 +16,6 @@ import { Label } from "@/shadcomponents/ui/label";
 
 import {
   ArrowUpDown,
-  BookmarkIcon,
   University,
   BrainCircuit,
   Microscope,
@@ -192,19 +192,19 @@ const columns = [
     accessorKey: "actions",
     header: () => <div></div>,
     cell: ({ row }) => {
+      const data = row.original;
       return (
         <div className="flex justify-end items-center h-full pr-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            // onClick={toggleBookmark}
-            // aria-pressed={isBookmarked} // For accessibility
-            className="text-gray-400 hover:text-yellow-500 hover:bg-yellow-100/50 data-[state=active]:text-yellow-500 data-[state=active]:bg-yellow-100/80 rounded-md w-8 h-8 transition-colors"
-            // data-state={isBookmarked ? "active" : "inactive"} // For styling based on state
-          >
-            <BookmarkIcon className="h-4 w-4" />
-            <span className="sr-only">Save professor</span>{" "}
-          </Button>
+          <KanbanButton
+            professor_id={data.professor_id}
+            professor_name={data.name}
+            professor_url={data.url}
+            professor_research_interests={data.research_interests}
+            professor_school={data.school}
+            professor_faculty={data.faculty}
+            professor_department={data.department}
+            user_id={data.user_id}
+          />
         </div>
       );
     },
