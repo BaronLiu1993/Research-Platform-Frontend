@@ -20,7 +20,7 @@ import {
 
 
 
-export default function KanbanCardInProgress({
+export default function KanbanCardFollowUp({
   title,
   url,
   school,

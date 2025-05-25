@@ -3,6 +3,7 @@
 import KanbanCardInComplete from "./kanbancardincomplete";
 import KanbanCardInProgress from "./kanbancardinprogress";
 import KanbanCardCompleted from "./kanbancardcompleted";
+import KanbanCardFollowUp from "./kanbancardfollowup";
 
 import {
   Plus,
@@ -109,7 +110,7 @@ export default async function Kanban({ user_id }) {
       id: "followup",
       statusKey: "follow_up",
       data: followUpResponses,
-      cardComponent: KanbanCardCompleted,
+      cardComponent: KanbanCardFollowUp,
     },
   ];
 
