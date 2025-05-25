@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { Button } from "@/shadcomponents/ui/button";
 import { Badge } from "@/shadcomponents/ui/badge";
@@ -23,11 +23,10 @@ import {
 } from "lucide-react";
 
 import Link from "next/link";
-import React from "react"; // Import React if you use useState for bookmark
 
 const columns = [
   {
-    accessorKey: "name", // This will be used for sorting by name
+    accessorKey: "name", 
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -43,15 +42,13 @@ const columns = [
       return (
         <Dialog>
           <DialogTrigger asChild>
-            {/* This div is the main clickable area for the row, triggering the dialog */}
             <div className="cursor-pointer flex flex-col w-full py-2.5 group pr-4 hover:bg-slate-50 -mx-3 px-3 rounded-md transition-colors duration-150">
               <div className="flex items-center space-x-3">
                 <div>
-                  {/* Icon can be dynamic based on faculty or other data property */}
                   <Microscope className="bg-slate-100 text-slate-500 h-7 w-7 p-1.5 rounded-md" />
                 </div>
-                <div className="flex-grow min-w-0"> {/* min-w-0 for proper truncation */}
-                  <h1 className="font-sans text-sm font-medium text-slate-800 group-hover:text-blue-600 transition-colors truncate">
+                <div className="flex-grow min-w-0"> 
+                  <h1 className="font-sans text-md font-medium text-slate-800 group-hover:text-blue-600 transition-colors truncate">
                     {data.name}
                   </h1>
                   <div className="flex items-center space-x-1.5 text-xs text-slate-500 truncate">
@@ -61,26 +58,17 @@ const columns = [
                   </div>
                 </div>
               </div>
-              {/* Display research interests directly in the row cell */}
               {(data.research_interests || []).length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1.5 pl-[calc(28px_+_0.75rem)]"> {/* 28px (h-7 icon) + 0.75rem (space-x-3) */}
-                  {data.research_interests.slice(0, 3).map((interest, i) => (
+                <div className="mt-2 flex flex-wrap gap-1.5 pl-[calc(28px_+_0.75rem)]"> 
+                  {data.research_interests.map((interest, i) => (
                     <Badge
                       key={i}
                       variant="outline"
-                      className="text-xs font-normal bg-slate-100 text-slate-600 border-slate-200 px-1.5 py-0.5"
+                      className="text-xs font-medium bg-slate-100 text-slate-600 border-slate-200 px-1.5 py-0.5"
                     >
                       {interest}
                     </Badge>
                   ))}
-                  {data.research_interests.length > 3 && (
-                    <Badge
-                      variant="outline"
-                      className="text-xs font-normal bg-slate-100 text-slate-600 border-slate-200 px-1.5 py-0.5"
-                    >
-                      +{data.research_interests.length - 3} more
-                    </Badge>
-                  )}
                 </div>
               )}
             </div>
@@ -94,7 +82,6 @@ const columns = [
             </DialogHeader>
 
             <div className="grid gap-3 py-4 px-6 text-sm max-h-[60vh] overflow-y-auto"> {/* Scrollable content area */}
-              {/* Using a consistent grid for displaying details */}
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
                 <Label className="text-right font-medium text-gray-500 pt-1">School</Label>
                 <Badge className="col-span-1 bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
@@ -147,7 +134,6 @@ const columns = [
               <div className="rounded-md border border-gray-200 p-3 text-xs text-gray-700 bg-gray-50/70 min-h-[70px] max-h-[150px] overflow-y-auto prose prose-xs prose-slate">
                 {data.bio ? (
                     <div dangerouslySetInnerHTML={{ __html: data.bio }} /> /* If bio can contain HTML */
-                    // Or if plain text: <p>{data.bio}</p>
                 ) : (
                     <span className="text-gray-400 italic">No bio available.</span>
                 )}
@@ -159,7 +145,7 @@ const columns = [
                 href={{
                   pathname: `/resume/${encodeURIComponent(data.name)}`,
                   query: {
-                    research_interests: (data.research_interests || []).join(','), // Join interests for query param
+                    research_interests: data.research_interests || [],
                     professor_email: data.email,
                     professor_name: data.name,
                     professor_id: data.id,
@@ -167,7 +153,7 @@ const columns = [
                 }}
                 className="w-full flex justify-end"
               >
-                <Button className="bg-blue-500 hover:bg-blue-600 text-white text-xs py-2 px-3.5 rounded-md">
+                <Button className="bg-blue-500 hover:bg-blue-600 text-white text-xs py-2 px-3.5 rounded-md cursor-pointer">
                   <Check className="w-3.5 h-3.5 mr-1.5" />
                   Apply
                 </Button>
