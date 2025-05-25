@@ -1,6 +1,6 @@
+// columns.js
 "use client";
 
-import KanbanButton from "./kanbanbutton";
 import { Button } from "@/shadcomponents/ui/button";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
@@ -23,8 +23,9 @@ import {
 } from "lucide-react";
 
 import Link from "next/link";
+import KanbanButton from "./kanbanbutton"; 
 
-const columns = [
+const generateColumns = (userId) => [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -193,17 +194,18 @@ const columns = [
     header: () => <div></div>,
     cell: ({ row }) => {
       const data = row.original;
+      console.log(data)
       return (
         <div className="flex justify-end items-center h-full pr-1">
           <KanbanButton
-            professor_id={data.professor_id}
+            professor_id={data.id}
             professor_name={data.name}
             professor_url={data.url}
             professor_research_interests={data.research_interests}
             professor_school={data.school}
             professor_faculty={data.faculty}
             professor_department={data.department}
-            user_id={data.user_id}
+            user_id={userId} 
           />
         </div>
       );
@@ -213,4 +215,4 @@ const columns = [
   },
 ];
 
-export default columns;
+export default generateColumns; 

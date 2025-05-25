@@ -1,6 +1,7 @@
+// datatable.js
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react"; 
 import {
   flexRender,
   getCoreRowModel,
@@ -39,14 +40,16 @@ import {
 
 import { Input } from "@/shadcomponents/ui/input";
 
-export function DataTable({ columns, data }) {
+export function DataTable({ data, userId, generateColumns }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
 
+  const columns = useMemo(() => generateColumns(userId), [userId, generateColumns]);
+
   const table = useReactTable({
     data,
-    columns,
+    columns, 
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),

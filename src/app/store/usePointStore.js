@@ -17,7 +17,6 @@ export const usePointStore = create(
     }),
     {
       name: 'resume-points-storage', 
-      storage: () => sessionStorage,
     }
   )
 );

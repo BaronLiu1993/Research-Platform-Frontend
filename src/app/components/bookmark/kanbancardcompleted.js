@@ -1,72 +1,100 @@
-import Link from "next/link"
+"use client"; 
 
-import { X } from "lucide-react"
-import { Calendar } from "lucide-react"
-import { Badge } from "@/shadcomponents/ui/badge"
-import { Wrench } from "lucide-react"
-import { EllipsisVertical } from "lucide-react";
-import { PencilLine } from "lucide-react"
+import Link from "next/link";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/shadcomponents/ui/dropdown-menu"
+  X,
+  Calendar,
+  Briefcase, 
+  MoreHorizontal, 
+  Pencil, 
+  ExternalLink,
+  Paperclip, 
+} from "lucide-react";
 
-export default async function KanbanCardInCompleted ({ title, url, school, faculty, department, research_interests, date}) {
-    return (
-        <>
-            
-            {/* Cards Start Here */}
-            <div>
-                <div className="border-1 rounded-md bg-white m-2 p-2 font-sans w-[15rem]">
-                    <div className = "flex justify-between p-1">
-                        <h1 className = "text-xs font-extralight border-b-1 pb-1">{faculty}</h1>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger className = "rounded-md">
-                                <EllipsisVertical className = "h-5 w-5 text-gray-500 hover:bg-gray-200 rounded-md cursor-pointer"/>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuItem className = "">
-                                    <X />
-                                    <span className = "font-sans h-4 font-semibold">Delete</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem className = "">
-                                    <PencilLine />
-                                    <span className = "font-sans h-4 font-semibold">Edit</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
-                    <div className = "py-2">
-                        <h1 className="font-sans text-sm font-bold text-gray-800">
-                            {title} 
-                            <span className = "font-light px-2 text-xs">{school}</span>
-                        </h1>
-                        <p className="font-sans text-sm font-semibold text-gray-500">{research_interests}</p>
-                    </div>
-                    <p className="text-xs font-light flex items-center space-x-2">
-                        <Wrench className = "h-6 w-6 p-1 text-black"/>
-                        <span>{department}</span>
-                    </p>
-                    <p className ="text-xs font-light flex items-center space-x-2">
-                        <Calendar className = "h-6 w-6 p-1"/>
-                        <span>{date}</span>
-                    </p>
-                    <p className = "text-sm my-2 space-x-2">
-                        <Badge className = "bg-sky-400 cursor-pointer">
-                            Resume
-                        </Badge>
-                        <Link href = {url}>
-                            <Badge className = "bg-purple-400 cursor-pointer">
-                                View Professor
-                            </Badge>
-                        </Link>
-                    </p>
-                </div>
-            </div>
-        </>
-    )
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/shadcomponents/ui/dropdown-menu";
+
+
+export default function KanbanCardCompleted({
+  title,
+  url,
+  school,
+  faculty,
+  department,
+  email,
+  research_interests,
+  date,
+}) {
+  const formattedDate = date ? new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }) : "N/A";
+
+  return (
+    <div className="rounded-md bg-white w-full p-3.5 font-sans">
+      <div className="flex justify-between items-start mb-2">
+        <h2 className="font-semibold text-gray-800 text-sm leading-tight break-words">
+          {title || "Untitled Application"}
+        </h2>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md focus:outline-none">
+              <MoreHorizontal className="h-4 w-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-white shadow-xl border border-gray-200 rounded-md w-48 text-sm">
+            <DropdownMenuItem className="flex items-center gap-2 px-3 py-1.5 text-gray-700 hover:bg-gray-50 cursor-pointer">
+              <Pencil className="h-3.5 w-3.5 text-gray-500" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 px-3 py-1.5 text-red-600 hover:bg-red-50 cursor-pointer">
+              <X className="h-3.5 w-3.5" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {school && <p className="text-xs text-gray-500 mb-1.5">{school}</p>}
+      {faculty && <p className="text-xs text-gray-500 mb-2">{faculty}</p>}
+
+
+      <div className="space-y-1.5 text-xs text-gray-600 mb-3">
+        {department && (
+          <p className="flex items-center">
+            <Briefcase className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
+            {department}
+          </p>
+        )}
+        <p className="flex items-center">
+          <Calendar className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
+          Added: {formattedDate}
+        </p>
+      </div>
+
+      <div className="flex flex-wrap gap-2 text-xs">
+        <Link 
+          href={{
+            pathname: `/resume/${title}`,
+            query: {research_interests: research_interests, professor_email: email, professor_name: title}
+          }}
+          className="flex items-center gap-1 px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md">
+          <Paperclip className="h-3 w-3" />
+          Apply
+        </Link>
+        {url && (
+          <Link href={url} target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-1 px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md">
+            <ExternalLink className="h-3 w-3" />
+            Professor
+          </Link>
+        )}
+      </div>
+    </div>
+  );
 }
