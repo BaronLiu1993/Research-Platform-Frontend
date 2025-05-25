@@ -45,7 +45,7 @@ export async function login (formData) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password })
     })
 
     if (!response.ok) {

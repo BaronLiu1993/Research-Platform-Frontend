@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/shadcomponents/ui/button"
 
+
 const CarouselContext = React.createContext(null)
 
 function useCarousel() {
@@ -155,13 +156,13 @@ function CarouselPrevious({
       data-slot="carousel-previous"
       variant={variant}
       size={size}
-      className={cn("absolute size-8 rounded-full", orientation === "horizontal"
-        ? "top-1/2 -left-12 -translate-y-1/2"
-        : "-top-12 left-1/2 -translate-x-1/2 rotate-90", className)}
+      className={cn("absolute size-8 w-fit px-3 m-2 cursor-pointer", orientation === "horizontal"
+        ? " -left-12"
+        : "left-1/2 -translate-x-1/2 rotate-90", className)}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}>
-      <ArrowLeft />
+      Prev
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -180,13 +181,13 @@ function CarouselNext({
       data-slot="carousel-next"
       variant={variant}
       size={size}
-      className={cn("absolute size-8 rounded-full", orientation === "horizontal"
-        ? "top-1/2 -right-12 -translate-y-1/2"
-        : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90", className)}
+      className={cn("absolute size-8 cursor-pointer m-2 w-fit px-3", orientation === "horizontal"
+        ? "-right-12"
+        : "left-1/2 -translate-x-1/2 rotate-90", className)}
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}>
-      <ArrowRight />
+      Next
       <span className="sr-only">Next slide</span>
     </Button>
   );

@@ -1,0 +1,105 @@
+"use server";
+
+import { cookies } from "next/headers";
+
+
+export async function handleLogin(prevState, formData) {
+  const cookieStore = await cookies();
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  if (!email || !password) {
+    return { message: "Please enter both email and password" };
+  }
+
+  try {
+    const loginResponse = await fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!loginResponse.ok) {
+      let errorBody = { message: `Backend Error: ${loginResponse.status}` };
+      try {
+        const responseText = await loginResponse.text();
+        errorBody = JSON.parse(responseText);
+      } catch (_) {}
+      return {
+        message:
+          errorBody.message ||
+          `Wrong Email or Password (Status: ${loginResponse.status})`,
+        savedProfessors: [],
+        success: false
+      };
+    }
+
+    const loginResponseData = await loginResponse.json();
+    const userId = loginResponseData.userId;
+    const accessToken = loginResponseData.access_token;
+    const refreshToken = loginResponseData.refresh_token;
+
+    if (!userId || !accessToken || !refreshToken) {
+      return {
+        message:
+          "Login successful, but necessary credentials could not be retrieved. Please try again.",
+        savedProfessors: [],
+        success: false
+      };
+    }
+
+    cookieStore.set("user_id", userId, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      });
+  
+      cookieStore.set("access_token", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      });
+  
+      cookieStore.set("refresh_token", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      });
+
+    const savedProfessorUI = await fetch(`http://localhost:8080/auth/get-professor-ids/${userId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    return {
+        message: "Sucessfully, Redirecting...",
+        savedProfessors: savedProfessorUI.saved_professors,
+        success: true
+    } 
+  } catch (error) {
+    if (error.message === "NEXT_REDIRECT") throw error;
+    if (error.cause && error.cause.code === "ECONNREFUSED") {
+      return {
+        message: "Could not connect to the authentication server. Is it running?",
+        savedProfessors: [],
+        success: false
+      };
+    }
+    return {
+      message:
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred. Please try again later.",
+      savedProfessors: [],
+      success: false
+    };
+  }
+}
