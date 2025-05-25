@@ -73,12 +73,15 @@ export async function handleLogin(prevState, formData) {
         path: "/",
       });
 
-    const savedProfessorUI = await fetch(`http://localhost:8080/auth/get-professor-ids/${userId}`, {
+    const savedProfessorResponse = await fetch(`http://localhost:8080/auth/get-professor-ids/${userId}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
         },
     })
+
+    const savedProfessorUI = await savedProfessorResponse.json();
+
     return {
         message: "Sucessfully, Redirecting...",
         savedProfessors: savedProfessorUI.saved_professors,

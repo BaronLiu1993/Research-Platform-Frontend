@@ -39,45 +39,6 @@ export async function verifyOtp (formData) {
     }
 }
 
-export async function login (formData) {
-  try {
-    const response = await fetch('http://localhost:8080/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ email, password })
-    })
-
-    if (!response.ok) {
-      const data = await response.json()
-      throw new Error(data.message || 'Login failed')
-    }
-
-    return true // Login successful
-  } catch (error) {
-    throw error
-  }
-}
-
-export async function getUserId () {
-  try {
-    const response = await fetch('http://localhost:8080/auth/get-user-id', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to retrieve user ID')
-    }
-
-    const data = await response.json()
-    return data.userId 
-  } catch (error) {
-    throw error
-  }
-}
-
 
 export async function resendCode() {
     if (formData) {
