@@ -72,7 +72,7 @@ export default async function Kanban({ user_id }) {
 
   const responses = await serverData.json();
   const finalResponse = responses.data;
-  console.log(finalResponse)
+  console.log(finalResponse);
   if (!finalResponse) {
     return (
       <div className="p-8 text-center text-gray-500 font-sans">
@@ -232,6 +232,8 @@ export default async function Kanban({ user_id }) {
                         faculty={item.faculty}
                         email={item.email}
                         department={item.department}
+                        labs={item.labs}
+                        lab_url={item.lab_url}
                         research_interests={item.research_interests}
                         date={item.added_at}
                       />

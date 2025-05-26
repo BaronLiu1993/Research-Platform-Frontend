@@ -31,6 +31,8 @@ export default function KanbanCardInProgress({
   department,
   research_interests,
   email,
+  labs,
+  lab_url,
   url,
   date,
 }) {
@@ -138,6 +140,7 @@ export default function KanbanCardInProgress({
                   {school && <p className="text-xs">{school}</p>}
                   {faculty && <p className="text-xs">{faculty}</p>}
                   {department && <p className="text-xs">{department}</p>}
+                  {lab_url && <Link href = {lab_url} target = "_blank" className="text-xs text-blue-500 underline flex justify-center items-center gap-1"><ExternalLink className = "h-3 w-3"/>{labs}</Link>}
                 </div>
               </div>
             </div>
@@ -188,7 +191,7 @@ export default function KanbanCardInProgress({
                     target="_blank"
                     className="text-blue-600 text-xs cursor-pointer mt-1 ml-6 hover:underline flex items-center"
                   >
-                    {url}
+                    View Professor Profile
                   </Link>
                 </div>
               </div>
