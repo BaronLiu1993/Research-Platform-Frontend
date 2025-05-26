@@ -46,9 +46,9 @@ export default function KanbanButton({
           professor_school,
           professor_faculty,
           professor_department,
-          user_id,
           professor_labs,
           professor_lab_url,
+          user_id,
           ""
         );
 

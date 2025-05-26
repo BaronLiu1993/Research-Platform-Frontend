@@ -70,7 +70,7 @@ export default function ApplyButton({
         professor_lab_url,
         user_id,
       );
-      toast.success("Application submitted successfully!");
+      toast.success("Created A New Application!");
       return true;
     } catch (error) {
       toast.error("Failed to submit application. Please try again.");
@@ -105,6 +105,7 @@ export default function ApplyButton({
 
   const handleDeleteApplication = async () => {
     setLoading(true);
+    console.log(user_id, professor_id)
     try {
       await removeFromApply(user_id, professor_id)
       removeApplied(professor_id);

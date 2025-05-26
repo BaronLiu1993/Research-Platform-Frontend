@@ -2,18 +2,18 @@
 
 import { useState } from "react";
 import {
-  MoreHorizontal,
-  Pencil,
-  X,
   Briefcase,
   Calendar, 
   Paperclip,
   ExternalLink,
   NotebookPen,
   StickyNote,
-  Tag, 
+  Tag,
+  Car, 
 } from "lucide-react";
 import Link from "next/link";
+
+import DeleteInProgressButton from "./deleteinprogressbutton";
 
 import {
   Sheet,
@@ -25,6 +25,7 @@ import {
 import { Button } from "@/shadcomponents/ui/button";
 
 export default function KanbanCardInProgress({
+  prof_id,
   title,
   school,
   faculty,
@@ -35,13 +36,13 @@ export default function KanbanCardInProgress({
   lab_url,
   url,
   date,
+  user_id,
 }) {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-
   return (
     <div className="rounded-md border border-gray-200 bg-white w-full p-4 font-sans shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
       <div className="flex items-center space-x-2 mb-2">
-        <StickyNote className="h-4 w-4 text-gray-400" />
+        <Car className="h-4 w-4 text-yellow-400" />
         <h2 className="font-medium text-gray-800 text-base leading-tight break-words">
           {title || "Untitled Application"}
         </h2>
@@ -215,6 +216,7 @@ export default function KanbanCardInProgress({
           </div>
 
           <div className="mt-8 flex justify-end gap-3">
+            <DeleteInProgressButton professor_id = {prof_id} user_id = {user_id}/>
             <Button
               variant="outline"
               className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"

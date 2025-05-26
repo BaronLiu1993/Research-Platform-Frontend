@@ -12,6 +12,7 @@ import {
   NotebookPen,
   StickyNote,
   Tag,
+  CircleHelp,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -32,6 +33,8 @@ export default function KanbanCardFollowUp({
   research_interests,
   email,
   url,
+  labs,
+  lab_url,
   date,
 }) {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -39,7 +42,7 @@ export default function KanbanCardFollowUp({
   return (
     <div className="rounded-md border border-gray-200 bg-white w-full p-4 font-sans shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
       <div className="flex items-center space-x-2 mb-2">
-        <StickyNote className="h-4 w-4 text-gray-400" />
+        <CircleHelp className="h-4 w-4 text-purple-400" />
         <h2 className="font-medium text-gray-800 text-base leading-tight break-words">
           {title || "Untitled Application"}
         </h2>
@@ -54,21 +57,24 @@ export default function KanbanCardFollowUp({
       {date && (
         <div className="flex items-center text-xs text-gray-500 mb-2">
           <Calendar className="h-3 w-3 mr-1 text-gray-400" />
-          <p>{date}</p>
+          <p>{new Date(date).toLocaleString()}</p>
         </div>
       )}
 
       {research_interests && (
-        <div className="flex flex-wrap items-center gap-1 mb-4">
+        <div className="flex flex-wrap items-center gap-1 mb-4 ">
           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
             <Tag className="h-3 w-3 mr-1" />
-            {research_interests[0]}
+            {Array.isArray(research_interests)
+              ? research_interests[0]
+              : research_interests}
           </span>
-          {research_interests.length > 1 && (
-            <span className="text-xs text-gray-500 underline">
-              +{research_interests.length - 1} more
-            </span>
-          )}
+          {Array.isArray(research_interests) &&
+            research_interests.length > 1 && (
+              <span className="text-xs mr-1 text-gray-500 underline">
+                +{research_interests.length - 1} more
+              </span>
+            )}
         </div>
       )}
 
@@ -82,9 +88,9 @@ export default function KanbanCardFollowUp({
               professor_name: title,
             },
           }}
-          className="inline-flex items-center px-1 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-md hover:bg-purple-200 transition-colors duration-200"
+          className="inline-flex items-center px-2.5 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-md hover:bg-purple-200 transition-colors duration-200"
         >
-          Follow Up
+          Remind?
         </Link>
 
         <Button
@@ -97,79 +103,132 @@ export default function KanbanCardFollowUp({
       </div>
 
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        <SheetContent className="w-full sm:w-[500px] bg-white p-6 border-l border-gray-200 shadow-lg">
+        <SheetContent className="w-full font-sans sm:w-[500px] bg-white p-6 border-l border-gray-200 shadow-lg">
           <SheetHeader className="mb-6">
             <SheetTitle className="text-2xl font-semibold text-gray-800">
               Application Details
             </SheetTitle>
-            <SheetDescription className="text-gray-500">
-              View and edit the details of your application.
+            <SheetDescription className="text-gray-500 text-sm">
+              Review the Data Used To Contexualise and Personalise Your
+              Application
             </SheetDescription>
           </SheetHeader>
 
           <div className="space-y-4 text-gray-700">
-            <div>
-              <p className="font-medium text-sm mb-1 text-gray-600">Title</p>
-              <p className="text-base">{title || "N/A"}</p>
+            <div className="flex items-center">
+              <div>
+                <div className="flex underline">
+                  <StickyNote className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0 " />
+                  <p className="font-medium text-sm text-gray-600">Name</p>
+                </div>
+                <div className="pl-6">
+                  <p className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 whitespace-nowrap border border-blue-500">
+                    {title || "N/A"}
+                  </p>
+                </div>
+              </div>
             </div>
-            {school && (
-              <div>
-                <p className="font-medium text-sm mb-1 text-gray-600">School</p>
-                <p className="text-base">{school}</p>
+
+            <div className="flex items-center">
+              <div className="space-y-1">
+                {" "}
+                <div className="flex items-center mb-1">
+                  {" "}
+                  <Briefcase className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
+                  <p className="font-medium text-sm text-gray-600 underline">
+                    Academic Affiliations
+                  </p>
+                </div>
+                <div className="pl-6 text-gray-800">
+                  {" "}
+                  {school && <p className="text-xs">{school}</p>}
+                  {faculty && <p className="text-xs">{faculty}</p>}
+                  {department && <p className="text-xs">{department}</p>}
+                  {lab_url && (
+                    <Link
+                      href={lab_url}
+                      target="_blank"
+                      className="text-xs text-blue-500 underline flex justify-center items-center gap-1"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                      {labs}
+                    </Link>
+                  )}
+                </div>
               </div>
-            )}
-            {faculty && (
-              <div>
-                <p className="font-medium text-sm mb-1 text-gray-600">
-                  Faculty
-                </p>
-                <p className="text-base">{faculty}</p>
-              </div>
-            )}
-            {department && (
-              <div>
-                <p className="font-medium text-sm mb-1 text-gray-600">
-                  Department
-                </p>
-                <p className="text-base">{department}</p>
-              </div>
-            )}
-            <div>
-              <p className="font-medium text-sm mb-1 text-gray-600">
-                Date Added
-              </p>
-              <p className="text-base">{date}</p>
             </div>
-            {research_interests && (
-              <div>
-                <p className="font-medium text-sm mb-1 text-gray-600">
-                  Research Interests
-                </p>
-                <p className="text-base">{research_interests}</p>
+
+            <div>
+              <div className="flex items-center">
+                <Calendar className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-sm text-gray-600 underline">
+                    Date Added
+                  </p>
+                  <p className="text-xs">{new Date(date).toLocaleString()}</p>
+                </div>
               </div>
-            )}
-            {email && (
+            </div>
+
+            {(research_interests &&
+              Array.isArray(research_interests) &&
+              research_interests.length > 0) ||
+            (!Array.isArray(research_interests) && research_interests) ? (
               <div>
-                <p className="font-medium text-sm mb-1 text-gray-600">
-                  Professor Email
-                </p>
-                <p className="text-base">{email}</p>
+                <div className="flex items-center mb-1">
+                  <Tag className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
+                  <p className="font-medium text-sm text-gray-600 underline">
+                    Research Interests
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2 pl-6">
+                  {Array.isArray(research_interests) ? (
+                    research_interests.map((interest, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 whitespace-nowrap border border-blue-500"
+                      >
+                        {interest.trim()}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 whitespace-nowrap border border-blue-500">
+                      {research_interests.trim()}
+                    </span>
+                  )}
+                </div>
               </div>
-            )}
+            ) : null}
+
             {url && (
-              <div>
-                <p className="font-medium text-sm mb-1 text-gray-600">
-                  Professor URL
-                </p>
-                <Link
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline flex items-center"
-                >
-                  {url}
-                  <ExternalLink className="ml-1 h-3.5 w-3.5" />
-                </Link>
+              <div className="flex items-center">
+                <div>
+                  <p className="font-medium text-sm text-gray-600 underline flex">
+                    <ExternalLink className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
+                    Profile Link
+                  </p>
+                  <Link
+                    href={url}
+                    target="_blank"
+                    className="text-blue-600 text-xs cursor-pointer mt-1 ml-6 hover:underline flex items-center"
+                  >
+                    View Professor Profile
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {email && (
+              <div className="flex items-center">
+                <div>
+                  <p className="font-medium text-sm text-gray-600 underline flex">
+                    <ExternalLink className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
+                    Professor Email
+                  </p>
+                  <div className="text-blue-600 text-xs cursor-pointer mt-1 ml-6 hover:underline flex items-center">
+                    {email}
+                  </div>
+                </div>
               </div>
             )}
           </div>

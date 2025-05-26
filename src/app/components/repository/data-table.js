@@ -41,7 +41,7 @@ import {
 export function DataTable({ data, userId, generateColumns }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
-  const [columnVisibility, setColumnColumnVisibility] = useState({}); // Corrected state setter name
+  const [columnVisibility, setColumnColumnVisibility] = useState({}); 
 
   const columns = useMemo(
     () => generateColumns(userId),
@@ -56,7 +56,7 @@ export function DataTable({ data, userId, generateColumns }) {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
-    onColumnVisibilityChange: setColumnColumnVisibility, // Corrected here too
+    onColumnVisibilityChange: setColumnColumnVisibility, 
     getPaginationRowModel: getPaginationRowModel(),
     state: { sorting, columnFilters, columnVisibility },
   });

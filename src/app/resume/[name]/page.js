@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Builder from "@/app/components/resume/builder";
 //Scans current resume for all keywords and then builds new resume with latex and the format given
@@ -25,13 +25,13 @@ import { AppSidebar } from "@/app/components/sidebar";
 import { Separator } from "@/shadcomponents/ui/separator";
 
 export default function resume() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const research_interests = searchParams.getAll("research_interests")
-  const professor_name = searchParams.get("professor_name")
-  const professor_email = searchParams.get("professor_email")
-  
-  
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const research_interests = searchParams.getAll("research_interests");
+  const professor_name = searchParams.get("professor_name");
+  const professor_email = searchParams.get("professor_email");
+  const professor_id = searchParams.get("professor_id");
+
   const handleSendDataToEmail = (url) => {
     router.push(
       `/email?url=${encodeURIComponent(
@@ -40,12 +40,9 @@ export default function resume() {
         research_interests
       )}&name=${encodeURIComponent(professor_name)}&email=${encodeURIComponent(
         professor_email
-      )}`
+      )}&id=${encodeURIComponent(professor_id)}`
     );
   };
-  
-
-  // Save a copy of the resume and then it will allow user to name it and that will be there resume for this one
 
   return (
     <>
@@ -72,7 +69,7 @@ export default function resume() {
             </Breadcrumb>
           </header>
           <div className=" space-x-2 select-none bg-gray-100">
-            <Builder researchInterests={research_interests}/>
+            <Builder researchInterests={research_interests} />
           </div>
           <button onClick={handleSendDataToEmail}>Email Page</button>
         </SidebarInset>

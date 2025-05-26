@@ -22,7 +22,7 @@ import Email from "../components/email/email";
 
 export default async function email() {
   const cookieStore = await cookies();
-  const access = cookieStore.get("accesstoken");
+  const access = cookieStore.get("access_token");
   const serverData = await fetch("http://localhost:8080/auth/get-user-id-email", {
     method: "GET",
     headers: {

@@ -60,7 +60,6 @@ export default async function Kanban({ user_id }) {
     }
   );
 
-  console.log(serverData);
   if (!serverData.ok) {
     return (
       <div className="p-8 text-center text-gray-500 font-sans">
@@ -72,7 +71,6 @@ export default async function Kanban({ user_id }) {
 
   const responses = await serverData.json();
   const finalResponse = responses.data;
-  console.log(finalResponse);
   if (!finalResponse) {
     return (
       <div className="p-8 text-center text-gray-500 font-sans">
@@ -226,6 +224,7 @@ export default async function Kanban({ user_id }) {
                     col.data.map((item, index) => (
                       <CardComponent
                         key={item.id || index}
+                        prof_id = {item.id || index}
                         title={item.name}
                         url={item.url}
                         school={item.school}
@@ -236,6 +235,7 @@ export default async function Kanban({ user_id }) {
                         lab_url={item.lab_url}
                         research_interests={item.research_interests}
                         date={item.added_at}
+                        user_id = {user_id}
                       />
                     ))
                   ) : (

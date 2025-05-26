@@ -32,7 +32,7 @@ export async function saveToKanban(
     };  
     try {
       const response = await fetch(
-        `http://localhost:8080/kanban/add-in-complete/${user_id.value}`,
+        `http://localhost:8080/kanban/add-in-complete/${user_id}`,
         {
           method: "POST",
           headers: {
@@ -41,7 +41,6 @@ export async function saveToKanban(
           body: JSON.stringify(data),
         }
       );  
-      //Fix error handling later
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

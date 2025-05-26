@@ -22,22 +22,19 @@ import {
   XIcon,
   MailPlus,
 } from "lucide-react";
-import { sub } from "date-fns";
 
 export default function Email({ student_data }) {
   const searchParams = useSearchParams();
   const name = searchParams.get("name") || "Recipient Name";
   const email = searchParams.get("email") || "recipient@example.com";
-  const interestsString =
-    searchParams.get("professor_interests") ||
-    "Topic A, Topic B, Topic C";
-  const interests = interestsString.split(",")
+  const interestsString = searchParams.get("professor_interests") || "Topic A, Topic B, Topic C";
+  const interests = interestsString.split(",");
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [subject, setSubject] = useState("")
+  const [subject, setSubject] = useState("");
   const fileInputRef = useRef(null);
   const handleSendSubject = (data) => {
-    setSubject(data)
-  }
+    setSubject(data);
+  };
 
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
@@ -117,7 +114,7 @@ export default function Email({ student_data }) {
           </Label>
           <Input
             id="from-email"
-            defaultValue = {student_data.student_email}
+            defaultValue={student_data.student_email}
             className="flex-grow border border-gray-300 rounded-md px-3 py-1.5 text-sm text-gray-700 font-semibold  shadow-sm"
             placeholder="your-email@example.com"
           />
@@ -141,7 +138,11 @@ export default function Email({ student_data }) {
       </div>
 
       <div className="mb-6">
-        <EmailTextEditor student_data = {student_data} research_interests={interestsString} sendSubject={handleSendSubject}/>
+        <EmailTextEditor
+          student_data={student_data}
+          research_interests={interestsString}
+          sendSubject={handleSendSubject}
+        />
       </div>
 
       {uploadedFile && (
