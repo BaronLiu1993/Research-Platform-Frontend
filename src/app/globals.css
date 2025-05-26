@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant hover (&:hover);
 
 @font-face {
   font-family: 'cmubi';

@@ -64,7 +64,7 @@ export default function KanbanButton({
   return (
     <Button
       className={`border cursor-pointer max-h-[1.5rem] mb-2 ${
-        isSaved ? "bg-green-100 text-green-600" : "bg-gray-50 text-gray-400"
+        isSaved ? "bg-green-100 text-green-600 hover:bg-green-200 hover:text-green-600" : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-600"
       }`}
       variant="outline"
       size="sm"
