@@ -79,6 +79,7 @@ export default async function Recommendations() {
                     </div>
                   </div>
                   <div className="flex pt-4 border-t border-gray-100">
+                    
                     <ApplyButton
                       professor_id={response.professor_id}
                       professor_name={response.name}

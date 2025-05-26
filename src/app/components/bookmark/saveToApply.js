@@ -1,49 +1,50 @@
-"use server";
+"use server"
 
 export async function saveToApply(
-  professor_id,
-  professor_name,
-  professor_url,
-  professor_research_interests,
-  professor_school,
-  professor_faculty,
-  professor_department,
-  user_id,
-  comments = ""
-) {
-  const data = {
-    professor_data: {
-      id: professor_id || null,
-      name: professor_name || "",
-      url: professor_url || "",
-      research_interests: professor_research_interests || [""],
-      school: professor_school || "",
-      faculty: professor_faculty || "",
-      department: professor_department || "",
-      comments,
-    },
-  };
-
-
-  try {
-    const response = await fetch(
-      `http://localhost:8080/kanban/add-in-progress/${user_id}`, 
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+    professor_id,
+    professor_name,
+    professor_url,
+    professor_research_interests,
+    professor_school,
+    professor_faculty,
+    professor_department,
+    user_id,
+    comments 
+  ) {
+    
+    const data = {
+      professor_data: {
+        id: professor_id || null,
+        name: professor_name || "",
+        url: professor_url || "",
+        research_interests: professor_research_interests || [""],
+        school: professor_school || "",
+        faculty: professor_faculty || "",
+        department: professor_department || "",
+        comments: comments || "", 
+      },
+    };  
+    try {
+      console.log(user_id)
+      const response = await fetch(
+        `http://localhost:8080/kanban/add-in-progress/${user_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );  
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Failed to post professor data:", error);
     }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Failed to post professor data:", error);
-    throw error; 
   }
-}
+  
