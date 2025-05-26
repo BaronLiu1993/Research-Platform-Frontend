@@ -1,8 +1,6 @@
-"use server"
+"use server";
 
 import { cookies } from "next/headers";
-
-
 
 import { Separator } from "@/shadcomponents/ui/separator";
 import {
@@ -25,8 +23,8 @@ import { DataTable } from "../components/repository/data-table";
 import Recommendations from "../components/repository/recommendations";
 
 export default async function Repository() {
-  const cookieStore = await cookies()
-  const userId = cookieStore.get("user_id")
+  const cookieStore = await cookies();
+  const userId = cookieStore.get("user_id");
   const serverData = await fetch("http://localhost:8080/Taishan/");
   const parsedResponse = await serverData.json();
   const responses = parsedResponse.data;
@@ -73,7 +71,11 @@ export default async function Repository() {
               </p>{" "}
             </div>
             <div className="mt-4">
-              <DataTable generateColumns={generateColumns} data={responses} userId = {userId}/>
+              <DataTable
+                generateColumns={generateColumns}
+                data={responses}
+                userId={userId.value}
+              />
             </div>
           </div>
         </div>

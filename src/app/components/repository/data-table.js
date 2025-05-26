@@ -1,7 +1,6 @@
-// datatable.js
 "use client";
 
-import { useState, useMemo } from "react"; 
+import { useState, useMemo } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -33,29 +32,32 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
-} from "@/shadcomponents/ui/table";
+  TableHead, // Import TableHead
+} from "@/shadcomponents/ui/table"; // Ensure all components are imported
 
-import { Input } from "@/shadcomponents/ui/input";
+// Removed Input import as it's no longer used for filtering research interests
 
 export function DataTable({ data, userId, generateColumns }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
-  const [columnVisibility, setColumnVisibility] = useState({});
+  const [columnVisibility, setColumnColumnVisibility] = useState({}); // Corrected state setter name
 
-  const columns = useMemo(() => generateColumns(userId), [userId, generateColumns]);
+  const columns = useMemo(
+    () => generateColumns(userId),
+    [userId, generateColumns]
+  );
 
   const table = useReactTable({
     data,
-    columns, 
+    columns,
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnVisibilityChange: setColumnColumnVisibility, // Corrected here too
     getPaginationRowModel: getPaginationRowModel(),
     state: { sorting, columnFilters, columnVisibility },
   });
@@ -63,23 +65,7 @@ export function DataTable({ data, userId, generateColumns }) {
   return (
     <div className="rounded-md px-4 py-2">
       <div className="flex flex-col gap-2 pb-2">
-        <Input
-          placeholder="Filter research interests..."
-          value={table.getColumn("research_interests")?.getFilterValue() ?? ""}
-          onChange={(event) =>
-            table
-              .getColumn("research_interests")
-              ?.setFilterValue(event.target.value)
-          }
-          className="max-w-xs font-sans text-sm"
-        />
         <div className="flex flex-wrap gap-2 items-center py-2">
-          <p className="text-xs font-sans bg-purple-100 text-purple-600 px-2 py-1 rounded-md border border-purple-200 flex items-center">
-            <Info className="w-4 h-4 mr-1" />
-            Sorted By:{" "}
-            <span className="ml-1 font-bold">Research Interests</span>
-          </p>
-
           <Badge className="bg-white border text-gray-500 px-2 py-1">
             Faculty <ChevronDown className="w-3 h-3 ml-1" />
           </Badge>
@@ -154,7 +140,10 @@ export function DataTable({ data, userId, generateColumns }) {
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="px-2 py-2 text-md font-semibold">
+                  <TableCell
+                    key={cell.id}
+                    className="px-2 py-2 text-md font-semibold"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

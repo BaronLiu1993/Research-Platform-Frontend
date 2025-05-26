@@ -8,8 +8,8 @@ import {
 } from "@/shadcomponents/ui/carousel";
 
 import { Badge } from "@/shadcomponents/ui/badge";
-import { Button } from "@/shadcomponents/ui/button";
 import KanbanButton from "./kanbanbutton";
+import ApplyButton from "./applybutton";
 
 export default async function Recommendations() {
   const cookieStore = await cookies();
@@ -22,7 +22,9 @@ export default async function Recommendations() {
 
     body: JSON.stringify({ student_id: user_id.value }),
   });
+
   const responses = await data.json();
+  console.log(responses);
   return (
     <>
       <div className="px-6 md:px-8 lg:px-10 pb-6 my-6">
@@ -76,13 +78,18 @@ export default async function Recommendations() {
                       ))}
                     </div>
                   </div>
-                  <div className="flex justify-end pt-4 border-t border-gray-100">
-                    <Button
-                      className="cursor-pointer text-white text-xs px-3 py-1.5 rounded-md"
-                      size="sm"
-                    >
-                      <span className="text-xs mr-1">Apply</span>
-                    </Button>
+                  <div className="flex pt-4 border-t border-gray-100">
+                    <ApplyButton
+                      professor_id={response.professor_id}
+                      professor_name={response.name}
+                      professor_url={response.url}
+                      professor_research_interests={response.research_interests}
+                      professor_school={response.school}
+                      professor_faculty={response.faculty}
+                      professor_department={response.department}
+                      professor_email={response.email}
+                      user_id={user_id.value}
+                    />
                   </div>
                 </div>
               </CarouselItem>

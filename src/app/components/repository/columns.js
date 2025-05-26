@@ -23,7 +23,9 @@ import {
 } from "lucide-react";
 
 import Link from "next/link";
-import KanbanButton from "./kanbanbutton"; 
+import KanbanButton from "./kanbanbutton";
+import ApplyButton from "./applybutton";
+import Kanban from "../bookmark/kanban";
 
 const generateColumns = (userId) => [
   {
@@ -81,9 +83,33 @@ const generateColumns = (userId) => [
               <DialogTitle className="text-lg font-semibold text-gray-900">
                 {data.name}
               </DialogTitle>
-              <DialogDescription className="text-xs text-gray-500 pt-0.5">
+              <DialogDescription className="text-xs text-gray-500 pb-1">
                 Research Profile
               </DialogDescription>
+              <div className = "flex space-x-4">
+                <KanbanButton
+                  professor_id={data.id}
+                  professor_name={data.name}
+                  professor_url={data.url}
+                  professor_research_interests={data.research_interests}
+                  professor_school={data.school}
+                  professor_faculty={data.faculty}
+                  professor_department={data.department}
+                  user_id={userId}
+                />
+                
+                  <ApplyButton
+                    professor_id={data.id}
+                    professor_name={data.name}
+                    professor_url={data.url}
+                    professor_research_interests={data.research_interests}
+                    professor_school={data.school}
+                    professor_faculty={data.faculty}
+                    professor_department={data.department}
+                    user_id={userId}
+                    professor_email={data.email}
+                  />
+              </div>
             </DialogHeader>
 
             <div className="grid gap-3 py-4 px-6 text-sm max-h-[60vh] overflow-y-auto">
@@ -165,23 +191,7 @@ const generateColumns = (userId) => [
             </div>
 
             <DialogFooter className="pt-4 pb-5 px-6 bg-slate-50/50 rounded-b-lg">
-              <Link
-                href={{
-                  pathname: `/resume/${encodeURIComponent(data.name)}`,
-                  query: {
-                    research_interests: data.research_interests || [],
-                    professor_email: data.email,
-                    professor_name: data.name,
-                    professor_id: data.id,
-                  },
-                }}
-                className="w-full flex justify-end"
-              >
-                <Button className="bg-blue-500 hover:bg-blue-600 text-white text-xs py-2 px-3.5 rounded-md cursor-pointer">
-                  <Check className="w-3.5 h-3.5 mr-1.5" />
-                  Apply
-                </Button>
-              </Link>
+              
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -194,7 +204,6 @@ const generateColumns = (userId) => [
     header: () => <div></div>,
     cell: ({ row }) => {
       const data = row.original;
-      console.log(data)
       return (
         <div className="flex justify-end items-center h-full pr-1">
           <KanbanButton
@@ -205,7 +214,7 @@ const generateColumns = (userId) => [
             professor_school={data.school}
             professor_faculty={data.faculty}
             professor_department={data.department}
-            user_id={userId} 
+            user_id={userId}
           />
         </div>
       );
@@ -215,4 +224,4 @@ const generateColumns = (userId) => [
   },
 ];
 
-export default generateColumns; 
+export default generateColumns;

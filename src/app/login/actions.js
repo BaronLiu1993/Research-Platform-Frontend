@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 
-
 export async function handleLogin(prevState, formData) {
   const cookieStore = await cookies();
   const email = formData.get("email");
@@ -31,7 +30,8 @@ export async function handleLogin(prevState, formData) {
           errorBody.message ||
           `Wrong Email or Password (Status: ${loginResponse.status})`,
         savedProfessors: [],
-        success: false
+        appliedProfessors: [],
+        success: false,
       };
     }
 
@@ -45,55 +45,71 @@ export async function handleLogin(prevState, formData) {
         message:
           "Login successful, but necessary credentials could not be retrieved. Please try again.",
         savedProfessors: [],
-        success: false
+        success: false,
       };
     }
 
     cookieStore.set("user_id", userId, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 7,
-        path: "/",
-      });
-  
-      cookieStore.set("access_token", accessToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 7,
-        path: "/",
-      });
-  
-      cookieStore.set("refresh_token", refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 7,
-        path: "/",
-      });
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
 
-    const savedProfessorResponse = await fetch(`http://localhost:8080/auth/get-professor-ids/${userId}`, {
-        method: "GET",
-        headers: {
+    cookieStore.set("access_token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+
+    cookieStore.set("refresh_token", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
+
+    const [savedProfessorResponse, appliedProfessorResponse] =
+      await Promise.all([
+        fetch(`http://localhost:8080/auth/get-professor-ids/${userId}`, {
+          method: "GET",
+          headers: {
             "Content-Type": "application/json",
-        },
-    })
+          },
+        }),
+        fetch(
+          `http://localhost:8080/auth/get-applied-professor-ids/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ),
+      ]);
 
+    const appliedProfessorsUI = await appliedProfessorResponse.json();
     const savedProfessorUI = await savedProfessorResponse.json();
 
     return {
-        message: "Sucessfully, Redirecting...",
-        savedProfessors: savedProfessorUI.saved_professors,
-        success: true
-    } 
+      message: "Sucessfully, Redirecting...",
+      savedProfessors: savedProfessorUI.saved_professors,
+      appliedProfessors: appliedProfessorsUI.applied_professors,
+      success: true,
+    };
   } catch (error) {
     if (error.message === "NEXT_REDIRECT") throw error;
     if (error.cause && error.cause.code === "ECONNREFUSED") {
       return {
-        message: "Could not connect to the authentication server. Is it running?",
+        message:
+          "Could not connect to the authentication server. Is it running?",
         savedProfessors: [],
-        success: false
+        appliedProfessors: [],
+        success: false,
       };
     }
     return {
@@ -102,7 +118,8 @@ export async function handleLogin(prevState, formData) {
           ? error.message
           : "An unexpected error occurred. Please try again later.",
       savedProfessors: [],
-      success: false
+      appliedProfessors: [],
+      success: false,
     };
   }
 }

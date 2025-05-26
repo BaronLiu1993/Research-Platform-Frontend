@@ -63,7 +63,7 @@ export default function KanbanButton({
 
   return (
     <Button
-      className={`border cursor-pointer max-h-[1.5rem] ${
+      className={`border cursor-pointer max-h-[1.5rem] mb-2 ${
         isSaved ? "bg-green-100 text-green-600" : "bg-gray-50 text-gray-400"
       }`}
       variant="outline"
