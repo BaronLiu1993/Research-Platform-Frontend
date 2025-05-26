@@ -21,6 +21,7 @@ export default async function Recommendations() {
     },
 
     body: JSON.stringify({ student_id: user_id.value }),
+    next: { revalidate: 3600 }
   });
 
   const responses = await data.json();
@@ -52,6 +53,9 @@ export default async function Recommendations() {
                       professor_school={response.school}
                       professor_faculty={response.faculty}
                       professor_department={response.department}
+                      professor_email = {response.email}
+                      professor_labs = {response.labs}
+                      professor_lab_url = {response.lab_url}
                       user_id={user_id}
                     />
                   </div>
@@ -89,6 +93,8 @@ export default async function Recommendations() {
                       professor_faculty={response.faculty}
                       professor_department={response.department}
                       professor_email={response.email}
+                      professor_labs = {response.labs}
+                      professor_lab_url = {response.lab_url}
                       user_id={user_id.value}
                     />
                   </div>

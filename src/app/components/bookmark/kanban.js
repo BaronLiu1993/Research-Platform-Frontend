@@ -57,7 +57,6 @@ export default async function Kanban({ user_id }) {
       headers: {
         "Content-Type": "application/json",
       },
-      next: { revalidate: 60 },
     }
   );
 
@@ -73,7 +72,7 @@ export default async function Kanban({ user_id }) {
 
   const responses = await serverData.json();
   const finalResponse = responses.data;
-
+  console.log(finalResponse)
   if (!finalResponse) {
     return (
       <div className="p-8 text-center text-gray-500 font-sans">

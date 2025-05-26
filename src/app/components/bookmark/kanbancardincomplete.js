@@ -1,100 +1,179 @@
-"use client"; 
+"use client";
 
+import { useState } from "react";
+import {
+  MoreHorizontal,
+  Pencil,
+  X,
+  Briefcase,
+  Calendar, // We can use this for the date
+  Paperclip,
+  ExternalLink,
+  NotebookPen,
+  StickyNote,
+  Tag, // New icon for research interests
+} from "lucide-react";
 import Link from "next/link";
 import {
-  X,
-  Calendar,
-  Briefcase, 
-  MoreHorizontal, 
-  Pencil, 
-  ExternalLink,
-  Paperclip, 
-} from "lucide-react";
-
-import {
   DropdownMenu,
+  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
 } from "@/shadcomponents/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/shadcomponents/ui/sheet";
+import { Button } from "@/shadcomponents/ui/button";
 
-
-export default function KanbanCardInCompleted({
+export default function KanbanCardInComplete({
   title,
-  url,
   school,
   faculty,
   department,
-  email,
   research_interests,
-  date,
+  email,
+  url,
+  date
 }) {
-  const formattedDate = date ? new Date(date).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }) : "N/A";
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   return (
-    <div className="rounded-md bg-white w-full p-3.5 font-sans">
-      <div className="flex justify-between items-start mb-2">
-        <h2 className="font-semibold text-gray-800 text-sm leading-tight break-words">
+    <div className="rounded-md border border-gray-200 bg-white w-full p-4 font-sans shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
+      <div className="flex items-center space-x-2 mb-2">
+        <StickyNote className="h-4 w-4 text-gray-400" />
+        <h2 className="font-medium text-gray-800 text-base leading-tight break-words">
           {title || "Untitled Application"}
         </h2>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md focus:outline-none">
-              <MoreHorizontal className="h-4 w-4" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-white shadow-xl border border-gray-200 rounded-md w-48 text-sm">
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-1.5 text-gray-700 hover:bg-gray-50 cursor-pointer">
-              <Pencil className="h-3.5 w-3.5 text-gray-500" />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 px-3 py-1.5 text-red-600 hover:bg-red-50 cursor-pointer">
-              <X className="h-3.5 w-3.5" />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
 
-      {school && <p className="text-xs text-gray-500 mb-1.5">{school}</p>}
-      {faculty && <p className="text-xs text-gray-500 mb-2">{faculty}</p>}
+      {(school || faculty) && (
+        <div className="text-xs text-gray-500 mb-2 space-y-0.5">
+          {school && <p>{school}</p>}
+        </div>
+      )}
 
+      {date && (
+        <div className="flex items-center text-xs text-gray-500 mb-2">
+          <Calendar className="h-3 w-3 mr-1 text-gray-400" />
+          <p>{date}</p>
+        </div>
+      )}
 
-      <div className="space-y-1.5 text-xs text-gray-600 mb-3">
-        {department && (
-          <p className="flex items-center">
-            <Briefcase className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
-            {department}
-          </p>
-        )}
-        <p className="flex items-center">
-          <Calendar className="h-3.5 w-3.5 mr-1.5 text-gray-400" />
-          Added: {formattedDate}
-        </p>
-      </div>
+      {research_interests && (
+        <div className="flex flex-wrap items-center gap-1 mb-4">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+            <Tag className="h-3 w-3 mr-1" />
+            {research_interests[0]} 
+          </span>
+          {research_interests.length > 1 && (
+            <span className="text-xs text-gray-500 underline">+{research_interests.length - 1} more</span>
+          )}
+        </div>
+      )}
 
-      <div className="flex flex-wrap gap-2 text-xs">
-        <Link 
+      <div className="flex gap-2">
+        <Link
           href={{
             pathname: `/resume/${title}`,
-            query: {research_interests: research_interests, professor_email: email, professor_name: title}
+            query: {
+              research_interests: research_interests,
+              professor_email: email,
+              professor_name: title,
+            },
           }}
-          className="flex items-center gap-1 px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md">
-          <Paperclip className="h-3 w-3" />
+          className="inline-flex items-center px-2.5 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition-colors duration-200"
+        >
+          <Paperclip className="h-3 w-3 mr-1 text-green-500" />
           Apply
         </Link>
-        {url && (
-          <Link href={url} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-1 px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md">
-            <ExternalLink className="h-3 w-3" />
-            Professor
-          </Link>
-        )}
+
+        <Button
+          onClick={() => setIsSheetOpen(true)}
+          className="inline-flex items-center cursor-pointer h-[1.5rem] text-xs font-medium bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors duration-200"
+        >
+          <NotebookPen className="h-3 w-3 text-blue-500" />
+          Details
+        </Button>
       </div>
+
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+        <SheetContent className="w-full sm:w-[500px] bg-white p-6 border-l border-gray-200 shadow-lg">
+          <SheetHeader className="mb-6">
+            <SheetTitle className="text-2xl font-semibold text-gray-800">
+              Application Details
+            </SheetTitle>
+            <SheetDescription className="text-gray-500">
+              View and edit the details of your application.
+            </SheetDescription>
+          </SheetHeader>
+
+          <div className="space-y-4 text-gray-700">
+            <div>
+              <p className="font-medium text-sm mb-1 text-gray-600">Title</p>
+              <p className="text-base">{title || "N/A"}</p>
+            </div>
+            {school && (
+              <div>
+                <p className="font-medium text-sm mb-1 text-gray-600">School</p>
+                <p className="text-base">{school}</p>
+              </div>
+            )}
+            {faculty && (
+              <div>
+                <p className="font-medium text-sm mb-1 text-gray-600">Faculty</p>
+                <p className="text-base">{faculty}</p>
+              </div>
+            )}
+            {department && (
+              <div>
+                <p className="font-medium text-sm mb-1 text-gray-600">Department</p>
+                <p className="text-base">{department}</p>
+              </div>
+            )}
+            <div>
+              <p className="font-medium text-sm mb-1 text-gray-600">Date Added</p>
+              <p className="text-base">{date}</p>
+            </div>
+            {research_interests && (
+              <div>
+                <p className="font-medium text-sm mb-1 text-gray-600">Research Interests</p>
+                <p className="text-base">{research_interests}</p>
+              </div>
+            )}
+            {email && (
+              <div>
+                <p className="font-medium text-sm mb-1 text-gray-600">Professor Email</p>
+                <p className="text-base">{email}</p>
+              </div>
+            )}
+            {url && (
+              <div>
+                <p className="font-medium text-sm mb-1 text-gray-600">Professor URL</p>
+                <Link
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline flex items-center"
+                >
+                  {url}
+                  <ExternalLink className="ml-1 h-3.5 w-3.5" />
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-8 flex justify-end gap-3">
+            <Button variant="outline" className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200" onClick={() => setIsSheetOpen(false)}>
+              Close
+            </Button>
+            <Button className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700">Save Changes</Button>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

@@ -19,13 +19,11 @@ import {
   University,
   BrainCircuit,
   Microscope,
-  Check,
 } from "lucide-react";
 
-import Link from "next/link";
 import KanbanButton from "./kanbanbutton";
 import ApplyButton from "./applybutton";
-import Kanban from "../bookmark/kanban";
+import Link from "next/link";
 
 const generateColumns = (userId) => [
   {
@@ -84,9 +82,11 @@ const generateColumns = (userId) => [
                 {data.name}
               </DialogTitle>
               <DialogDescription className="text-xs text-gray-500 pb-1">
-                Research Profile
+                The Researcher's Profile provides a clear, transparent view of a
+                researcher's background, interests, and affiliations, ensuring
+                your outreach is relevant and impactful. 
               </DialogDescription>
-              <div className = "flex space-x-4">
+              <div className="flex space-x-4">
                 <KanbanButton
                   professor_id={data.id}
                   professor_name={data.name}
@@ -95,27 +95,31 @@ const generateColumns = (userId) => [
                   professor_school={data.school}
                   professor_faculty={data.faculty}
                   professor_department={data.department}
+                  professor_labs={data.labs}
+                  professor_lab_url={data.lab_url}
                   user_id={userId}
                 />
-                
-                  <ApplyButton
-                    professor_id={data.id}
-                    professor_name={data.name}
-                    professor_url={data.url}
-                    professor_research_interests={data.research_interests}
-                    professor_school={data.school}
-                    professor_faculty={data.faculty}
-                    professor_department={data.department}
-                    user_id={userId}
-                    professor_email={data.email}
-                  />
+
+                <ApplyButton
+                  professor_id={data.id}
+                  professor_name={data.name}
+                  professor_url={data.url}
+                  professor_research_interests={data.research_interests}
+                  professor_school={data.school}
+                  professor_faculty={data.faculty}
+                  professor_department={data.department}
+                  professor_labs={data.labs}
+                  professor_lab_url={data.lab_url}
+                  user_id={userId}
+                  professor_email={data.email}
+                />
               </div>
             </DialogHeader>
 
             <div className="grid gap-3 py-4 px-6 text-sm max-h-[60vh] overflow-y-auto">
               {" "}
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1">
+                <Label className="text-right font-medium text-gray-500 pt-1 underline">
                   School
                 </Label>
                 <Badge className="col-span-1 bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
@@ -124,7 +128,7 @@ const generateColumns = (userId) => [
                 </Badge>
               </div>
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1">
+                <Label className="text-right font-medium text-gray-500 pt-1 underline">
                   Department
                 </Label>
                 <Badge className="col-span-1 bg-purple-50 text-purple-700 font-medium text-xs py-1 px-2 border border-purple-200/50 flex items-start text-left whitespace-normal">
@@ -133,7 +137,7 @@ const generateColumns = (userId) => [
                 </Badge>
               </div>
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1">
+                <Label className="text-right font-medium text-gray-500 pt-1 underline">
                   Faculty
                 </Label>
                 <Badge className="col-span-1 bg-green-50 text-green-700 font-medium text-xs py-1 px-2 border border-green-200/50 flex items-start text-left whitespace-normal">
@@ -141,20 +145,20 @@ const generateColumns = (userId) => [
                   <span className="break-words">{data.faculty || "—"}</span>
                 </Badge>
               </div>
-              <div className="grid grid-cols-[100px_1fr] items-center gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500">
-                  Email
+              <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+                <Label className="text-right font-medium text-gray-500 pt-1 underline">
+                  Profile
                 </Label>
-                <div className="col-span-1 text-blue-600 hover:underline text-xs break-all">
-                  {data.email ? (
-                    <a href={`mailto:${data.email}`}>{data.email}</a>
-                  ) : (
-                    <span className="text-gray-400">—</span>
-                  )}
-                </div>
+                <Link
+                  href={data.url}
+                  target="_blank"
+                  className="col-span-1 text-blue-500 underline font-medium text-xs py-1 px-2 flex items-start text-left whitespace-normal"
+                >
+                  <span className="break-words">{data.url || "No URL"}</span>
+                </Link>
               </div>
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1">
+                <Label className="text-right font-medium text-gray-500 pt-1 underline">
                   Interests
                 </Label>
                 <div className="col-span-1 flex flex-wrap gap-1.5">
@@ -173,10 +177,37 @@ const generateColumns = (userId) => [
                   )}
                 </div>
               </div>
+              <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+                <Label className="text-right font-medium text-gray-500 pt-1 underline">
+                  Lab Affiliation
+                </Label>
+                <Badge className="col-span-1 bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
+                  <University className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
+                  <span className="break-words">
+                    {data.labs || "No Lab Affiliation"}
+                  </span>
+                </Badge>
+              </div>
+              {data.lab_url && (
+                <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+                  <Label className="text-right font-medium text-gray-500 pt-1 underline">
+                    Visit Lab
+                  </Label>
+                  <Link
+                    href={data.lab_url}
+                    target="_blank"
+                    className="col-span-1 text-blue-500 underline font-medium text-xs py-1 px-2 flex items-start text-left whitespace-normal"
+                  >
+                    <span className="break-words">
+                      {data.lab_url || "No Lab URL"}
+                    </span>
+                  </Link>
+                </div>
+              )}
             </div>
 
             <div className="space-y-1.5 pt-2 pb-3 px-6">
-              <Label className="font-medium text-gray-600 text-sm">
+              <Label className="font-medium text-gray-600 text-sm underline">
                 Description
               </Label>
               <div className="rounded-md border border-gray-200 p-3 text-xs text-gray-700 bg-gray-50/70 min-h-[70px] max-h-[150px] overflow-y-auto prose prose-xs prose-slate">
@@ -190,9 +221,7 @@ const generateColumns = (userId) => [
               </div>
             </div>
 
-            <DialogFooter className="pt-4 pb-5 px-6 bg-slate-50/50 rounded-b-lg">
-              
-            </DialogFooter>
+            <DialogFooter className="pt-4 pb-5 px-6 bg-slate-50/50 rounded-b-lg"></DialogFooter>
           </DialogContent>
         </Dialog>
       );
@@ -214,6 +243,8 @@ const generateColumns = (userId) => [
             professor_school={data.school}
             professor_faculty={data.faculty}
             professor_department={data.department}
+            professor_labs={data.labs}
+            professor_lab_url={data.lab_url}
             user_id={userId}
           />
         </div>

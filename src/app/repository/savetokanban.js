@@ -4,10 +4,13 @@ export async function saveToKanban(
     professor_id,
     professor_name,
     professor_url,
+    professor_email,
     professor_research_interests,
     professor_school,
     professor_faculty,
     professor_department,
+    professor_labs,
+    professor_lab_url,
     user_id,
     comments 
   ) {
@@ -17,10 +20,13 @@ export async function saveToKanban(
         id: professor_id || null,
         name: professor_name || "",
         url: professor_url || "",
+        email: professor_email || "",
         research_interests: professor_research_interests || [""],
         school: professor_school || "",
         faculty: professor_faculty || "",
         department: professor_department || "",
+        labs: professor_labs || "",
+        lab_url: professor_lab_url || "",
         comments: comments || "", 
       },
     };  

@@ -33,6 +33,8 @@ export default function ApplyButton({
   professor_faculty,
   professor_department,
   professor_email,
+  professor_labs, 
+  professor_lab_url,
   user_id,
 }) {
   const [loading, setLoading] = useState(false);
@@ -59,10 +61,13 @@ export default function ApplyButton({
         professor_id,
         professor_name,
         professor_url,
+        professor_email,
         professor_research_interests,
         professor_school,
         professor_faculty,
         professor_department,
+        professor_labs,
+        professor_lab_url,
         user_id,
       );
       toast.success("Application submitted successfully!");
