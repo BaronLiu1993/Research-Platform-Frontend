@@ -34,10 +34,9 @@ import {
   TableCell,
   TableHeader,
   TableRow,
-  TableHead, // Import TableHead
-} from "@/shadcomponents/ui/table"; // Ensure all components are imported
+  TableHead, 
+} from "@/shadcomponents/ui/table"; 
 
-// Removed Input import as it's no longer used for filtering research interests
 
 export function DataTable({ data, userId, generateColumns }) {
   const [sorting, setSorting] = useState([]);

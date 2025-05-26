@@ -11,7 +11,6 @@ export async function saveToApply(
     user_id,
     comments 
   ) {
-    
     const data = {
       professor_data: {
         id: professor_id || null,
@@ -25,7 +24,6 @@ export async function saveToApply(
       },
     };  
     try {
-      console.log(user_id)
       const response = await fetch(
         `http://localhost:8080/kanban/add-in-progress/${user_id}`,
         {
@@ -40,7 +38,6 @@ export async function saveToApply(
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       const result = await response.json();
       return result;
     } catch (error) {
