@@ -51,7 +51,7 @@ const statusConfig = {
 
 export default async function Kanban({ user_id }) {
   const serverData = await fetch(
-    `http://localhost:8080/kanban/get-all-or-create/${user_id.value}`,
+    `http://localhost:8080/kanban/get/${user_id.value}`,
     {
       method: "GET",
       headers: {

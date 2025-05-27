@@ -19,7 +19,7 @@ import {
 import { SquarePen, Grid3X3, Lightbulb, RefreshCw } from "lucide-react";
 import { emailPrompts } from "./prompts";
 
-export function Template({ onUpdate, sendEmail, student_data }) {
+export function Template({ onUpdate, sendEmail, student_data, professor_id }) {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [events, setEvents] = useState([]);
   const [displayedMessage, setDisplayedMessage] = useState("");
@@ -29,10 +29,12 @@ export function Template({ onUpdate, sendEmail, student_data }) {
   const [isDataSent, setIsDataSent] = useState(false);
   const loadedResumePoints = usePointStore((state) => state.loadedResumePoints);
 
+  console.log(student_data.user_id)
+  console.log(professor_id)
   const [input, setInput] = useState({
     thread_id: uuidv4(),
     user_id: student_data.user_id || "",
-    professor_id: 10,
+    professor_id: professor_id,
     draft: "Dear Professor, I'm interested in your research...",
     motivation: student_data.student_motivation || "",
     resume_points: loadedResumePoints,
@@ -188,21 +190,34 @@ export function Template({ onUpdate, sendEmail, student_data }) {
               {" "}
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="rounded-full">
+                  {/* Button with a clean, slightly rounded look, similar to Notion's inline buttons */}
+                  <Button
+                    variant="outline"
+                    className="rounded-lg text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 shadow-sm transition-all duration-200 ease-in-out px-4 py-2 text-sm font-medium"
+                  >
                     UofT Template
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Sample Email – UofT Template</DialogTitle>
-                    <DialogDescription>
-                      <div>
-                        <p>{emailPrompts["University of Toronto"]}</p>
-                        <Button onClick = {() => setInput((prev) => ({
-                          ...prev,
-                          draft: emailPrompts["University of Toronto"]
-                        }))}>
-                            Set Prompt
+                <DialogContent className="bg-white p-6 rounded-lg shadow-xl font-sans max-w-lg mx-auto">
+                  <DialogHeader className="border-b border-gray-200 pb-4 mb-4">
+                    <DialogTitle className="text-xl font-semibold text-gray-800">
+                      Sample Email – UofT Template
+                    </DialogTitle>
+                    <DialogDescription className="text-gray-600 text-sm mt-1">
+                      <div className="space-y-4">
+                        <div className="bg-gray-50 p-3 font-mono text-xs rounded-md border border-gray-200 text-gray-800 leading-relaxed overflow-y-auto max-h-60">
+                          <p>{emailPrompts["University of Toronto"]}</p>
+                        </div>
+                        <Button
+                          onClick={() =>
+                            setInput((prev) => ({
+                              ...prev,
+                              draft: emailPrompts["University of Toronto"],
+                            }))
+                          }
+                          className="w-full justify-center inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 text-sm font-medium"
+                        >
+                          Set Prompt
                         </Button>
                       </div>
                     </DialogDescription>

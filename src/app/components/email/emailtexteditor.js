@@ -33,7 +33,7 @@ import { prompts } from "./AIwriters";
 import DeepThink from "./deepthink";
 import { Template } from "./template";
 
-export default function EmailTextEditor({ student_data, research_interests, sendSubject }) {
+export default function EmailTextEditor({ student_data, research_interests, sendSubject, professor_id }) {
   const [aiTyping, setAiTyping] = useState(false);
   const [publications, setPublications] = useState([]);
   const [content, setContent] = useState(null);
@@ -318,6 +318,7 @@ export default function EmailTextEditor({ student_data, research_interests, send
                 onUpdate={handleSetPublications}
                 sendEmail={handleSetEmail}
                 student_data={student_data}
+                professor_id = {professor_id}
                 className="p-10"
               />
             )}

@@ -25,7 +25,6 @@ export default async function Recommendations() {
   });
 
   const responses = await data.json();
-  console.log(responses);
   return (
     <>
       <div className="px-6 md:px-8 lg:px-10 pb-6 my-6">
@@ -56,7 +55,7 @@ export default async function Recommendations() {
                       professor_email = {response.email}
                       professor_labs = {response.labs}
                       professor_lab_url = {response.lab_url}
-                      user_id={user_id}
+                      user_id={user_id.value}
                     />
                   </div>
                   <div className="space-y-1.5 flex-grow mb-4">

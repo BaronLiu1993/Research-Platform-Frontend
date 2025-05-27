@@ -28,6 +28,7 @@ export default function Email({ student_data }) {
   const name = searchParams.get("name") || "Recipient Name";
   const email = searchParams.get("email") || "recipient@example.com";
   const interestsString = searchParams.get("professor_interests") || "Topic A, Topic B, Topic C";
+  const professor_id = searchParams.get("id") || null
   const interests = interestsString.split(",");
   const [uploadedFile, setUploadedFile] = useState(null);
   const [subject, setSubject] = useState("");
@@ -142,6 +143,7 @@ export default function Email({ student_data }) {
           student_data={student_data}
           research_interests={interestsString}
           sendSubject={handleSendSubject}
+          professor_id = {professor_id}
         />
       </div>
 

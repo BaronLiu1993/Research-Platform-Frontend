@@ -1,53 +1,79 @@
-import axios from 'axios'
+//Client Side API EndPoints
 
 export async function handleRegister(formData) {
-    if (!formData) {
-      throw new Error("Please fill in all required fields.");
-    }
-    try {
-      const response = await fetch('http://localhost:8080/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData?.message || 'Registration failed.');
-      }
-  
-      return await response.json();
-    } catch (error) {
-      console.error("Error during registration:", error);
-      throw error;
-    }
+  if (!formData) {
+    throw new Error("Please fill in all required fields.");
   }
 
-export async function verifyOtp (formData) {
-    if (!formData?.code) {
-        throw new Error("Code Required")
+  try {
+    const response = await fetch('http://localhost:8080/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData?.message || 'Registration failed.');
     }
-    if (formData) {
-        try {
-            const response = await axios.post('http://localhost:8080/auth/verify-code', formData) 
-            return response.data
-        } catch {
-            console.error("Please Send Valid Code")
-        }
-    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error during registration:", error);
+    throw error;
+  }
 }
 
+export async function verifyOtp(formData) {
+  if (!formData?.code) {
+    throw new Error("Code Required");
+  }
 
-export async function resendCode() {
-    if (formData) {
-        try {
-            const response = await axios.post('https', formData) 
-            return response
-        } catch {
-            console.error("Please Send Valid Form")
-        }
+  try {
+    const response = await fetch('http://localhost:8080/auth/verify-code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData?.message || 'Invalid code.');
     }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error verifying code:", error);
+    throw error;
+  }
 }
- 
+
+export async function resendCode(formData) {
+  if (!formData) {
+    throw new Error("Form data required");
+  }
+
+  try {
+    const response = await fetch('http://localhost:8080/auth/resend-code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData?.message || 'Failed to resend code.');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error resending code:", error);
+    throw error;
+  }
+}

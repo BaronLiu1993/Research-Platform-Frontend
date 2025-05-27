@@ -4,8 +4,8 @@
 import { useState } from "react";
 
 //Server Action
-import registerActions from "./registerActions";
 import { handleRegister } from "../api/auth";
+import { createKanban } from "../api/auth";
 
 //Components
 import DropdownMajor from "../components/dropdowns/dropdownmajor";
@@ -30,7 +30,6 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
     try {
       const response = await handleRegister(formData);
       setSubmitted(true);
