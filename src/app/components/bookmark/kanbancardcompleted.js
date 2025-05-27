@@ -2,12 +2,8 @@
 
 import { useState } from "react";
 import {
-  MoreHorizontal,
-  Pencil,
-  X,
   Briefcase,
   Calendar,
-  Paperclip,
   ExternalLink,
   NotebookPen,
   StickyNote,

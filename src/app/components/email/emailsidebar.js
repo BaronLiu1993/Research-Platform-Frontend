@@ -40,7 +40,6 @@ export default function EmailSideBar({ publications }) {
         <Card className="rounded-lg border border-gray-200 bg-white shadow-sm p-4 font-sans">
           <CardTitle className="mb-4">
             <div className="flex items-center space-x-2 text-gray-800 mb-1">
-              {/* Icon for Publications, similar to Notion's page icons */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
