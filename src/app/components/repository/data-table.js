@@ -19,7 +19,7 @@ import {
   PaginationPrevious,
 } from "@/shadcomponents/ui/pagination";
 
-import { Info, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
   DropdownMenu,

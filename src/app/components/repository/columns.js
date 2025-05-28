@@ -67,7 +67,7 @@ const generateColumns = (userId) => [
                     <Badge
                       key={i}
                       variant="outline"
-                      className="text-xs font-medium bg-slate-100 text-slate-600 border-slate-200 px-1.5 py-0.5"
+                      className="text-xs font-normal bg-slate-100 text-slate-600 border-slate-200 px-1.5 py-0.5"
                     >
                       {interest}
                     </Badge>
@@ -167,7 +167,7 @@ const generateColumns = (userId) => [
                       <Badge
                         key={i}
                         variant="secondary"
-                        className="text-xs font-normal bg-gray-100 text-gray-700 border-gray-200/80 px-2 py-0.5"
+                        className="text-xs font-light bg-gray-100 text-gray-700 border-gray-200/80 px-2 py-0.5"
                       >
                         {interest}
                       </Badge>
