@@ -1,16 +1,17 @@
 // tailwind.config.js
-const {heroui} = require("@heroui/theme");
+const { heroui } = require("@heroui/theme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./node_modules/@heroui/theme/dist/components/(input-otp|form).js",
-  ],
+  content: ["./node_modules/@heroui/theme/dist/components/(input-otp|form).js"],
   theme: {
     extend: {
       fontFamily: {
-        cmubi: ['cmubi', 'sans-serif']
-      }
+        inter: ["var(--font-inter)", "sans-serif"],
+        geist: ["var(--font-geist-sans)", "sans-serif"],
+        mono: ["var(--font-geist-mono)", "monospace"],
+        serif: ["var(--font-noto-serif)", "serif"],
+      },
     },
   },
   darkMode: "class",

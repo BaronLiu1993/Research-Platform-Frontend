@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Noto_Serif } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Serif, Inter } from "next/font/google";
 import { Toaster } from "@/shadcomponents/ui/sonner";
 import "./globals.css";
 
@@ -12,6 +12,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'], 
+  display: 'swap',
+  variable: '--font-inter',
+});
+
 const notoSerif = Noto_Serif({
   subsets: ["latin"],
   variable: "--font-noto-serif",
@@ -23,7 +30,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${notoSerif.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${notoSerif.variable} ${inter.variable} antialiased`}
       >
         <main>{children}</main>
         <Toaster />

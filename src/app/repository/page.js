@@ -64,7 +64,7 @@ export default async function Repository() {
               <h1 className="text-2xl font-sans font-semibold px-6 pt-6">
                 Discover Professors at UofT!
               </h1>
-              <p className="text-muted-foreground px-6 pb-6 font-sans">
+              <p className="text-muted-foreground px-6 pb-6 font-">
                 Browse through faculty members across departments, explore their
                 research interests, and find the perfect mentor <br /> for your
                 academic journey. Start connecting with UofT professors today!
