@@ -35,34 +35,34 @@ export default async function Repository() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb className="font-sans">
+          <Breadcrumb className="font-inter font-semibold">
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink href="#">Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>UofT Professors Repository</BreadcrumbPage>
+                <BreadcrumbPage className="font-inter font-semibold">Professors</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </header>
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto font-inter">
           <div className="flex flex-col">
             <div className="border-b-1 space-y-2">
-              <h1 className="text-2xl font-sans font-semibold px-6 pt-6">
+              <h1 className="text-xl font-semibold px-6 pt-6">
                 You Might Be Interested In...
               </h1>
-              <p className="text-muted-foreground px-6 pb-6 font-sans">
+              <p className="text-muted-foreground px-6 pb-6">
                 We've curated a few suggestions that align with your research
                 interests—take a look!
               </p>{" "}
               <Recommendations />
             </div>
             <div className="border-b-1 space-y-2">
-              <h1 className="text-2xl font-sans font-semibold px-6 pt-6">
-                Discover Professors at UofT!
+              <h1 className="text-xl font-inter font-semibold px-6 pt-6">
+                Discover Professors at Uoft!
               </h1>
               <p className="text-muted-foreground px-6 pb-6 font-">
                 Browse through faculty members across departments, explore their

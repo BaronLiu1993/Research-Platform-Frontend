@@ -31,7 +31,7 @@ const generateColumns = (userId) => [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className="font-sans font-semibold text-xs text-gray-600 hover:bg-gray-100/80 px-2 py-1 -ml-2 uppercase tracking-wider"
+        className="font-inter font-semibold text-sm text-gray-600 hover:bg-gray-100/80 px-2 py-1 -ml-2 uppercase tracking-wider"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Professor
@@ -43,21 +43,21 @@ const generateColumns = (userId) => [
       return (
         <Dialog>
           <DialogTrigger asChild>
-            <div className="cursor-pointer flex flex-col w-full py-2.5 group pr-4 hover:bg-slate-50 -mx-3 px-3 rounded-md transition-colors duration-150">
+            <div className="cursor-pointer flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
               <div className="flex items-center space-x-3">
                 <div>
                   <Microscope className="bg-slate-100 text-slate-500 h-7 w-7 p-1.5 rounded-md" />
                 </div>
                 <div className="flex-grow min-w-0">
-                  <h1 className="font-sans text-md font-medium text-slate-800 group-hover:text-blue-600 transition-colors truncate">
+                  <h1 className="text-md font-medium text-gray-800 group-hover:text-blue-600 transition-colors truncate">
                     {data.name}
                   </h1>
-                  <div className="flex items-center space-x-1.5 text-xs text-slate-500 truncate">
+                  <div className="flex items-center space-x-1.5 text-xs text-gray-500 truncate">
                     <span>{data.department || "N/A Department"}</span>
                     {data.school && (
-                      <span className="text-slate-300">&bull;</span>
+                      <span className="text-gray-500">&bull;</span>
                     )}
-                    {data.school && <span>{data.school}</span>}
+                    {data.school && <span className = "">@ {data.school}</span>}
                   </div>
                 </div>
               </div>
@@ -67,7 +67,7 @@ const generateColumns = (userId) => [
                     <Badge
                       key={i}
                       variant="outline"
-                      className="text-xs font-normal bg-slate-100 text-slate-600 border-slate-200 px-1.5 py-0.5"
+                      className="text-xs font-semibold bg-gray-50 text-gray-500 border-slate-200 px-1.5 py-0.5"
                     >
                       {interest}
                     </Badge>
@@ -81,11 +81,7 @@ const generateColumns = (userId) => [
               <DialogTitle className="text-lg font-semibold text-gray-900">
                 {data.name}
               </DialogTitle>
-              <DialogDescription className="text-xs text-gray-500 pb-1">
-                The Researcher's Profile provides a clear, transparent view of a
-                researcher's background, interests, and affiliations, ensuring
-                your outreach is relevant and impactful. 
-              </DialogDescription>
+    
               <div className="flex space-x-4">
                 <KanbanButton
                   professor_id={data.id}
@@ -167,7 +163,7 @@ const generateColumns = (userId) => [
                       <Badge
                         key={i}
                         variant="secondary"
-                        className="text-xs font-light bg-gray-100 text-gray-700 border-gray-200/80 px-2 py-0.5"
+                        className="text-xs bg-gray-50 text-gray-600 font-semibold border-gray-200/80 px-2 py-0.5"
                       >
                         {interest}
                       </Badge>
@@ -206,7 +202,7 @@ const generateColumns = (userId) => [
               )}
             </div>
 
-            <div className="space-y-1.5 pt-2 pb-3 px-6">
+            {/*<div className="space-y-1.5 pt-2 pb-3 px-6">
               <Label className="font-medium text-gray-600 text-sm underline">
                 Description
               </Label>
@@ -219,7 +215,7 @@ const generateColumns = (userId) => [
                   </span>
                 )}
               </div>
-            </div>
+            </div>*/}
 
             <DialogFooter className="pt-4 pb-5 px-6 bg-slate-50/50 rounded-b-lg"></DialogFooter>
           </DialogContent>

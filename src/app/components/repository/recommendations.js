@@ -21,7 +21,7 @@ export default async function Recommendations() {
     },
 
     body: JSON.stringify({ student_id: user_id.value }),
-    next: { revalidate: 3600 }
+    next: { revalidate: 3600 },
   });
 
   const responses = await data.json();
@@ -34,7 +34,7 @@ export default async function Recommendations() {
             loop: true,
             slidesToScroll: 1,
           }}
-          className="font-sans relative"
+          className="font-inter relative"
         >
           <CarouselContent className="-ml-4 flex">
             {responses.matches.map((response, index) => (
@@ -42,7 +42,7 @@ export default async function Recommendations() {
                 key={index}
                 className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
               >
-                <div className="shadow-sm border rounded-lg p-4 bg-white hover:shadow-md transition-shadow duration-200 flex flex-col h-full">
+                <div className="rounded-sm p-4 bg-white hover:shadow-sm transition-shadow duration-200 flex flex-col h-full border-1 border-gray-300">
                   <div className="flex justify-end -mt-2 -mr-2">
                     <KanbanButton
                       professor_id={response.professor_id}
@@ -52,37 +52,32 @@ export default async function Recommendations() {
                       professor_school={response.school}
                       professor_faculty={response.faculty}
                       professor_department={response.department}
-                      professor_email = {response.email}
-                      professor_labs = {response.labs}
-                      professor_lab_url = {response.lab_url}
+                      professor_email={response.email}
+                      professor_labs={response.labs}
+                      professor_lab_url={response.lab_url}
                       user_id={user_id.value}
                     />
                   </div>
                   <div className="space-y-1.5 flex-grow mb-4">
                     <div>
-                      <h2 className="text-sm text-purple-600 font-medium">
-                        {response.name}
-                      </h2>
-                      <h1 className="text-md font-semibold text-gray-800">
-                        {response.faculty}
+                      <h2 className="text-xs font-medium">{response.name}</h2>
+                      <h1 className="text-md font-semibold">
+                        <span className = "text-gray-600">@</span>
+                        <span> {response.school}</span>
                       </h1>
-                      <h2 className="text-xs font-normal text-gray-500">
-                        {response.school}
-                      </h2>
                     </div>
                     <div className="flex flex-wrap gap-1">
                       {response.research_interests.map((interest, i) => (
                         <Badge
                           key={i}
-                          className="text-xs bg-gray-100 text-gray-700 border border-gray-200 font-normal px-2 py-0.5"
+                          className="text-xs bg-gray-50 rounded-sm text-gray-500 font-semibold border border-gray-200 px-2 py-0.5"
                         >
                           {interest}
                         </Badge>
                       ))}
                     </div>
                   </div>
-                  <div className="flex pt-4 border-t border-gray-100">
-                    
+                  <div className="flex pt-4 border-t border-gray-300">
                     <ApplyButton
                       professor_id={response.professor_id}
                       professor_name={response.name}
@@ -92,8 +87,8 @@ export default async function Recommendations() {
                       professor_faculty={response.faculty}
                       professor_department={response.department}
                       professor_email={response.email}
-                      professor_labs = {response.labs}
-                      professor_lab_url = {response.lab_url}
+                      professor_labs={response.labs}
+                      professor_lab_url={response.lab_url}
                       user_id={user_id.value}
                     />
                   </div>

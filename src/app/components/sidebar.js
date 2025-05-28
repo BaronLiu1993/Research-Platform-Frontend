@@ -29,7 +29,7 @@ import {
 } from "@/shadcomponents/ui/popover";
 import { Separator } from "@/shadcomponents/ui/separator";
 
-import { ChevronsUpDown, ChevronRight } from "lucide-react";
+import { ChevronsUpDown, ChevronRight, Languages } from "lucide-react";
 import { Library } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
 import { MessageCircle } from "lucide-react";
@@ -83,31 +83,26 @@ export function AppSidebar({ ...props }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   return (
-    <Sidebar className="font-sans" {...props}>
+    <Sidebar className="font-inter" {...props}>
       <SidebarHeader>
         <VersionSwitcher
           versions={data.versions}
           defaultVersion={data.versions[0]}
         />
-        <SearchForm />
       </SidebarHeader>
-      <SidebarContent className="font-sans">
+      <SidebarContent className="font-inter">
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
-            <SidebarGroupLabel className="">{item.title}</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-sm text-neutral-400">{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      className="font-light"
-                      asChild
-                      isActive={item.isActive}
-                    >
+                    <SidebarMenuButton asChild isActive={item.isActive}>
                       <a href={item.url}>
                         {" "}
-                        {item.icon}
-                        {item.title}
+                        <span className = "text-neutral-500"> {item.icon}</span>
+                        <span className = "font-semibold text-neutral-500"> {item.title}</span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -119,22 +114,15 @@ export function AppSidebar({ ...props }) {
       </SidebarContent>
       <SidebarContent></SidebarContent>
       <SidebarFooter className="mb-10">
-        <div className = "flex space-x-2">
-            <Badge className = "text-xs">
-                更改语言
-            </Badge>
-            <Badge className = "text-xs">
-            언어를 변경하다
-            </Badge>
-        </div>
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="w-[200px] justify-between font-sans"
+              className="w-[200px] justify-between font-light"
             >
+              <Languages className="text-gray-400" />
               {value
                 ? languages.find((lang) => lang.value === value)?.label
                 : "Select Language..."}
@@ -142,16 +130,14 @@ export function AppSidebar({ ...props }) {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-2 space-y-1">
-            <div className="p-2 text-xs font-semibold text-purple-500 font-sans">
-              Language Options
-            </div>
+            <div className="p-2 text-xs font-semibold">Language</div>
             <Separator />
 
             {languages.map((lang) => (
               <Button
                 key={lang.value}
                 variant="ghost"
-                className="w-full justify-between font-sans"
+                className="w-full justify-between text-xs font-light cursor-pointer"
                 onClick={() => {
                   setValue(lang.value);
                   setOpen(false);
