@@ -17,8 +17,8 @@ export function SearchForm({ ...props }) {
           </Label>
           <SidebarInput
             id="search"
-            placeholder="Search the docs..."
-            className="pl-8"
+            placeholder="Search for professors..."
+            className="pl-8 font-inter font-medium placeholder:text-neutral-400"
           />
           <Search className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50" />
         </SidebarGroupContent>

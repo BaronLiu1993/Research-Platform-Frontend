@@ -29,7 +29,7 @@ import {
 } from "@/shadcomponents/ui/popover";
 import { Separator } from "@/shadcomponents/ui/separator";
 
-import { ChevronsUpDown, ChevronRight, Languages } from "lucide-react";
+import { ChevronsUpDown, ChevronRight, Languages, Settings } from "lucide-react";
 import { Library } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
 import { MessageCircle } from "lucide-react";
@@ -37,7 +37,6 @@ import { Microscope } from "lucide-react";
 import { Book } from "lucide-react";
 
 const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
       title: "Getting Started",
@@ -46,27 +45,32 @@ const data = {
         {
           title: "Research",
           url: "/repository",
-          icon: <Library />,
+          icon: <Library className = "h-5 w-5"/>,
         },
         {
           title: "Dashboard",
-          url: "/dashboard",
-          icon: <LayoutDashboard />,
+          url: "/bookmark",
+          icon: <LayoutDashboard className = "h-5 w-5"/>,
         },
         {
           title: "Interview Preparation",
           url: "#",
-          icon: <MessageCircle />, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
+          icon: <MessageCircle className = "h-5 w-5"/>, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
         },
         {
           title: "Paid Research Funding",
           url: "#",
-          icon: <Microscope />,
+          icon: <Microscope className = "h-5 w-5"/>,
         },
         {
           title: "Tips",
           url: "#",
-          icon: <Book />,
+          icon: <Book className = "h-5 w-5"/>,
+        },
+        {
+          title: "Settings",
+          url: "/dashboard",
+          icon: <Settings className = "h-5 w-5"/>,
         },
       ],
     },
@@ -84,25 +88,25 @@ export function AppSidebar({ ...props }) {
   const [value, setValue] = useState("");
   return (
     <Sidebar className="font-inter" {...props}>
-      <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
-      </SidebarHeader>
+      <SidebarHeader></SidebarHeader>
       <SidebarContent className="font-inter">
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
-            <SidebarGroupLabel className="text-sm text-neutral-400">{item.title}</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-[11px] text-neutral-400">
+              {item.title}
+            </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url}>
-                        {" "}
-                        <span className = "text-neutral-500"> {item.icon}</span>
-                        <span className = "font-semibold text-neutral-500"> {item.title}</span>
+                      <a href={item.url} className="flex items-center gap-1">
+                        <span className="text-neutral-500">
+                          {item.icon}
+                        </span>
+                        <span className="font-semibold text-neutral-500 text-[13.5px]">
+                          {item.title}
+                        </span>
                       </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -120,9 +124,9 @@ export function AppSidebar({ ...props }) {
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="w-[200px] justify-between font-light"
+              className="w-[200px] justify-between font-semibold text-neutral-400"
             >
-              <Languages className="text-gray-400" />
+              <Languages className="text-neutral-400" />
               {value
                 ? languages.find((lang) => lang.value === value)?.label
                 : "Select Language..."}

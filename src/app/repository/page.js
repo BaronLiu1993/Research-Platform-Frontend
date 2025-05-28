@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 
 import { Separator } from "@/shadcomponents/ui/separator";
+import { SearchForm } from "@/shadcomponents/ui/search-form";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,6 +22,7 @@ import { AppSidebar } from "../components/sidebar";
 import generateColumns from "../components/repository/columns";
 import { DataTable } from "../components/repository/data-table";
 import Recommendations from "../components/repository/recommendations";
+import FilterRecommendations from "./filterrecommendations";
 
 export default async function Repository() {
   const cookieStore = await cookies();
@@ -42,7 +44,9 @@ export default async function Repository() {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-inter font-semibold">Professors</BreadcrumbPage>
+                <BreadcrumbPage className="font-inter font-semibold">
+                  Professors
+                </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -51,24 +55,32 @@ export default async function Repository() {
         <div className="flex-1 overflow-y-auto font-inter">
           <div className="flex flex-col">
             <div className="border-b-1 space-y-2">
-              <h1 className="text-xl font-semibold px-6 pt-6">
-                You Might Be Interested In...
-              </h1>
-              <p className="text-muted-foreground px-6 pb-6">
-                We've curated a few suggestions that align with your research
-                interests—take a look!
-              </p>{" "}
+              <div className="bg-neutral-100 mx-9 rounded-xs mt-2">
+                <h1 className="text-xl text-neutral-700 font-semibold px-6 pt-6">
+                  You Might Be Interested In...
+                </h1>
+                <p className="text-neutral-500 font-semibold text-sm px-6 pb-6">
+                  Based on the topics you've been exploring, we've handpicked a
+                  set of insightful suggestions that closely align with your
+                  current research interests. 
+                </p>
+              </div>{" "}
+              <div className="flex">
+                <SearchForm className="font-inter px-7 w-[30rem]" />
+                <FilterRecommendations />
+              </div>
               <Recommendations />
             </div>
             <div className="border-b-1 space-y-2">
-              <h1 className="text-xl font-inter font-semibold px-6 pt-6">
+              <h1 className="text-xl text-neutral-700 font-semibold px-6 pt-6">
                 Discover Professors at Uoft!
               </h1>
-              <p className="text-muted-foreground px-6 pb-6 font-">
+              <p className="text-neutral-500 px-6 pb-6 font-normal">
                 Browse through faculty members across departments, explore their
                 research interests, and find the perfect mentor <br /> for your
                 academic journey. Start connecting with UofT professors today!
               </p>{" "}
+              
             </div>
             <div className="mt-4">
               <DataTable
