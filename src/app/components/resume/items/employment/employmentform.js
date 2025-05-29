@@ -120,7 +120,7 @@ function EmploymentForm({
       collapsible
       value={openItem}
       onValueChange={setOpenItem}
-      className="w-[32rem] font-sans bg-white border rounded-md"
+      className="w-[32rem] font-main bg-white border rounded-md"
     >
       <AccordionItem value={`item-${id}`}>
         <AccordionTrigger className="px-4 font-semibold text-lg hover:no-underline">
@@ -137,7 +137,7 @@ function EmploymentForm({
             {["job_title", "company", "location"].map((field) => (
               <div className="flex flex-col space-y-2" key={field}>
                 <Label
-                  className="font-sans text-sm font-bold"
+                  className="text-sm font-bold"
                   htmlFor={`${id}-${field}`}
                 >
                   {field
@@ -157,7 +157,7 @@ function EmploymentForm({
               {["start_date", "end_date"].map((field) => (
                 <div className="flex flex-col space-y-2" key={field}>
                   <Label
-                    className="font-sans text-sm font-bold"
+                    className="text-sm font-bold"
                     htmlFor={`${id}-${field}`}
                   >
                     {field
@@ -175,9 +175,9 @@ function EmploymentForm({
             </div>
 
             <div className="flex flex-col space-y-2">
-              <Label className="font-sans text-sm font-bold">
+              <Label className="text-sm font-bold">
                 <h1>Description</h1>
-                <p className="font-sans text-xs bg-purple-100 p-1 rounded-md text-purple-500 font-extralight">
+                <p className="text-xs bg-purple-100 p-1 rounded-md text-purple-500 font-extralight">
                   Highlight Text and Rewrite With AI
                 </p>
               </Label>

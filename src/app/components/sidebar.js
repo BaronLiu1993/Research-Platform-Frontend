@@ -87,9 +87,9 @@ export function AppSidebar({ ...props }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   return (
-    <Sidebar className="font-inter" {...props}>
+    <Sidebar className="font-main" {...props}>
       <SidebarHeader></SidebarHeader>
-      <SidebarContent className="font-inter">
+      <SidebarContent className="font-main">
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel className="text-[11px] text-neutral-400">
@@ -101,10 +101,10 @@ export function AppSidebar({ ...props }) {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={item.isActive}>
                       <a href={item.url} className="flex items-center gap-1">
-                        <span className="text-neutral-500">
+                        <span className="text-neutral-400">
                           {item.icon}
                         </span>
-                        <span className="font-semibold text-neutral-500 text-[13.5px]">
+                        <span className="font-semibold text-neutral-400 text-[13.5px]">
                           {item.title}
                         </span>
                       </a>

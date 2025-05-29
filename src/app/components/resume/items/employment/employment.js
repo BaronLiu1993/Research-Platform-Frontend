@@ -2,8 +2,20 @@
 
 import { useState, useEffect, useTransition, useRef, useCallback } from "react";
 import { Button } from "@/shadcomponents/ui/button";
-import { Info, Trash2, GripVertical, Sheet } from "lucide-react";
+import {
+  Info,
+  Trash2,
+  GripVertical,
+  Sheet,
+  Wrench,
+  ArrowLeftRight,
+  BrainCircuit,
+  ChevronsUpDown,
+  Mic,
+} from "lucide-react";
 import EmploymentForm from "./employmentform";
+import { Badge } from "@/shadcomponents/ui/badge";
+import { Separator } from "@/shadcomponents/ui/separator";
 
 const debounce = (fn, delay) => {
   let timer;
@@ -20,6 +32,7 @@ export default function Employment({
   const [isPending, startTransition] = useTransition();
   const [localExperienceForms, setLocalExperienceForms] = useState([]);
   const [loadedResumePoints, setLoadedResumePoints] = useState([]);
+  const [useAIRanker, setUseAIRanker] = useState(false);
 
   const handleLoadingResumePoints = useCallback(
     (data) => {
@@ -36,6 +49,14 @@ export default function Employment({
       return updatedPoints;
     });
   }, []);
+
+  const toggleAIResumeLoading = () => {
+    if (useAIRanker) {
+      setUseAIRanker(false);
+    } else {
+      setUseAIRanker(true);
+    }
+  };
 
   const debouncedUpdateParent = useRef(
     debounce((updatedForms) => {
@@ -103,39 +124,79 @@ export default function Employment({
   };
 
   return (
-    <div className="border-gray-400 p-8 w-[40rem] space-y-5 overflow-hidden font-sans">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-semibold">Employment History</h1>
-        <p className="text-sm text-gray-600">
-          Show employers your past experience and what you have accomplished
+    <div className="border-gray-400 p-8 w-[40rem] space-y-5 overflow-hidden font-main">
+      <div className="space-y-2 bg-neutral-100 p-4 rounded-xs border-1">
+        <h1 className="text-xl font-semibold text-neutral-800 flex gap-2 items-center">
+          Maximisming Experience
+          <Badge>
+            <Mic />
+            Some Advice
+          </Badge>
+          <ChevronsUpDown className="h-4 w-4" />
+        </h1>
+        <p className="text-xs font-semibold">
+          By Jie Xuan Liu @ {"McMaster Medical School"}
         </p>
-        <p className="border p-2 text-xs rounded-md bg-purple-100 flex items-center border-purple-200">
-          <Info className="w-5 h-5 mr-2 text-purple-500" />
-          <span className="text-purple-500">
+        <p className="text-[13px] text-neutral-700 mt-10">
+          Agents can be{" "}
+          <span className="text-black font-semibold px-0.5">unreliable</span>{" "}
+          and may need human input to successfully accomplish tasks. Similarly,
+          for some actions, you may want to require human{" "}
+          <span className="bg-neutral-200 px-0.5">approval</span> before running
+          to ensure that everything is running as intended.
+        </p>
+        <p className="text-[13px] text-neutral-700">
+          LangGraph's <span className="text-blue-700">persistence</span> layer
+          supports{" "}
+          <span className="font-semibold text-black">human-in-the-loop</span>{" "}
+          workflows, allowing execution to pause and resume based on user
+          feedback. The primary interface to this functionality is the interrupt
+          function.
+        </p>
+        <p></p>
+        <p className="border p-2 text-xs rounded-md bg-blue-100 flex items-center border-blue-200">
+          <Info className="w-5 h-5 mr-2 text-blue-700" />
+          <span className="text-blue-500">
             Click Here To See Our Tips for Using AI Responsibly
           </span>
         </p>
-      </div>
-
-      <div className="mt-4 p-3 bg-slate-50 rounded-md border border-slate-200 font-sans">
-        <h2 className="text-md font-semibold text-black mb-2 flex gap-2">
-          <Sheet />
-          <span>Loaded Resume Points</span>
+        <Separator className="my-5" />
+        <h2 className="text-sm font-semibold text-black mb-2 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span>Loaded Resume Points</span>
+            {useAIRanker ? (
+              <Badge>
+                <Wrench />
+                Manual
+              </Badge>
+            ) : (
+              <Badge>
+                <BrainCircuit />
+                AI Assisted
+              </Badge>
+            )}
+          </div>
+          <button
+            onClick={() => toggleAIResumeLoading()}
+            className="w-6 h-6 flex items-center justify-center text-neutral-500 hover:text-black transition-colors"
+          >
+            <ArrowLeftRight className="h-4 w-4 cursor-pointer" />
+          </button>
         </h2>
-        <div className=" text-gray-800 text-sm px-4">
+
+        <div className=" text-gray-800 text-sm font-light">
           {loadedResumePoints.length === 0 ? (
             <h1>No Points Loaded</h1>
           ) : (
             loadedResumePoints.map((point, index) => (
-              <div className = "list-disc list-item" key={index}>
-                <h1 className = "text-xs">{point}</h1>
+              <div className="list-disc list-item" key={index}>
+                <h1 className="text-xs">{point}</h1>
               </div>
             ))
           )}
         </div>
-      </div>
-
-      {localExperienceForms.map((experienceWithId) => (
+        <div>
+        {localExperienceForms.map((experienceWithId) => (
         <div
           key={experienceWithId._localId}
           className="flex justify-center items-center space-x-2"
@@ -158,10 +219,14 @@ export default function Employment({
           />
         </div>
       ))}
+        </div>
+      </div>
+
+      
 
       <Button
         onClick={handleAddExperience}
-        className="rounded-md w-fit bg-purple-400 p-2 text-white font-sans font-semibold mx-6 hover:bg-purple-300"
+        className="rounded-md w-fit bg-purple-400 p-2 text-white font-main font-semibold mx-6 hover:bg-purple-300"
       >
         Add More +
       </Button>

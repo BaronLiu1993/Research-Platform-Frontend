@@ -43,7 +43,7 @@ export default function Builder() {
       setProjects(response.projects);
       setPersonalInformation(response.personal_information);
       setParsedResume(true);
-      console.log(parsedResume)
+      console.log(parsedResume);
     } catch (error) {
       console.error("Error fetching data", error);
     }
@@ -55,10 +55,10 @@ export default function Builder() {
 
   return (
     <>
-      <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-md flex justify-center">
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-md flex justify-center font-main">
         {!parsedResume ? (
           <div className="flex flex-col mt-20">
-            <h1 className="p-4 text-4xl font-sans font-semibold">
+            <h1 className="p-4 text-4xl font-semibold">
               Build Your New Resume!
             </h1>
             <div className="space-y-4 rounded-md">
@@ -72,10 +72,10 @@ export default function Builder() {
                     <div className="flex space-x-10 justify-center items-center cursor-pointer">
                       <File className="p-2 bg-purple-400 h-15 w-15 shadow-md text-white rounded-md" />
                       <div>
-                        <p className="font-semibold text-xl text-purple-500 font-sans">
+                        <p className="font-semibold text-xl text-purple-500">
                           I Have a Resume
                         </p>
-                        <p className="font-semibold text-gray-500 text-sm font-sans">
+                        <p className="font-semibold text-gray-500 text-sm ">
                           Supports PDF, JPG, PNG
                         </p>
                       </div>
@@ -84,10 +84,10 @@ export default function Builder() {
 
                   {resumeFile ? (
                     <AccordionContent>
-                      <div className="w-fit p-3 flex justify-center items-center space-x-4 ml-6 text-sm text-gray-500 border-1 bg-gray-50 font-sans rounded-md">
+                      <div className="w-fit p-3 flex justify-center items-center space-x-4 ml-6 text-sm text-gray-500 border-1 bg-gray-50  rounded-md">
                         <FileText className="h-6 w-6 text-red-600" />
                         <div>
-                          <div className="text-black font-sans font-semibold">
+                          <div className="text-black  font-semibold">
                             {resumeFile.name}
                           </div>
                           <div>{(resumeFile.size / 1024).toFixed(1)} KB</div>
@@ -100,7 +100,7 @@ export default function Builder() {
                         </button>
                       </div>
                       <button
-                        className="mt-5 font-light cursor-pointer mx-8 text-white bg-blue-500 rounded-sm text-sm px-2 font-sans"
+                        className="mt-5 font-light cursor-pointer mx-8 text-white bg-blue-500 rounded-sm text-sm px-2 "
                         onClick={() => handleParseResume(resumeFile)}
                       >
                         Parse Resume
@@ -113,17 +113,17 @@ export default function Builder() {
                           <input
                             type="file"
                             accept=".pdf"
-                            className="font-sans font-medium font hidden"
+                            className=" font-medium font hidden"
                             onChange={(e) => {
                               if (e.target.files && e.target.files[0]) {
                                 setResumeFile(e.target.files[0]);
                               }
                             }}
                           />
-                          <div className="flex flex-col justify-center items-center">
+                          <div className="flex flex-col justify-center items-center space-y-3">
                             <File className="text-purple-400 h-15 w-15" />
                             <div className="">
-                              <p className="font-sans font-semibold text-gray-500 text-md">
+                              <p className=" font-semibold text-gray-500 text-md">
                                 Drag and Drop Your Resume Here or <br />
                                 <span className="text-purple-700">
                                   {" "}
@@ -150,10 +150,10 @@ export default function Builder() {
                     <div className="flex space-x-10 justify-center items-center cursor-pointer">
                       <Hammer className="p-2 bg-blue-400 h-15 w-15 shadow-md text-white rounded-md" />
                       <div>
-                        <p className="font-semibold text-xl text-blue-500 font-sans">
+                        <p className="font-semibold text-xl text-blue-500 ">
                           Email
                         </p>
-                        <p className="font-semibold text-gray-500 text-sm font-sans">
+                        <p className="font-semibold text-gray-500 text-sm ">
                           Supports PDF, JPG, PNG
                         </p>
                       </div>
@@ -165,7 +165,7 @@ export default function Builder() {
                         <input
                           type="file"
                           accept=".pdf"
-                          className="font-sans font-medium font hidden"
+                          className=" font-medium font hidden"
                           onChange={(e) => {
                             if (e.target.files && e.target.files[0]) {
                               setResumeFile(e.target.files[0]);
@@ -175,7 +175,7 @@ export default function Builder() {
                         <div className="flex flex-col justify-center items-center">
                           <File className="text-purple-400 h-15 w-15" />
                           <div className="">
-                            <p className="font-sans font-semibold text-gray-500 text-md">
+                            <p className=" font-semibold text-gray-500 text-md">
                               Drag and Drop Your Resume Here or <br />
                               <span className="text-purple-700">
                                 {" "}
@@ -187,9 +187,13 @@ export default function Builder() {
                           <div className="mx-5 space-x-4"></div>
                           {resumeFile && (
                             <button
-                              className="mt-5 font-light cursor-pointer text-white bg-blue-500 rounded-sm text-sm px-2 font-sans"
+                              className="mt-5 font-light cursor-pointer animate-spin text-white bg-blue-500 rounded-sm text-sm px-2 "
                               onClick={() => handleParseResume(resumeFile)}
                             >
+                              <svg
+                                class="mr-3 size-5 animate-spin"
+                                viewBox="0 0 24 24"
+                              ></svg>
                               Parse Resume
                             </button>
                           )}

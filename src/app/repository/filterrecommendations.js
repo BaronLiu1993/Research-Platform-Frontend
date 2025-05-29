@@ -1,45 +1,70 @@
-import { ToggleGroup, ToggleGroupItem } from "@/shadcomponents/ui/toggle-group";
-import { Filter, Heart, Pencil, School } from "lucide-react";
-
-export default function FilterRecommendations() {
-  return (
-    <>
-      <div className="flex items-center bg-white font-inter">
-        <ToggleGroup type="multiple" className="flex items-center gap-1">
-          <ToggleGroupItem
-            value="filters"
-            aria-label="More Filters"
-            className="py-1 px-2.5 text-xs text-neutral-700 hover:bg-neutral-100 data-[state=on]:bg-blue-50 data-[state=on]:text-blue-400 data-[state=on]:shadow-sm rounded-xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-1"
-          >
-            <Filter className="w-3.5 h-3.5" />
-            <span className="text-xs font-medium">More Filters</span>
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            value="university"
-            aria-label="Filter by University"
-            className="py-1 px-2.5 text-xs text-neutral-700 hover:bg-neutral-100 data-[state=on]:bg-blue-50 data-[state=on]:text-blue-400 data-[state=on]:shadow-sm rounded-xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-1"
-          >
-            <School />
-            University
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            value="interests"
-            aria-label="Filter by Interests"
-            className="py-1 px-2.5 text-xs text-neutral-700 hover:bg-neutral-100 data-[state=on]:bg-blue-50 data-[state=on]:text-blue-400 data-[state=on]:shadow-sm rounded-xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-1"
-          >
-            <Heart />
-            Interests
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            value="faculty"
-            aria-label="Filter by Faculty"
-            className="py-1 px-2.5 text-xs text-neutral-700 hover:bg-neutral-100 data-[state=on]:bg-blue-50 data-[state=on]:text-blue-400 data-[state=on]:shadow-sm rounded-xs cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-offset-1"
-          >
-            <Pencil />
-            Faculty
-          </ToggleGroupItem>
-        </ToggleGroup>
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem,
+  } from "@/shadcomponents/ui/dropdown-menu";
+  import { Button } from "@/shadcomponents/ui/button";
+  import { ChevronDown, Filter, Heart, Pencil, School, Search } from "lucide-react";
+  
+  export default function FilterRecommendations() {
+    return (
+      <div className="font-inter w-full flex gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-1 h-fit px-3 py-0.5 text-xs text-neutral-400 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 rounded-md"
+            >
+            <Search />
+              Toggle Search Query
+              <ChevronDown className="w-4 h-4 text-neutral-400" />
+            </Button>
+          </DropdownMenuTrigger>
+  
+          <DropdownMenuContent align="start" className="w-44 bg-white shadow-md border border-neutral-200 rounded-md p-1">
+            <DropdownMenuItem className="flex items-center gap-2 text-xs text-neutral-700 hover:bg-neutral-100 cursor-pointer">
+              <School className="w-4 h-4 text-neutral-500" />
+              University
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 text-xs text-neutral-700 hover:bg-neutral-100 cursor-pointer">
+              <Heart className="w-4 h-4 text-neutral-500" />
+              Interests
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 text-xs text-neutral-700 hover:bg-neutral-100 cursor-pointer">
+              <Pencil className="w-4 h-4 text-neutral-500" />
+              Faculty
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-1 h-fit px-3 py-0.5 text-xs text-neutral-400 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 rounded-md"
+            >
+              <Filter />
+              Filter
+              <ChevronDown className="w-4 h-4 text-neutral-400" />
+            </Button>
+          </DropdownMenuTrigger>
+  
+          <DropdownMenuContent align="start" className="w-44 bg-white shadow-md border border-neutral-200 rounded-md p-1">
+            <DropdownMenuItem className="flex items-center gap-2 text-xs text-neutral-700 hover:bg-neutral-100 cursor-pointer">
+              <School className="w-4 h-4 text-neutral-500" />
+              University
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 text-xs text-neutral-700 hover:bg-neutral-100 cursor-pointer">
+              <Heart className="w-4 h-4 text-neutral-500" />
+              Interests
+            </DropdownMenuItem>
+            <DropdownMenuItem className="flex items-center gap-2 text-xs text-neutral-700 hover:bg-neutral-100 cursor-pointer">
+              <Pencil className="w-4 h-4 text-neutral-500" />
+              Faculty
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-    </>
-  );
-}
+    );
+  }
+  

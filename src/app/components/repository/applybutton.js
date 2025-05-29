@@ -123,7 +123,7 @@ export default function ApplyButton({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            className={`border cursor-pointer max-h-[1.5rem]
+            className={`border cursor-pointer max-h-[1.5rem] font-main
               bg-orange-100 text-orange-600 hover:bg-orange-200 hover:text-orange-600`}
             variant="outline"
             size="sm"
@@ -140,7 +140,7 @@ export default function ApplyButton({
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="w-40 font-sans text-sm shadow-md rounded-md overflow-hidden bg-white border border-gray-100"
+          className="w-40 font-main text-sm shadow-md rounded-md overflow-hidden bg-white border border-gray-100"
         >
           <DropdownMenuItem
             className="cursor-pointer hover:bg-gray-100 text-xs flex items-center gap-2 focus:bg-gray-50 data-[state=open]:bg-gray-50"

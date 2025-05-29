@@ -37,14 +37,14 @@ export default async function Repository() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb className="font-inter font-semibold">
+          <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink href="#">Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-inter font-semibold">
+                <BreadcrumbPage className="font-main font-semibold">
                   Professors
                 </BreadcrumbPage>
               </BreadcrumbItem>
@@ -52,7 +52,7 @@ export default async function Repository() {
           </Breadcrumb>
         </header>
 
-        <div className="flex-1 overflow-y-auto font-inter">
+        <div className="flex-1 overflow-y-auto font-main">
           <div className="flex flex-col">
             <div className="border-b-1 space-y-2">
               <div className="bg-neutral-100 mx-9 rounded-xs mt-2">
@@ -65,8 +65,8 @@ export default async function Repository() {
                   current research interests. 
                 </p>
               </div>{" "}
-              <div className="flex">
-                <SearchForm className="font-inter px-7 w-[30rem]" />
+              <div className="flex items-end">
+                <SearchForm className="font-main px-7 w-[30rem]" />
                 <FilterRecommendations />
               </div>
               <Recommendations />
