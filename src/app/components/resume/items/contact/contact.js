@@ -71,9 +71,9 @@ export default function Contact({
           and may need human input to successfully accomplish tasks. Similarly,
           for some actions, you may want to require human{" "}
           <span className="bg-neutral-200 px-0.5">approval</span> before running
-          to ensure that everything is running as intended. Here are some tips:
+          to ensure that everything is running as intended. <span className = "bg-yellow-200"> Before You Submit I Recommend You:</span>
         </p>
-        <ul className="list-inside text-xs bg-[#ebebeb] rounded-xs p-2 space-y-1">
+        <ul className="list-inside text-xs bg-[#ebebeb] rounded-xs p-2 space-y-1 font-mono">
           <li className="list-disc">
             Ensure your{" "}
             <span className="font-semibold text-blue-700">LinkedIn</span> is
@@ -87,8 +87,8 @@ export default function Contact({
             </span>{" "}
             (especially for engineering, science, or design roles) You can build
             one quickly with{" "}
-            <span className="underline text-blue-700">Notion</span> and{" "}
-            <span className="text-red-700 underline">Adobe Portfolio</span>.
+            <span className="underline text-blue-700">Notion</span> or{" "}
+            <span className="text-red-700 underline">Adobe</span>.
           </li>
 
           <li className="list-disc">

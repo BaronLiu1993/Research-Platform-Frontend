@@ -55,15 +55,23 @@ export default async function Repository() {
         <div className="flex-1 overflow-y-auto font-main">
           <div className="flex flex-col">
             <div className="border-b-1 space-y-2">
-              <div className="bg-neutral-100 mx-9 rounded-xs mt-2">
+              <div className="bg-neutral-100 mx-9 rounded-xs mt-2 border-1">
                 <h1 className="text-xl text-neutral-700 font-semibold px-6 pt-6">
-                  You Might Be Interested In...
+                  Curated Professors
                 </h1>
-                <p className="text-neutral-500 font-semibold text-sm px-6 pb-6">
-                  Based on the topics you've been exploring, we've handpicked a
-                  set of insightful suggestions that closely align with your
-                  current research interests. 
-                </p>
+                <h2 className="text-xs px-6 font-semibold">By Jie Xuan Liu</h2>
+                <div className = "space-y-1 pt-6">
+                  <p className="text-neutral-500 text-xs px-6">
+                    Based on the topics you've been exploring, we've handpicked
+                    a set of insightful suggestions that closely align with your
+                    current research interests.
+                  </p>
+                  <p className="text-neutral-500 text-xs px-6 pb-6">
+                    Based on the topics you've been exploring, we've handpicked
+                    a set of insightful suggestions that closely align with your
+                    current research interests.
+                  </p>
+                </div>
               </div>{" "}
               <div className="flex items-end">
                 <SearchForm className="font-main px-7 w-[30rem]" />
@@ -80,7 +88,6 @@ export default async function Repository() {
                 research interests, and find the perfect mentor <br /> for your
                 academic journey. Start connecting with UofT professors today!
               </p>{" "}
-              
             </div>
             <div className="mt-4">
               <DataTable

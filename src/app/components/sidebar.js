@@ -104,7 +104,7 @@ export function AppSidebar({ ...props }) {
                         <span className="text-neutral-500">
                           {item.icon}
                         </span>
-                        <span className="font-semibold text-neutral-500 text-[13.5px]">
+                        <span className=" text-neutral-500 text-[13.5px]">
                           {item.title}
                         </span>
                       </a>
