@@ -23,6 +23,8 @@ import generateColumns from "../components/repository/columns";
 import { DataTable } from "../components/repository/data-table";
 import Recommendations from "../components/repository/recommendations";
 import FilterRecommendations from "./filterrecommendations";
+import { Badge } from "@/shadcomponents/ui/badge";
+import { Database, Settings } from "lucide-react";
 
 export default async function Repository() {
   const cookieStore = await cookies();
@@ -56,21 +58,55 @@ export default async function Repository() {
           <div className="flex flex-col">
             <div className="border-b-1 space-y-2">
               <div className="bg-neutral-100 mx-9 rounded-xs mt-2 border-1">
-                <h1 className="text-xl text-neutral-700 font-semibold px-6 pt-6">
-                  Curated Professors
-                </h1>
+                <div className="flex gap-2 px-6 pt-6">
+                  <h1 className="text-xl text-neutral-700 font-semibold h-fit">
+                    Curated Professors
+                  </h1>
+                  <Badge>
+                    <Database />
+                    Data Engineering
+                  </Badge>
+                </div>
                 <h2 className="text-xs px-6 font-semibold">By Jie Xuan Liu</h2>
-                <div className = "space-y-1 pt-6">
-                  <p className="text-neutral-500 text-xs px-6">
-                    Based on the topics you've been exploring, we've handpicked
-                    a set of insightful suggestions that closely align with your
-                    current research interests.
+                <div className="space-y-1 py-6">
+                  <p className="text-neutral-500 text-xs px-6 w-[60rem] ">
+                    Based on the topics you’ve been exploring, we’ve curated a
+                    set of{" "}
+                    <span className="bg-yellow-200 font-bold">
+                      personalized suggestions
+                    </span>{" "}
+                    that align closely with your current research interests.
+                    Your{" "}
+                    <span className="text-blue-700 font-bold">
+                      research interests
+                    </span>{" "}
+                    are converted into vector representations, which are then
+                    matched against each professor’s own{" "}
+                    <span className="text-blue-700 font-bold">
+                      research interests
+                    </span>{" "}
+                    using{" "}
+                    <span className="underline text-blue-600 font-mono cursor-pointer">
+                      cosine similarity scoring
+                    </span>{" "}
+                    {"[1]"}.
                   </p>
-                  <p className="text-neutral-500 text-xs px-6 pb-6">
-                    Based on the topics you've been exploring, we've handpicked
-                    a set of insightful suggestions that closely align with your
-                    current research interests.
-                  </p>
+                  <div className="text-neutral-500 text-xs px-6 w-[60rem] space-y-2">
+                    <p></p>
+                    <ol type="1" className="font-mono">
+                      <li className="flex">
+                        1. Navigate To{" "}
+                        <span className="flex items-center">
+                          <Settings className=" mx-1 h-3 w-3" />
+                          Settings.
+                        </span>{" "}
+                      </li>
+                      <li>
+                        2. Change your research interests in the dropdown box.
+                      </li>
+                      <li>3. Wait for new vectors and check here again</li>
+                    </ol>
+                  </div>
                 </div>
               </div>{" "}
               <div className="flex items-end">
@@ -79,16 +115,7 @@ export default async function Repository() {
               </div>
               <Recommendations />
             </div>
-            <div className="border-b-1 space-y-2">
-              <h1 className="text-xl text-neutral-700 font-semibold px-6 pt-6">
-                Discover Professors at Uoft!
-              </h1>
-              <p className="text-neutral-500 px-6 pb-6 font-normal">
-                Browse through faculty members across departments, explore their
-                research interests, and find the perfect mentor <br /> for your
-                academic journey. Start connecting with UofT professors today!
-              </p>{" "}
-            </div>
+
             <div className="mt-4">
               <DataTable
                 generateColumns={generateColumns}

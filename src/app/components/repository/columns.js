@@ -57,7 +57,7 @@ const generateColumns = (userId) => [
                     {data.school && (
                       <span className="text-gray-500">&bull;</span>
                     )}
-                    {data.school && <span className = "">@ {data.school}</span>}
+                    {data.school && <span className = "text-black">@ {data.school}</span>}
                   </div>
                 </div>
               </div>

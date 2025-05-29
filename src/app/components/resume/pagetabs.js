@@ -22,10 +22,10 @@ export default function PageTabs({ pages, currentPage, setCurrentPage }) {
             key={index}
             ref={(el) => (tabRefs.current[index] = el)}
             onClick={() => setCurrentPage(index)}
-            className={`pb-2 transition-colors text-sm duration-300 font-light ${
+            className={`pb-2 transition-colors text-xs duration-300 font-light cursor-pointer ${
               currentPage === index
-                ? "text-purple-500"
-                : "text-gray-400 hover:text-purple-500"
+                ? "text-neutral-500 font-semibold"
+                : "text-neutral-400 hover:text-neutral-500"
             }`}
           >
             {page.name}
@@ -33,7 +33,7 @@ export default function PageTabs({ pages, currentPage, setCurrentPage }) {
         ))}
       </div>
       <span
-        className="absolute bottom-0 h-[2px] bg-purple-500 transition-all duration-300"
+        className="absolute bottom-0 h-[2px] bg-neutral-500 transition-all duration-300"
         style={underlineStyle}
       />
     </div>

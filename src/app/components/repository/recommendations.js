@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/shadcomponents/ui/badge";
 import KanbanButton from "./kanbanbutton";
 import ApplyButton from "./applybutton";
+import { List } from "lucide-react";
 
 export default async function Recommendations() {
   const cookieStore = await cookies();
@@ -27,7 +28,8 @@ export default async function Recommendations() {
   const responses = await data.json();
   return (
     <>
-      <div className="px-6 md:px-8 lg:px-10 pb-6 my-6">
+      <div className="px-6 md:px-8 lg:px-10 pb-6">
+        <Badge className = "my-2"><List /> Personalised Research List</Badge>
         <Carousel
           opts={{
             align: "start",

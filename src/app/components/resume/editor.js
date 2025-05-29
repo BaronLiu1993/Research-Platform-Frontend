@@ -138,14 +138,14 @@ export default function Editor({
                     <Button
                       onClick={prevPage}
                       disabled={currentPage === 0}
-                      className="text-xs h-6 w-4 bg-purple-400 hover:bg-purple-300 font-bold cursor-pointer"
+                      className="text-xs h-6 w-4 bg-neutral-600 hover:bg-neutral-500 font-bold cursor-pointer"
                     >
                       <ArrowLeft />
                     </Button>
                     <Button
                       onClick={nextPage}
                       disabled={currentPage === pages.length - 1}
-                      className="text-xs h-6 w-4 bg-purple-400 hover:bg-purple-300 font-bold cursor-pointer"
+                      className="text-xs h-6 w-4 bg-neutral-600 hover:bg-neutral-300 font-bold cursor-pointer"
                     >
                       <ArrowRight />
                     </Button>
