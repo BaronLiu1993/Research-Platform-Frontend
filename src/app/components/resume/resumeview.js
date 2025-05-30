@@ -11,7 +11,7 @@ import { ContactPreview } from "./items/resumeviews/contactspreview";
 import { EducationPreview } from "./items/resumeviews/educationpreview";
 import { SkillsPreview } from "./items/resumeviews/skillspreview";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { Check, Hand } from "lucide-react";
+import { Check, Hand, Pointer, TextCursor } from "lucide-react";
 
 function ResumeDisplayWrapperInner({ resume }) {
   const resumeRef = useRef(null);
@@ -70,7 +70,7 @@ function ResumeDisplayWrapperInner({ resume }) {
         <div className="mb-5 mx-5 space-y-2">
           <div className="flex justify-between items-center space-x-2">
             <div className="flex space-x-2">
-              <h1 className="font-sans text-purple-800 font-light">Resume Preview</h1>
+              <h1 className="font-sans text-blue-800">Resume Preview</h1>
               <Badge className="bg-gray-700">
                 <Check />
                 Auto Saved
@@ -79,15 +79,15 @@ function ResumeDisplayWrapperInner({ resume }) {
             <button
               onClick={handleDownload}
               disabled={loading}
-              className="bg-purple-600 text-white px-3 py-1 text-xs rounded-md hover:bg-purple-700 disabled:opacity-50"
+              className="bg-blue-700 text-white px-3 py-1 text-xs rounded-md hover:bg-blue-800 cursor-pointer disabled:opacity-50"
             >
               {loading ? "Generating PDF..." : "Download as PDF"}
             </button>
           </div>
         </div>
-        <p className="border-1 p-1 text-xs rounded-md bg-purple-100 flex items-center border-purple-200">
-          <Hand className="w-6 h-6 p-1 text-purple-500" />
-          <span className="text-purple-500">Click Preview to Expand</span>
+        <p className="border-1 p-1 text-xs rounded-md bg-blue-100 flex items-center border-purple-200">
+          <Pointer className="w-6 h-6 p-1 text-blue-700" />
+          <span className="text-blue-700">Click Preview to Expand</span>
         </p>
       </div>
 

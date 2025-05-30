@@ -44,16 +44,16 @@ export default function Login() {
 
 
   return (
-    <div className="flex flex-col justify-center items-center mt-20 font-sans">
-      <h1 className="font-sans tracking-wide font-bold text-2xl">
+    <div className="flex flex-col justify-center items-center mt-20 font-main">
+      <h1 className=" tracking-wide font-bold text-2xl">
         Think it. Make it.
       </h1>
-      <h1 className="font-sans tracking-wide font-bold text-xl text-gray-400">
+      <h1 className=" tracking-wide font-bold text-xl text-gray-400">
         Start Now!
       </h1>
       <form action={formAction}>
         <div className="mt-5 flex flex-col space-y-2">
-          <Label className="font-sans text-xs font-semibold" htmlFor="email">
+          <Label className=" text-xs font-semibold" htmlFor="email">
             University Email
           </Label>
           <Input
@@ -64,7 +64,7 @@ export default function Login() {
             className="p-2 border border-gray-200 bg-gray-50 rounded-md w-[20rem]"
             disabled={pending || state.success}
           />
-          <Label className="font-sans text-xs font-semibold" htmlFor="password">
+          <Label className=" text-xs font-semibold" htmlFor="password">
             Password
           </Label>
           <Input
@@ -75,14 +75,14 @@ export default function Login() {
             className="p-2 border border-gray-200 bg-gray-50 rounded-md w-[20rem]"
             disabled={pending || state.success}
           />
-          <h2 className="font-sans text-gray-500 w-[20rem] text-sm">
+          <h2 className=" text-gray-500 w-[20rem] text-sm">
             Use an organization Email to easily collaborate with teammates
           </h2>
         </div>
 
         <Button
           type="submit"
-          className={`mt-5 text-white w-fit rounded-md font-sans cursor-pointer font-light py-2 px-4 flex items-center justify-center gap-2
+          className={`mt-5 text-white w-fit rounded-md  cursor-pointer font-light py-2 px-4 flex items-center justify-center gap-2
             ${
               state.success
                 ? "bg-green-500 hover:bg-green-600"
@@ -107,7 +107,7 @@ export default function Login() {
         <div>
           {state.message && (
             <p
-              className={`font-sans text-sm mt-2 ${
+              className={`text-sm mt-2 ${
                 state.success ? "text-green-500" : "text-red-500"
               }`}
             >

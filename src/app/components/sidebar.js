@@ -29,7 +29,7 @@ import {
 } from "@/shadcomponents/ui/popover";
 import { Separator } from "@/shadcomponents/ui/separator";
 
-import { ChevronsUpDown, ChevronRight, Languages, Settings } from "lucide-react";
+import { ChevronsUpDown, ChevronRight, Languages, Settings, Inbox, Send, SquarePen } from "lucide-react";
 import { Library } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
 import { MessageCircle } from "lucide-react";
@@ -39,7 +39,7 @@ import { Book } from "lucide-react";
 const data = {
   navMain: [
     {
-      title: "Getting Started",
+      title: "Research Suite",
       url: "#",
       items: [
         {
@@ -53,12 +53,12 @@ const data = {
           icon: <LayoutDashboard className = "h-5 w-5"/>,
         },
         {
-          title: "Interview Preparation",
+          title: "Interview Prep",
           url: "#",
           icon: <MessageCircle className = "h-5 w-5"/>, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
         },
         {
-          title: "Paid Research Funding",
+          title: "Research Fund",
           url: "#",
           icon: <Microscope className = "h-5 w-5"/>,
         },
@@ -75,6 +75,35 @@ const data = {
       ],
     },
   ],
+  navTools: [
+    {
+      title: "Views",
+      url: "#",
+      items: [
+        {
+          title: "All Mail",
+          url: "/repository",
+          icon: <Inbox className = "h-5 w-5 text-red-400"/>,
+        },
+        {
+          title: "Sent",
+          url: "/bookmark",
+          icon: <Send className = "h-5 w-5 text-indigo-500"/>,
+        },
+        {
+          title: "Drafts",
+          url: "#",
+          icon: <SquarePen className = "h-5 w-5 text-teal-500"/>, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
+        },
+        {
+          title: "Received",
+          url: "#",
+          icon: <Microscope className = "h-5 w-5"/>,
+        },
+      ],
+    },
+  ],
+  
 };
 
 const languages = [
@@ -87,9 +116,9 @@ export function AppSidebar({ ...props }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   return (
-    <Sidebar className="font-main" {...props}>
+    <Sidebar className="w-[12rem] font-noto" {...props}>
       <SidebarHeader></SidebarHeader>
-      <SidebarContent className="font-main">
+      <SidebarContent>
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel className="text-[11px] text-neutral-400">
@@ -101,10 +130,10 @@ export function AppSidebar({ ...props }) {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={item.isActive}>
                       <a href={item.url} className="flex items-center gap-1">
-                        <span className="text-neutral-500">
+                        <span className="text-neutral-400 text-[12.7px]">
                           {item.icon}
                         </span>
-                        <span className=" text-neutral-500 text-[13.5px]">
+                        <span className=" text-neutral-500 text-[12.7px] font-[580]">
                           {item.title}
                         </span>
                       </a>
@@ -112,11 +141,40 @@ export function AppSidebar({ ...props }) {
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
+              
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarContent></SidebarContent>
+      <SidebarContent className="">
+        {data.navTools.map((item) => (
+          <SidebarGroup key={item.title}>
+            <SidebarGroupLabel className="text-[11px] text-neutral-400">
+              {item.title}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {item.items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild isActive={item.isActive}>
+                      <a href={item.url} className="flex items-center gap-1">
+                        <span className="text-neutral-400 text-[12.7px]">
+                          {item.icon}
+                        </span>
+                        <span className=" text-neutral-500 text-[12.7px] font-[580]">
+                          {item.title}
+                        </span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+              
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
+      </SidebarContent>
+      
       <SidebarFooter className="mb-10">
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
@@ -124,13 +182,12 @@ export function AppSidebar({ ...props }) {
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="w-[200px] justify-between font-semibold text-neutral-400"
+              className="w-[150px] justify-between font-semibold text-neutral-400 text-xs"
             >
               <Languages className="text-neutral-400" />
               {value
                 ? languages.find((lang) => lang.value === value)?.label
                 : "Select Language..."}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-[200px] p-2 space-y-1">

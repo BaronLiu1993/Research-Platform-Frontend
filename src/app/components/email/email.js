@@ -52,15 +52,15 @@ export default function Email({ student_data }) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8 font-sans bg-white text-gray-800">
+    <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8 font-main bg-white text-gray-800">
       <div className="mb-6 pb-4 border-b border-gray-200">
-        <div className="flex items-center text-2xl font-semibold text-gray-700">
-          <MailPlus className="h-7 w-7 mr-3 text-blue-500" />
+        <div className="flex items-center text-xl font-semibold text-neutral-700">
+          <MailPlus className="h-5 w-5 mr-3 text-blue-500" />
           <h1>New Message</h1>
         </div>
       </div>
 
-      <div className="space-y-4 mb-6 font-sans">
+      <div className="space-y-4 mb-6">
         {interests && interests.length > 0 && (
           <div className="flex flex-col sm:flex-row sm:items-start justify-center items-center">
             <Label className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center tracking-wider">

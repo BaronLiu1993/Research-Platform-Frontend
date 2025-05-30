@@ -54,7 +54,7 @@ export default async function Repository() {
           </Breadcrumb>
         </header>
 
-        <div className="flex-1 overflow-y-auto font-main">
+        <div className="flex-1 overflow-y-auto font-noto">
           <div className="flex flex-col">
             <div className="border-b-1 space-y-2">
               <div className="bg-neutral-100 mx-9 rounded-xs mt-2 border-1">
@@ -62,7 +62,7 @@ export default async function Repository() {
                   <h1 className="text-xl text-neutral-700 font-semibold h-fit">
                     Curated Professors
                   </h1>
-                  <Badge>
+                  <Badge className = "bg-neutral-600">
                     <Database />
                     Data Engineering
                   </Badge>
