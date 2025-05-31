@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button } from "@/shadcomponents/ui/button";
 import { useSavedStore } from "@/app/store/useSavedStore";
@@ -6,7 +6,7 @@ import { Bookmark, BookmarkCheck } from "lucide-react";
 import { saveToKanban } from "@/app/repository/savetokanban";
 import { removeFromKanban } from "@/app/repository/removefromkanban";
 import { useState } from "react";
-import { toast } from "sonner"; 
+import { toast } from "sonner";
 
 export default function KanbanButton({
   professor_id,
@@ -36,7 +36,7 @@ export default function KanbanButton({
         const result = await removeFromKanban(professor_id, user_id);
         toast.success("Professor removed from saved.");
       } else {
-        addSaved(professor_id); 
+        addSaved(professor_id);
         await saveToKanban(
           professor_id,
           professor_name,
@@ -69,10 +69,11 @@ export default function KanbanButton({
 
   return (
     <Button
-      className={`border cursor-pointer max-h-[1.5rem] mb-2 ${
-        isSaved ? "bg-green-100 text-green-600 hover:bg-green-200 hover:text-green-600" : "bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-600"
+      className={`cursor-pointer max-h-[1.5rem] rounded-xs mb-2 ${
+        isSaved
+          ? "bg-green-100 text-green-600 hover:bg-green-200 hover:text-green-600"
+          : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:text-neutral-600"
       }`}
-      variant="outline"
       size="sm"
       onClick={handleToggle}
       disabled={loading}

@@ -10,7 +10,7 @@ import {
 export function SearchForm({ ...props }) {
   return (
     <form {...props}>
-      <SidebarGroup className="py-0">
+      <SidebarGroup className="py-0 font-noto">
         <SidebarGroupContent className="relative">
           <Label htmlFor="search" className="sr-only">
             Search
@@ -18,7 +18,7 @@ export function SearchForm({ ...props }) {
           <SidebarInput
             id="search"
             placeholder="Search for professors..."
-            className="pl-8 font-main text-xs placeholder:text-neutral-400"
+            className="pl-8 font-noto text-xs placeholder:text-neutral-500"
           />
           <Search className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 select-none opacity-50" />
         </SidebarGroupContent>

@@ -29,14 +29,16 @@ export default async function Recommendations() {
   return (
     <>
       <div className="px-6 md:px-8 lg:px-10 pb-6">
-        <Badge className = "my-2"><List /> Personalised Research List</Badge>
+        <Badge className="my-2 rounded-xs bg-[#eeeeee] font-noto text-neutral-600 text-[11px]">
+          <List /> Personalised Research List
+        </Badge>
         <Carousel
           opts={{
             align: "start",
             loop: true,
             slidesToScroll: 1,
           }}
-          className="font-inter relative"
+          className="font-noto relative"
         >
           <CarouselContent className="-ml-4 flex">
             {responses.matches.map((response, index) => (
@@ -64,15 +66,16 @@ export default async function Recommendations() {
                     <div>
                       <h2 className="text-xs font-medium">{response.name}</h2>
                       <h1 className="text-md font-semibold">
-                        <span className = "text-gray-600">@</span>
                         <span> {response.school}</span>
                       </h1>
+                      <h2 className="text-[13px] text-neutral-700">{response.faculty}</h2>
                     </div>
+
                     <div className="flex flex-wrap gap-1">
                       {response.research_interests.map((interest, i) => (
                         <Badge
                           key={i}
-                          className="text-xs bg-gray-50 rounded-sm text-gray-500 font-semibold border border-gray-200 px-2 py-0.5"
+                          className="text-xs bg-[#eeeeee] rounded-xs text-neutral-700 px-2 py-0.5"
                         >
                           {interest}
                         </Badge>

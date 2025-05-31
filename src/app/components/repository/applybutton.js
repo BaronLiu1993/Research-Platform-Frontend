@@ -120,12 +120,11 @@ export default function ApplyButton({
 
   if (alreadyApplied) {
     return (
-      <DropdownMenu>
+      <DropdownMenu className = "rounded-xs">
         <DropdownMenuTrigger asChild>
           <Button
-            className={`border cursor-pointer max-h-[1.5rem] font-main
+            className={`cursor-pointer max-h-[1.5rem] font-noto rounded-xs
               bg-orange-100 text-orange-600 hover:bg-orange-200 hover:text-orange-600`}
-            variant="outline"
             size="sm"
             disabled={loading}
           >
@@ -164,9 +163,8 @@ export default function ApplyButton({
   return (
     <Link href={applyPageUrl} passHref>
       <Button
-        className={`border cursor-pointer max-h-[1.5rem]
-          bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-600`}
-        variant="outline"
+        className={`cursor-pointer max-h-[1.5rem]
+          bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:text-neutral-600 rounded-xs`}
         size="sm"
         onClick={handleInitialApplyAndRedirect}
         disabled={loading}

@@ -24,7 +24,7 @@ import { DataTable } from "../components/repository/data-table";
 import Recommendations from "../components/repository/recommendations";
 import FilterRecommendations from "./filterrecommendations";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { Database, Settings } from "lucide-react";
+import { Database, House, Settings } from "lucide-react";
 
 export default async function Repository() {
   const cookieStore = await cookies();
@@ -39,14 +39,17 @@ export default async function Repository() {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb className="font-main font-semibold">
+          <Breadcrumb className="font-noto font-semibold">
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Home</BreadcrumbLink>
+                <BreadcrumbLink href="/" className="flex items-center gap-2">
+                  <House className="h-4 w-4" />
+                  Home
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-main font-semibold">
+                <BreadcrumbPage className="font-noto font-semibold">
                   Professors
                 </BreadcrumbPage>
               </BreadcrumbItem>
@@ -57,32 +60,37 @@ export default async function Repository() {
         <div className="flex-1 overflow-y-auto font-noto">
           <div className="flex flex-col">
             <div className="border-b-1 space-y-2">
-              <div className="bg-neutral-100 mx-9 rounded-xs mt-2 border-1">
+              <div className="bg-neutral-50 mx-9 rounded-xs mt-2 border-1">
                 <div className="flex gap-2 px-6 pt-6">
                   <h1 className="text-xl text-neutral-700 font-semibold h-fit">
                     Curated Professors
                   </h1>
-                  <Badge className = "bg-neutral-600">
+                </div>
+                <div className="flex items-center px-6 py-2 space-x-2">
+                  <Badge className="bg-[#eeeeee] text-neutral-700 rounded-xs text-[10px]">
                     <Database />
                     Data Engineering
                   </Badge>
+                  <div className="rounded-full h-1 w-1 bg-neutral-600"></div>
+                  <h2 className="text-xs font-semibold text-[10px]">
+                    By Jie Xuan Liu
+                  </h2>
                 </div>
-                <h2 className="text-xs px-6 font-semibold">By Jie Xuan Liu</h2>
-                <div className="space-y-1 py-6">
-                  <p className="text-neutral-500 text-xs px-6 w-[60rem] ">
-                    Based on the topics you’ve been exploring, we’ve curated a
-                    set of{" "}
-                    <span className="bg-yellow-200 font-bold">
+
+                <div className="space-y-1 pt-6 pb-3">
+                  <p className="text-neutral-500 text-[13.5px] px-6 w-[60rem] text-lead">
+                    Based on your research interests, we’ve curated a set of{" "}
+                    <span className="font-bold text-blue-600 font-mono">
                       personalized suggestions
                     </span>{" "}
                     that align closely with your current research interests.
                     Your{" "}
-                    <span className="text-blue-700 font-bold">
+                    <span className="text-blue-600 font-bold font-mono">
                       research interests
                     </span>{" "}
                     are converted into vector representations, which are then
                     matched against each professor’s own{" "}
-                    <span className="text-blue-700 font-bold">
+                    <span className="text-blue-600 font-bold font-mono">
                       research interests
                     </span>{" "}
                     using{" "}
@@ -91,28 +99,14 @@ export default async function Repository() {
                     </span>{" "}
                     {"[1]"}.
                   </p>
-                  <div className="text-neutral-500 text-xs px-6 w-[60rem] space-y-2">
-                    <p></p>
-                    <ol type="1" className="font-mono">
-                      <li className="flex">
-                        1. Navigate To{" "}
-                        <span className="flex items-center">
-                          <Settings className=" mx-1 h-3 w-3" />
-                          Settings.
-                        </span>{" "}
-                      </li>
-                      <li>
-                        2. Change your research interests in the dropdown box.
-                      </li>
-                      <li>3. Wait for new vectors and check here again</li>
-                    </ol>
-                  </div>
                 </div>
+                
               </div>{" "}
               <div className="flex items-end">
-                <SearchForm className="font-main px-7 w-[30rem]" />
+                <SearchForm className="font-noto px-7 w-[30rem]" />
                 <FilterRecommendations />
               </div>
+              <Separator className = "mx-9 my-4"/>
               <Recommendations />
             </div>
 

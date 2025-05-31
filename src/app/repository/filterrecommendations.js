@@ -9,16 +9,16 @@ import {
   
   export default function FilterRecommendations() {
     return (
-      <div className="font-inter w-full flex gap-2">
+      <div className="font-noto w-full flex gap-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button     
               variant="ghost"
-              className="flex items-center gap-1 h-fit px-3 py-0.5 text-xs text-neutral-400 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 rounded-md"
+              className="flex items-center gap-1 h-fit px-3 cursor-pointer  py-0.5 text-xs text-neutral-700 rounded-xs"
             >
             <Search />
               Toggle Search Query
-              <ChevronDown className="w-4 h-4 text-neutral-400" />
+              <ChevronDown className="w-4 h-4 text-neutral-700" />
             </Button>
           </DropdownMenuTrigger>
   
@@ -41,11 +41,11 @@ import {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="flex items-center gap-1 h-fit px-3 py-0.5 text-xs text-neutral-400 border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 rounded-md"
+              className="flex items-center gap-1 h-fit px-3 py-0.5 text-xs cursor-pointer text-neutral-700 bg-neutral-50 hover:bg-neutral-100 rounded-xs"
             >
               <Filter />
               Filter
-              <ChevronDown className="w-4 h-4 text-neutral-400" />
+              <ChevronDown className="w-4 h-4 text-neutral-700" />
             </Button>
           </DropdownMenuTrigger>
   
