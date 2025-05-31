@@ -43,14 +43,14 @@ const data = {
       url: "#",
       items: [
         {
-          title: "Research",
+          title: "Product",
           url: "/repository",
-          icon: <Library className = "h-5 w-5"/>,
+          icon: <Library className = "h-6 w-6 bg-orange-100 rounded-xs text-orange-500 p-0.5"/>,
         },
         {
           title: "Dashboard",
           url: "/bookmark",
-          icon: <LayoutDashboard className = "h-5 w-5"/>,
+          icon: <LayoutDashboard className = "h-5 w-5 bg-blue-100 rounded-xs text-blue-500"/>,
         },
         {
           title: "Interview Prep",
@@ -121,7 +121,7 @@ export function AppSidebar({ ...props }) {
       <SidebarContent>
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
-            <SidebarGroupLabel className="text-[11px] text-neutral-400">
+            <SidebarGroupLabel className="text-[11px] text-[#787774]">
               {item.title}
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -130,10 +130,10 @@ export function AppSidebar({ ...props }) {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={item.isActive}>
                       <a href={item.url} className="flex items-center gap-1">
-                        <span className="text-neutral-400 text-[12.7px]">
+                        <span className="text-[#787774] text-[12.5px]">
                           {item.icon}
                         </span>
-                        <span className=" text-neutral-500 text-[12.7px] font-[580]">
+                        <span className=" text-[#787774] text-[12.5px] font-[500]">
                           {item.title}
                         </span>
                       </a>

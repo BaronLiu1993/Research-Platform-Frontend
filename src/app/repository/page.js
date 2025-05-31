@@ -59,8 +59,10 @@ export default async function Repository() {
 
         <div className="flex-1 overflow-y-auto font-noto">
           <div className="flex flex-col">
+          <Database />
+
             <div className="border-b-1 space-y-2">
-              <div className="bg-neutral-50 mx-9 rounded-xs mt-2 border-1">
+              <div className="mx-9 rounded-xs mt-2">
                 <div className="flex gap-2 px-6 pt-6">
                   <h1 className="text-xl text-neutral-700 font-semibold h-fit">
                     Curated Professors
@@ -78,19 +80,19 @@ export default async function Repository() {
                 </div>
 
                 <div className="space-y-1 pt-6 pb-3">
-                  <p className="text-neutral-500 text-[13.5px] px-6 w-[60rem] text-lead">
+                  <p className="text-neutral-400 text-[13px] px-6 w-[60rem] font-semibold">
                     Based on your research interests, we’ve curated a set of{" "}
-                    <span className="font-bold text-blue-600 font-mono">
+                    <span className="font-bold text-blue-500 font-mono">
                       personalized suggestions
                     </span>{" "}
                     that align closely with your current research interests.
                     Your{" "}
-                    <span className="text-blue-600 font-bold font-mono">
+                    <span className="text-blue-500 font-bold font-mono">
                       research interests
                     </span>{" "}
                     are converted into vector representations, which are then
                     matched against each professor’s own{" "}
-                    <span className="text-blue-600 font-bold font-mono">
+                    <span className="text-blue-500 font-bold font-mono">
                       research interests
                     </span>{" "}
                     using{" "}

@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/shadcomponents/ui/badge";
 import KanbanButton from "./kanbanbutton";
 import ApplyButton from "./applybutton";
-import { List } from "lucide-react";
+import { List, Tag } from "lucide-react";
 
 export default async function Recommendations() {
   const cookieStore = await cookies();
@@ -77,6 +77,7 @@ export default async function Recommendations() {
                           key={i}
                           className="text-xs bg-[#eeeeee] rounded-xs text-neutral-700 px-2 py-0.5"
                         >
+                          <Tag />
                           {interest}
                         </Badge>
                       ))}
