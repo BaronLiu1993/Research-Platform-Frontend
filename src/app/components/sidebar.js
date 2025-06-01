@@ -50,12 +50,12 @@ const data = {
         {
           title: "Dashboard",
           url: "/bookmark",
-          icon: <LayoutDashboard className = "h-5 w-5 bg-blue-100 rounded-xs text-blue-500"/>,
+          icon: <LayoutDashboard className = "h-6 w-6 bg-blue-100 rounded-xs text-blue-500 p-0.5"/>,
         },
         {
           title: "Interview Prep",
           url: "#",
-          icon: <MessageCircle className = "h-5 w-5"/>, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
+          icon: <MessageCircle className = "h-6 w-6 bg-green-100 rounded-xs text-green-500 p-0.5"/>, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
         },
         {
           title: "Research Fund",

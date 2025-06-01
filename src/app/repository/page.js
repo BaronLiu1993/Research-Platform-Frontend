@@ -24,7 +24,7 @@ import { DataTable } from "../components/repository/data-table";
 import Recommendations from "../components/repository/recommendations";
 import FilterRecommendations from "./filterrecommendations";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { Database, House, Settings } from "lucide-react";
+import { Database, House, Laptop, MapIcon, MoveLeft, MoveRight, Plus, Settings, Slash } from "lucide-react";
 
 export default async function Repository() {
   const cookieStore = await cookies();
@@ -36,20 +36,29 @@ export default async function Repository() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <header className="flex h-8 shrink-0 items-center gap-2 mx-12">
           <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb className="font-noto font-semibold">
+          <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
+              <BreadcrumbItem>
+                <MoveLeft  className = "w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5"/>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <MoveRight className = "w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5"/>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <Plus className = "w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5"/>
+              </BreadcrumbItem>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/" className="flex items-center gap-2">
-                  <House className="h-4 w-4" />
+                <BreadcrumbLink href="/" className="flex items-center font-medium text-[#37352F] gap-2">
+                  <Laptop className = " rounded-xs text-white fill-blue-700 h-5 w-5"/>
                   Home
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
+              <div className = "text-gray-200">/</div>
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-noto font-semibold">
+                <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
+                  <MapIcon className = "fill-blue-700 text-white"/>
                   Professors
                 </BreadcrumbPage>
               </BreadcrumbItem>
@@ -57,10 +66,8 @@ export default async function Repository() {
           </Breadcrumb>
         </header>
 
-        <div className="flex-1 overflow-y-auto font-noto">
+        <div className="flex-1 overflow-y-auto font-main">
           <div className="flex flex-col">
-          <Database />
-
             <div className="border-b-1 space-y-2">
               <div className="mx-9 rounded-xs mt-2">
                 <div className="flex gap-2 px-6 pt-6">
@@ -69,34 +76,34 @@ export default async function Repository() {
                   </h1>
                 </div>
                 <div className="flex items-center px-6 py-2 space-x-2">
-                  <Badge className="bg-[#eeeeee] text-neutral-700 rounded-xs text-[10px]">
+                  <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
                     <Database />
                     Data Engineering
                   </Badge>
-                  <div className="rounded-full h-1 w-1 bg-neutral-600"></div>
-                  <h2 className="text-xs font-semibold text-[10px]">
+                  <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
+                  <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">
                     By Jie Xuan Liu
                   </h2>
                 </div>
 
                 <div className="space-y-1 pt-6 pb-3">
-                  <p className="text-neutral-400 text-[13px] px-6 w-[60rem] font-semibold">
+                  <p className="text-[#37352F] text-[13px] px-6 w-[60rem] font-semibold">
                     Based on your research interests, we’ve curated a set of{" "}
-                    <span className="font-bold text-blue-500 font-mono">
+                    <span className="font-bold text-blue-700 font-mono">
                       personalized suggestions
                     </span>{" "}
                     that align closely with your current research interests.
                     Your{" "}
-                    <span className="text-blue-500 font-bold font-mono">
+                    <span className="text-blue-700 font-bold font-mono">
                       research interests
                     </span>{" "}
                     are converted into vector representations, which are then
                     matched against each professor’s own{" "}
-                    <span className="text-blue-500 font-bold font-mono">
+                    <span className="text-blue-700 font-bold font-mono">
                       research interests
                     </span>{" "}
                     using{" "}
-                    <span className="underline text-blue-600 font-mono cursor-pointer">
+                    <span className="underline text-blue-700 font-mono cursor-pointer">
                       cosine similarity scoring
                     </span>{" "}
                     {"[1]"}.
@@ -105,7 +112,7 @@ export default async function Repository() {
                 
               </div>{" "}
               <div className="flex items-end">
-                <SearchForm className="font-noto px-7 w-[30rem]" />
+                <SearchForm className="font-main px-7 w-[30rem]" />
                 <FilterRecommendations />
               </div>
               <Separator className = "mx-9 my-4"/>

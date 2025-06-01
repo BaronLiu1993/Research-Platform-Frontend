@@ -240,7 +240,7 @@ function SidebarTrigger({
         toggleSidebar()
       }}
       {...props}>
-      <PanelLeftIcon />
+      <PanelLeftIcon className = "font-semibold text-[#787774] cursor-pointer"/>
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );
