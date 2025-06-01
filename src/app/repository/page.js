@@ -24,7 +24,18 @@ import { DataTable } from "../components/repository/data-table";
 import Recommendations from "../components/repository/recommendations";
 import FilterRecommendations from "./filterrecommendations";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { Database, House, Laptop, MapIcon, MoveLeft, MoveRight, Plus, Settings, Slash } from "lucide-react";
+import {
+  Database,
+  House,
+  Laptop,
+  List,
+  MapIcon,
+  MoveLeft,
+  MoveRight,
+  Plus,
+  Settings,
+  Slash,
+} from "lucide-react";
 
 export default async function Repository() {
   const cookieStore = await cookies();
@@ -41,24 +52,27 @@ export default async function Repository() {
           <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <MoveLeft  className = "w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5"/>
+                <MoveLeft className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
               </BreadcrumbItem>
               <BreadcrumbItem>
-                <MoveRight className = "w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5"/>
+                <MoveRight className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
               </BreadcrumbItem>
               <BreadcrumbItem>
-                <Plus className = "w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5"/>
+                <Plus className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
               </BreadcrumbItem>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/" className="flex items-center font-medium text-[#37352F] gap-2">
-                  <Laptop className = " rounded-xs text-white fill-blue-700 h-5 w-5"/>
+                <BreadcrumbLink
+                  href="/"
+                  className="flex items-center font-medium text-[#37352F] gap-2"
+                >
+                  <Laptop className=" rounded-xs text-white fill-blue-700 h-5 w-5" />
                   Home
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <div className = "text-gray-200">/</div>
+              <div className="text-gray-200">/</div>
               <BreadcrumbItem>
                 <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
-                  <MapIcon className = "fill-blue-700 text-white"/>
+                  <MapIcon className="fill-blue-700 text-white" />
                   Professors
                 </BreadcrumbPage>
               </BreadcrumbItem>
@@ -87,7 +101,7 @@ export default async function Repository() {
                 </div>
 
                 <div className="space-y-1 pt-6 pb-3">
-                  <p className="text-[#37352F] text-[13px] px-6 w-[60rem] font-semibold">
+                  <p className="text-[#37352F] text-[13px] px-6 w-[60rem] font-medium">
                     Based on your research interests, we’ve curated a set of{" "}
                     <span className="font-bold text-blue-700 font-mono">
                       personalized suggestions
@@ -109,13 +123,15 @@ export default async function Repository() {
                     {"[1]"}.
                   </p>
                 </div>
-                
               </div>{" "}
+              <Badge className="my-2 rounded-xs bg-bg-[#F1F1EF] font-main text-[#787774] text-[12px]">
+                <List /> Personalised Research List
+              </Badge>
               <div className="flex items-end">
                 <SearchForm className="font-main px-7 w-[30rem]" />
                 <FilterRecommendations />
               </div>
-              <Separator className = "mx-9 my-4"/>
+              <Separator className="mx-9 my-4" />
               <Recommendations />
             </div>
 

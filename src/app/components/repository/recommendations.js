@@ -29,9 +29,6 @@ export default async function Recommendations() {
   return (
     <>
       <div className="px-6 md:px-8 lg:px-10 pb-6">
-        <Badge className="my-2 rounded-xs bg-[#eeeeee] font-noto text-neutral-600 text-[11px]">
-          <List /> Personalised Research List
-        </Badge>
         <Carousel
           opts={{
             align: "start",

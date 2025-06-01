@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { removeSingleQuoteOrJson } from "@/app/api/fixjson";
 
 import ParseResume from "@/app/resume/parseresume";
 import Editor from "./editor";
@@ -35,12 +34,12 @@ export default function Builder() {
     const file = resumeFile;
 
     try {
-      const resumeDataHTML = await ParseResume(file);
-      const cleanedData = removeSingleQuoteOrJson(resumeDataHTML.result);
-      const response = JSON.parse(cleanedData);
+      const rawJSONObject = await ParseResume(file);
+      const response = rawJSONObject.result
       setExperience(response.experience);
       setContact(response.contact_information);
       setProjects(response.projects);
+      console.log(response.personal_information)
       setPersonalInformation(response.personal_information);
       setParsedResume(true);
       console.log(parsedResume);

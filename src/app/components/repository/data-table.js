@@ -78,7 +78,7 @@ export function DataTable({ data, userId, generateColumns }) {
             <DropdownMenuTrigger asChild>
               <Badge
                 variant="outline"
-                className="text-gray-500 border px-2 py-1"
+                className="text-gray-500 px-2 py-1"
               >
                 Columns <ChevronDown className="w-3 h-3 ml-1" />
               </Badge>

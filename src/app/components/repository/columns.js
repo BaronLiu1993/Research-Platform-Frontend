@@ -49,15 +49,13 @@ const generateColumns = (userId) => [
                   <Microscope className="bg-slate-100 text-slate-500 h-7 w-7 p-1.5 rounded-md" />
                 </div>
                 <div className="flex-grow min-w-0">
-                  <h1 className="text-md font-medium text-gray-800 group-hover:text-blue-600 transition-colors truncate">
+                  <h1 className="text-md font-medium text-[#787774] group-hover:text-blue-600 transition-colors truncate">
                     {data.name}
                   </h1>
-                  <div className="flex items-center space-x-1.5 text-xs text-gray-500 truncate">
+                  <div className="flex items-center space-x-1.5 text-xs text-[#787774] truncate">
                     <span>{data.department || "N/A Department"}</span>
-                    {data.school && (
-                      <span className="text-gray-500">&bull;</span>
-                    )}
-                    {data.school && <span className = "text-black">@ {data.school}</span>}
+                    
+                    {data.school && <span className = "text-[#787774]">@ {data.school}</span>}
                   </div>
                 </div>
               </div>

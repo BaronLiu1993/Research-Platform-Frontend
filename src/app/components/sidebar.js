@@ -50,17 +50,17 @@ const data = {
         {
           title: "Dashboard",
           url: "/bookmark",
-          icon: <LayoutDashboard className = "h-6 w-6 bg-blue-100 rounded-xs text-blue-500 p-0.5"/>,
+          icon: <LayoutDashboard className = "h-6 w-6 bg-blue-100 rounded-xs fill-[#337EA9] text-[#337EA9] p-0.5"/>,
         },
         {
           title: "Interview Prep",
           url: "#",
-          icon: <MessageCircle className = "h-6 w-6 bg-green-100 rounded-xs text-green-500 p-0.5"/>, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
+          icon: <MessageCircle className = "h-6 w-6 rounded-xs fill-orange-500 text-orange-500 p-0.5"/>, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
         },
         {
           title: "Research Fund",
           url: "#",
-          icon: <Microscope className = "h-5 w-5"/>,
+          icon: <Microscope className = "text-purple-500 h-5 w-5"/>,
         },
         {
           title: "Tips",
@@ -116,7 +116,7 @@ export function AppSidebar({ ...props }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   return (
-    <Sidebar className="w-[12rem] font-noto" {...props}>
+    <Sidebar className="w-[12rem] font-main" {...props}>
       <SidebarHeader></SidebarHeader>
       <SidebarContent>
         {data.navMain.map((item) => (
