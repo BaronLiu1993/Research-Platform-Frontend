@@ -29,7 +29,15 @@ import {
 } from "@/shadcomponents/ui/popover";
 import { Separator } from "@/shadcomponents/ui/separator";
 
-import { ChevronsUpDown, ChevronRight, Languages, Settings, Inbox, Send, SquarePen } from "lucide-react";
+import {
+  ChevronsUpDown,
+  ChevronRight,
+  Languages,
+  Settings,
+  Inbox,
+  Send,
+  SquarePen,
+} from "lucide-react";
 import { Library } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
 import { MessageCircle } from "lucide-react";
@@ -45,32 +53,38 @@ const data = {
         {
           title: "Product",
           url: "/repository",
-          icon: <Library className = "h-6 w-6 bg-orange-100 rounded-xs text-orange-500 p-0.5"/>,
+          icon: (
+            <Library className="h-6 w-6 bg-orange-100 rounded-xs text-orange-500 p-0.5" />
+          ),
         },
         {
           title: "Dashboard",
           url: "/bookmark",
-          icon: <LayoutDashboard className = "h-6 w-6 bg-blue-100 rounded-xs fill-[#337EA9] text-[#337EA9] p-0.5"/>,
+          icon: (
+            <LayoutDashboard className="h-6 w-6 bg-blue-100 rounded-xs fill-[#337EA9] text-[#337EA9] p-0.5" />
+          ),
         },
         {
           title: "Interview Prep",
           url: "#",
-          icon: <MessageCircle className = "h-6 w-6 rounded-xs fill-orange-500 text-orange-500 p-0.5"/>, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
+          icon: (
+            <MessageCircle className="h-6 w-6 rounded-xs fill-orange-500 text-orange-500 p-0.5" />
+          ), // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
         },
         {
           title: "Research Fund",
           url: "#",
-          icon: <Microscope className = "text-purple-500 h-5 w-5"/>,
+          icon: <Microscope className="text-purple-500 h-5 w-5" />,
         },
         {
           title: "Tips",
           url: "#",
-          icon: <Book className = "h-5 w-5"/>,
+          icon: <Book className="h-5 w-5" />,
         },
         {
           title: "Settings",
           url: "/dashboard",
-          icon: <Settings className = "h-5 w-5"/>,
+          icon: <Settings className="h-5 w-5" />,
         },
       ],
     },
@@ -83,27 +97,26 @@ const data = {
         {
           title: "All Mail",
           url: "/repository",
-          icon: <Inbox className = "h-5 w-5 text-red-400"/>,
+          icon: <Inbox className="h-5 w-5 text-red-400" />,
         },
         {
           title: "Sent",
           url: "/bookmark",
-          icon: <Send className = "h-5 w-5 text-indigo-500"/>,
+          icon: <Send className="h-5 w-5 text-indigo-500" />,
         },
         {
           title: "Drafts",
           url: "#",
-          icon: <SquarePen className = "h-5 w-5 text-teal-500"/>, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
+          icon: <SquarePen className="h-5 w-5 text-teal-500" />, // Resuse the kanban but list all of the interview stage ones that will be moved from kanban completed to interview and let them generate
         },
         {
           title: "Received",
           url: "#",
-          icon: <Microscope className = "h-5 w-5"/>,
+          icon: <Microscope className="h-5 w-5" />,
         },
       ],
     },
   ],
-  
 };
 
 const languages = [
@@ -112,12 +125,19 @@ const languages = [
   { label: "English", value: "en" },
 ];
 
-export function AppSidebar({ ...props }) {
+export function AppSidebar({ student_data, ...props }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   return (
     <Sidebar className="w-[12rem] font-main" {...props}>
-      <SidebarHeader></SidebarHeader>
+      <SidebarHeader className="font-main rounded-xs p-2 hover:bg-[]">
+        <div className = "p-2">
+          <h1 className="text-[13px] font-bold">
+            {student_data.student_firstname} {student_data.student_lastname}
+          </h1>
+          <p className="text-[10px]">{student_data.student_email}</p>
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
@@ -141,7 +161,6 @@ export function AppSidebar({ ...props }) {
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
-              
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
@@ -169,12 +188,11 @@ export function AppSidebar({ ...props }) {
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
-              
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
       </SidebarContent>
-      
+
       <SidebarFooter className="mb-10">
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>

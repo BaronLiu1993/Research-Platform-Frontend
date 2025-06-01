@@ -20,7 +20,7 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 
 export default function FilterRecommendations() {
   return (
-    <div className="font-noto w-full flex mt-6 gap-1 justify-end">
+    <div className="font-noto w-full flex gap-1">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button

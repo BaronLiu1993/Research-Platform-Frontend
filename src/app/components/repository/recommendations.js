@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/shadcomponents/ui/badge";
 import KanbanButton from "./kanbanbutton";
 import ApplyButton from "./applybutton";
-import { List, Tag } from "lucide-react";
+import { Tag } from "lucide-react";
 
 export default async function Recommendations() {
   const cookieStore = await cookies();
@@ -28,14 +28,14 @@ export default async function Recommendations() {
   const responses = await data.json();
   return (
     <>
-      <div className="px-6 md:px-8 lg:px-10 pb-6">
+      <div className="pb-6 w-[55rem]">
         <Carousel
           opts={{
             align: "start",
             loop: true,
             slidesToScroll: 1,
           }}
-          className="font-noto relative"
+          className="font-main relative"
         >
           <CarouselContent className="-ml-4 flex">
             {responses.matches.map((response, index) => (

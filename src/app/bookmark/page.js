@@ -14,6 +14,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/shadcomponents/ui/breadcrumb";
+import { Laptop, MapIcon, MoveLeft, MoveRight, Plus } from "lucide-react";
 
 export default async function Bookmark() {
   const cookieStore = await cookies();
@@ -22,17 +23,36 @@ export default async function Bookmark() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb className="font-sans">
+      <header className="flex h-8 shrink-0 items-center gap-2 px-6">
+          <SidebarTrigger className = "cursor-pointer"/>
+          <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Bookmarked Professors</BreadcrumbPage>
+                <MoveLeft className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <MoveRight className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <Plus className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+              </BreadcrumbItem>
+              <BreadcrumbItem className="hidden md:block hover:underline cursor-pointer">
+                <BreadcrumbLink
+                  href="/"
+                  className="flex items-center font-medium text-[#37352F] gap-2"
+                >
+                  <Laptop className="rounded-xs text-white fill-blue-700 h-5 w-5" />
+                  Home
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator>
+                <div className="text-gray-300">/</div>
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage className="font-main flex items-center hover:underline cursor-pointer gap-2 font-medium text-[#37352F]">
+                  <MapIcon className="fill-blue-700 text-white" />
+                  Application Tracker
+                </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

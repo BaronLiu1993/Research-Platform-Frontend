@@ -19,7 +19,7 @@ import {
   PaginationPrevious,
 } from "@/shadcomponents/ui/pagination";
 
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, PersonStanding } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
   DropdownMenu,
@@ -61,25 +61,25 @@ export function DataTable({ data, userId, generateColumns }) {
   });
 
   return (
-    <div className="rounded-md px-4 py-2">
+    <div className="rounded-md py-2 w-[55rem]">
       <div className="flex flex-col gap-2 pb-2">
-        <div className="flex flex-wrap gap-2 items-center py-2 mx-6">
+        <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
+          <PersonStanding />
+          Full Data Repository
+        </Badge>
+        <div className="flex flex-wrap gap-2 items-center">
           <div>
-            <Badge className="bg-white border text-gray-500 px-2 py-1">
+            <Badge className="bg-white border text-gray-500 py-1">
               Faculty <ChevronDown className="w-3 h-3 ml-1" />
             </Badge>
             <Badge className="bg-white border text-gray-500 px-2 py-1">
               Department <ChevronDown className="w-3 h-3 ml-1" />
             </Badge>
           </div>
-          
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Badge
-                variant="outline"
-                className="text-gray-500 px-2 py-1"
-              >
+              <Badge variant="outline" className="text-gray-500 px-2 py-1">
                 Columns <ChevronDown className="w-3 h-3 ml-1" />
               </Badge>
             </DropdownMenuTrigger>
@@ -100,12 +100,10 @@ export function DataTable({ data, userId, generateColumns }) {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Badge className = "mx-6">Full Professor Repository</Badge>
-
       </div>
 
-      <Table className="text-sm w-full mx-6">
-        <TableHeader>
+      <Table className="text-sm w-[55rem]">
+        <TableHeader className = "bg-[#F4EEEE]">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -120,7 +118,7 @@ export function DataTable({ data, userId, generateColumns }) {
                         : undefined
                     }
                     className={
-                      canSort ? "cursor-pointer select-none text-xs" : "text-xs"
+                      canSort ? "cursor-pointer select-none text-xs " : "text-xs"
                     }
                   >
                     {flexRender(

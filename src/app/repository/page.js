@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 
-import { Separator } from "@/shadcomponents/ui/separator";
 import { SearchForm } from "@/shadcomponents/ui/search-form";
 import {
   Breadcrumb,
@@ -10,7 +9,7 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
+  BreadcrumbSeparator, // Assuming this might be used, though not present in original breadcrumb
 } from "@/shadcomponents/ui/breadcrumb";
 import {
   SidebarProvider,
@@ -26,29 +25,40 @@ import FilterRecommendations from "./filterrecommendations";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
   Database,
-  House,
+  House, // Not used in this specific layout, but kept import
   Laptop,
   List,
   MapIcon,
   MoveLeft,
   MoveRight,
   Plus,
-  Settings,
-  Slash,
+  Settings, // Not used in this specific layout, but kept import
+  Slash, // Not used in this specific layout, but kept import
 } from "lucide-react";
 
 export default async function Repository() {
-  const cookieStore = await cookies();
-  const userId = cookieStore.get("user_id");
-  const serverData = await fetch("http://localhost:8080/Taishan/");
-  const parsedResponse = await serverData.json();
-  const responses = parsedResponse.data;
+  const cookieStore = await cookies(); //Get Cookie
+  const access = cookieStore.get("access_token");
+  const userId = cookieStore.get("user_id"); //Get UserID
+  const tableData = await fetch("http://localhost:8080/Taishan/");
+  const rawTableData = await tableData.json();
+  const parsedTableData = rawTableData.data;
+
+  const rawUserProfile = await fetch("http://localhost:8080/auth/get-user-sidebar-info", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${access.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const parsedUserProfile = await rawUserProfile.json();
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar student_data={parsedUserProfile}/>
       <SidebarInset>
-        <header className="flex h-8 shrink-0 items-center gap-2 mx-12">
-          <SidebarTrigger className="-ml-1" />
+        <header className="flex h-8 shrink-0 items-center gap-2 px-6">
+          <SidebarTrigger className = "cursor-pointer"/>
           <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -65,11 +75,13 @@ export default async function Repository() {
                   href="/"
                   className="flex items-center font-medium text-[#37352F] gap-2"
                 >
-                  <Laptop className=" rounded-xs text-white fill-blue-700 h-5 w-5" />
+                  <Laptop className="rounded-xs text-white fill-blue-700 h-5 w-5" />
                   Home
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <div className="text-gray-200">/</div>
+              <BreadcrumbSeparator>
+                <div className="text-gray-300">/</div>
+              </BreadcrumbSeparator>
               <BreadcrumbItem>
                 <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
                   <MapIcon className="fill-blue-700 text-white" />
@@ -80,16 +92,16 @@ export default async function Repository() {
           </Breadcrumb>
         </header>
 
-        <div className="flex-1 overflow-y-auto font-main">
+        <div className="flex-1 overflow-y-auto font-main px-6">
           <div className="flex flex-col">
-            <div className="border-b-1 space-y-2">
-              <div className="mx-9 rounded-xs mt-2">
-                <div className="flex gap-2 px-6 pt-6">
-                  <h1 className="text-xl text-neutral-700 font-semibold h-fit">
+            <div className="my-10 space-y-2">
+              <div className="rounded-xs mt-2">
+                <div className="flex gap-2 pt-6">
+                  <h1 className="text-2xl text-neutral-700 font-semibold h-fit">
                     Curated Professors
                   </h1>
                 </div>
-                <div className="flex items-center px-6 py-2 space-x-2">
+                <div className="flex items-center py-2 space-x-2">
                   <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
                     <Database />
                     Data Engineering
@@ -101,7 +113,8 @@ export default async function Repository() {
                 </div>
 
                 <div className="space-y-1 pt-6 pb-3">
-                  <p className="text-[#37352F] text-[13px] px-6 w-[60rem] font-medium">
+                  {/* Removed px-6 from here */}
+                  <p className="text-[#37352F] text-[13px] w-[55rem] font-light">
                     Based on your research interests, we’ve curated a set of{" "}
                     <span className="font-bold text-blue-700 font-mono">
                       personalized suggestions
@@ -120,25 +133,25 @@ export default async function Repository() {
                     <span className="underline text-blue-700 font-mono cursor-pointer">
                       cosine similarity scoring
                     </span>{" "}
-                    {"[1]"}.
+                    [1].
                   </p>
                 </div>
               </div>{" "}
-              <Badge className="my-2 rounded-xs bg-bg-[#F1F1EF] font-main text-[#787774] text-[12px]">
-                <List /> Personalised Research List
+              <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
+                <Database />
+                Recommended Professors
               </Badge>
-              <div className="flex items-end">
-                <SearchForm className="font-main px-7 w-[30rem]" />
+              <div className="flex items-center">
+                <SearchForm className="font-main min-w-[20rem]" />
                 <FilterRecommendations />
               </div>
-              <Separator className="mx-9 my-4" />
               <Recommendations />
             </div>
 
             <div className="mt-4">
               <DataTable
                 generateColumns={generateColumns}
-                data={responses}
+                data={parsedTableData}
                 userId={userId.value}
               />
             </div>

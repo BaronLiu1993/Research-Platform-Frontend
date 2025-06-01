@@ -19,6 +19,7 @@ import {
   University,
   BrainCircuit,
   Microscope,
+  PersonStandingIcon,
 } from "lucide-react";
 
 import KanbanButton from "./kanbanbutton";
@@ -31,9 +32,10 @@ const generateColumns = (userId) => [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className="font-inter font-semibold text-sm text-gray-600 hover:bg-gray-100/80 px-2 py-1 -ml-2 uppercase tracking-wider"
+        className="font-inter font-semibold text-sm text-[#787774] px-2 py-1 -ml-2 uppercase tracking-wider"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
+        <PersonStandingIcon />
         Professor
         <ArrowUpDown className="ml-2 h-3.5 w-3.5 text-gray-400" />
       </Button>
