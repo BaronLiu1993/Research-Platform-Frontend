@@ -5,7 +5,6 @@ import Kanban from "../components/bookmark/kanban";
 
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/shadcomponents/ui/sidebar";
 import { AppSidebar } from "../components/sidebar";
-import { Separator } from "@/shadcomponents/ui/separator";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,9 +18,18 @@ import { Laptop, MapIcon, MoveLeft, MoveRight, Plus } from "lucide-react";
 export default async function Bookmark() {
   const cookieStore = await cookies();
   const user_id = cookieStore.get("user_id");
+  const access = cookieStore.get("access_token")
+  const rawUserProfile = await fetch("http://localhost:8080/auth/get-user-sidebar-info", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${access.value}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const parsedUserProfile = await rawUserProfile.json();
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar student_data={parsedUserProfile}/>
       <SidebarInset>
       <header className="flex h-8 shrink-0 items-center gap-2 px-6">
           <SidebarTrigger className = "cursor-pointer"/>

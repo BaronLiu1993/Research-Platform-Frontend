@@ -3,13 +3,13 @@
 import { useState } from "react";
 import {
   Briefcase,
-  Calendar, 
+  Calendar,
   Paperclip,
   ExternalLink,
   NotebookPen,
   StickyNote,
   Tag,
-  CircleAlert, 
+  CircleAlert,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -36,28 +36,21 @@ export default function KanbanCardInComplete({
   labs,
   lab_url,
   date,
-  user_id
+  user_id,
 }) {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   return (
-    <div className="rounded-md border border-gray-200 bg-white w-full p-4 font-sans shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
+    <div className="rounded-xs border border-gray-200 bg-white w-full p-4 font-main shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
       <div className="flex items-center space-x-2 mb-2">
-        <CircleAlert className="h-4 w-4 text-red-400" />
-        <h2 className="font-medium text-gray-800 text-base leading-tight break-words">
+        <CircleAlert className="h-4 w-4 text-red-300" />
+        <h2 className="font-medium text-sm text-black leading-tight break-words">
           {title || "Untitled Application"}
         </h2>
       </div>
 
       {(school || faculty) && (
-        <div className="text-xs text-gray-500 mb-2 space-y-0.5">
+        <div className="text-xs text-[#979A9B] mb-2 space-y-0.5">
           {school && <p>{school}</p>}
-        </div>
-      )}
-
-      {date && (
-        <div className="flex items-center text-xs text-gray-500 mb-2">
-          <Calendar className="h-3 w-3 mr-1 text-gray-400" />
-          <p>{new Date(date).toLocaleString()}</p>
         </div>
       )}
 
@@ -88,18 +81,18 @@ export default function KanbanCardInComplete({
               professor_name: title,
             },
           }}
-          className="inline-flex items-center px-2.5 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition-colors duration-200"
         >
-          <Paperclip className="h-3 w-3 mr-1 text-green-500" />
-          Apply
+          <Button className="bg-white shadow-none hover:bg-gray-100 w-[1rem] rounded-xs inline-flex items-center cursor-pointer h-[1.5rem] text-xs font-medium"
+          >
+            <Paperclip className="h-4 w-4 text-black" />
+          </Button>
         </Link>
 
         <Button
           onClick={() => setIsSheetOpen(true)}
-          className="inline-flex items-center cursor-pointer h-[1.5rem] text-xs font-medium bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors duration-200"
+          className="bg-white shadow-none hover:bg-gray-100 w-[1rem] rounded-xs inline-flex items-center cursor-pointer h-[1.5rem] text-xs font-medium"
         >
-          <NotebookPen className="h-3 w-3 text-blue-500" />
-          Details
+          <NotebookPen className="h-4 w-4 text-black" />
         </Button>
       </div>
 
@@ -235,7 +228,7 @@ export default function KanbanCardInComplete({
           </div>
 
           <div className="mt-8 flex justify-end gap-3">
-            <DeleteInCompleteButton professor_id = {prof_id} user_id = {user_id}/>
+            <DeleteInCompleteButton professor_id={prof_id} user_id={user_id} />
             <Button
               variant="outline"
               className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"

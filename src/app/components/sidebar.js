@@ -37,6 +37,7 @@ import {
   Inbox,
   Send,
   SquarePen,
+  ChevronDown,
 } from "lucide-react";
 import { Library } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
@@ -76,11 +77,7 @@ const data = {
           url: "#",
           icon: <Microscope className="text-purple-500 h-5 w-5" />,
         },
-        {
-          title: "Tips",
-          url: "#",
-          icon: <Book className="h-5 w-5" />,
-        },
+        
         {
           title: "Settings",
           url: "/dashboard",
@@ -130,12 +127,18 @@ export function AppSidebar({ student_data, ...props }) {
   const [value, setValue] = useState("");
   return (
     <Sidebar className="w-[12rem] font-main" {...props}>
-      <SidebarHeader className="font-main rounded-xs p-2 hover:bg-[]">
-        <div className = "p-2">
-          <h1 className="text-[13px] font-bold">
-            {student_data.student_firstname} {student_data.student_lastname}
-          </h1>
-          <p className="text-[10px]">{student_data.student_email}</p>
+      <SidebarHeader className="font-main hover:bg-gray-100 rounded-sm m-2 cursor-pointer">
+        <div className="flex items-center gap-2">
+          <div className="bg-gray-200 h-5 w-5 rounded-full"></div>
+          <div>
+            <h1 className="text-[13px] font-medium">
+              {student_data.student_firstname} {student_data.student_lastname}
+            </h1>
+            <p className="text-[10px] text-[#979A9B]">
+              {student_data.student_email.slice(0, 20)}...
+            </p>
+          </div>
+          <ChevronDown className = "h-3 w-3 text-[#979A9B]"/>
         </div>
       </SidebarHeader>
       <SidebarContent>

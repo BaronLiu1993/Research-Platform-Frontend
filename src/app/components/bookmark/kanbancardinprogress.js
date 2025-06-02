@@ -3,13 +3,13 @@
 import { useState } from "react";
 import {
   Briefcase,
-  Calendar, 
+  Calendar,
   Paperclip,
   ExternalLink,
   NotebookPen,
   StickyNote,
   Tag,
-  Car, 
+  Car,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -40,33 +40,28 @@ export default function KanbanCardInProgress({
 }) {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   return (
-    <div className="rounded-md border border-gray-200 bg-white w-full p-4 font-sans shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
+    <div className="rounded-xs border border-gray-200 bg-white w-full p-4 font-main shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
       <div className="flex items-center space-x-2 mb-2">
-        <Car className="h-4 w-4 text-yellow-400" />
-        <h2 className="font-medium text-gray-800 text-base leading-tight break-words">
+        <Car className="h-4 w-4 text-yellow-300" />
+        <h2 className="font-medium text-sm text-black leading-tight break-words">
           {title || "Untitled Application"}
         </h2>
       </div>
 
       {(school || faculty) && (
-        <div className="text-xs text-gray-500 mb-2 space-y-0.5">
+        <div className="text-xs text-[#979A9B] mb-2 space-y-0.5">
           {school && <p>{school}</p>}
-        </div>
-      )}
-
-      {date && (
-        <div className="flex items-center text-xs text-gray-500 mb-2">
-          <Calendar className="h-3 w-3 mr-1 text-gray-400" />
-          <p>{new Date(date).toLocaleString()}</p>
         </div>
       )}
 
       {research_interests && (
         <div className="flex flex-wrap items-center gap-1 mb-4 ">
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
-            <Tag className="h-3 w-3 mr-1" />
-            {research_interests[0]}
-          </span>
+          {research_interests?.[0] ? (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+              <Tag className="h-3 w-3 mr-1" />
+              {`${research_interests[0].slice(0, 15)}...`}
+            </span>
+          ) : null}
           {research_interests.length > 1 && (
             <span className="text-xs mr-1 text-gray-500 underline">
               +{research_interests.length - 1} more
@@ -85,18 +80,17 @@ export default function KanbanCardInProgress({
               professor_name: title,
             },
           }}
-          className="inline-flex items-center px-2.5 py-1 text-xs font-medium bg-orange-100 text-orange-700 rounded-md hover:bg-orange-200 transition-colors duration-200"
         >
-          <Paperclip className="h-3 w-3 mr-1 text-orange-500" />
-          Continue
+          <Button className="bg-white shadow-none hover:bg-gray-100 w-[1rem] rounded-xs inline-flex items-center cursor-pointer h-[1.5rem] text-xs font-medium">
+            <Paperclip className="h-3 w-3 text-black" />
+          </Button>
         </Link>
 
         <Button
           onClick={() => setIsSheetOpen(true)}
-          className="inline-flex items-center cursor-pointer h-[1.5rem] text-xs font-medium bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors duration-200"
+          className="bg-white shadow-none hover:bg-gray-100 w-[1rem] rounded-xs inline-flex items-center cursor-pointer h-[1.5rem] text-xs font-medium"
         >
-          <NotebookPen className="h-3 w-3 text-blue-500" />
-          Details
+          <NotebookPen className="h-3 w-3 text-black" />
         </Button>
       </div>
 
@@ -107,7 +101,8 @@ export default function KanbanCardInProgress({
               Application Details
             </SheetTitle>
             <SheetDescription className="text-gray-500 text-sm">
-              Review the Data Used To Contexualise and Personalise Your Application
+              Review the Data Used To Contexualise and Personalise Your
+              Application
             </SheetDescription>
           </SheetHeader>
 
@@ -141,7 +136,16 @@ export default function KanbanCardInProgress({
                   {school && <p className="text-xs">{school}</p>}
                   {faculty && <p className="text-xs">{faculty}</p>}
                   {department && <p className="text-xs">{department}</p>}
-                  {lab_url && <Link href = {lab_url} target = "_blank" className="text-xs text-blue-500 underline flex justify-center items-center gap-1"><ExternalLink className = "h-3 w-3"/>{labs}</Link>}
+                  {lab_url && (
+                    <Link
+                      href={lab_url}
+                      target="_blank"
+                      className="text-xs text-blue-500 underline flex justify-center items-center gap-1"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                      {labs}
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -205,9 +209,7 @@ export default function KanbanCardInProgress({
                     <ExternalLink className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
                     Professor Email
                   </p>
-                  <div
-                    className="text-blue-600 text-xs cursor-pointer mt-1 ml-6 hover:underline flex items-center"
-                  >
+                  <div className="text-blue-600 text-xs cursor-pointer mt-1 ml-6 hover:underline flex items-center">
                     {email}
                   </div>
                 </div>
@@ -216,7 +218,7 @@ export default function KanbanCardInProgress({
           </div>
 
           <div className="mt-8 flex justify-end gap-3">
-            <DeleteInProgressButton professor_id = {prof_id} user_id = {user_id}/>
+            <DeleteInProgressButton professor_id={prof_id} user_id={user_id} />
             <Button
               variant="outline"
               className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
@@ -224,7 +226,6 @@ export default function KanbanCardInProgress({
             >
               Close
             </Button>
-          
           </div>
         </SheetContent>
       </Sheet>
