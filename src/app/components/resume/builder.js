@@ -16,6 +16,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
+import EditorInteractive from "../interactiveresume/editorinteractive";
 
 export default function Builder() {
   const [resumeFile, setResumeFile] = useState(null);
@@ -35,11 +36,11 @@ export default function Builder() {
 
     try {
       const rawJSONObject = await ParseResume(file);
-      const response = rawJSONObject.result
+      const response = rawJSONObject.result;
       setExperience(response.experience);
       setContact(response.contact_information);
       setProjects(response.projects);
-      console.log(response.personal_information)
+      console.log(response.personal_information);
       setPersonalInformation(response.personal_information);
       setParsedResume(true);
       console.log(parsedResume);
@@ -207,7 +208,14 @@ export default function Builder() {
         ) : (
           <div className="flex items-start space-x-6">
             <div className="w-screen">
-              <Editor
+              {/*<Editor
+                student_experience={experience}
+                student_projects={projects}
+                student_contact={contact}
+                student_personal_information={personalInformation}
+              />*/}
+
+              <EditorInteractive
                 student_experience={experience}
                 student_projects={projects}
                 student_contact={contact}

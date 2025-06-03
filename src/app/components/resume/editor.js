@@ -11,7 +11,6 @@ import ResumeDisplayWrapper from "./resumeview";
 import { Button } from "@/shadcomponents/ui/button";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import resume from "@/app/resume/[name]/page";
 
 const initialResumeState = {
   name: "Your Name",

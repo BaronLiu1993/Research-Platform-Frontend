@@ -10,6 +10,7 @@ import {
   StickyNote,
   Tag,
   Car,
+  PersonStanding,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -95,7 +96,7 @@ export default function KanbanCardInProgress({
       </div>
 
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        <SheetContent className="w-full font-sans sm:w-[500px] bg-white p-6 border-l border-gray-200 shadow-lg">
+        <SheetContent className="w-full font-main sm:w-[500px] p-6 border-l border-[] shadow-lg">
           <SheetHeader className="mb-6">
             <SheetTitle className="text-2xl font-semibold text-gray-800">
               Application Details
@@ -114,7 +115,8 @@ export default function KanbanCardInProgress({
                   <p className="font-medium text-sm text-gray-600">Name</p>
                 </div>
                 <div className="pl-6">
-                  <p className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 whitespace-nowrap border-1 border-blue-500">
+                  <p className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 whitespace-nowrap">
+                    <PersonStanding className = "h-4 w-4"/>
                     {title || "N/A"}
                   </p>
                 </div>
@@ -161,6 +163,7 @@ export default function KanbanCardInProgress({
                 </div>
               </div>
             </div>
+            
 
             {research_interests && research_interests.length > 0 && (
               <div>
