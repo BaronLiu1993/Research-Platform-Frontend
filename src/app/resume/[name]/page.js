@@ -57,7 +57,6 @@ export default function resume() {
       <SidebarProvider>
         <SidebarInset>
           <header className="flex h-8 shrink-0 items-center gap-2 px-6">
-            <SidebarTrigger className="cursor-pointer" />
             <Breadcrumb className="font-main font-semibold">
               <BreadcrumbList>
                 <BreadcrumbItem>

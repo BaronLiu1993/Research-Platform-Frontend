@@ -32,12 +32,11 @@ export function Template({ onUpdate, sendEmail, student_data, professor_id }) {
   console.log(student_data.user_id)
   console.log(professor_id)
   const [input, setInput] = useState({
-    thread_id: uuidv4(),
-    user_id: student_data.user_id || "",
-    professor_id: professor_id,
-    draft: "Dear Professor, I'm interested in your research...",
+    student_id: student_data.user_id || "",
+    professor_id: 2,
     motivation: student_data.student_motivation || "",
-    resume_points: loadedResumePoints,
+    resume_points: "Experienced in Python, data analysis, and research projects.",
+    template: "Hello {professor_name},\n\nI am a student interested in your research on {topic}..."
   });
 
   useEffect(() => {

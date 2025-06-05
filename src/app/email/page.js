@@ -19,6 +19,7 @@ import {
 import { AppSidebar } from "@/app/components/sidebar";
 
 import Email from "../components/email/email";
+import { Laptop, Mail, MapIcon, MoveLeft, MoveRight, PencilLineIcon, PersonStandingIcon, Plug, Plus } from "lucide-react";
 
 export default async function email() {
   const cookieStore = await cookies();
@@ -34,27 +35,63 @@ export default async function email() {
   return (
     <>
       <SidebarProvider>
-        <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb className="font-sans">
+          <header className="flex h-8 shrink-0 items-center gap-2 px-6">
+          <Breadcrumb className="font-main font-semibold">
               <BreadcrumbList>
+                <BreadcrumbItem>
+                  <MoveLeft className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+                </BreadcrumbItem>
+                <BreadcrumbItem>
+                  <MoveRight className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+                </BreadcrumbItem>
+                <BreadcrumbItem>
+                  <Plus className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+                </BreadcrumbItem>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">Home</BreadcrumbLink>
+                  <BreadcrumbLink
+                    href="/"
+                    className="flex items-center font-medium text-[#37352F] gap-2"
+                  >
+                    <Laptop className="rounded-xs text-white fill-blue-700 h-5 w-5" />
+                    Home
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbSeparator>
+                  <div className="text-gray-300">/</div>
+                </BreadcrumbSeparator>
                 <BreadcrumbItem>
-                  <BreadcrumbPage>UofT Professors Repository</BreadcrumbPage>
+                  <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
+                    <MapIcon className="fill-blue-700 text-white" />
+                    Professors
+                  </BreadcrumbPage>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbSeparator>
+                  <div className="text-gray-300">/</div>
+                </BreadcrumbSeparator>
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Build Resume</BreadcrumbPage>
+                  <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
+                    <PencilLineIcon className="fill-blue-700 text-white" />
+                    Resume
+                  </BreadcrumbPage>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbSeparator>
+                  <div className="text-gray-300">/</div>
+                </BreadcrumbSeparator>
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Construct Email</BreadcrumbPage>
+                  <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
+                    <PersonStandingIcon className="text-blue-700" />
+                    Eldan Cohen
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator>
+                  <div className="text-gray-300">/</div>
+                </BreadcrumbSeparator>
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
+                    <Mail className="text-blue-700 h-4 w-4" />
+                    Email
+                  </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
