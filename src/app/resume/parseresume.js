@@ -1,16 +1,20 @@
-import axios from 'axios';
-
 export default async function ParseResume(pdfFile) {
   try {
     const formData = new FormData();
-    formData.append('file', pdfFile); 
-    const response = await axios.post('http://127.0.0.1:8000/resume/analyse', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+    formData.append('file', pdfFile);
+
+    const response = await fetch('http://127.0.0.1:8000/resume/analyse', {
+      method: 'POST',
+      body: formData,
     });
-    return response.data;
+
+    if (!response.ok) {
+      throw new Error(`Server responded with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
   } catch (error) {
-    return error
+    return { error: error.message || 'Something went wrong' };
   }
 }

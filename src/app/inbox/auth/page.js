@@ -1,7 +1,7 @@
-"use client";
+"use server"
 
-import React from "react";
-import { Button } from "@/shadcomponents/ui/button";
+import { cookies } from "next/headers";
+import InboxLoginButton from "@/app/components/inbox/inboxloginbutton";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -15,21 +15,13 @@ import {
   MoveRight,
   Plus,
   Laptop,
-  MapIcon,
-  PencilLineIcon,
-  PersonStandingIcon,
   Paperclip,
-  InboxIcon,
-  Lock,
-  LockIcon,
   LockKeyhole,
 } from "lucide-react";
 
-export default function InboxAuth() {
-  const handleLogin = () => {
-    window.location.href = "http://localhost:8080/auth/gmail-data";
-  };
-
+export default async function InboxAuth() {
+  const cookieStore = await cookies()
+  const userId = cookieStore.get("user_id")
   return (
     <>
       <Breadcrumb className="font-main font-semibold">
@@ -78,7 +70,7 @@ export default function InboxAuth() {
           </div>
         </div>
         <div className="space-y-5">
-          <Button onClick={handleLogin}>Connect with Google</Button>
+          <InboxLoginButton userId = {userId.value}/>
         </div>
         <div>
           <p className="font-light text-xs w-[30rem] text-center">
