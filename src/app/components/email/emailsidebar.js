@@ -70,7 +70,6 @@ export default function EmailSideBar({ publications }) {
               >
                 <div className="space-y-1">
                   <p className="text-gray-500 text-xs font-medium">Research</p>
-                  {/* Title with character limit and ellipsis */}
                   <h1 className="text-sm font-medium text-gray-800">
                     {pub.title.length > 80
                       ? `${pub.title.substring(0, 80)}...`
@@ -128,29 +127,6 @@ export default function EmailSideBar({ publications }) {
               </CardContent>
             ))}
           </div>
-        </Card>
-
-        <Card className="w-[13rem] ">
-          <CardTitle className="font-sans ">
-            <CardContent className="text-sm flex space-x-2">
-              <div className="h-4 w-4 bg-red-500"></div>
-              <span>Spell Check</span>
-            </CardContent>
-            <CardDescription className="text-xs ml-5">
-              Review the provided English text and identify any spelling errors
-            </CardDescription>
-          </CardTitle>
-        </Card>
-        <Card className="w-[13rem] ">
-          <CardTitle className="font-sans ">
-            <CardContent className="text-sm flex space-x-2">
-              <div className="h-4 w-4 bg-orange-500"></div>
-              <span>Specificity</span>
-            </CardContent>
-            <CardDescription className="text-xs ml-5">
-              Review the provided English text and identify any spelling errors
-            </CardDescription>
-          </CardTitle>
         </Card>
       </div>
     </>

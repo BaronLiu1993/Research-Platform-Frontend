@@ -97,7 +97,7 @@ export default async function Repository() {
             <div className="my-10 space-y-2">
               <div className="rounded-xs mt-2">
                 <div className="flex gap-2 pt-6">
-                  <h1 className="text-2xl text-neutral-700 font-semibold h-fit">
+                  <h1 className="text-2xl text-[#787774] font-semibold h-fit">
                     Curated Professors
                   </h1>
                 </div>

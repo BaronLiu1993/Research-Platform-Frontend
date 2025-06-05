@@ -179,13 +179,12 @@ export default function EmailTextEditor({ student_data, research_interests, send
     );
   }
 
-  //For Toggling CSS with Tailwind
   const toggleItemClasses = (isActive) =>
     `p-1.5 data-[state=on]:bg-gray-200 data-[state=on]:text-gray-800 hover:bg-gray-100 text-gray-600 rounded-sm transition-colors`;
 
   return (
     <>
-      <div className="flex flex-col md:flex-row gap-4 font-sans w-full">
+      <div className="flex flex-col md:flex-row gap-4 font-main w-full">
         <div className="w-full md:w-2/3">
           <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-t-md flex flex-wrap items-center gap-1">
             <ToggleGroup type="multiple">
@@ -227,7 +226,7 @@ export default function EmailTextEditor({ student_data, research_interests, send
                 <button
                   className={`${toggleItemClasses(
                     false
-                  )} flex items-center gap-1.5 bg-gray-100 rounded-4xl border-2 text-sm px-2 font-semibold`}
+                  )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
                 >
                   <Sparkles className="h-4 w-4 text-purple-500" />
                   <span> Extra Revisions</span>
@@ -267,7 +266,7 @@ export default function EmailTextEditor({ student_data, research_interests, send
                 <button
                   className={`${toggleItemClasses(
                     false
-                  )} flex items-center gap-1.5 text-sm px-2 bg-gray-100 rounded-full border-2 font-semibold`}
+                  )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
                 >
                   <Microscope className="h-4 w-4 text-pink-500" /> Publication
                   Mode
@@ -283,7 +282,7 @@ export default function EmailTextEditor({ student_data, research_interests, send
                 <button
                   className={`${toggleItemClasses(
                     false
-                  )} flex items-center gap-1.5 text-sm px-2 bg-gray-100 rounded-4xl border-2 font-semibold`}
+                  )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
                 >
                   <Calendar className="h-4 w-4 text-green-500" /> Google
                   Calendar
@@ -299,7 +298,7 @@ export default function EmailTextEditor({ student_data, research_interests, send
                 <button
                   className={`${toggleItemClasses(
                     false
-                  )} flex items-center gap-1.5 text-sm px-2 bg-gray-100 rounded-4xl border-2 font-semibold`}
+                  )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
                 >
                   <Atom className="h-4 w-4 text-blue-500" /> Deep Think
                 </button>

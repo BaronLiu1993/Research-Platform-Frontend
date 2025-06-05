@@ -27,8 +27,9 @@ export default function Email({ student_data }) {
   const searchParams = useSearchParams();
   const name = searchParams.get("name") || "Recipient Name";
   const email = searchParams.get("email") || "recipient@example.com";
-  const interestsString = searchParams.get("professor_interests") || "Topic A, Topic B, Topic C";
-  const professor_id = searchParams.get("id") || null
+  const interestsString =
+    searchParams.get("professor_interests") || "Topic A, Topic B, Topic C";
+  const professor_id = searchParams.get("id") || null;
   const interests = interestsString.split(",");
   const [uploadedFile, setUploadedFile] = useState(null);
   const [subject, setSubject] = useState("");
@@ -52,28 +53,20 @@ export default function Email({ student_data }) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8 font-main bg-white text-gray-800">
-      <div className="mb-6 pb-4 border-b border-gray-200">
-        <div className="flex items-center text-xl font-semibold text-neutral-700">
-          <MailPlus className="h-5 w-5 mr-3 text-blue-500" />
-          <h1>New Message</h1>
-        </div>
-      </div>
+    <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8 font-main bg-white">
+      <div className="mb-6 pb-4 border-b border-gray-200"></div>
 
-      <div className="space-y-4 mb-6">
+      <div className="space-y-0.5 mb-6">
         {interests && interests.length > 0 && (
           <div className="flex flex-col sm:flex-row sm:items-start justify-center items-center">
-            <Label className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center tracking-wider">
-              Interests
-            </Label>
-            <div className="flex-grow">
+            <div className="flex-grow ">
               <div>
                 <div className="flex flex-wrap gap-1.5">
                   {interests.map((interest, index) => {
                     return (
                       <Badge
                         key={index}
-                        className={`px-2 py-0.5 text-xs rounded-full font-medium`}
+                        className={`px-2 py-0.5 text-xs rounded-xs font-medium text-[#787774] bg-[#F1F1EF]`}
                       >
                         {interest}
                       </Badge>
@@ -86,52 +79,30 @@ export default function Email({ student_data }) {
         )}
 
         <div className="flex flex-col sm:flex-row sm:items-center">
-          <Label
-            htmlFor="to-email"
-            className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center tracking-wider"
-          >
-            Send To...
-          </Label>
-          <div className="flex-grow flex items-center space-x-2 border border-gray-300 rounded-md px-3 py-1.5 bg-white focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+          <div className="flex-grow flex items-center space-x-2">
             {name && (
-              <span className="text-sm font-medium bg-purple-100 text-purple-700 shadow-md border-2 border-purple-400 px-2 py-0.5 rounded-md whitespace-nowrap">
-                {name}
-              </span>
+              <div className="space-x-2">
+                <span className="text-xs font-semibold text-black">{name}</span>
+                <span className="text-xs font-semibold text-[#787774]">
+                  {email}
+                </span>
+              </div>
             )}
-            <Input
-              className="w-full p-0 m-0 border-none shadow-none focus-visible:ring-0 text-sm text-gray-700 font-semibold bg-transparent"
-              defaultValue={email}
-              placeholder="recipient@example.com"
-            />
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center">
-          <Label
-            htmlFor="from-email"
-            className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center tracking-wider"
-          >
-            From...
-          </Label>
-          <Input
-            id="from-email"
-            defaultValue={student_data.student_email}
-            className="flex-grow border border-gray-300 rounded-md px-3 py-1.5 text-sm text-gray-700 font-semibold  shadow-sm"
-            placeholder="your-email@example.com"
-          />
+        <div
+          className="flex text-xs text-[#787774] flex-col sm:flex-row sm:items-center"
+        >
+          {student_data.student_email}
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center py-2">
-          <Label
-            htmlFor="subject"
-            className="w-full sm:w-24 text-sm font-bold mb-1 sm:mb-0 shrink-0 flex items-center tracking-wider"
-          >
-            Subject
-          </Label>
+        <div className="flex flex-col sm:flex-row sm:items-center">
+          
           <Input
             id="subject"
-            className="flex-grow border border-gray-300 rounded-md px-3 py-1.5 text-sm text-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm font-medium"
-            placeholder={`Research Inquiry: Professor ${name} - [Your Name/Topic]`}
+            className="rounded-xs h-7 mt-1"
+            placeholder={`Sample: Research Inquiry: Professor ${name} - [Your Name/Topic]`}
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
           />
@@ -143,7 +114,7 @@ export default function Email({ student_data }) {
           student_data={student_data}
           research_interests={interestsString}
           sendSubject={handleSendSubject}
-          professor_id = {professor_id}
+          professor_id={professor_id}
         />
       </div>
 
