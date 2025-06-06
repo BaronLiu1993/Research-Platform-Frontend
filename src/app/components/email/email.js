@@ -53,56 +53,42 @@ export default function Email({ student_data }) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8 font-main bg-white">
-      <div className="mb-6 pb-4 border-b border-gray-200"></div>
-
-      <div className="space-y-0.5 mb-6">
+    <div className=" p-4 sm:p-6 md:p-8 font-main bg-white">
+      <div className="mb-6 space-y-2">
         {interests && interests.length > 0 && (
-          <div className="flex flex-col sm:flex-row sm:items-start justify-center items-center">
-            <div className="flex-grow ">
-              <div>
-                <div className="flex flex-wrap gap-1.5">
-                  {interests.map((interest, index) => {
-                    return (
-                      <Badge
-                        key={index}
-                        className={`px-2 py-0.5 text-xs rounded-xs font-medium text-[#787774] bg-[#F1F1EF]`}
-                      >
-                        {interest}
-                      </Badge>
-                    );
-                  })}
-                </div>
-              </div>
+          <div>
+            <div className="flex flex-wrap gap-2">
+              {interests.map((interest, index) => (
+                <Badge
+                  key={index}
+                  className="px-2.5 py-1 text-xs font-medium rounded-md text-[#37352F] bg-[#EAEAEA]"
+                >
+                  {interest}
+                </Badge>
+              ))}
             </div>
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row sm:items-center">
-          <div className="flex-grow flex items-center space-x-2">
-            {name && (
-              <div className="space-x-2">
-                <span className="text-xs font-semibold text-black">{name}</span>
-                <span className="text-xs font-semibold text-[#787774]">
-                  {email}
-                </span>
-              </div>
-            )}
-          </div>
+        <div className="flex items-center space-x-3">
+          {name && (
+            <>
+              <span className="text-sm font-semibold text-[#37352F]">
+                {name}
+              </span>
+              <span className="text-sm text-[#9B9A97]">{email}</span>
+            </>
+          )}
         </div>
-
-        <div
-          className="flex text-xs text-[#787774] flex-col sm:flex-row sm:items-center"
-        >
+        <div className="text-sm text-[#9B9A97]">
           {student_data.student_email}
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center">
-          
+        <div>
           <Input
             id="subject"
-            className="rounded-xs h-7 mt-1"
-            placeholder={`Sample: Research Inquiry: Professor ${name} - [Your Name/Topic]`}
+            className="w-full h-8 px-2 text-sm bg-transparent border border-gray-300 rounded-md placeholder:text-[#9B9A97] focus:border-blue-500 focus:ring-0"
+            placeholder={`e.g. Research Inquiry: Professor ${name} - Your Name`}
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
           />

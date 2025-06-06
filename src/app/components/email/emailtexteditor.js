@@ -185,7 +185,7 @@ export default function EmailTextEditor({ student_data, research_interests, send
   return (
     <>
       <div className="flex flex-col md:flex-row gap-4 font-main w-full">
-        <div className="w-full md:w-2/3">
+        <div className="w-full">
           <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-t-md flex flex-wrap items-center gap-1">
             <ToggleGroup type="multiple">
               <ToggleGroupItem
@@ -332,9 +332,9 @@ export default function EmailTextEditor({ student_data, research_interests, send
             </div>
           )}
         </div>
-        <div className="w-full md:w-1/3">
+        {/*<div className="w-full md:w-1/3">
           <EmailSideBar publications={publications} />
-        </div>
+        </div>*/}
       </div>
     </>
   );
