@@ -9,7 +9,6 @@ import EmailTextEditor from "./emailtexteditor";
 // Shad CN
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Input } from "@/shadcomponents/ui/input";
-import { Label } from "@/shadcomponents/ui/label";
 import { Button } from "@/shadcomponents/ui/button";
 
 // Lucide Icons
@@ -20,10 +19,9 @@ import {
   FileText,
   AirplayIcon,
   XIcon,
-  MailPlus,
 } from "lucide-react";
 
-export default function Email({ student_data }) {
+export default function Email({ student_data, timeZone }) {
   const searchParams = useSearchParams();
   const name = searchParams.get("name") || "Recipient Name";
   const email = searchParams.get("email") || "recipient@example.com";
@@ -33,10 +31,17 @@ export default function Email({ student_data }) {
   const interests = interestsString.split(",");
   const [uploadedFile, setUploadedFile] = useState(null);
   const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("")
   const fileInputRef = useRef(null);
   const handleSendSubject = (data) => {
     setSubject(data);
   };
+  
+  const handleSendBody = (data) => {
+    setBody(data)
+  }
+
+  
 
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];

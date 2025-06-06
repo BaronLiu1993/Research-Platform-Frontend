@@ -32,6 +32,8 @@ export default async function email() {
     },
   });
   const responses = await serverData.json();
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   return (
     <>
       <SidebarProvider>
@@ -96,7 +98,7 @@ export default async function email() {
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <Email student_data = {responses} />
+          <Email student_data = {responses} timeZone = {timeZone}/>
         </SidebarInset>
       </SidebarProvider>
     </>
