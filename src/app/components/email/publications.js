@@ -1,6 +1,6 @@
 import { Switch } from "@/shadcomponents/ui/switch";
 
-export default function Publications({ publication_data }) {
+export default function Publications() {
   return (
     <div className="w-fit border font-san bg-white rounded-md shadow-none p-4 flex flex-col justify-start items-start space-y-2">
       <div className="text-sm flex justify-start items-start font-sans">
