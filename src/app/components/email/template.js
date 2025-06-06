@@ -23,7 +23,7 @@ export function Template({ onUpdate, sendEmail, student_data, professor_id }) {
   }
 
   const [input, setInput] = useState({
-    student_id: student_data.user_id || "",
+    student_id: student_data || "",
     professor_id: 2,
     motivation: student_data.student_motivation || "",
     resume_points: "Built a KNN Nearest Neighbours Algorithm",

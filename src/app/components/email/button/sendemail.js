@@ -1,6 +1,4 @@
 "use client";
-
-import { Description } from "@radix-ui/react-dialog";
 import { useState } from "react";
 
 export default function SendEmail({ eventName, description }) {

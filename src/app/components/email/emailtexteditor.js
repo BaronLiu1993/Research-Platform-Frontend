@@ -37,22 +37,27 @@ export default function EmailTextEditor({ student_email, professor_email, resear
   const [aiTyping, setAiTyping] = useState(false);
   const [publications, setPublications] = useState([]);
   const [content, setContent] = useState("");
+  const [subject, setSubject] = useState("")
   const [sentData, setSentData] = useState(false);
   const [typedContent, setTypedContent] = useState("");
   const typingTimeoutRef = useRef(null);
+
+  console.log(content)
+  console.log(student_id)
 
   const handleSetPublications = (data) => {
     setPublications(data);
   };
 
-  
+  //I have to change the data.subject to be dynamic
   const submitCreateDraft = () => {
-    handleCreateDraft(professor_email, student_email, subject, body, professor_id, student_id)
+    handleCreateDraft(professor_email, student_email, subject, content, professor_id, student_id)
   }
 
-  //Handle Chaning Subject too
+  //Handle Changing Subject too
   const handleSetEmail = (data) => {
     setContent(data.body);
+    setSubject(data.subject)
     sendSubject(data.subject);
     setSentData(true);
   };
