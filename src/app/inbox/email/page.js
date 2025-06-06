@@ -99,30 +99,33 @@ export default async function InboxEmail() {
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <div className="font-main">
-            <div className="flex items-center space-x-2">
+          <div className="font-main py-6">
+            <div className="flex items-center space-x-2 px-10 py-3">
               <Inbox className="h-5 w-5 text-red-700" />
               <h1 className="py-1 text-[15px] font-semibold text-black">
                 Inbox
               </h1>
             </div>
-            <div className="mx-10">
+            <div className="">
               {parsedEmailResponse.emails.map((email) => (
                 <div
                   key={email.id}
-                  className="flex justify-between items-center text-sm py-2"
+                  className="flex justify-between items-center text-sm cursor-pointer py-2 px-5 rounded-md hover:bg-[#F1F1EF]"
                 >
-                  <h1 className="font-semibold w-[150px] truncate">
-                    {email.from.name}
-                  </h1>
+                  <div className = "flex items-center space-x-3">
+                    <div className = "h-1.5 w-1.5 bg-blue-400 rounded-full"></div>
+                    <h1 className="font-semibold w-[150px] truncate">
+                      {email.from.name}
+                    </h1>
+                  </div>
 
-                  <p className="w-[400px] text-left truncate">
+                  <p className="w-[400px] text-left truncate text-[#787774]">
                     {email.subject.length > 60
                       ? `${email.subject.slice(0, 60)}...`
                       : email.subject}
                   </p>
 
-                  <p className="text-right w-[70px]">
+                  <p className="text-right w-[70px] text-[#787774]">
                     {new Date(email.receivedAt).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",

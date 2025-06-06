@@ -13,7 +13,6 @@ import {
 
 import Publications from "./publications";
 import GoogleCaledar from "./googlecalendar";
-import EmailSideBar from "./emailsidebar";
 
 import {
   Bold,
@@ -36,7 +35,7 @@ import { Template } from "./template";
 export default function EmailTextEditor({ student_data, research_interests, sendSubject, professor_id }) {
   const [aiTyping, setAiTyping] = useState(false);
   const [publications, setPublications] = useState([]);
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState("");
   const [sentData, setSentData] = useState(false);
   const [typedContent, setTypedContent] = useState("");
   const typingTimeoutRef = useRef(null);
@@ -332,9 +331,6 @@ export default function EmailTextEditor({ student_data, research_interests, send
             </div>
           )}
         </div>
-        {/*<div className="w-full md:w-1/3">
-          <EmailSideBar publications={publications} />
-        </div>*/}
       </div>
     </>
   );

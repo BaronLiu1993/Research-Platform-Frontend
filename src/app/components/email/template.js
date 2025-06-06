@@ -26,7 +26,7 @@ export function Template({ onUpdate, sendEmail, student_data, professor_id }) {
     student_id: student_data.user_id || "",
     professor_id: 2,
     motivation: student_data.student_motivation || "",
-    resume_points: loadedResumePoints[0],
+    resume_points: "Built a KNN Nearest Neighbours Algorithm",
     template: template,
   });
 
@@ -40,13 +40,15 @@ export function Template({ onUpdate, sendEmail, student_data, professor_id }) {
     }
 
     function onProgress(data) {
-      if ("publication_data" in data.message) {
-        const pubData = data.message.publication_data;
+      console.log(`Outside: ${data}`)
+      if ("publication_data" in data) {
+        const pubData = data.publication_data;
         if (pubData.length > 0) {
           onUpdate(pubData);
         }
-      } else if ("email_data" in data.message) {
-        const emailData = data.message.email_data;
+      } else if ("email_data" in data) {
+        const emailData = data.email_data;
+        console.log(data)
         sendEmail(emailData);
       } else {
         setEvents((prev) => [...prev, data.message]);
