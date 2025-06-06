@@ -66,7 +66,7 @@ export default async function Bookmark() {
           </Breadcrumb>
         </header>
 
-        <div className="flex flex-1 overflow-y-auto font-sans">
+        <div className="flex flex-1 overflow-y-auto font-main">
           <div className="w-full flex p-6 space-x-6">
             <Kanban user_id={user_id} />
           </div>

@@ -113,7 +113,7 @@ export default async function Kanban({ user_id }) {
   ];
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 font-main overflow-hidden">
+    <div className="flex flex-col h-fit bg-gray-50 font-main overflow-hidden">
       <div className="border-b border-gray-200">
         <div className="px-4 pt-3 bg-white justify-between shrink-0">
           <div className="flex items-center gap-2">
