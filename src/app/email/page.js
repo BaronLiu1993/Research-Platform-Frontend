@@ -92,7 +92,7 @@ export default async function email() {
                 <BreadcrumbItem>
                   <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
                     <Mail className="text-blue-700 h-4 w-4" />
-                    Email
+                    Draft
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>

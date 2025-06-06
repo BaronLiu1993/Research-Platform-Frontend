@@ -31,15 +31,11 @@ export default function Email({ student_data, timeZone }) {
   const interests = interestsString.split(",");
   const [uploadedFile, setUploadedFile] = useState(null);
   const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("")
   const fileInputRef = useRef(null);
   const handleSendSubject = (data) => {
     setSubject(data);
   };
   
-  const handleSendBody = (data) => {
-    setBody(data)
-  }
 
 
 
@@ -105,7 +101,6 @@ export default function Email({ student_data, timeZone }) {
           student_data={student_data}
           research_interests={interestsString}
           sendSubject={handleSendSubject}
-          sendBody={handleSendBody}
           professor_id={professor_id}
         />
       </div>
