@@ -9,7 +9,7 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator, // Assuming this might be used, though not present in original breadcrumb
+  BreadcrumbSeparator, 
 } from "@/shadcomponents/ui/breadcrumb";
 import {
   SidebarProvider,
@@ -25,15 +25,13 @@ import FilterRecommendations from "./filterrecommendations";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
   Database,
-  House, // Not used in this specific layout, but kept import
   Laptop,
   List,
   MapIcon,
   MoveLeft,
   MoveRight,
   Plus,
-  Settings, // Not used in this specific layout, but kept import
-  Slash, // Not used in this specific layout, but kept import
+
 } from "lucide-react";
 
 export default async function Repository() {
