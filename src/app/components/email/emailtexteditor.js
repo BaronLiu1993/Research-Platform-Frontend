@@ -11,6 +11,7 @@ import {
   PopoverTrigger,
 } from "@radix-ui/react-popover";
 
+import { handleCreateDraft } from "./button/createdraft";
 import Publications from "./publications";
 import GoogleCaledar from "./googlecalendar";
 
@@ -32,7 +33,7 @@ import { prompts } from "./AIwriters";
 import DeepThink from "./deepthink";
 import { Template } from "./template";
 
-export default function EmailTextEditor({ student_data, research_interests, sendSubject, professor_id }) {
+export default function EmailTextEditor({ student_email, professor_email, research_interests, sendSubject, professor_id, student_id }) {
   const [aiTyping, setAiTyping] = useState(false);
   const [publications, setPublications] = useState([]);
   const [content, setContent] = useState("");
@@ -43,6 +44,11 @@ export default function EmailTextEditor({ student_data, research_interests, send
   const handleSetPublications = (data) => {
     setPublications(data);
   };
+
+  
+  const submitCreateDraft = () => {
+    handleCreateDraft(professor_email, student_email, subject, body, professor_id, student_id)
+  }
 
   //Handle Chaning Subject too
   const handleSetEmail = (data) => {
@@ -68,6 +74,7 @@ export default function EmailTextEditor({ student_data, research_interests, send
 
   useEffect(() => {
     if (editor && content && sentData) {
+      submitCreateDraft()
       setTypedContent("");
       let i = 0;
       const typeCharacter = () => {
@@ -317,7 +324,7 @@ export default function EmailTextEditor({ student_data, research_interests, send
               <Template
                 onUpdate={handleSetPublications}
                 sendEmail={handleSetEmail}
-                student_data={student_data}
+                student_data={student_id}
                 professor_id = {professor_id}
                 className="p-10"
               />

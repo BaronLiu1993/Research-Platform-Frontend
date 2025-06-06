@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 
 export default function Email({ student_data, timeZone }) {
+  console.log(student_data)
   const searchParams = useSearchParams();
   const name = searchParams.get("name") || "Recipient Name";
   const email = searchParams.get("email") || "recipient@example.com";
@@ -98,7 +99,9 @@ export default function Email({ student_data, timeZone }) {
 
       <div className="mb-6">
         <EmailTextEditor
-          student_data={student_data}
+          student_email={student_data.student_email}
+          student_id={student_data.user_id}
+          professor_email={email}
           research_interests={interestsString}
           sendSubject={handleSendSubject}
           professor_id={professor_id}
