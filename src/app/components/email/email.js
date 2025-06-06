@@ -41,7 +41,7 @@ export default function Email({ student_data, timeZone }) {
     setBody(data)
   }
 
-  
+
 
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
@@ -105,6 +105,7 @@ export default function Email({ student_data, timeZone }) {
           student_data={student_data}
           research_interests={interestsString}
           sendSubject={handleSendSubject}
+          sendBody={handleSendBody}
           professor_id={professor_id}
         />
       </div>
