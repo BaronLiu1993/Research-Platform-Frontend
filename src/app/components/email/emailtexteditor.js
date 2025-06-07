@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
@@ -10,6 +10,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@radix-ui/react-popover";
+import { ToggleGroup, ToggleGroupItem } from "@/shadcomponents/ui/toggle-group";
+import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
 import { handleCreateDraft } from "./button/createdraft";
 import Publications from "./publications";
@@ -27,42 +29,31 @@ import {
   Calendar,
   Atom,
 } from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@/shadcomponents/ui/toggle-group";
-import { Skeleton } from "@/shadcomponents/ui/skeleton";
+
 import { prompts } from "./AIwriters";
 import DeepThink from "./deepthink";
 import { Template } from "./template";
 
-export default function EmailTextEditor({ student_email, professor_email, research_interests, sendSubject, professor_id, student_id }) {
+export default function EmailTextEditor({
+  student_email,
+  professor_email,
+  research_interests,
+  sendSubject,
+  professor_id,
+  student_id,
+  draft_data,
+}) {
+  //useStates
   const [aiTyping, setAiTyping] = useState(false);
   const [publications, setPublications] = useState([]);
-  const [content, setContent] = useState("");
-  const [subject, setSubject] = useState("")
+  const [subject, setSubject] = useState("");
   const [sentData, setSentData] = useState(false);
-  const [typedContent, setTypedContent] = useState("");
+  //useRefs
   const typingTimeoutRef = useRef(null);
-
-  console.log(content)
-  console.log(student_id)
-
-  const handleSetPublications = (data) => {
-    setPublications(data);
-  };
-
-  //I have to change the data.subject to be dynamic
-  const submitCreateDraft = () => {
-    handleCreateDraft(professor_email, student_email, subject, content, professor_id, student_id)
-  }
-
-  //Handle Changing Subject too
-  const handleSetEmail = (data) => {
-    setContent(data.body);
-    setSubject(data.subject)
-    sendSubject(data.subject);
-    setSentData(true);
-  };
-
-
+  const hasSetInitialContent = useRef(false);
+  const hasSetAIContent = useRef(false);
+  console.log(professor_id)
+  //Fix the editor state later
   const editor = useEditor({
     extensions: [StarterKit, Highlight.configure({ multicolor: true })],
     editorProps: {
@@ -72,40 +63,40 @@ export default function EmailTextEditor({ student_email, professor_email, resear
       },
     },
     content: "",
-    onUpdate: ({ editor }) => {
-      setContent(editor.getHTML());
-    },
   });
 
   useEffect(() => {
-    if (editor && content && sentData) {
-      submitCreateDraft()
-      setTypedContent("");
-      let i = 0;
-      const typeCharacter = () => {
-        if (i < content.length) {
-          setTypedContent((prev) => prev + content.charAt(i));
-          i++;
-          typingTimeoutRef.current = setTimeout(typeCharacter, 10); 
-        } else {
-          editor.commands.setContent(content);
-        }
-      };
-      typeCharacter();
-    }
+    setSubject(draft_data.subject)
+    sendSubject(draft_data.subject)
+    setSentData(true)
+  }, [editor])
 
-    return () => {
-      if (typingTimeoutRef.current) {
-        clearTimeout(typingTimeoutRef.current);
-      }
-    };
-  }, [content, editor, sentData]);
+  const submitCreateDraft = (subject) => {
+    const body = editor?.getHTML().replace(/^<p>(.*?)<\/p>$/s, "$1");
+    handleCreateDraft(
+      professor_email,
+      student_email,
+      subject,
+      body,
+      professor_id,
+      student_id
+    );
+  };
 
-  useEffect(() => {
-    if (editor && typedContent && sentData) {
-      editor.commands.setContent(typedContent, false);
+  const handleSetPublications = (data) => {
+    setPublications(data);
+  };
+
+  const handleSetEmail = (data) => {
+    if (editor && !hasSetAIContent.current) {
+      editor.commands.setContent(data.body);
+      setSubject(data.subject);
+      sendSubject(data.subject);
+      setSentData(true)
+      hasSetAIContent.current = true
+      submitCreateDraft(data.subject)
     }
-  }, [editor, typedContent, sentData]);
+  };
 
   const handleAIRewrite = async (prompt) => {
     if (!editor) return;
@@ -128,7 +119,6 @@ export default function EmailTextEditor({ student_email, professor_email, resear
       });
 
       if (!response.ok) {
-        console.error("AI edit request failed:", response.status);
         setAiTyping(false);
         return;
       }
@@ -177,7 +167,6 @@ export default function EmailTextEditor({ student_email, professor_email, resear
         })
         .run();
     } catch (error) {
-      console.error("Error during AI rewrite:", error);
     } finally {
       setAiTyping(false);
     }
@@ -185,7 +174,7 @@ export default function EmailTextEditor({ student_email, professor_email, resear
 
   if (!editor) {
     return (
-      <div className="min-h-[30rem] w-full p-4 bg-gray-50 rounded-md">
+      <div className="min-h-[40rem] w-full p-4 bg-gray-50 rounded-md">
         <Skeleton className="w-full h-20 mb-3 rounded-md bg-gray-200" />
         <Skeleton className="w-full h-64 rounded-md bg-gray-200" />
       </div>
@@ -330,7 +319,7 @@ export default function EmailTextEditor({ student_email, professor_email, resear
                 onUpdate={handleSetPublications}
                 sendEmail={handleSetEmail}
                 student_data={student_id}
-                professor_id = {professor_id}
+                professor_id={professor_id}
                 className="p-10"
               />
             )}

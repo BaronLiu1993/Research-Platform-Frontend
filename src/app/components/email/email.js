@@ -20,20 +20,22 @@ import {
   XIcon,
 } from "lucide-react";
 
-export default function Email({ student_data, draft_data, professor_id, professor_name, professor_email, professor_interests, timeZone }) {
+export default function Email({ student_data, professor_id, professor_name, professor_email, professor_interests, timeZone, draft_data }) {
   // We need to push the professorId up for the check for the server side check
   // Do it server side because I want it to load faster 
-  const interests = professor_interests.split(",");
   // useState and useRef Hooks
   const [uploadedFile, setUploadedFile] = useState(null);
   const [subject, setSubject] = useState("");
   const fileInputRef = useRef(null);
 
+  //Split the interests array
+  const interests = professor_interests.split(",");
+
+  // Handlers
   const handleSendSubject = (data) => {
     setSubject(data);
   }
-
-  // Handlers
+  
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -99,6 +101,7 @@ export default function Email({ student_data, draft_data, professor_id, professo
           professor_email={professor_email}
           research_interests={professor_interests}
           sendSubject={handleSendSubject}
+          draft_data = {draft_data}
         />
       </div>
 

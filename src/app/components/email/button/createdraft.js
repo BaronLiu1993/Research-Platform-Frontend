@@ -5,6 +5,8 @@ export const handleCreateDraft = async (to, from, subject, body, professor_id, s
       subject: subject,
       message: body,
     };
+
+    console.log(dataJSON)
   
     try {
       const response = await fetch(

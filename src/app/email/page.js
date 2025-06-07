@@ -22,6 +22,7 @@ import {
   Plug,
   Plus,
 } from "lucide-react";
+import { parse } from "date-fns";
 
 export default async function email({ searchParams }) {
   //Get SearchParams
@@ -45,8 +46,8 @@ export default async function email({ searchParams }) {
   );
   const parsedStudentData = await studentData.json();
   //Check If there is already a draft
-  //If there is then push the prop down, if there is not then do nothing
-
+  //If there is then push the prop down, if there is none then do nothing
+  
   const draftData = await fetch(`http://localhost:8080/gmail/resume-draft/${parsedStudentData.user_id}/${professorId}`, {
     method: "GET",
     headers: {
@@ -54,7 +55,8 @@ export default async function email({ searchParams }) {
     },
   });
 
-  console.log(draftData)
+  const parsedDraftData = await draftData.json()
+  
 
   return (
     <>
@@ -125,6 +127,7 @@ export default async function email({ searchParams }) {
         professor_email={professorEmail}
         professor_interests={professorResearchInterests}
         timeZone={timeZone}
+        draft_data = {parsedDraftData}
       />
     </>
   );
