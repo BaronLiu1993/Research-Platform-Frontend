@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { useSearchParams } from "next/navigation";
 
 // Component imports
 import EmailTextEditor from "./emailtexteditor";
@@ -21,25 +20,20 @@ import {
   XIcon,
 } from "lucide-react";
 
-export default function Email({ student_data, timeZone }) {
-  console.log(student_data)
-  const searchParams = useSearchParams();
-  const name = searchParams.get("name") || "Recipient Name";
-  const email = searchParams.get("email") || "recipient@example.com";
-  const interestsString =
-    searchParams.get("professor_interests") || "Topic A, Topic B, Topic C";
-  const professor_id = searchParams.get("id") || null;
-  const interests = interestsString.split(",");
+export default function Email({ student_data, draft_data, professor_id, professor_name, professor_email, professor_interests, timeZone }) {
+  // We need to push the professorId up for the check for the server side check
+  // Do it server side because I want it to load faster 
+  const interests = professor_interests.split(",");
+  // useState and useRef Hooks
   const [uploadedFile, setUploadedFile] = useState(null);
   const [subject, setSubject] = useState("");
   const fileInputRef = useRef(null);
+
   const handleSendSubject = (data) => {
     setSubject(data);
-  };
-  
+  }
 
-
-
+  // Handlers
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -73,12 +67,12 @@ export default function Email({ student_data, timeZone }) {
         )}
 
         <div className="flex items-center space-x-3">
-          {name && (
+          {professor_name && (
             <>
               <span className="text-sm font-semibold text-[#37352F]">
-                {name}
+                {professor_name}
               </span>
-              <span className="text-sm text-[#9B9A97]">{email}</span>
+              <span className="text-sm text-[#9B9A97]">{professor_email}</span>
             </>
           )}
         </div>
@@ -90,7 +84,7 @@ export default function Email({ student_data, timeZone }) {
           <Input
             id="subject"
             className="w-full h-8 px-2 text-sm bg-transparent border border-gray-300 rounded-md placeholder:text-[#9B9A97] focus:border-blue-500 focus:ring-0"
-            placeholder={`e.g. Research Inquiry: Professor ${name} - Your Name`}
+            placeholder={`e.g. Research Inquiry: Professor ${professor_name} - Your Name`}
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
           />
@@ -101,10 +95,10 @@ export default function Email({ student_data, timeZone }) {
         <EmailTextEditor
           student_email={student_data.student_email}
           student_id={student_data.user_id}
-          professor_email={email}
-          research_interests={interestsString}
-          sendSubject={handleSendSubject}
           professor_id={professor_id}
+          professor_email={professor_email}
+          research_interests={professor_interests}
+          sendSubject={handleSendSubject}
         />
       </div>
 
