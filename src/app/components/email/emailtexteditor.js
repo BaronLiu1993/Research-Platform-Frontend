@@ -1,10 +1,12 @@
 "use client";
 
+//TipTap Components
 import { useState, useRef, useEffect } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 
+//Shad CN Styling Components
 import {
   Popover,
   PopoverContent,
@@ -13,10 +15,16 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/shadcomponents/ui/toggle-group";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
+//Draft Components
 import { handleCreateDraft } from "./button/createdraft";
+import { handleAutoSave } from "./button/autosave";
+
+//Option Components
 import Publications from "./publications";
 import GoogleCaledar from "./googlecalendar";
+import DeepThink from "./deepthink";
 
+//Icons
 import {
   Bold,
   Italic,
@@ -28,10 +36,12 @@ import {
   CheckSquare,
   Calendar,
   Atom,
+  Cloud,
+  RefreshCcw,
 } from "lucide-react";
 
+//Prompts and Template Components
 import { prompts } from "./AIwriters";
-import DeepThink from "./deepthink";
 import { Template } from "./template";
 
 export default function EmailTextEditor({
@@ -48,12 +58,16 @@ export default function EmailTextEditor({
   const [publications, setPublications] = useState([]);
   const [subject, setSubject] = useState("");
   const [sentData, setSentData] = useState(false);
-  //useRefs
+  const [isSaving, setIsSaving] = useState(false);
+  //useRefs for determining if it is initialContent that is being set or AI Content Being Set
   const typingTimeoutRef = useRef(null);
   const hasSetInitialContent = useRef(false);
   const hasSetAIContent = useRef(false);
-  console.log(professor_id)
+  const saveTimeout = useRef(null);
+
+  console.log(professor_id);
   //Fix the editor state later
+
   const editor = useEditor({
     extensions: [StarterKit, Highlight.configure({ multicolor: true })],
     editorProps: {
@@ -63,13 +77,34 @@ export default function EmailTextEditor({
       },
     },
     content: "",
+    onUpdate({ editor }) {
+      if (saveTimeout.current) {
+        clearTimeout(saveTimeout.current);
+      }
+
+      setIsSaving(true); // show it is saving now
+      console.log(isSaving);
+
+      saveTimeout.current = setTimeout(() => {
+        setIsSaving(false);
+        console.log(isSaving);
+        handleAutoSave(subject, editor.getText(), student_id, professor_id);
+      }, 3000);
+    },
   });
 
+  //console.log(editor?.getHTML())
+
+  //Listens Only Once
   useEffect(() => {
-    setSubject(draft_data.subject)
-    sendSubject(draft_data.subject)
-    setSentData(true)
-  }, [editor])
+    if (!editor || !draft_data?.draftExists || hasSetInitialContent.current)
+      return;
+    editor.commands.setContent(draft_data.body);
+    setSubject(draft_data.subject);
+    sendSubject(draft_data.subject);
+    setSentData(true);
+    hasSetInitialContent.current = true;
+  }, [editor, draft_data, sendSubject]);
 
   const submitCreateDraft = (subject) => {
     const body = editor?.getHTML().replace(/^<p>(.*?)<\/p>$/s, "$1");
@@ -92,9 +127,9 @@ export default function EmailTextEditor({
       editor.commands.setContent(data.body);
       setSubject(data.subject);
       sendSubject(data.subject);
-      setSentData(true)
-      hasSetAIContent.current = true
-      submitCreateDraft(data.subject)
+      setSentData(true);
+      hasSetAIContent.current = true;
+      submitCreateDraft(data.subject);
     }
   };
 
@@ -188,127 +223,148 @@ export default function EmailTextEditor({
     <>
       <div className="flex flex-col md:flex-row gap-4 font-main w-full">
         <div className="w-full">
-          <div className="p-1.5 bg-gray-50 border border-gray-200 rounded-t-md flex flex-wrap items-center gap-1">
-            <ToggleGroup type="multiple">
-              <ToggleGroupItem
-                value="bold"
-                aria-label="Toggle bold"
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                className={toggleItemClasses(editor.isActive("bold"))}
-                disabled={!editor.can().toggleBold()}
-              >
-                <Bold className="h-4 w-4" />
-              </ToggleGroupItem>
-
-              <ToggleGroupItem
-                value="italic"
-                aria-label="Toggle italic"
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                className={toggleItemClasses(editor.isActive("italic"))}
-                disabled={!editor.can().toggleItalic()}
-              >
-                <Italic className="h-4 w-4" />
-              </ToggleGroupItem>
-
-              <ToggleGroupItem
-                value="strike"
-                aria-label="Toggle strikethrough"
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-                className={toggleItemClasses(editor.isActive("strike"))}
-                disabled={!editor.can().toggleStrike()}
-              >
-                <UnderlineIcon className="h-4 w-4" />
-              </ToggleGroupItem>
-            </ToggleGroup>
-
-            <div className="h-5 w-px bg-gray-300 mx-1"></div>
-
-            <Popover className="max-w-[5rem]">
-              <PopoverTrigger asChild>
-                <button
-                  className={`${toggleItemClasses(
-                    false
-                  )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
+          <div className="p-1.5 bg-gray-50 border justify-between border-gray-200 rounded-t-md flex flex-wrap items-center gap-1">
+            <div className = "flex flex-wrap">
+              <ToggleGroup type="multiple">
+                <ToggleGroupItem
+                  value="bold"
+                  aria-label="Toggle bold"
+                  onClick={() => editor.chain().focus().toggleBold().run()}
+                  className={toggleItemClasses(editor.isActive("bold"))}
+                  disabled={!editor.can().toggleBold()}
                 >
-                  <Sparkles className="h-4 w-4 text-purple-500" />
-                  <span> Extra Revisions</span>
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-2 w-64 z-50 space-y-1">
-                <button
-                  onClick={() => handleAIRewrite(prompts[0])}
-                  className="w-full text-left text-xs p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
-                  disabled={aiTyping || !editor.state.selection.content().size}
-                >
-                  <CheckSquare className="h-4 w-4 text-blue-500" /> Fix Grammar
-                </button>
-                <button
-                  onClick={() => handleAIRewrite(prompts[1])}
-                  className="w-full text-left text-xs p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
-                  disabled={aiTyping || !editor.state.selection.content().size}
-                >
-                  <Pencil className="h-4 w-4 text-green-500" /> Reword
-                </button>
-                <button
-                  onClick={() =>
-                    handleAIRewrite(
-                      `${prompts[2]}. These are the professors interests ${research_interests}. Return ONLY the TEXT.`
-                    )
-                  }
-                  className="w-full text-left text-xs p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
-                  disabled={aiTyping || !editor.state.selection.content().size}
-                >
-                  <Wand2 className="h-4 w-4 text-indigo-500" /> Personalise
-                </button>
-              </PopoverContent>
-            </Popover>
+                  <Bold className="h-4 w-4" />
+                </ToggleGroupItem>
 
-            <Popover>
-              <PopoverTrigger asChild>
-                <button
-                  className={`${toggleItemClasses(
-                    false
-                  )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
+                <ToggleGroupItem
+                  value="italic"
+                  aria-label="Toggle italic"
+                  onClick={() => editor.chain().focus().toggleItalic().run()}
+                  className={toggleItemClasses(editor.isActive("italic"))}
+                  disabled={!editor.can().toggleItalic()}
                 >
-                  <Microscope className="h-4 w-4 text-pink-500" /> Publication
-                  Mode
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                <Publications />
-              </PopoverContent>
-            </Popover>
+                  <Italic className="h-4 w-4" />
+                </ToggleGroupItem>
 
-            <Popover>
-              <PopoverTrigger asChild>
-                <button
-                  className={`${toggleItemClasses(
-                    false
-                  )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
+                <ToggleGroupItem
+                  value="strike"
+                  aria-label="Toggle strikethrough"
+                  onClick={() => editor.chain().focus().toggleStrike().run()}
+                  className={toggleItemClasses(editor.isActive("strike"))}
+                  disabled={!editor.can().toggleStrike()}
                 >
-                  <Calendar className="h-4 w-4 text-green-500" /> Google
-                  Calendar
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                <GoogleCaledar />
-              </PopoverContent>
-            </Popover>
+                  <UnderlineIcon className="h-4 w-4" />
+                </ToggleGroupItem>
+              </ToggleGroup>
 
-            <Popover>
-              <PopoverTrigger asChild>
-                <button
-                  className={`${toggleItemClasses(
-                    false
-                  )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
-                >
-                  <Atom className="h-4 w-4 text-blue-500" /> Deep Think
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                <DeepThink />
-              </PopoverContent>
-            </Popover>
+              <div className="h-5 w-px bg-gray-300 mx-1"></div>
+
+              <Popover className="max-w-[5rem]">
+                <PopoverTrigger asChild>
+                  <button
+                    className={`${toggleItemClasses(
+                      false
+                    )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
+                  >
+                    <Sparkles className="h-4 w-4 text-purple-500" />
+                    <span> Extra Revisions</span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-2 w-64 z-50 space-y-1">
+                  <button
+                    onClick={() => handleAIRewrite(prompts[0])}
+                    className="w-full text-left text-xs p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
+                    disabled={
+                      aiTyping || !editor.state.selection.content().size
+                    }
+                  >
+                    <CheckSquare className="h-4 w-4 text-blue-500" /> Fix
+                    Grammar
+                  </button>
+                  <button
+                    onClick={() => handleAIRewrite(prompts[1])}
+                    className="w-full text-left text-xs p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
+                    disabled={
+                      aiTyping || !editor.state.selection.content().size
+                    }
+                  >
+                    <Pencil className="h-4 w-4 text-green-500" /> Reword
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleAIRewrite(
+                        `${prompts[2]}. These are the professors interests ${research_interests}. Return ONLY the TEXT.`
+                      )
+                    }
+                    className="w-full text-left text-xs p-2 hover:bg-gray-100 rounded-md flex items-center gap-2"
+                    disabled={
+                      aiTyping || !editor.state.selection.content().size
+                    }
+                  >
+                    <Wand2 className="h-4 w-4 text-indigo-500" /> Personalise
+                  </button>
+                </PopoverContent>
+              </Popover>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    className={`${toggleItemClasses(
+                      false
+                    )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
+                  >
+                    <Microscope className="h-4 w-4 text-pink-500" /> Publication
+                    Mode
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
+                  <Publications />
+                </PopoverContent>
+              </Popover>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    className={`${toggleItemClasses(
+                      false
+                    )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
+                  >
+                    <Calendar className="h-4 w-4 text-green-500" /> Google
+                    Calendar
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
+                  <GoogleCaledar />
+                </PopoverContent>
+              </Popover>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    className={`${toggleItemClasses(
+                      false
+                    )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
+                  >
+                    <Atom className="h-4 w-4 text-blue-500" /> Deep Think
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
+                  <DeepThink />
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div className="px-4">
+              {isSaving ? (
+                <div className="font-main text-xs flex items-center gap-1">
+                  <RefreshCcw />
+                  <span>Saving...</span>
+                </div>
+              ) : (
+                <div className="font-main text-xs flex items-center gap-1">
+                  <Cloud /> <span>Saved to Cloud!</span>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="max-w-full border-1">
