@@ -1,11 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { Switch } from "@/shadcomponents/ui/switch";
-import { Label } from "@/shadcomponents/ui/label";
 
-export default function GoogleCaledar() {
+export default function GoogleCalendar() {
   return (
     <div className="w-fit border font-san bg-white rounded-md shadow-none p-4 flex flex-col justify-start items-start space-y-2">
       <div className="text-sm flex justify-start items-start font-sans">

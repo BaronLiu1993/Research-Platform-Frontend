@@ -30,6 +30,7 @@ export function Template({ onUpdate, sendEmail, student_data, professor_id }) {
     template: template,
   });
 
+  //Setting up Websocket on initial run
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);
@@ -40,7 +41,6 @@ export function Template({ onUpdate, sendEmail, student_data, professor_id }) {
     }
 
     function onProgress(data) {
-      console.log(`Outside: ${data}`)
       if ("publication_data" in data) {
         const pubData = data.publication_data;
         if (pubData.length > 0) {
@@ -48,7 +48,6 @@ export function Template({ onUpdate, sendEmail, student_data, professor_id }) {
         }
       } else if ("email_data" in data) {
         const emailData = data.email_data;
-        console.log(data)
         sendEmail(emailData);
       } else {
         setEvents((prev) => [...prev, data.message]);

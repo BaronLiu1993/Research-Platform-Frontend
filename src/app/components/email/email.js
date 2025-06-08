@@ -16,26 +16,22 @@ import {
   Paperclip,
   Clock2,
   FileText,
-  AirplayIcon,
   XIcon,
 } from "lucide-react";
 
 export default function Email({ student_data, professor_id, professor_name, professor_email, professor_interests, timeZone, draft_data }) {
-  // We need to push the professorId up for the check for the server side check
-  // Do it server side because I want it to load faster 
+  // Handles dealing with the subject
   // useState and useRef Hooks
+  // This component just renders everything and then the email text editor
+  // handles all the logic
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [subject, setSubject] = useState("");
   const fileInputRef = useRef(null);
 
   //Split the interests array
   const interests = professor_interests.split(",");
 
-  // Handlers
-  const handleSendSubject = (data) => {
-    setSubject(data);
-  }
-  
+  // Handlers, just for setting Data Here,
+  //  this will handle all the file uploads and stuff 
   const handleFileUpload = (event) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -52,7 +48,7 @@ export default function Email({ student_data, professor_id, professor_name, prof
 
   return (
     <div className=" p-4 sm:p-6 md:p-8 font-main bg-white">
-      <div className="mb-6 space-y-2">
+      <div className=" space-y-2">
         {interests && interests.length > 0 && (
           <div>
             <div className="flex flex-wrap gap-2">
@@ -81,27 +77,18 @@ export default function Email({ student_data, professor_id, professor_name, prof
         <div className="text-sm text-[#9B9A97]">
           {student_data.student_email}
         </div>
-
-        <div>
-          <Input
-            id="subject"
-            className="w-full h-8 px-2 text-sm bg-transparent border border-gray-300 rounded-md placeholder:text-[#9B9A97] focus:border-blue-500 focus:ring-0"
-            placeholder={`e.g. Research Inquiry: Professor ${professor_name} - Your Name`}
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-          />
-        </div>
       </div>
 
-      <div className="mb-6">
+      <div>
         <EmailTextEditor
           student_email={student_data.student_email}
           student_id={student_data.user_id}
           professor_id={professor_id}
           professor_email={professor_email}
+          professor_name={professor_name}
           research_interests={professor_interests}
-          sendSubject={handleSendSubject}
           draft_data = {draft_data}
+          timeZone = {timeZone}
         />
       </div>
 
@@ -150,23 +137,6 @@ export default function Email({ student_data, professor_id, professor_name, prof
           >
             <Trash2 className="h-5 w-5" />
           </button>
-        </div>
-        <div className="flex space-x-2">
-          <Button
-            variant="outline"
-            className="text-sm text-gray-700 border-gray-300 hover:bg-gray-50"
-          >
-            Remind me
-          </Button>
-          <Button
-            variant="ghost"
-            className="text-sm text-gray-700 hover:bg-gray-100"
-          >
-            Save Draft
-          </Button>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium flex items-center gap-1.5">
-            Send <AirplayIcon className="h-4 w-4" />
-          </Button>
         </div>
       </div>
     </div>

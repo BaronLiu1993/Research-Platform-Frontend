@@ -1,7 +1,7 @@
 "use client";
 
 //TipTap Components
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense, lazy } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
@@ -20,9 +20,12 @@ import { handleCreateDraft } from "./button/createdraft";
 import { handleAutoSave } from "./button/autosave";
 
 //Option Components
-import Publications from "./publications";
-import GoogleCaledar from "./googlecalendar";
-import DeepThink from "./deepthink";
+const Publications = lazy(() => import("./publications"));
+const GoogleCalendar = lazy(() => import("./googlecalendar"));
+const DeepThink = lazy(() => import("./deepthink"));
+
+//Popover loading fallback
+const PopoverLoading = () => <Skeleton className="w-full h-full mb-3 rounded-md bg-gray-200" />;
 
 //Icons
 import {
@@ -43,16 +46,20 @@ import {
 //Prompts and Template Components
 import { prompts } from "./AIwriters";
 import { Template } from "./template";
+import { Input } from "@/shadcomponents/ui/input";
+import SendEmail from "./button/sendemail";
 
 export default function EmailTextEditor({
   student_email,
-  professor_email,
   research_interests,
-  sendSubject,
+  professor_email,
   professor_id,
+  professor_name,
   student_id,
   draft_data,
 }) {
+  //Handles changing the body only here
+
   //useStates
   const [aiTyping, setAiTyping] = useState(false);
   const [publications, setPublications] = useState([]);
@@ -83,8 +90,10 @@ export default function EmailTextEditor({
       setIsSaving(true); // show it is saving now
 
       saveTimeout.current = setTimeout(() => {
-        setIsSaving(false);
-        handleAutoSave(subject, editor.getText(), student_id, professor_id);
+        requestIdleCallback(() => {
+          setIsSaving(false);
+          handleAutoSave(subject, editor.getHTML(), student_id, professor_id);
+        });
       }, 3000);
     },
   });
@@ -95,13 +104,12 @@ export default function EmailTextEditor({
       return;
     editor.commands.setContent(draft_data.body);
     setSubject(draft_data.subject);
-    sendSubject(draft_data.subject);
     setSentData(true);
     hasSetInitialContent.current = true;
-  }, [editor, draft_data, sendSubject]);
+  }, [editor, draft_data]);
 
   const submitCreateDraft = (subject) => {
-    const body = editor?.getHTML().replace(/^<p>(.*?)<\/p>$/s, "$1");
+    const body = editor?.getText();
     handleCreateDraft(
       professor_email,
       student_email,
@@ -116,11 +124,25 @@ export default function EmailTextEditor({
     setPublications(data);
   };
 
+  const handleUpdateSubject = (data) => {
+    if (saveTimeout.current) {
+      clearTimeout(saveTimeout.current);
+    }
+
+    setIsSaving(true);
+
+    saveTimeout.current = setTimeout(() => {
+      requestIdleCallback(() => {
+        setIsSaving(false);
+        handleAutoSave(data, editor.getHTML(), student_id, professor_id);
+      });
+    }, 3000);
+  };
+
   const handleSetEmail = (data) => {
     if (editor && !hasSetAIContent.current) {
       editor.commands.setContent(data.body);
       setSubject(data.subject);
-      sendSubject(data.subject);
       setSentData(true);
       hasSetAIContent.current = true;
       submitCreateDraft(data.subject);
@@ -217,8 +239,15 @@ export default function EmailTextEditor({
     <>
       <div className="flex flex-col md:flex-row gap-4 font-main w-full">
         <div className="w-full">
+          <Input
+            id="subject"
+            className="w-full my-2 h-8 px-2 text-sm bg-transparent border border-gray-300 rounded-md placeholder:text-[#9B9A97] focus:border-blue-500 focus:ring-0"
+            placeholder={`e.g. Research Inquiry: Professor ${professor_name} - Your Name`}
+            value={subject}
+            onChange={(e) => handleUpdateSubject(e.target.value)}
+          />
           <div className="p-1.5 bg-gray-50 border justify-between border-gray-200 rounded-t-md flex flex-wrap items-center gap-1">
-            <div className="flex flex-wrap">
+            <div className="flex items-center flex-wrap">
               <ToggleGroup type="multiple">
                 <ToggleGroupItem
                   value="bold"
@@ -312,7 +341,9 @@ export default function EmailTextEditor({
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                  <Publications />
+                  <Suspense fallback = {<PopoverLoading />}>
+                    <Publications />
+                  </Suspense>
                 </PopoverContent>
               </Popover>
 
@@ -328,7 +359,9 @@ export default function EmailTextEditor({
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                  <GoogleCaledar />
+                  <Suspense fallback = {<PopoverLoading />}>
+                      <GoogleCalendar />
+                  </Suspense>
                 </PopoverContent>
               </Popover>
 
@@ -343,19 +376,21 @@ export default function EmailTextEditor({
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                  <DeepThink />
+                  <Suspense fallback = {<PopoverLoading />}>
+                    <DeepThink />
+                  </Suspense>
                 </PopoverContent>
               </Popover>
             </div>
             <div className="px-4">
               {isSaving ? (
                 <div className="font-main text-xs flex items-center gap-1">
-                  <RefreshCcw className = "h-4 w-4 text-green-500"/>
-                  <span>Saving...</span>
+                  <RefreshCcw className="h-4 w-4 text-green-500" />
+                  <span>Saving Draft...</span>
                 </div>
               ) : (
                 <div className="font-main text-xs flex items-center gap-1">
-                  <Cloud className = "h-5 w-5 fill-blue-500 text-gray-50"/> 
+                  <Cloud className="h-5 w-5 fill-blue-500 text-gray-50" />
                   <span>Saved to Cloud!</span>
                 </div>
               )}
@@ -385,6 +420,12 @@ export default function EmailTextEditor({
             </div>
           )}
         </div>
+        <SendEmail
+          eventName={`Follow Up With ${professor_name}`}
+          description={`Send a follow-up email to Professor ${professor_name} regarding your research interest and initial outreach.`}
+          student_id={student_id}
+          professor_id={professor_id}
+        />
       </div>
     </>
   );
