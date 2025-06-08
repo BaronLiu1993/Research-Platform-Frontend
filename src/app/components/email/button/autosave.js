@@ -10,5 +10,7 @@ export const handleAutoSave = async (subject, body, student_id, professor_id) =>
         body: body
       })
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 };

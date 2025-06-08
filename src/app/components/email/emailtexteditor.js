@@ -65,9 +65,7 @@ export default function EmailTextEditor({
   const hasSetAIContent = useRef(false);
   const saveTimeout = useRef(null);
 
-  console.log(professor_id);
   //Fix the editor state later
-
   const editor = useEditor({
     extensions: [StarterKit, Highlight.configure({ multicolor: true })],
     editorProps: {
@@ -83,17 +81,13 @@ export default function EmailTextEditor({
       }
 
       setIsSaving(true); // show it is saving now
-      console.log(isSaving);
 
       saveTimeout.current = setTimeout(() => {
         setIsSaving(false);
-        console.log(isSaving);
         handleAutoSave(subject, editor.getText(), student_id, professor_id);
       }, 3000);
     },
   });
-
-  //console.log(editor?.getHTML())
 
   //Listens Only Once
   useEffect(() => {
@@ -224,7 +218,7 @@ export default function EmailTextEditor({
       <div className="flex flex-col md:flex-row gap-4 font-main w-full">
         <div className="w-full">
           <div className="p-1.5 bg-gray-50 border justify-between border-gray-200 rounded-t-md flex flex-wrap items-center gap-1">
-            <div className = "flex flex-wrap">
+            <div className="flex flex-wrap">
               <ToggleGroup type="multiple">
                 <ToggleGroupItem
                   value="bold"
@@ -356,12 +350,13 @@ export default function EmailTextEditor({
             <div className="px-4">
               {isSaving ? (
                 <div className="font-main text-xs flex items-center gap-1">
-                  <RefreshCcw />
+                  <RefreshCcw className = "h-4 w-4 text-green-500"/>
                   <span>Saving...</span>
                 </div>
               ) : (
                 <div className="font-main text-xs flex items-center gap-1">
-                  <Cloud /> <span>Saved to Cloud!</span>
+                  <Cloud className = "h-5 w-5 fill-blue-500 text-gray-50"/> 
+                  <span>Saved to Cloud!</span>
                 </div>
               )}
             </div>
