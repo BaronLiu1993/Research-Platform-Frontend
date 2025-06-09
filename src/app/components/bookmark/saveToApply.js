@@ -14,7 +14,6 @@ export async function saveToApply(
   user_id,
 ) {
   const data = {
-    professor_data: {
       id: professor_id || null,
       name: professor_name || "",
       url: professor_url || "",
@@ -26,7 +25,6 @@ export async function saveToApply(
       labs: professor_labs || "",
       lab_url: professor_lab_url || "",
       comments: "",
-    },
   };
   try {
     const response = await fetch(
