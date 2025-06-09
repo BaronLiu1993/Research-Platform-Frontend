@@ -22,8 +22,8 @@ import {
   PersonStandingIcon,
 } from "lucide-react";
 
-import KanbanButton from "./kanbanbutton";
-import ApplyButton from "./applybutton";
+import SaveButton from "../bookmark/buttons/saveButton";
+import ApplyButton from "../bookmark/buttons/applyButton";
 import Link from "next/link";
 
 const generateColumns = (userId) => [
@@ -83,7 +83,7 @@ const generateColumns = (userId) => [
               </DialogTitle>
     
               <div className="flex space-x-4">
-                <KanbanButton
+                <SaveButton
                   professor_id={data.id}
                   professor_name={data.name}
                   professor_url={data.url}

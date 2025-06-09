@@ -1,6 +1,6 @@
 "use server";
 
-export async function saveToKanban(
+export async function Save(
   professor_id,
   professor_name,
   professor_url,

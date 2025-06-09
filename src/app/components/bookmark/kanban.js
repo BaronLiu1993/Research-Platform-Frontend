@@ -1,9 +1,9 @@
 "use server";
 
-import KanbanCardInComplete from "./kanbancardincomplete";
-import KanbanCardInProgress from "./kanbancardinprogress";
-import KanbanCardCompleted from "./kanbancardcompleted";
-import KanbanCardFollowUp from "./kanbancardfollowup";
+import KanbanCardCompleted from "./cards/kanbancardcompleted";
+import KanbanCardFollowUp from "./cards/kanbancardfollowup";
+import KanbanCardInComplete from "./cards/kanbancardincomplete";
+import KanbanCardInProgress from "./cards/kanbancardinprogress";
 
 import {
   Plus,

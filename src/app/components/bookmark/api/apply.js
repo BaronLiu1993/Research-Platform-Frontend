@@ -1,6 +1,6 @@
 "use server";
 
-export async function saveToApply(
+export async function Apply(
   professor_id,
   professor_name,
   professor_url,

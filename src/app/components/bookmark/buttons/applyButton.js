@@ -1,13 +1,16 @@
 "use client";
 
+//API calls
+import { Apply } from "../api/apply";
+import { removeFromApply } from "../api/removeFromApply";
+
+//other imports
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/shadcomponents/ui/button";
 import { toast } from "sonner";
 import { useAppliedStore } from "@/app/store/useAppliedStore";
-import { saveToApply } from "../bookmark/saveToApply";
-import { removeFromApply } from "../bookmark/removeFromApply";
 import {
   FilePenLine,
   CheckCircle,
@@ -57,7 +60,7 @@ export default function ApplyButton({
   const handleSaveApplication = async () => {
     setLoading(true);
     try {
-      await saveToApply(
+      await Apply(
         professor_id,
         professor_name,
         professor_url,
@@ -105,13 +108,11 @@ export default function ApplyButton({
 
   const handleDeleteApplication = async () => {
     setLoading(true);
-    console.log(user_id, professor_id)
     try {
       await removeFromApply(user_id, professor_id)
       removeApplied(professor_id);
       toast.info("Application removed.");
     } catch (error) {
-      console.error("Failed to delete application:", error);
       toast.error("Failed to remove application. Please try again.");
     } finally {
       setLoading(false);

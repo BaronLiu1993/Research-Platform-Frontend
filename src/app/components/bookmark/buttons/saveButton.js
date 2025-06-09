@@ -1,14 +1,15 @@
 "use client";
 
+import { removeFromSaved } from "../api/removeFromSaved";
+import { Save } from "../api/save";
+
 import { Button } from "@/shadcomponents/ui/button";
 import { useSavedStore } from "@/app/store/useSavedStore";
 import { Bookmark, BookmarkCheck } from "lucide-react";
-import { saveToKanban } from "@/app/repository/savetokanban";
-import { removeFromKanban } from "@/app/repository/removefromkanban";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function KanbanButton({
+export default function SaveButton({
   professor_id,
   professor_name,
   professor_url,
@@ -33,11 +34,11 @@ export default function KanbanButton({
     try {
       if (isSaved) {
         removeSaved(professor_id);
-        const result = await removeFromKanban(professor_id, user_id);
+        const result = await removeFromSaved(professor_id, user_id);
         toast.success("Professor removed from saved.");
       } else {
         addSaved(professor_id);
-        await saveToKanban(
+        await Save(
           professor_id,
           professor_name,
           professor_url,

@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-import DeleteInProgressButton from "./deleteinprogressbutton";
 
 import {
   Sheet,
@@ -221,7 +220,6 @@ export default function KanbanCardInProgress({
           </div>
 
           <div className="mt-8 flex justify-end gap-3">
-            <DeleteInProgressButton professor_id={prof_id} user_id={user_id} />
             <Button
               variant="outline"
               className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"

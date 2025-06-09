@@ -22,7 +22,6 @@ import {
 } from "@/shadcomponents/ui/sheet";
 import { Button } from "@/shadcomponents/ui/button";
 
-import DeleteInCompleteButton from "./deleteincomplete";
 
 export default function KanbanCardInComplete({
   prof_id,
@@ -226,9 +225,7 @@ export default function KanbanCardInComplete({
               </div>
             )}
           </div>
-
           <div className="mt-8 flex justify-end gap-3">
-            <DeleteInCompleteButton professor_id={prof_id} user_id={user_id} />
             <Button
               variant="outline"
               className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"

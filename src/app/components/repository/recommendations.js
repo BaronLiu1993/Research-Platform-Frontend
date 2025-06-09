@@ -1,4 +1,9 @@
 import { cookies } from "next/headers";
+
+//Buttons
+import ApplyButton from "../bookmark/buttons/applyButton";
+import SaveButton from "../bookmark/buttons/saveButton";
+
 import {
   Carousel,
   CarouselContent,
@@ -8,8 +13,6 @@ import {
 } from "@/shadcomponents/ui/carousel";
 
 import { Badge } from "@/shadcomponents/ui/badge";
-import KanbanButton from "./kanbanbutton";
-import ApplyButton from "./applybutton";
 import { Tag } from "lucide-react";
 
 export default async function Recommendations() {
@@ -45,7 +48,7 @@ export default async function Recommendations() {
               >
                 <div className="rounded-xs p-4 bg-white hover:shadow-sm transition-shadow duration-200 flex flex-col h-full border-1 border-gray-300">
                   <div className="flex justify-end -mt-2 -mr-2">
-                    <KanbanButton
+                    <SaveButton
                       professor_id={response.professor_id}
                       professor_name={response.name}
                       professor_url={response.url}
