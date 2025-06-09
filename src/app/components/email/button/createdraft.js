@@ -1,12 +1,11 @@
 export const handleCreateDraft = async (to, from, subject, body, professor_id, student_id) => {
     const dataJSON = {
       to: "jiexuan.liu@mail.utoronto.ca",
-      from: "baronliu1993@gmail.com",
+      fromEmail: "baronliu1993@gmail.com",
+      fromName: "Jie Xuan Liu",
       subject: subject,
       message: body,
     };
-
-    console.log(dataJSON)
   
     try {
       const response = await fetch(

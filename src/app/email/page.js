@@ -57,7 +57,6 @@ export default async function email({ searchParams }) {
 
   const parsedDraftData = await draftData.json()
   
-
   return (
     <>
       <header className="flex h-8 shrink-0 items-center gap-2 px-6">
