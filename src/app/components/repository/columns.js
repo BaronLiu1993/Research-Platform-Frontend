@@ -231,7 +231,7 @@ const generateColumns = (userId) => [
       const data = row.original;
       return (
         <div className="flex justify-end items-center h-full pr-1">
-          <KanbanButton
+          <SaveButton
             professor_id={data.id}
             professor_name={data.name}
             professor_url={data.url}

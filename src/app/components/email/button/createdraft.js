@@ -1,7 +1,7 @@
 export const handleCreateDraft = async (to, from, subject, body, professor_id, student_id) => {
     const dataJSON = {
-      to: "baronliu1993@gmail.com",
-      from: from,
+      to: "jiexuan.liu@mail.utoronto.ca",
+      from: "baronliu1993@gmail.com",
       subject: subject,
       message: body,
     };

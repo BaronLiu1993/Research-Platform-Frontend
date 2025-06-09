@@ -31,7 +31,10 @@ export default async function InboxEmail() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("user_id");
   const access = cookieStore.get("access_token");
-  const professorResponse = await fetch(`http://localhost:8080/kanban/get-completed/${userId}`)
+  const rawProfessorResponse = await fetch(`http://localhost:8080/kanban/get-completed-professor-ids/${userId.value}`)
+  const professorResponse = rawProfessorResponse.data
+  const parsedProfessorResponse = await professorResponse.json() 
+  console.log(parsedProfessorResponse)
 
   const emailResponse = await fetch(
     `http://localhost:8080/gmail/emails/${userId.value}`,
@@ -41,6 +44,8 @@ export default async function InboxEmail() {
   );
   const parsedEmailResponse = await emailResponse.json();
   console.log(parsedEmailResponse);
+
+  
   const rawUserProfile = await fetch(
     "http://localhost:8080/auth/get-user-sidebar-info",
     {

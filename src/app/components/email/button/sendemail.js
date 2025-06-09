@@ -26,8 +26,6 @@ export default function SendEmail({
   // confirm they actually want to submit the email
   const handleSendEmail = async () => {
     try {
-      console.log("hired handleSendEmail")
-
       const initialSendEmail = await fetch(`http://localhost:8080/gmail/gcalendar/send-draft/${student_id}/${professor_id}`, {
         method: "POST",
         headers: {
