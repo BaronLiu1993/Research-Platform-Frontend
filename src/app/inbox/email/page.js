@@ -31,6 +31,8 @@ export default async function InboxEmail() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("user_id");
   const access = cookieStore.get("access_token");
+  const professorResponse = await fetch(`http://localhost:8080/kanban/get-completed/${userId}`)
+
   const emailResponse = await fetch(
     `http://localhost:8080/gmail/emails/${userId.value}`,
     {
