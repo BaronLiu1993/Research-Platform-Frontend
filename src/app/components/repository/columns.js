@@ -235,6 +235,7 @@ const generateColumns = (userId) => [
             professor_id={data.id}
             professor_name={data.name}
             professor_url={data.url}
+            professor_email={data.email}
             professor_research_interests={data.research_interests}
             professor_school={data.school}
             professor_faculty={data.faculty}

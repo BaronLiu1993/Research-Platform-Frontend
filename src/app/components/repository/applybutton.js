@@ -47,8 +47,8 @@ export default function ApplyButton({
   const applyPageUrl = {
     pathname: `/resume/${encodeURIComponent(professor_name)}`,
     query: {
-      research_interests: professor_research_interests || [],
-      professor_email: professor_email || "",
+      research_interests: professor_research_interests,
+      professor_email: professor_email,
       professor_name: professor_name,
       professor_id: professor_id,
     },

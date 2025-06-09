@@ -17,7 +17,8 @@ import { Laptop, MapIcon, MoveLeft, MoveRight, Plus } from "lucide-react";
 
 export default async function Bookmark() {
   const cookieStore = await cookies();
-  const user_id = cookieStore.get("user_id");
+  const raw_user_id = cookieStore.get("user_id");
+  const user_id = raw_user_id.value
   const access = cookieStore.get("access_token")
   const rawUserProfile = await fetch("http://localhost:8080/auth/get-user-sidebar-info", {
     method: "GET",
@@ -27,6 +28,7 @@ export default async function Bookmark() {
     },
   });
   const parsedUserProfile = await rawUserProfile.json();
+  
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile}/>

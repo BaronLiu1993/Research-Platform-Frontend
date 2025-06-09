@@ -51,8 +51,20 @@ const statusConfig = {
 };
 
 export default async function Kanban({ user_id }) {
-  const serverData = await fetch(
-    `http://localhost:8080/kanban/get/${user_id.value}`,
+  const rawSavedData = await fetch(
+    `http://localhost:8080/kanban/get-saved/${user_id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const savedData = await rawSavedData.json();
+  const parsedSavedData = savedData.data;
+
+  const rawInProgressData = await fetch(
+    `http://localhost:8080/kanban/get-in-progress/${user_id}`,
     {
       method: "GET",
       headers: {
@@ -61,29 +73,15 @@ export default async function Kanban({ user_id }) {
     }
   );
 
-  if (!serverData.ok) {
-    return (
-      <div className="p-8 text-center text-gray-500 font-main">
-        <p className="text-xl mb-2">Oops!</p>
-        <p>Could not load application data. Please try again later.</p>
-      </div>
-    );
-  }
+  const inProgressData = await rawInProgressData.json();
+  const parsedInProgressData = inProgressData.data;
 
-  const responses = await serverData.json();
-  const finalResponse = responses.data;
-  if (!finalResponse) {
-    return (
-      <div className="p-8 text-center text-gray-500 font-main">
-        <p>No application data found.</p>
-      </div>
-    );
-  }
+  //Improve server handling to redirect to an error page
 
-  const inProgressResponses = finalResponse.in_progress || [];
-  const inCompleteResponses = finalResponse.in_complete || [];
-  const completedResponses = finalResponse.completed || [];
-  const followUpResponses = finalResponse.follow_up || [];
+  const inProgressResponses = parsedInProgressData || [];
+  const inCompleteResponses = parsedSavedData || [];
+  const completedResponses = [];
+  const followUpResponses = [];
 
   const columnsData = [
     {

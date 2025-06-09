@@ -14,7 +14,6 @@ export async function saveToApply(
   user_id,
 ) {
   const data = {
-      id: professor_id || null,
       name: professor_name || "",
       url: professor_url || "",
       email: professor_email || "",
@@ -28,7 +27,7 @@ export async function saveToApply(
   };
   try {
     const response = await fetch(
-      `http://localhost:8080/kanban/add-in-progress/${user_id}`,
+      `http://localhost:8080/kanban/add-in-progress/${user_id}/${professor_id}`,
       {
         method: "POST",
         headers: {
