@@ -26,25 +26,22 @@ import {
   Mail,
   Inbox,
 } from "lucide-react";
+import { Badge } from "@/shadcomponents/ui/badge";
 
 export default async function InboxEmail() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("user_id");
   const access = cookieStore.get("access_token");
-  const rawProfessorResponse = await fetch(`http://localhost:8080/kanban/get-completed-professor-ids/${userId.value}`)
-  const professorResponse = rawProfessorResponse.data
-  const parsedProfessorResponse = await professorResponse.json() 
-    
+
   const emailResponse = await fetch(
-    `http://localhost:8080/gmail/get-all-email-chain/${userId.value}`,
+    `http://localhost:8080/gmail/get-email-chain/${userId.value}`,
     {
       method: "GET",
     }
   );
   const parsedEmailResponse = await emailResponse.json();
-  console.log(parsedEmailResponse);
+  const threadArrayEmailResponse = parsedEmailResponse.threadArray;
 
-  
   const rawUserProfile = await fetch(
     "http://localhost:8080/auth/get-user-sidebar-info",
     {
@@ -106,37 +103,26 @@ export default async function InboxEmail() {
             </Breadcrumb>
           </header>
           <div className="font-main py-6">
-            <div className="flex items-center space-x-2 px-10 py-3">
+            <div className="flex items-center space-x-2 px-5 py-3">
               <Inbox className="h-5 w-5 text-red-700" />
               <h1 className="py-1 text-[15px] font-semibold text-black">
-                Inbox
+                Workflows
               </h1>
             </div>
             <div className="">
-              {parsedEmailResponse.emails.map((email) => (
-                <div
-                  key={email.id}
-                  className="flex justify-between items-center text-sm cursor-pointer py-2 px-5 rounded-md hover:bg-[#F1F1EF]"
-                >
-                  <div className = "flex items-center space-x-3">
-                    <div className = "h-1.5 w-1.5 bg-blue-400 rounded-full"></div>
-                    <h1 className="font-semibold w-[150px] truncate">
-                      {email.from.name}
-                    </h1>
-                  </div>
-
-                  <p className="w-[400px] text-left truncate text-[#787774]">
-                    {email.subject.length > 60
-                      ? `${email.subject.slice(0, 60)}...`
-                      : email.subject}
-                  </p>
-
-                  <p className="text-right w-[70px] text-[#787774]">
-                    {new Date(email.receivedAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </p>
+              {threadArrayEmailResponse.map((email) => (
+                <div key={email.thread_id} className="flex font-main text-sm">
+                  <h1>{email.thread_title}</h1>
+                  <h1>{email.firstMessageData.subject}</h1>
+                  <h1>{email.firstMessageData.body}</h1>
+                  <Badge>Engaged</Badge>
+                  <Badge>Something Else</Badge>
+                  <span>
+                    {new Date(email.firstMessageData.date).toLocaleDateString(
+                      "en-US",
+                      { month: "short", day: "numeric" }
+                    )}
+                  </span>
                 </div>
               ))}
             </div>
