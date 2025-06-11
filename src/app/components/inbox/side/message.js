@@ -53,15 +53,19 @@ export default function Message({ data, email }) {
         </div>
         <div className="font px-6">{`To ${data.to.name} <${data.to.address}>`}</div>
         <div className="text-black px-6 py-6 tracking-wide">{data.body}</div>
-        <div>
+        <div className = "flex gap-4 px-6">
             <Button
              variant="outline"
+             className = "text-xs"
             >
-
+                Reply
+                <Reply />
             </Button>
             <Button
-            variant="outline">
-                
+            variant="outline"
+            className = "text-xs">
+               Forward 
+               <Forward />
             </Button>
         </div>
       </div>

@@ -5,6 +5,12 @@ import { useState, useRef, useEffect, Suspense, lazy } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
+import BulletList from "@tiptap/extension-bullet-list";
+import Document from "@tiptap/extension-document";
+import ListItem from "@tiptap/extension-list-item";
+import OrderedList from "@tiptap/extension-ordered-list";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
 
 //Shad CN Styling Components
 import {
@@ -25,7 +31,9 @@ const GoogleCalendar = lazy(() => import("./googlecalendar"));
 const DeepThink = lazy(() => import("./deepthink"));
 
 //Popover loading fallback
-const PopoverLoading = () => <Skeleton className="w-full h-full mb-3 rounded-md bg-gray-200" />;
+const PopoverLoading = () => (
+  <Skeleton className="w-full h-full mb-3 rounded-md bg-gray-200" />
+);
 
 //Icons
 import {
@@ -74,7 +82,16 @@ export default function EmailTextEditor({
 
   //Fix the editor state later
   const editor = useEditor({
-    extensions: [StarterKit, Highlight.configure({ multicolor: true })],
+    extensions: [
+      Document,
+      Paragraph,
+      Text,
+      BulletList,
+      OrderedList,
+      ListItem,
+      StarterKit,
+      Highlight.configure({ multicolor: true }),
+    ],
     editorProps: {
       attributes: {
         class:
@@ -281,7 +298,7 @@ export default function EmailTextEditor({
               </ToggleGroup>
 
               <div className="h-5 w-px bg-gray-300 mx-1"></div>
-
+              <div></div>
               <Popover className="max-w-[5rem]">
                 <PopoverTrigger asChild>
                   <button
@@ -341,7 +358,7 @@ export default function EmailTextEditor({
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                  <Suspense fallback = {<PopoverLoading />}>
+                  <Suspense fallback={<PopoverLoading />}>
                     <Publications />
                   </Suspense>
                 </PopoverContent>
@@ -359,8 +376,8 @@ export default function EmailTextEditor({
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                  <Suspense fallback = {<PopoverLoading />}>
-                      <GoogleCalendar />
+                  <Suspense fallback={<PopoverLoading />}>
+                    <GoogleCalendar />
                   </Suspense>
                 </PopoverContent>
               </Popover>
@@ -376,7 +393,7 @@ export default function EmailTextEditor({
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                  <Suspense fallback = {<PopoverLoading />}>
+                  <Suspense fallback={<PopoverLoading />}>
                     <DeepThink />
                   </Suspense>
                 </PopoverContent>

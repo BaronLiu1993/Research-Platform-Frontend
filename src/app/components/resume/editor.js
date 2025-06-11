@@ -44,7 +44,7 @@ export default function Editor({
         student_personal_information || initialResumeState.personal_information,
     };
   });
-
+S
   const handleExperienceUpdate = (updatedExperienceArray) => {
     setResumeData((prev) => ({
       ...prev,
