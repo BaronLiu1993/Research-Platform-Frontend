@@ -28,6 +28,7 @@ import {
 
 import EngagementButton from "./badges/engagementButton";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
+import { Button } from "@/shadcomponents/ui/button";
 const EmailSidebar = lazy(() => import("./side/emailsidebar"));
 
 export default function InboxClientWrapper({
@@ -95,15 +96,16 @@ export default function InboxClientWrapper({
                 <SheetHeader>
                   <div className="flex justify-between">
                     <FolderOpen className="text-blue-700 h-6.5 w-6.5 p-1 rounded-xs cursor-pointer hover:bg-[#F1F1EF]" />
-                    <div className="flex">
+                    <div className="flex space-x-2 h-6.5">
+                      <Button className = "h-6 text-xs bg-white border-1 border-[#F4EEEE] text-black hover:bg-white cursor-pointer">Auto Label Similar</Button>
                       <Database className="h-6.5 w-6.5 p-1 text-[#787774] hover:bg-[#F4EEEE] cursor-pointer"/>
-                      <Trash2 className="text-[#787774] h-6.5 w-6.5 p-1 hover:bg-red-200 hover:text-red-700 cursor-pointer rounded-xs" />
+                      <Trash2 className="text-[#787774] h-6.5 w-6.5 p-1 hover:bg-red-100 hover:text-red-700 cursor-pointer rounded-xs" />
                       <Tag className="h-6.5 w-6.5 p-1 text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
-                      <Ellipsis className="h-6.5 w-6.5 p-1 text text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
                       <Clock className="h-6.5 w-6.5 p-1 text text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
+                      <Ellipsis className="h-6.5 w-6.5 p-1 text text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
                     </div>
                   </div>
-                  <SheetTitle>Scott Sanner Workflow</SheetTitle>
+                  <SheetTitle></SheetTitle>
                   <SheetDescription>
                     <div className="w-full p-4">
                       {openThreadId === email.threadId && (

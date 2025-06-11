@@ -1,14 +1,18 @@
 import { Badge } from "@/shadcomponents/ui/badge";
+import { Button } from "@/shadcomponents/ui/button";
+import { Separator } from "@/shadcomponents/ui/separator";
+import { Forward, Reply } from "lucide-react";
 
 export default function Message({ data, email }) {
-  console.log(email);
   return (
     <>
-      <div>
-        <div className="">
-          <div className="font-main">
-            <div className="space-x-2">
-              <span className="text-lg font-semibold text-black">{data.subject}</span>
+      <div className="font-main">
+        <div className="px-6 py-4 space-y-4">
+          <div>
+            <div className="space-x-2 flex flex-col gap-2">
+              <span className="text-lg font-semibold text-black">
+                {data.subject}
+              </span>
               <div className="space-x-2 flex">
                 <div>
                   {email !== data.to.address && (
@@ -30,9 +34,35 @@ export default function Message({ data, email }) {
               </div>
             </div>
           </div>
-          <div className="text-md">{`To ${data.to.name} <${data.to.address}>`}</div>
+          <Separator />
+        </div>
+        <div className="flex items-center justify-between px-6">
+          <span className="text-sm font-semibold text-black">{`From ${data.from.name}`}</span>
+          <div className="flex items-center gap-5">
+            <div className="flex gap-2">
+              <Reply className="h-6 w-6 text-[#979A9B] hover:bg-[#F1F1EF] cursor-pointer" />
+              <Forward className="h-6 w-6 text-[#979A9B] hover:bg-[#F1F1EF] cursor-pointer" />
+            </div>
+            <span className="text-sm text-black font-semibold">
+              {new Date(data.date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+          </div>
+        </div>
+        <div className="font px-6">{`To ${data.to.name} <${data.to.address}>`}</div>
+        <div className="text-black px-6 py-6 tracking-wide">{data.body}</div>
+        <div>
+            <Button
+             variant="outline"
+            >
 
-          <div className="text-xs">{`From ${data.from.name} <${data.from.address}>`}</div>
+            </Button>
+            <Button
+            variant="outline">
+                
+            </Button>
         </div>
       </div>
     </>
