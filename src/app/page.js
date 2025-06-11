@@ -2,14 +2,12 @@ import Homecard from "./homepagecomponents/homecard";
 import Link from "next/link";
 import Resumehomecomponent from "./homepagecomponents/resumehomecomponent";
 import Emailhomecomponent from "./homepagecomponents/emailhomepage";
-import Navbar from "./components/navbar";
 import KanbanHomepage from "./homepagecomponents/kanbanhomepage";
 import ResearchAreas from "./homepagecomponents/researchareas";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
       <div className="bg-gradient-to-br from-gray-50 font-sans">
         <div className="flex  to-gray-100 flex-col justify-center items-center my-30 m-5">
           <h1 className="font-sans font-bold text-6xl">
