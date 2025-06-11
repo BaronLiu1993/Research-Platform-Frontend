@@ -25,14 +25,18 @@ import {
   MapIcon,
   Mail,
   Inbox,
+  Filter,
+  ListFilter,
+  RotateCw,
+  FileSliders,
 } from "lucide-react";
-import { Badge } from "@/shadcomponents/ui/badge";
+
+import InboxClientWrapper from "@/app/components/inbox/inboxclientwrapper";
 
 export default async function InboxEmail() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("user_id");
   const access = cookieStore.get("access_token");
-
   const emailResponse = await fetch(
     `http://localhost:8080/gmail/get-email-chain/${userId.value}`,
     {
@@ -53,7 +57,7 @@ export default async function InboxEmail() {
     }
   );
   const parsedUserProfile = await rawUserProfile.json();
-
+  console.log(parsedUserProfile.student_email)
   return (
     <>
       <SidebarProvider>
@@ -102,31 +106,7 @@ export default async function InboxEmail() {
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <div className="font-main py-6">
-            <div className="flex items-center space-x-2 px-5 py-3">
-              <Inbox className="h-5 w-5 text-red-700" />
-              <h1 className="py-1 text-[15px] font-semibold text-black">
-                Workflows
-              </h1>
-            </div>
-            <div className="">
-              {threadArrayEmailResponse.map((email) => (
-                <div key={email.thread_id} className="flex font-main text-sm">
-                  <h1>{email.thread_title}</h1>
-                  <h1>{email.firstMessageData.subject}</h1>
-                  <h1>{email.firstMessageData.body}</h1>
-                  <Badge>Engaged</Badge>
-                  <Badge>Something Else</Badge>
-                  <span>
-                    {new Date(email.firstMessageData.date).toLocaleDateString(
-                      "en-US",
-                      { month: "short", day: "numeric" }
-                    )}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+          <InboxClientWrapper emails = {parsedUserProfile.student_email} threadArrayEmailResponse = {threadArrayEmailResponse} userId = {userId.value}/>
         </SidebarInset>
       </SidebarProvider>
     </>
