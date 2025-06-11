@@ -11,15 +11,29 @@ import {
   SheetTrigger,
 } from "@/shadcomponents/ui/sheet";
 
-import { Inbox, ListFilter, RotateCw, FileSliders, Folder, FolderOpen, Trash, Trash2, Tag, Ellipsis } from "lucide-react";
+import {
+  Inbox,
+  ListFilter,
+  RotateCw,
+  FileSliders,
+  Folder,
+  FolderOpen,
+  Trash,
+  Trash2,
+  Tag,
+  Ellipsis,
+  Clock,
+  Database,
+} from "lucide-react";
 
 import EngagementButton from "./badges/engagementButton";
+import { Skeleton } from "@/shadcomponents/ui/skeleton";
 const EmailSidebar = lazy(() => import("./side/emailsidebar"));
 
 export default function InboxClientWrapper({
   threadArrayEmailResponse,
   userId,
-  emails
+  emails,
 }) {
   const [openThreadId, setOpenThreadId] = useState("");
   return (
@@ -79,26 +93,38 @@ export default function InboxClientWrapper({
               </SheetTrigger>
               <SheetContent className="w-[700px] sm:w-[540px]">
                 <SheetHeader>
-                  <div className = "flex justify-between">
-                    <FolderOpen className = "text-blue-700 h-6 w-6 p-1 rounded-xs cursor-pointer hover:bg-[#F1F1EF]" />
-                    <div className = "flex">
-                        <Trash2 className = "text-[#787774] h-6 w-6 p-1 hover:bg-red-200 hover:text-red-700 cursor-pointer rounded-xs" />
-                        <Tag className = "h-6 w-6 p-1 text-[#787774]"/>
-                        <Ellipsis className = "h-6 w-6 p-1 text text-[#787774]"/>
+                  <div className="flex justify-between">
+                    <FolderOpen className="text-blue-700 h-6.5 w-6.5 p-1 rounded-xs cursor-pointer hover:bg-[#F1F1EF]" />
+                    <div className="flex">
+                      <Database className="h-6.5 w-6.5 p-1 text-[#787774] hover:bg-[#F4EEEE] cursor-pointer"/>
+                      <Trash2 className="text-[#787774] h-6.5 w-6.5 p-1 hover:bg-red-200 hover:text-red-700 cursor-pointer rounded-xs" />
+                      <Tag className="h-6.5 w-6.5 p-1 text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
+                      <Ellipsis className="h-6.5 w-6.5 p-1 text text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
+                      <Clock className="h-6.5 w-6.5 p-1 text text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
                     </div>
-
                   </div>
                   <SheetTitle>Scott Sanner Workflow</SheetTitle>
                   <SheetDescription>
-                    {openThreadId === email.threadId && (
-                      <Suspense fallback={<div>Loading...</div>}>
-                        <EmailSidebar
-                          threadId={email.threadId}
-                          userId={userId}
-                          email = {emails}
-                        />
-                      </Suspense>
-                    )}
+                    <div className="w-full p-4">
+                      {openThreadId === email.threadId && (
+                        <Suspense
+                          fallback={
+                            <div className="space-y-4">
+                              <p className="text-sm text-gray-500">
+                                Loading...
+                              </p>
+                              <Skeleton className="h-[40rem] w-full rounded-md animate-pulse bg-gray-200" />
+                            </div>
+                          }
+                        >
+                          <EmailSidebar
+                            threadId={email.threadId}
+                            userId={userId}
+                            email={emails}
+                          />
+                        </Suspense>
+                      )}
+                    </div>
                   </SheetDescription>
                 </SheetHeader>
               </SheetContent>

@@ -12,9 +12,7 @@ export default function EmailSidebar ({threadId, userId, email}) {
             const responseData = await mailData.json()
             setThreadData(responseData)
         } 
-
         if (threadId && userId) fetchResponseThread()
-        
     }, [threadId, userId])
     return (
         <>
