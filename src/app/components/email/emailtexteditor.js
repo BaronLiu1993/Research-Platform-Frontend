@@ -86,9 +86,6 @@ export default function EmailTextEditor({
       Document,
       Paragraph,
       Text,
-      BulletList,
-      OrderedList,
-      ListItem,
       StarterKit,
       Highlight.configure({ multicolor: true }),
     ],
@@ -104,7 +101,7 @@ export default function EmailTextEditor({
         clearTimeout(saveTimeout.current);
       }
 
-      setIsSaving(true); // show it is saving now
+      setIsSaving(true);
 
       saveTimeout.current = setTimeout(() => {
         requestIdleCallback(() => {

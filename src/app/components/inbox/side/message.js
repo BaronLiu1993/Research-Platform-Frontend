@@ -11,7 +11,7 @@ export default function Message({ data, email, engagementData }) {
           <div>
             <div className="space-x-2 flex flex-col gap-2">
               <span className="text-md font-semibold text-black">
-                {data.subject}
+              {email === data.to.address ? <h1 className = "text-blue-500">Student </h1>: <h1 className = "text-purple-500">Professor</h1>} {data.subject}
               </span>
               <div className="space-x-2 flex">
                 <div>
