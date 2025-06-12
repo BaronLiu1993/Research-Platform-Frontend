@@ -24,11 +24,6 @@ import {
   Laptop,
   MapIcon,
   Mail,
-  Inbox,
-  Filter,
-  ListFilter,
-  RotateCw,
-  FileSliders,
 } from "lucide-react";
 
 import InboxClientWrapper from "@/app/components/inbox/inboxclientwrapper";
@@ -45,6 +40,16 @@ export default async function InboxEmail() {
   );
   const parsedEmailResponse = await emailResponse.json();
   const threadArrayEmailResponse = parsedEmailResponse.threadArray;
+  const combinedArray = await Promise.all(
+    threadArrayEmailResponse.map(async (obj) => {
+      const enagagementStatus = await fetch(`http://localhost:8080/gmail/get-engagement/${obj.threadId}/${obj.messageId}`)
+      const status = await fetch(`http://localhost:8080/gmail/get-status/${obj.threadId}`)
+      const statusData = await status.json()
+      const engagementData = await enagagementStatus.json()
+      return { ...obj, engagementData, statusData}
+    })
+  )
+
 
   const rawUserProfile = await fetch(
     "http://localhost:8080/auth/get-user-sidebar-info",
@@ -57,7 +62,6 @@ export default async function InboxEmail() {
     }
   );
   const parsedUserProfile = await rawUserProfile.json();
-  console.log(parsedUserProfile.student_email)
   return (
     <>
       <SidebarProvider>
@@ -106,7 +110,7 @@ export default async function InboxEmail() {
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <InboxClientWrapper emails = {parsedUserProfile.student_email} threadArrayEmailResponse = {threadArrayEmailResponse} userId = {userId.value}/>
+          <InboxClientWrapper emails = {parsedUserProfile.student_email} threadArrayEmailResponse = {combinedArray} userId = {userId.value}/>
         </SidebarInset>
       </SidebarProvider>
     </>

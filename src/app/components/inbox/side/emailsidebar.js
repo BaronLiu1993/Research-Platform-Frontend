@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Message from "./message";
 
-export default function EmailSidebar({ threadId, userId, email }) {
+export default function EmailSidebar({ threadId, userId, email, engagementData }) {
   const [threadData, setThreadData] = useState([]);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function EmailSidebar({ threadId, userId, email }) {
       <div className="space-y-4">
         {threadData?.messageArray?.map((message, idx) => (
           <div key={idx}>
-            <Message data={message} email={email} />
+            <Message data={message} email={email} engagementData = {engagementData}/>
           </div>
         ))}
       </div>
