@@ -3,6 +3,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import { Button } from "@/shadcomponents/ui/button";
 import { Brackets, CurlyBraces, Trash2, Wand, Wand2 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shadcomponents/ui/tooltip";
 
 export default function ComposeEditor() {
   const editor = useEditor({
@@ -24,9 +25,30 @@ export default function ComposeEditor() {
                 Send
             </button>
             <div className ="flex gap-2">
-                <Wand2 className = "h-4 w-4"/>
-                <CurlyBraces className = "h-4 w-4"/>
-                <Trash2 className = "h-4 w-4"/>
+                <Tooltip>
+                    <TooltipTrigger className = "hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
+                        <Wand2 className = "h-4 w-4"/>
+                    </TooltipTrigger>
+                    <TooltipContent className = "font-main font-semibold rounded-xs text-[12px] leading-4">
+                        Write With AI
+                    </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                    <TooltipTrigger className = "hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
+                        <CurlyBraces className = "h-4 w-4"/>
+                    </TooltipTrigger>
+                    <TooltipContent className = "font-main font-semibold rounded-xs text-[12px] leading-4">
+                        Integrate
+                    </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                    <TooltipTrigger className = "hover:bg-red-100 p-1 rounded-xs cursor-pointer">
+                        <Trash2 className = "h-4 w-4"/>
+                    </TooltipTrigger>
+                    <TooltipContent className = "font-main font-semibold rounded-xs text-[12px] leading-4">
+                        Delete
+                    </TooltipContent>
+                </Tooltip>
             </div>
         </div>
       </div>
