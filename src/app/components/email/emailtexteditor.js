@@ -49,6 +49,9 @@ import {
   Atom,
   Cloud,
   RefreshCcw,
+  List,
+  ListEnd,
+  ListStart,
 } from "lucide-react";
 
 //Prompts and Template Components
@@ -92,7 +95,7 @@ export default function EmailTextEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm sm:prose lg:prose-lg xl:prose-xl text-sm font-light focus:outline-none min-h-[30rem] w-full font-sans text-gray-800 py-3 px-4 bg-white rounded-b-md border border-gray-200",
+          "prose prose-sm prose-base prose-slate max-w-none w-full h-full min-h-[300px] leading-tight focus:outline-none font-main text-black px-6 py-4 bg-white rounded-md border border-gray-200",
       },
     },
     content: "",
@@ -295,7 +298,43 @@ export default function EmailTextEditor({
               </ToggleGroup>
 
               <div className="h-5 w-px bg-gray-300 mx-1"></div>
-              <div></div>
+              <ToggleGroup type="multiple" className="flex items-center gap-1">
+                <ToggleGroupItem
+                  value="bulletList"
+                  aria-label="Toggle bullet list"
+                  onClick={() =>
+                    editor.chain().focus().toggleBulletList().run()
+                  }
+                  className={toggleItemClasses(editor.isActive("bulletList"))}
+                >
+                  <List className="h-4 w-4" />
+                </ToggleGroupItem>
+
+                <ToggleGroupItem
+                  value="splitListItem"
+                  aria-label="Split list item"
+                  onClick={() =>
+                    editor.chain().focus().splitListItem("listItem").run()
+                  }
+                  disabled={!editor.can().splitListItem("listItem")}
+                  className={toggleItemClasses(false)} // Not toggleable
+                >
+                  <ListStart className="h-4 w-4" />
+                </ToggleGroupItem>
+
+                <ToggleGroupItem
+                  value="liftListItem"
+                  aria-label="Lift list item"
+                  onClick={() =>
+                    editor.chain().focus().liftListItem("listItem").run()
+                  }
+                  disabled={!editor.can().liftListItem("listItem")}
+                  className={toggleItemClasses(false)}
+                >
+                  <ListEnd className="h-4 w-4" />
+                </ToggleGroupItem>
+              </ToggleGroup>
+
               <Popover className="max-w-[5rem]">
                 <PopoverTrigger asChild>
                   <button

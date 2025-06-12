@@ -32,6 +32,8 @@ import EngagementButton from "./badges/engagementButton";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import { Button } from "@/shadcomponents/ui/button";
 import { Badge } from "@/shadcomponents/ui/badge";
+import { Dialog, DialogTitle, DialogContent, DialogTrigger } from "@/shadcomponents/ui/composedialog";
+import Compose from "./editor/compose";
 const EmailSidebar = lazy(() => import("./side/emailsidebar"));
 
 export default function InboxClientWrapper({
@@ -131,15 +133,22 @@ export default function InboxClientWrapper({
                   </div>
                 </div>
               </SheetTrigger>
-              <SheetContent className="w-[700px] sm:w-[540px]">
+              <SheetContent className="w-[700px] sm:w-[540px] overflow-y-auto">
                 <SheetHeader>
                   <div className="flex justify-between">
                     <FolderOpen className="text-blue-700 h-6.5 w-6.5 p-1 rounded-xs cursor-pointer hover:bg-[#F1F1EF]" />
 
                     <div className="flex space-x-2 h-6.5">
-                      <Button className="h-6 text-xs bg-white border-1 border-[#F4EEEE] text-black hover:bg-white cursor-pointer">
-                        Generate Follow Up
-                      </Button>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button className="h-6 text-xs bg-white border border-[#F4EEEE] text-black hover:bg-white cursor-pointer">
+                            Generate Follow Up
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <Compose />
+                        </DialogContent>
+                      </Dialog>
 
                       <Database className="h-6.5 w-6.5 p-1 text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
                       <Trash2 className="text-[#787774] h-6.5 w-6.5 p-1 hover:bg-red-100 hover:text-red-700 cursor-pointer rounded-xs" />
@@ -153,7 +162,7 @@ export default function InboxClientWrapper({
                   <SheetDescription>
                     <div className="w-full p-4 font-main">
                       <div className="px-4 space-x-2">
-                        <div className = "px-8 space-y-4">
+                        <div className="px-8 space-y-4">
                           <div className="text-xs text-black font-mono">
                             Tag workflows as{" "}
                             <span className="text-blue-700  font-semibold">
@@ -173,15 +182,15 @@ export default function InboxClientWrapper({
                             </span>{" "}
                             ones get tucked away.
                           </div>
-                          <div className = "space-x-4">
-                          <Button className="h-6 text-xs bg-white border-1 border-[#F4EEEE] text-black hover:bg-white cursor-pointer">
-                            <Check className="" />
-                            Won
-                          </Button>
-                          <Button className="h-6 text-xs bg-white border-1 border-[#F4EEEE] text-black hover:bg-white cursor-pointer">
-                            <X />
-                            Lost
-                          </Button>
+                          <div className="space-x-4">
+                            <Button className="h-6 text-xs bg-white border-1 border-[#F4EEEE] text-black hover:bg-white cursor-pointer">
+                              <Check className="" />
+                              Won
+                            </Button>
+                            <Button className="h-6 text-xs bg-white border-1 border-[#F4EEEE] text-black hover:bg-white cursor-pointer">
+                              <X />
+                              Lost
+                            </Button>
                           </div>
                         </div>
                       </div>

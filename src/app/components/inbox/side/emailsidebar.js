@@ -20,7 +20,7 @@ export default function EmailSidebar({ threadId, userId, email, engagementData }
   }, [threadId, userId]);
 
   return (
-    <div className="h-[80vh] overflow-y-auto bg-white">
+    <div className="h-[80vh] bg-white">
       <div className="space-y-4">
         {threadData?.messageArray?.map((message, idx) => (
           <div key={idx}>
