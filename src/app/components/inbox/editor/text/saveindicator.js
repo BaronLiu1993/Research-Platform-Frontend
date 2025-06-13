@@ -5,7 +5,7 @@ export function SaveIndicator() {
   const status = useLoadingStore((s) => s.status);
 
   return (
-    <div className="flex gap-1 text-blue-700">
+    <div className="flex gap-1 text-[#37352F]">
       {status === "saving" ? (
         <>
           <LoaderCircle className="animate-spin h-4 w-4" />

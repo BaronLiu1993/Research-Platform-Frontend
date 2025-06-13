@@ -1,6 +1,5 @@
 "use client";
 
-import debounce from "lodash/debounce";
 import { saveDraftToServer } from "@/app/actions/updateFollowUp";
 import { useLoadingStore } from "@/app/store/useLoadingStore";
 import { useRef, useCallback, useEffect, useState } from "react";
@@ -8,6 +7,7 @@ import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
   Bold,
+  BookText,
   CurlyBraces,
   Italic,
   List,
@@ -24,6 +24,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/shadcomponents/ui/popover";
+
 import {
   Tooltip,
   TooltipContent,
@@ -31,6 +32,7 @@ import {
 } from "@/shadcomponents/ui/tooltip";
 import DeleteFollowUp from "../../button/compose/deleteFollowUp";
 import { SaveIndicator } from "./saveindicator";
+import Snippets from "../../popover/snippets";
 
 export default function ComposeEditor({
   draftData,
@@ -41,6 +43,7 @@ export default function ComposeEditor({
   to,
 }) {
   const saveTimeout = useRef(null);
+  const [open, setOpen] = useState(false) 
   const { setStatus } = useLoadingStore.getState();
   const [subject, setSubject] = useState("");
 
@@ -192,7 +195,7 @@ export default function ComposeEditor({
           </div>
         </BubbleMenu>
       )}
-      <div className="flex items-center justify-between text-blue-700 bg-[#E7F3F8] text-xs px-4 py-2 rounded-xs font-semibold border-1">
+      <div className="flex items-center justify-between text-[#37352F] bg-[#F7F6F3] text-xs px-4 py-2 rounded-xs font-semibold border-1">
         <div className="flex gap-1">
           <SaveIndicator />
         </div>
@@ -229,6 +232,14 @@ export default function ComposeEditor({
           Send
         </button>
         <div className="flex gap-2">
+        <Tooltip>
+            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
+              <BookText className="h-4 w-4" />
+            </TooltipTrigger>
+            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
+              Attachments
+            </TooltipContent>
+          </Tooltip>
           <Tooltip>
             <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
               <Paperclip className="h-4 w-4" />
@@ -245,8 +256,8 @@ export default function ComposeEditor({
               AI Tools
             </TooltipContent>
           </Tooltip>
-          <Popover>
-            <PopoverTrigger>
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
               <Tooltip>
                 <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
                   <CurlyBraces className="h-4 w-4" />
@@ -256,8 +267,8 @@ export default function ComposeEditor({
                 </TooltipContent>
               </Tooltip>
             </PopoverTrigger>
-            <PopoverContent>
-                
+            <PopoverContent className = "p-0">
+                <Snippets />
             </PopoverContent>
           </Popover>
           <Tooltip>

@@ -2,6 +2,7 @@ import { Badge } from "@/shadcomponents/ui/badge";
 import { Button } from "@/shadcomponents/ui/button";
 import { Separator } from "@/shadcomponents/ui/separator";
 import { Forward, Reply } from "lucide-react";
+import Display from "../editor/display";
 
 export default function Message({ data, email, engagementData }) {
   return (
@@ -85,7 +86,7 @@ export default function Message({ data, email, engagementData }) {
         </div>
         <div className="font px-6 text-xs">{`To ${data.to.name} <${data.to.address}>`}</div>
         <div className="text-black px-6 py-6 tracking-wide text-xs">
-          {data.body}
+          <Display content = {data.body}/>
         </div>
         <div className="flex gap-4 px-6">
           <Button variant="outline" className="text-xs">
