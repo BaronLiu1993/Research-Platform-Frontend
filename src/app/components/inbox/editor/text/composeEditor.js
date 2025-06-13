@@ -120,7 +120,7 @@ export default function ComposeEditor() {
             Send
           </button>
           <div className="flex gap-2">
-          <Tooltip>
+            <Tooltip>
               <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
                 <Paperclip className="h-4 w-4" />
               </TooltipTrigger>
