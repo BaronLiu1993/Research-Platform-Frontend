@@ -1,3 +1,5 @@
+"use client";
+import { useRef, useCallback, useEffect, useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
@@ -21,7 +23,51 @@ import {
   TooltipTrigger,
 } from "@/shadcomponents/ui/tooltip";
 
-export default function ComposeEditor() {
+export default function ComposeEditor({
+  userId,
+  professorId,
+  fromName,
+  fromEmail,
+  to,
+}) {
+  const saveTimeout = useRef(null);
+  const [subject, setSubject] = useState("");
+  const saveDraft = useCallback(async (content) => {
+    const data = {
+        fromName: fromName,
+        fromEmail: fromEmail,
+        to: to,
+        body: content,
+        subject: subject
+    }
+    try {
+      const response = await fetch(`http://localhost:8080/gmail/update-follow-up-draft/${userId}/${professorId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        console.error("Draft save failed");
+      }
+    } catch (err) {
+      console.error("Error saving draft:", err);
+    }
+  }, []);
+
+  const handleEditorUpdate = useCallback(
+    (editor) => {
+      if (saveTimeout.current) clearTimeout(saveTimeout.current);
+      saveTimeout.current = setTimeout(() => {
+        const content = editor.getHTML();
+        saveDraft(content);
+      }, 2000);
+    },
+    [saveDraft]
+  );
+
   const editor = useEditor({
     extensions: [StarterKit, Highlight.configure({ multicolor: true })],
     editorProps: {
@@ -31,7 +77,15 @@ export default function ComposeEditor() {
       },
     },
     content: "",
+    onUpdate: ({ editor }) => handleEditorUpdate(editor),
   });
+
+  useEffect(() => {
+    return () => {
+      if (saveTimeout.current) clearTimeout(saveTimeout.current);
+    };
+  }, []);
+
   return (
     <>
       <div>
@@ -114,6 +168,15 @@ export default function ComposeEditor() {
             </div>
           </BubbleMenu>
         )}
+        <div className="flex flex-col text-sm font-main px-3">
+          <input
+            className="p-1 w-full"
+            placeholder="Add Recipient"
+            variant="ghost"
+          />
+
+          <input onChange = {(e) => setSubject(e.target.value)} className="p-1 w-full" placeholder="Subject" variant="ghost" />
+        </div>
         <EditorContent editor={editor} />
         <div className="font-main p-4 flex justify-between items-center">
           <button className="font-main text-xs rounded-xs text-white font-semibold bg-blue-500 h-[1.7rem] w-[3rem]">

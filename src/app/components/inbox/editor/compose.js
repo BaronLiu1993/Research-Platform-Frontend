@@ -4,11 +4,11 @@ import { DialogTitle } from "@/shadcomponents/ui/composedialog";
 import ComposeEditor from "./text/composeEditor";
 import { Info, Minimize2, X } from "lucide-react";
 
-export default function Compose() {
+export default function Compose({userId, professorId, fromName, fromEmail, to}) {
   return (
     <div>
       <DialogTitle className="hidden"></DialogTitle>
-      <div className=" text-sm space-y-2 border-b-1 p-3">
+      <div className=" text-sm space-y-2 p-3">
         <div className = "flex items-center text-xs p-1 rounded-xs font-semibold border-1">
             <Info className= "h-4 w-4 text-[#787774]"/>
             <h1 className = "px-1 text-[#787774]">Highlight Text To Open Style Bar</h1>
@@ -24,12 +24,8 @@ export default function Compose() {
             <Minimize2 className="h-4 w-4 text-[#787774]" />
           </div>
         </div>
-        <div className="flex flex-col gap-1">
-          <input className="p-1" placeholder="Add Recipient" variant="ghost" />
-          <input className="p-1" placeholder="Subject" variant="ghost" />
-        </div>
       </div>
-      <ComposeEditor />
+      <ComposeEditor userId={userId} professorId={professorId} fromName={fromEmail} fromEmail ={fromEmail} to = {to}/>
     </div>
   );
 }

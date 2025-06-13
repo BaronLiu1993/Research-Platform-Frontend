@@ -32,8 +32,14 @@ import EngagementButton from "./badges/engagementButton";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import { Button } from "@/shadcomponents/ui/button";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { Dialog, DialogTitle, DialogContent, DialogTrigger } from "@/shadcomponents/ui/composedialog";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogTrigger,
+} from "@/shadcomponents/ui/composedialog";
 import Compose from "./editor/compose";
+import ComposeFollowUp from "./button/compose/composeFollowUp";
 const EmailSidebar = lazy(() => import("./side/emailsidebar"));
 
 export default function InboxClientWrapper({
@@ -141,12 +147,19 @@ export default function InboxClientWrapper({
                     <div className="flex space-x-2 h-6.5">
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button className="h-6 text-xs bg-white border border-[#F4EEEE] text-black hover:bg-white cursor-pointer">
-                            Generate Follow Up
-                          </Button>
+                          <div>
+                            
+                            <ComposeFollowUp
+                              userId={userId}
+                              professorId={email.professorId}
+                              userEmail={email.userEmail}
+                              professorEmail={email.professorEmail}
+                              userName={email.userName}
+                            />
+                          </div>
                         </DialogTrigger>
                         <DialogContent>
-                          <Compose />
+                          <Compose userId = {userId} professorId={email.professorId} fromName={email.userName} fromEmail={email.userEmail} to={email.professorEmail}/>
                         </DialogContent>
                       </Dialog>
 
