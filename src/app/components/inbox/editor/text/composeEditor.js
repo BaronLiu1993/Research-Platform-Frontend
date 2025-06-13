@@ -1,9 +1,25 @@
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
-import { Button } from "@/shadcomponents/ui/button";
-import { Brackets, CurlyBraces, Trash2, Wand, Wand2 } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/shadcomponents/ui/tooltip";
+import {
+  AlignCenter,
+  Bold,
+  CurlyBraces,
+  Italic,
+  List,
+  ListTodo,
+  Paperclip,
+  PencilRuler,
+  Strikethrough,
+  Trash2,
+  Underline,
+  Wand2,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/shadcomponents/ui/tooltip";
 
 export default function ComposeEditor() {
   const editor = useEditor({
@@ -19,37 +35,124 @@ export default function ComposeEditor() {
   return (
     <>
       <div>
-        <EditorContent editor={editor} />
-        <div className = "font-main p-4 flex justify-between items-center">
-            <button className = "font-main text-xs rounded-xs text-white font-semibold bg-blue-500 h-[1.7rem] w-[3rem]">
-                Send
-            </button>
-            <div className ="flex gap-2">
-                <Tooltip>
-                    <TooltipTrigger className = "hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-                        <Wand2 className = "h-4 w-4"/>
-                    </TooltipTrigger>
-                    <TooltipContent className = "font-main font-semibold rounded-xs text-[12px] leading-4">
-                        Write With AI
-                    </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                    <TooltipTrigger className = "hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-                        <CurlyBraces className = "h-4 w-4"/>
-                    </TooltipTrigger>
-                    <TooltipContent className = "font-main font-semibold rounded-xs text-[12px] leading-4">
-                        Integrate
-                    </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                    <TooltipTrigger className = "hover:bg-red-100 p-1 rounded-xs cursor-pointer">
-                        <Trash2 className = "h-4 w-4"/>
-                    </TooltipTrigger>
-                    <TooltipContent className = "font-main font-semibold rounded-xs text-[12px] leading-4">
-                        Delete
-                    </TooltipContent>
-                </Tooltip>
+        {editor && (
+          <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
+            <div className="flex rounded-md border border-gray-100 bg-white p-1 shadow-sm">
+              <button
+                onClick={() => editor.chain().focus().toggleBold().run()}
+                className={`rounded-md p-1 hover:bg-gray-100 font-main text-xs gap-2 mx-1 flex ${
+                  editor.isActive("bold")
+                    ? "hover:bg-[#F1F1EFs] text-blue-400"
+                    : ""
+                }`}
+              >
+                <PencilRuler className="w-4 h-4" /> <span>Revise</span>
+              </button>
+              <button
+                onClick={() => editor.chain().focus().toggleBold().run()}
+                className={`rounded-md p-1 hover:bg-gray-100 font-main text-xs gap-2 mx-1 flex ${
+                  editor.isActive("bold")
+                    ? "hover:bg-[#F1F1EFs] text-blue-400"
+                    : ""
+                }`}
+              >
+                <Wand2 className="w-4 h-4" /> <span>Generate with AI</span>
+              </button>
+              <div className="text-gray-200 border-l-1"></div>
+              <button
+                onClick={() => editor.chain().focus().toggleBold().run()}
+                className={`rounded-md p-1 hover:bg-gray-100 ${
+                  editor.isActive("bold")
+                    ? "hover:bg-[#F1F1EFs] text-blue-400"
+                    : ""
+                }`}
+              >
+                <Bold className="w-4 h-4" />
+              </button>
+
+              <button
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+                className={`rounded-md p-1 hover:bg-gray-100 ${
+                  editor.isActive("italic")
+                    ? "hover:bg-[#F1F1EFs] text-blue-400"
+                    : ""
+                }`}
+              >
+                <Italic className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => editor.chain().focus().toggleStrike().run()}
+                className={`rounded-md p-1 hover:bg-gray-100 ${
+                  editor.isActive("strike")
+                    ? "hover:bg-[#F1F1EFs] text-blue-400"
+                    : ""
+                }`}
+              >
+                <Strikethrough className="w-4 h-4" />
+              </button>
+              <div className="text-gray-200 border-l-1"></div>
+              <button
+                onClick={() => editor.chain().focus().toggleOrderedList().run}
+                className={`rounded-md p-1 hover:bg-gray-100 ${
+                  editor.isActive("bold")
+                    ? "hover:bg-[#F1F1EFs] text-blue-400"
+                    : ""
+                }`}
+              >
+                <ListTodo className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => editor.chain().focus().toggleBulletList().run()}
+                className={`rounded-md p-1 hover:bg-gray-100 ${
+                  editor.isActive("bold")
+                    ? "hover:bg-[#F1F1EFs] text-blue-400"
+                    : ""
+                }`}
+              >
+                <List className="w-4 h-4" />
+              </button>
             </div>
+          </BubbleMenu>
+        )}
+        <EditorContent editor={editor} />
+        <div className="font-main p-4 flex justify-between items-center">
+          <button className="font-main text-xs rounded-xs text-white font-semibold bg-blue-500 h-[1.7rem] w-[3rem]">
+            Send
+          </button>
+          <div className="flex gap-2">
+          <Tooltip>
+              <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
+                <Paperclip className="h-4 w-4" />
+              </TooltipTrigger>
+              <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
+                Attachments
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
+                <Wand2 className="h-4 w-4" />
+              </TooltipTrigger>
+              <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
+                AI Tools
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
+                <CurlyBraces className="h-4 w-4" />
+              </TooltipTrigger>
+              <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
+                Snippets
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger className="hover:bg-red-100 p-1 rounded-xs cursor-pointer">
+                <Trash2 className="h-4 w-4 hover:text-red-500" />
+              </TooltipTrigger>
+              <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
+                Delete
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </div>
       </div>
     </>
