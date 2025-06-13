@@ -40,6 +40,7 @@ import {
 } from "@/shadcomponents/ui/composedialog";
 import Compose from "./editor/compose";
 import ComposeFollowUp from "./button/compose/composeFollowUp";
+import ContinueFollowUp from "./button/compose/continueFollowUp";
 const EmailSidebar = lazy(() => import("./side/emailsidebar"));
 
 export default function InboxClientWrapper({
@@ -148,18 +149,28 @@ export default function InboxClientWrapper({
                       <Dialog>
                         <DialogTrigger asChild>
                           <div>
-                            
-                            <ComposeFollowUp
-                              userId={userId}
-                              professorId={email.professorId}
-                              userEmail={email.userEmail}
-                              professorEmail={email.professorEmail}
-                              userName={email.userName}
-                            />
+                            {email.draftData.draftExists ? (
+                              <ContinueFollowUp />
+                            ) : (
+                              <ComposeFollowUp
+                                userId={userId}
+                                professorId={email.professorId}
+                                userEmail={email.userEmail}
+                                professorEmail={email.professorEmail}
+                                userName={email.userName}
+                              />
+                            )}
                           </div>
                         </DialogTrigger>
                         <DialogContent>
-                          <Compose userId = {userId} professorId={email.professorId} fromName={email.userName} fromEmail={email.userEmail} to={email.professorEmail}/>
+                          <Compose
+                            draftData={email.draftData}
+                            userId={userId}
+                            professorId={email.professorId}
+                            fromName={email.userName}
+                            fromEmail={email.userEmail}
+                            to={email.professorEmail}
+                          />
                         </DialogContent>
                       </Dialog>
 

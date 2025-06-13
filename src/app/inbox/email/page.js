@@ -44,12 +44,15 @@ export default async function InboxEmail() {
     threadArrayEmailResponse.map(async (obj) => {
       const enagagementStatus = await fetch(`http://localhost:8080/gmail/get-engagement/${obj.threadId}/${obj.messageId}`)
       const status = await fetch(`http://localhost:8080/gmail/get-status/${obj.threadId}`)
+      const draft = await fetch (`http://localhost:8080/gmail/resume-follow-up-draft/${userId.value}/${obj.professorId}`)
+      const draftData = await draft.json()
       const statusData = await status.json()
       const engagementData = await enagagementStatus.json()
-      return { ...obj, engagementData, statusData}
+      return { ...obj, engagementData, statusData, draftData}
     })
   )
 
+  
 
   const rawUserProfile = await fetch(
     "http://localhost:8080/auth/get-user-sidebar-info",
