@@ -421,8 +421,9 @@ export default function EmailTextEditor({
                     <Calendar className="h-4 w-4 text-green-500" /> Availability
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
+                <PopoverContent className="bg-white shadow-lg font-main border border-gray-200 rounded-md p-0 w-[30rem] z-50">
                   <Suspense fallback={<PopoverLoading />}>
+                    <h1>Find Availability</h1>
                     <GoogleCalendar userId = {student_id}/>
                   </Suspense>
                 </PopoverContent>

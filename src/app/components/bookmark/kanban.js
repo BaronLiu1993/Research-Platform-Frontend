@@ -6,22 +6,17 @@ import KanbanCardInComplete from "./cards/kanbancardincomplete";
 import KanbanCardInProgress from "./cards/kanbancardinprogress";
 
 import {
-  Plus,
-  MoreHorizontal,
-  Filter as FilterIcon,
-  ArrowUpDown,
-  Search as SearchIcon,
-  LayoutGrid,
-  ListChecks,
-  Settings2,
-  Columns,
-  Tag,
-  CalendarDays,
-  Users,
-  Leaf,
-} from "lucide-react";
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/shadcomponents/ui/tabs";
+
+import { Plus, MoreHorizontal, Columns, Leaf } from "lucide-react";
 
 import { Badge } from "@/shadcomponents/ui/badge";
+import { SavedDataTable } from "./table/saved-data-table";
+import { SavedColumns } from "./table/savedcolumns";
 
 const statusConfig = {
   in_complete: {
@@ -110,6 +105,8 @@ export default async function Kanban({ user_id }) {
     },
   ];
 
+
+
   return (
     <div className="flex flex-col h-fit bg-gray-50 font-main overflow-hidden">
       <div className="border-b border-gray-200">
@@ -138,72 +135,84 @@ export default async function Kanban({ user_id }) {
           streamlined process,
         </h2>
       </div>
-      
-      <div className="flex-grow p-3 sm:p-4 overflow-x-auto">
-        <div className="grid grid-flow-col auto-cols-max md:auto-cols-fr gap-4 h-full">
-          {columnsData.map((col) => {
-            const config = statusConfig[col.statusKey];
-            const CardComponent = col.cardComponent;
-            return (
-              <div
-                key={col.id}
-                className="bg-slate-100 rounded-md flex flex-col h-full w-[300px] sm:w-auto"
-              >
-                <div className="p-3 flex items-center justify-between shrink-0 border-b border-gray-200/80">
-                  <div className="flex items-center gap-2">
-                    <Badge className={`${config.bgColor} border-2 `}>
-                      <span
-                        className={`h-2 w-2 rounded-full ${config.dotColor}`}
-                      ></span>
-                      <h2 className={`text-sm font-medium ${config.textColor}`}>
-                        {config.title}
-                      </h2>
-                    </Badge>
-                    <span className="text-xs font-medium text-gray-500 bg-gray-200/70 px-1.5 py-0.5 rounded-md">
-                      {col.data.length}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-0.5">
-                    <button className="p-1.5 text-gray-500 hover:text-gray-600 hover:bg-gray-200/70 rounded-md">
-                      <Plus className="h-4 w-4" />
-                    </button>
-                    <button className="p-1.5 text-gray-500 hover:text-gray-600 hover:bg-gray-200/70 rounded-md">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-                <div className="p-2 space-y-3 overflow-y-auto flex-grow">
-                  {col.data.length > 0 ? (
-                    col.data.map((item, index) => (
-                      <CardComponent
-                        key={item.id || index}
-                        prof_id={item.id || index}
-                        title={item.name}
-                        url={item.url}
-                        school={item.school}
-                        faculty={item.faculty}
-                        email={item.email}
-                        department={item.department}
-                        labs={item.labs}
-                        lab_url={item.lab_url}
-                        research_interests={item.research_interests}
-                        date={item.added_at}
-                        user_id={user_id}
-                      />
-                    ))
-                  ) : (
-                    <div className="text-center py-6">
-                      <p className="text-xs text-gray-400">
-                        No applications in this stage.
-                      </p>
+      <Tabs defaultValue="kanban">
+        <TabsList>
+          <TabsTrigger value="kanban">Kanban</TabsTrigger>
+          <TabsTrigger value="table">Table</TabsTrigger>
+        </TabsList>
+        <TabsContent value="table">
+          <SavedDataTable data = {columnsData[0].data} columns = {SavedColumns}/>
+        </TabsContent>
+        <TabsContent value="kanban">
+          <div className="flex-grow p-3 sm:p-4 overflow-x-auto">
+            <div className="grid grid-flow-col auto-cols-max md:auto-cols-fr gap-4 h-full">
+              {columnsData.map((col) => {
+                const config = statusConfig[col.statusKey];
+                const CardComponent = col.cardComponent;
+                return (
+                  <div
+                    key={col.id}
+                    className="bg-slate-100 rounded-md flex flex-col h-full w-[300px] sm:w-auto"
+                  >
+                    <div className="p-3 flex items-center justify-between shrink-0 border-b border-gray-200/80">
+                      <div className="flex items-center gap-2">
+                        <Badge className={`${config.bgColor} border-2 `}>
+                          <span
+                            className={`h-2 w-2 rounded-full ${config.dotColor}`}
+                          ></span>
+                          <h2
+                            className={`text-sm font-medium ${config.textColor}`}
+                          >
+                            {config.title}
+                          </h2>
+                        </Badge>
+                        <span className="text-xs font-medium text-gray-500 bg-gray-200/70 px-1.5 py-0.5 rounded-md">
+                          {col.data.length}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-0.5">
+                        <button className="p-1.5 text-gray-500 hover:text-gray-600 hover:bg-gray-200/70 rounded-md">
+                          <Plus className="h-4 w-4" />
+                        </button>
+                        <button className="p-1.5 text-gray-500 hover:text-gray-600 hover:bg-gray-200/70 rounded-md">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </button>
+                      </div>
                     </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+                    <div className="p-2 space-y-3 overflow-y-auto flex-grow">
+                      {col.data.length > 0 ? (
+                        col.data.map((item, index) => (
+                          <CardComponent
+                            key={item.id || index}
+                            prof_id={item.id || index}
+                            title={item.name}
+                            url={item.url}
+                            school={item.school}
+                            faculty={item.faculty}
+                            email={item.email}
+                            department={item.department}
+                            labs={item.labs}
+                            lab_url={item.lab_url}
+                            research_interests={item.research_interests}
+                            date={item.added_at}
+                            user_id={user_id}
+                          />
+                        ))
+                      ) : (
+                        <div className="text-center py-6">
+                          <p className="text-xs text-gray-400">
+                            No applications in this stage.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
