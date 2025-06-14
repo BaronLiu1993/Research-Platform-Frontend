@@ -5,10 +5,7 @@ import { useState, useRef, useEffect, Suspense, lazy } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
-import BulletList from "@tiptap/extension-bullet-list";
 import Document from "@tiptap/extension-document";
-import ListItem from "@tiptap/extension-list-item";
-import OrderedList from "@tiptap/extension-ordered-list";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 
@@ -27,13 +24,21 @@ import { handleAutoSave } from "./button/autosave";
 
 //Option Components
 const Publications = lazy(() => import("./publications"));
-const GoogleCalendar = lazy(() => import("./googlecalendar"));
-const DeepThink = lazy(() => import("./deepthink"));
+const GoogleCalendar = lazy(() => import("./productivity/googlecalendar"));
 
 //Popover loading fallback
 const PopoverLoading = () => (
   <Skeleton className="w-full h-full mb-3 rounded-md bg-gray-200" />
 );
+
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/shadcomponents/ui/sheet";
 
 //Icons
 import {
@@ -46,7 +51,6 @@ import {
   Pencil,
   CheckSquare,
   Calendar,
-  Atom,
   Cloud,
   RefreshCcw,
   List,
@@ -59,6 +63,7 @@ import { prompts } from "./AIwriters";
 import { Template } from "./template";
 import { Input } from "@/shadcomponents/ui/input";
 import SendEmail from "./button/sendemail";
+import { Button } from "@/shadcomponents/ui/button";
 
 export default function EmailTextEditor({
   student_email,
@@ -82,7 +87,7 @@ export default function EmailTextEditor({
   const hasSetInitialContent = useRef(false);
   const hasSetAIContent = useRef(false);
   const saveTimeout = useRef(null);
-
+  console.log(publications)
   //Fix the editor state later
   const editor = useEditor({
     extensions: [
@@ -337,14 +342,15 @@ export default function EmailTextEditor({
 
               <Popover className="max-w-[5rem]">
                 <PopoverTrigger asChild>
-                  <button
+                  <Button
+                    variant="outline"
                     className={`${toggleItemClasses(
                       false
-                    )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
+                    )} flex items-center rounded-md h-[2rem] font-medium text-xs`}
                   >
                     <Sparkles className="h-4 w-4 text-purple-500" />
-                    <span> Extra Revisions</span>
-                  </button>
+                    <span> AI Revise</span>
+                  </Button>
                 </PopoverTrigger>
                 <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-2 w-64 z-50 space-y-1">
                   <button
@@ -382,55 +388,42 @@ export default function EmailTextEditor({
                 </PopoverContent>
               </Popover>
 
-              <Popover>
-                <PopoverTrigger asChild>
-                  <button
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
                     className={`${toggleItemClasses(
                       false
-                    )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
+                    )} flex items-center rounded-md h-[2rem] font-medium text-xs`}
                   >
-                    <Microscope className="h-4 w-4 text-pink-500" /> Publication
-                    Mode
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                  <Suspense fallback={<PopoverLoading />}>
-                    <Publications />
-                  </Suspense>
-                </PopoverContent>
-              </Popover>
+                    <Microscope className="h-4 w-4 text-pink-500" />{" "}
+                    Publications
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
+                  <SheetTitle></SheetTitle>
+                  <SheetDescription>
+                    <Suspense fallback={<PopoverLoading />}>
+                      <Publications />
+                    </Suspense>
+                  </SheetDescription>
+                </SheetContent>
+              </Sheet>
 
               <Popover>
                 <PopoverTrigger asChild>
-                  <button
+                  <Button
+                    variant="outline"
                     className={`${toggleItemClasses(
                       false
-                    )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
+                    )} flex items-center rounded-md h-[2rem] font-medium text-xs`}
                   >
-                    <Calendar className="h-4 w-4 text-green-500" /> Google
-                    Calendar
-                  </button>
+                    <Calendar className="h-4 w-4 text-green-500" /> Availability
+                  </Button>
                 </PopoverTrigger>
                 <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
                   <Suspense fallback={<PopoverLoading />}>
-                    <GoogleCalendar />
-                  </Suspense>
-                </PopoverContent>
-              </Popover>
-
-              <Popover>
-                <PopoverTrigger asChild>
-                  <button
-                    className={`${toggleItemClasses(
-                      false
-                    )} flex items-center gap-1.5 rounded-xs px-2 font-light text-xs`}
-                  >
-                    <Atom className="h-4 w-4 text-blue-500" /> Deep Think
-                  </button>
-                </PopoverTrigger>
-                <PopoverContent className="bg-white shadow-lg border border-gray-200 rounded-md p-0 max-w-[20rem] w-[95vw] sm:w-[32rem] z-50">
-                  <Suspense fallback={<PopoverLoading />}>
-                    <DeepThink />
+                    <GoogleCalendar userId = {student_id}/>
                   </Suspense>
                 </PopoverContent>
               </Popover>
