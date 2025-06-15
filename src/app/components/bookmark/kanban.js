@@ -17,7 +17,6 @@ import { Plus, MoreHorizontal, Columns, Leaf } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { SavedDataTable } from "./table/saved-data-table";
 import { SavedColumns } from "./table/savedcolumns";
-
 const statusConfig = {
   in_complete: {
     title: "To Do",
@@ -135,7 +134,7 @@ export default async function Kanban({ user_id }) {
           streamlined process,
         </h2>
       </div>
-      <Tabs defaultValue="kanban">
+      <Tabs defaultValue="table">
         <TabsList>
           <TabsTrigger value="kanban">Kanban</TabsTrigger>
           <TabsTrigger value="table">Table</TabsTrigger>
