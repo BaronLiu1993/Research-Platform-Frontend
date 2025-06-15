@@ -14,7 +14,6 @@ import {
   export default function Snippets() {
     return (
       <>
-        
           <Command className="font-main">
             <CommandInput className = "text-xs" placeholder="Type a command or search..." />
             <CommandList>
