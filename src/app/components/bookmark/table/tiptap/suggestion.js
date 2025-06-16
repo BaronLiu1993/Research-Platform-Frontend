@@ -1,20 +1,13 @@
 import { ReactRenderer } from '@tiptap/react'
 import tippy from 'tippy.js'
-import { Braces, BookText, Lightbulb, Atom, School2 } from "lucide-react";
+import { BookText, Lightbulb, Atom, School2, Microscope, LayoutTemplate, SquareLibrary } from "lucide-react";
 
 
-import mentionlist from './mentionlist'
+import MentionList from './mentionlist'
 
 export default {
   items: ({ query }) => {
     return [
-        {
-          title: "Add Variable",
-          description: "Repeat Repetitive Variables",
-          icon:  <Braces className = "p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#37352F]"/>,
-          searchTerms: ["paragraph"],
-          variable: "{{variable}}"
-        },
         {
           title: "Publications",
           description: "Query Relevant Publications Variable",
@@ -31,29 +24,36 @@ export default {
         },
         {
             title: "AI Context Component",
-            description: "Query Relevant Publications Variable",
+            description: "Let AI Generate Text Snippets",
             icon: <Atom className = "p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#337EA9]"/>,
             searchTerms: ["ordered", "point", "numbers"],
             variable: "{{AIcontext}}"
         },
         {
-            title: "School",
-            description: "Query Relevant Publications Variable",
+            title: "Professor School",
+            description: "Professor School",
             icon: <School2 className = "p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#37352F]"/>,
             searchTerms: ["ordered", "point", "numbers"],
             variable: "{{professorSchool}}"
         },
         {
             title: "Faculty",
-            description: "Query Relevant Publications Variable",
-            icon: <School2 className = "p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#37352F]"/>,
+            description: "Professor Faculty",
+            icon: <SquareLibrary className = "p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#9F6B53]"/>,
+            searchTerms: ["ordered", "point", "numbers"],
+            variable: "{{professorSchool}}"
+        },
+        {
+            title: "Department",
+            description: "Professor Department",
+            icon: <LayoutTemplate className = "p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#448361]"/>,
             searchTerms: ["ordered", "point", "numbers"],
             variable: "{{professorSchool}}"
         },
         {
             title: "Labs",
-            description: "Query Relevant Publications Variable",
-            icon: <School2 className = "p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#37352F]"/>,
+            description: "Get The Lab Associated With the Professor",
+            icon: <Microscope className = "p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#9065B0]"/>,
             searchTerms: ["ordered", "point", "numbers"],
             variable: "{{professorSchool}}"
         },
@@ -70,7 +70,7 @@ export default {
 
     return {
       onStart: props => {
-        component = new ReactRenderer(mentionlist, {
+        component = new ReactRenderer(MentionList, {
           props,
           editor: props.editor,
         })
@@ -80,14 +80,16 @@ export default {
         }
 
         popup = tippy('body', {
-          getReferenceClientRect: props.clientRect,
-          appendTo: () => document.body,
-          content: component.element,
-          showOnCreate: true,
-          interactive: true,
-          trigger: 'manual',
-          placement: 'bottom-start',
-        })
+            getReferenceClientRect: props.clientRect,
+            appendTo: props.editor.view.dom.parentElement,
+            content: component.element,
+            showOnCreate: true,
+            interactive: true, 
+            trigger: 'manual',
+            placement: 'bottom-start',
+            hideOnClick: false,
+            trigger: 'manual'
+          })
       },
 
       onUpdate(props) {

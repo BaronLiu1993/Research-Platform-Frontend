@@ -1,5 +1,5 @@
 "use client";
-import 'tippy.js/dist/tippy.css';
+import "tippy.js/dist/tippy.css";
 
 import { useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
@@ -47,9 +47,11 @@ export default function ComposeEditor({
       StarterKit,
       Mention.configure({
         suggestion: {
-            ...suggestion,
-            char: '/',
-          },
+          ...suggestion,
+          char: "/",
+          ignoreEvents: true,
+
+        },
       }),
     ],
     editorProps: {
@@ -80,7 +82,7 @@ export default function ComposeEditor({
       </div>
       {editor && (
         <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-          <div className="flex rounded-md border border-gray-100 bg-white p-1 shadow-sm">
+          <div className="flex rounded-xs text-[#37352F] border-1 border-gray-100 bg-white p-1 shadow-sm">
             <button
               onClick={() => editor.chain().focus().toggleBold().run()}
               className={`rounded-md p-1 hover:bg-gray-100 font-main text-xs gap-2 mx-1 flex ${
@@ -142,7 +144,9 @@ export default function ComposeEditor({
           </div>
         </BubbleMenu>
       )}
-      <EditorContent editor={editor} />
+      <EditorContent
+        editor={editor}
+      />
       <div className="font-main p-4 flex justify-between items-center">
         <button className="font-main text-xs rounded-xs text-white font-semibold bg-blue-500 h-[1.7rem] w-[3rem]">
           Send
