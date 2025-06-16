@@ -10,31 +10,17 @@ import suggestion from "../tiptap/suggestion";
 import StarterKit from "@tiptap/starter-kit";
 import {
   Bold,
-  BookText,
-  CurlyBraces,
   Italic,
   List,
   ListTodo,
-  Paperclip,
   PencilRuler,
   Strikethrough,
-  Trash2,
   Wand2,
+  PaintRoller,
 } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shadcomponents/ui/popover";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/shadcomponents/ui/tooltip";
+import { DialogClose } from "@/shadcomponents/ui/dialog";
 
-import Snippets from "../popover/snippets";
-
-export default function ComposeEditor({
+export default function CreateEditor({
   userId,
   professorId,
   fromName,
@@ -42,7 +28,6 @@ export default function ComposeEditor({
   to,
 }) {
   const [subject, setSubject] = useState("");
-  const [open, setOpen] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -65,22 +50,26 @@ export default function ComposeEditor({
   });
 
   return (
-    <div>
-      <div className="text-sm">
-        <div className="flex flex-col">
-          <div className="flex gap-2 px-4 py-1">
-            <h1 className="text-black">Baron Liu</h1>
-            <h2 className="text-[#787774]">baronliu1993@gmail.com</h2>
+    <div className="space-y-2 font-main">
+      <div>
+        <h1 className="text-[#787774] text-xs font-semibold">New Snippet</h1>
+        <div className="space-y-2">
+          <h1 className="text-xs text-[#787774]">Name</h1>
+          <div className="flex gap-2">
+            <PaintRoller className="h-7 w-7 rounded-sm border-1 p-1 text-[#787774]" />
+            <input
+              className="h-7 rounded-xs border-1 w-full px-2"
+              placeholder="/"
+            />
           </div>
-          <input className="px-4 py-1 w-full" placeholder="Add Recipient" />
-          <input
-            onChange={(e) => setSubject(e.target.value)}
-            className="px-4 py-1 w-full"
-            placeholder="Subject"
-            value={subject}
-          />
         </div>
       </div>
+      <input
+        onChange={(e) => setSubject(e.target.value)}
+        className="px-4 py-1 w-full border-1 rounded-xs text-xs font-main font-light"
+        placeholder="Subject"
+        value={subject}
+      />
       {editor && (
         <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
           <div className="flex rounded-xs text-[#37352F] border-1 border-gray-100 bg-white p-1 shadow-sm">
@@ -145,60 +134,14 @@ export default function ComposeEditor({
           </div>
         </BubbleMenu>
       )}
-      <EditorContent editor={editor} />
-      <div className="font-main p-4 flex justify-between items-center">
-        <button className="font-main text-xs rounded-xs text-white font-semibold bg-blue-500 h-[1.7rem] w-[3rem]">
+      <EditorContent editor={editor} className="border-1 rounded-xs" />
+      <div className="font-main pt-5 flex justify-between items-center gap-5">
+        <DialogClose className="font-main text-xs rounded-xs text-black font-semibold border-1 bg-white h-[1.7rem] w-full">
+          Cancel
+        </DialogClose>
+        <button className="font-main text-xs rounded-xs text-white font-semibold bg-blue-500 h-[1.7rem] w-full">
           Send
         </button>
-        <div className="flex gap-2">
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <BookText className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Attachments
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <Paperclip className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Attachments
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <Wand2 className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              AI Tools
-            </TooltipContent>
-          </Tooltip>
-          <Popover open={open} onOpenChange={setOpen} modal={true}>
-            <PopoverTrigger>
-              <Tooltip>
-                <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-                  <CurlyBraces className="h-4 w-4" />
-                </TooltipTrigger>
-                <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-                  Snippets
-                </TooltipContent>
-              </Tooltip>
-            </PopoverTrigger>
-            <PopoverContent>
-              <Snippets />
-            </PopoverContent>
-          </Popover>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-red-100 p-1 rounded-xs cursor-pointer">
-              <Trash2 />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Delete
-            </TooltipContent>
-          </Tooltip>
-        </div>
       </div>
     </div>
   );

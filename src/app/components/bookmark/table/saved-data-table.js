@@ -26,7 +26,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/shadcomponents/ui/sheet";
+  SheetClose,
+} from "@/shadcomponents/ui/composedSheet";
 import {
   Dialog,
   DialogTitle,
@@ -83,17 +84,19 @@ export function SavedDataTable({ columns, data }) {
           <SheetContent>
             <SheetTitle>
               <div className="flex justify-between p-1">
-                <FolderOpen className="text-blue-700 h-6.5 w-6.5 p-1 rounded-xs cursor-pointer hover:bg-[#F1F1EF]" />
+                <SheetClose>
+                  <FolderOpen className="text-blue-700 h-6.5 w-6.5 p-1 rounded-xs cursor-pointer hover:bg-[#F1F1EF]" />
+                </SheetClose>
 
                 <div className="flex space-x-2 h-6.5">
                   <Dialog>
                     <DialogTrigger>
-                        <Button
-                         variant = "outline"
-                         className="h-6 text-xs bg-white border border-[#F4EEEE] text-black hover:bg-white cursor-pointer"
-                        >
-                            Begin Mail Merge
-                        </Button>
+                      <Button
+                        variant="outline"
+                        className="h-6 text-xs bg-white border border-[#F4EEEE] text-black hover:bg-white cursor-pointer"
+                      >
+                        Begin Mail Merge
+                      </Button>
                     </DialogTrigger>
                     <DialogContent>
                       <DialogTitle></DialogTitle>
