@@ -33,6 +33,8 @@ import {
 } from "@/shadcomponents/ui/tooltip";
 
 import Snippets from "../popover/snippets";
+import AIPopover from "../popover/AIpopover";
+import { SendMassEmail } from "@/app/actions/sendMassEmail";
 
 export default function ComposeEditor({
   userId,
@@ -43,7 +45,6 @@ export default function ComposeEditor({
 }) {
   const [subject, setSubject] = useState("");
   const [open, setOpen] = useState(false);
-
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -147,9 +148,11 @@ export default function ComposeEditor({
       )}
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex justify-between items-center">
-        <button className="font-main text-xs rounded-xs text-white font-semibold bg-blue-500 h-[1.7rem] w-[3rem]">
-          Send
-        </button>
+        
+            <button onClick = {() => SendMassEmail()} className="font-main text-xs rounded-xs text-white font-semibold bg-blue-500 h-[1.7rem] w-[3rem]">
+              Send
+            </button>
+         
         <div className="flex gap-2">
           <Tooltip>
             <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
@@ -167,14 +170,26 @@ export default function ComposeEditor({
               Attachments
             </TooltipContent>
           </Tooltip>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <Wand2 className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              AI Tools
-            </TooltipContent>
-          </Tooltip>
+          <Popover modal={true}>
+            <PopoverTrigger>
+              <Tooltip>
+                <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
+                  <Wand2 className="h-4 w-4" />
+                </TooltipTrigger>
+                <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
+                  AI Tools
+                </TooltipContent>
+              </Tooltip>
+            </PopoverTrigger>
+            <PopoverContent className="w-[30rem]">
+              <AIPopover
+                onSnippetGenerated={(snippet) => {
+                  if (snippet?.body) editor?.commands.setContent(snippet.body);
+                  if (snippet?.subject) setSubject(snippet.subject);
+                }}
+              />
+            </PopoverContent>
+          </Popover>
           <Popover open={open} onOpenChange={setOpen} modal={true}>
             <PopoverTrigger>
               <Tooltip>
