@@ -82,7 +82,6 @@ export default function InboxClientWrapper({
                   }`}
                 >
                   {" "}
-                  {/* Status + Title */}
                   <div className="flex items-center gap-2 min-w-0 basis-1/4 shrink-0 ">
                     <div className="w-[10rem] flex">
                       <Badge

@@ -28,6 +28,31 @@ export default async function Bookmark() {
     },
   });
   const parsedUserProfile = await rawUserProfile.json();
+
+  const rawSavedData = await fetch(
+    `http://localhost:8080/kanban/get-saved/${user_id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const savedData = await rawSavedData.json();
+  const parsedSavedData = savedData.data;
+
+  const rawInProgressData = await fetch(
+    `http://localhost:8080/kanban/get-in-progress/${user_id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const inProgressData = await rawInProgressData.json();
+  const parsedInProgressData = inProgressData.data;
   
   return (
     <SidebarProvider>
@@ -70,7 +95,7 @@ export default async function Bookmark() {
 
         <div className="flex flex-1 overflow-y-auto font-main">
           <div className="w-full flex p-6 space-x-6">
-            <Kanban user_id={user_id} />
+            <Kanban user_id={user_id} parsedInProgressData={parsedInProgressData} parsedSavedData={parsedSavedData}/>
           </div>
         </div>
       </SidebarInset>

@@ -1,5 +1,3 @@
-"use server";
-
 import KanbanCardCompleted from "./cards/kanbancardcompleted";
 import KanbanCardFollowUp from "./cards/kanbancardfollowup";
 import KanbanCardInComplete from "./cards/kanbancardincomplete";
@@ -44,34 +42,10 @@ const statusConfig = {
   },
 };
 
-export default async function Kanban({ user_id }) {
-  const rawSavedData = await fetch(
-    `http://localhost:8080/kanban/get-saved/${user_id}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  const savedData = await rawSavedData.json();
-  const parsedSavedData = savedData.data;
-
-  const rawInProgressData = await fetch(
-    `http://localhost:8080/kanban/get-in-progress/${user_id}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  const inProgressData = await rawInProgressData.json();
-  const parsedInProgressData = inProgressData.data;
-
+export default async function Kanban({ user_id, parsedSavedData, parsedInProgressData}) {
+  //Client Wrapper
   //Improve server handling to redirect to an error page
-
+  
   const inProgressResponses = parsedInProgressData || [];
   const inCompleteResponses = parsedSavedData || [];
   const completedResponses = [];

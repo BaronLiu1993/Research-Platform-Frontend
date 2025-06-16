@@ -1,4 +1,5 @@
 "use client";
+
 import "tippy.js/dist/tippy.css";
 
 import { useState } from "react";
@@ -32,6 +33,12 @@ import {
 } from "@/shadcomponents/ui/tooltip";
 
 import Snippets from "../popover/snippets";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/shadcomponents/ui/dropdown-menu";
 
 export default function ComposeEditor({
   userId,
@@ -41,6 +48,7 @@ export default function ComposeEditor({
   to,
 }) {
   const [subject, setSubject] = useState("");
+  const [open, setOpen] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -50,7 +58,6 @@ export default function ComposeEditor({
           ...suggestion,
           char: "/",
           ignoreEvents: true,
-
         },
       }),
     ],
@@ -144,9 +151,7 @@ export default function ComposeEditor({
           </div>
         </BubbleMenu>
       )}
-      <EditorContent
-        editor={editor}
-      />
+      <EditorContent editor={editor} />
       <div className="font-main p-4 flex justify-between items-center">
         <button className="font-main text-xs rounded-xs text-white font-semibold bg-blue-500 h-[1.7rem] w-[3rem]">
           Send
@@ -176,8 +181,8 @@ export default function ComposeEditor({
               AI Tools
             </TooltipContent>
           </Tooltip>
-          <Popover>
-            <PopoverTrigger asChild>
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger>
               <Tooltip>
                 <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
                   <CurlyBraces className="h-4 w-4" />
@@ -187,7 +192,7 @@ export default function ComposeEditor({
                 </TooltipContent>
               </Tooltip>
             </PopoverTrigger>
-            <PopoverContent className="p-0">
+            <PopoverContent>
               <Snippets />
             </PopoverContent>
           </Popover>
