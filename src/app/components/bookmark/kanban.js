@@ -42,10 +42,10 @@ const statusConfig = {
   },
 };
 
-export default async function Kanban({ user_id, parsedSavedData, parsedInProgressData}) {
+export default async function Kanban({ userId, parsedSavedData, parsedInProgressData}) {
   //Client Wrapper
   //Improve server handling to redirect to an error page
-  
+
   const inProgressResponses = parsedInProgressData || [];
   const inCompleteResponses = parsedSavedData || [];
   const completedResponses = [];
@@ -114,7 +114,7 @@ export default async function Kanban({ user_id, parsedSavedData, parsedInProgres
           <TabsTrigger value="table">Table</TabsTrigger>
         </TabsList>
         <TabsContent value="table">
-          <SavedDataTable data = {columnsData[0].data} columns = {SavedColumns}/>
+          <SavedDataTable data = {columnsData[0].data} columns = {SavedColumns} userId = {userId}/>
         </TabsContent>
         <TabsContent value="kanban">
           <div className="flex-grow p-3 sm:p-4 overflow-x-auto">
@@ -168,7 +168,7 @@ export default async function Kanban({ user_id, parsedSavedData, parsedInProgres
                             lab_url={item.lab_url}
                             research_interests={item.research_interests}
                             date={item.added_at}
-                            user_id={user_id}
+                            user_id={userId}
                           />
                         ))
                       ) : (

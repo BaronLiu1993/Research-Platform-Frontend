@@ -1,5 +1,5 @@
-export const SendMassEmail = async () => {
-    const response = await fetch(`http://localhost:8080/gmail/snippet-send/ea2f9981-e2b5-4b26-a4d4-e63572b9a26c/5`, {
+export const SendMassEmail = async (data) => {
+    const response = await fetch(`http://localhost:8080/gmail/snippet-send`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

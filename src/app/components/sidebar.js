@@ -126,7 +126,7 @@ export function AppSidebar({ student_data, ...props }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   return (
-    <Sidebar className="w-[12rem] font-main bg-[#F7F6F3]" {...props}>
+    <Sidebar className="w-[12rem] font-main" {...props}>
       <SidebarHeader className="font-main hover:bg-gray-100 rounded-sm m-2 cursor-pointer">
         <div className="flex items-center gap-2">
           <div className="bg-gray-200 h-5 w-5 rounded-full"></div>

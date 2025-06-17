@@ -1,15 +1,14 @@
 "use server"
 
-export const BuildSnippet = async (userId) => {
-    const response = await fetch("http://localhost:8000/ai-edit", {
+export const GenerateSnippet = async (userId, snippet_html, snippet_subject) => {
+    const response = await fetch(`http://localhost:8080/snippets/insert/${userId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId,
-        text: "/{{studentName}}, /{{professorName}}",
-        style: "engineering"
+        snippet_html,
+        snippet_subject
       }),
     });
   

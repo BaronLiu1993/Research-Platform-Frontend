@@ -48,7 +48,7 @@ import {
   Trash2,
 } from "lucide-react";
 
-export function SavedDataTable({ columns, data }) {
+export function SavedDataTable({ columns, data, userId }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
 
@@ -101,7 +101,7 @@ export function SavedDataTable({ columns, data }) {
                     <DialogContent>
                       <DialogTitle></DialogTitle>
                       <DialogDescription>
-                        <ComposeEditor />
+                        <ComposeEditor userId = {userId}/>
                       </DialogDescription>
                     </DialogContent>
                   </Dialog>
@@ -114,7 +114,7 @@ export function SavedDataTable({ columns, data }) {
               </div>
             </SheetTitle>
             <SheetDescription>
-              <DataPreview rowData={table.getSelectedRowModel().rows} />
+              <DataPreview userId = {userId} rowData={table.getSelectedRowModel().rows} />
             </SheetDescription>
           </SheetContent>
         </Sheet>

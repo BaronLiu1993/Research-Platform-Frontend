@@ -2,7 +2,7 @@
 
 import "tippy.js/dist/tippy.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 
 import Mention from "@tiptap/extension-mention";
@@ -34,7 +34,8 @@ import {
 
 import Snippets from "../popover/snippets";
 import AIPopover from "../popover/AIpopover";
-import { SendMassEmail } from "@/app/actions/sendMassEmail";
+import { GenerateSnippet } from "@/app/actions/generateSnippet";
+import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 
 export default function ComposeEditor({
   userId,
@@ -43,12 +44,26 @@ export default function ComposeEditor({
   fromEmail,
   to,
 }) {
+  //Mount the selected variables store
+  const setSelectedVariables = useSelectedVariablesStore((s) => s.setSelectedVariables)
+  const clearSelectedVariables = useSelectedVariablesStore((s) => s.clearSelectedVariables)
+
+  useEffect(() => {
+    setSelectedVariables([])
+    return () => {
+        clearSelectedVariables()
+    }
+  }, [])
+
   const [subject, setSubject] = useState("");
   const [open, setOpen] = useState(false);
   const editor = useEditor({
     extensions: [
       StarterKit,
       Mention.configure({
+        HTMLAttributes: {
+          class: "prose bg-[#F6F3F9] text-[#9065B0] font-mono text-[14px] rounded-md",
+        },
         suggestion: {
           ...suggestion,
           char: "/",
@@ -63,8 +78,19 @@ export default function ComposeEditor({
       },
     },
     content: "",
+    onUpdate({ editor }) {
+        const mentions = [];
+    
+        editor.state.doc.descendants((node) => {
+          if (node.type.name === "mention") {
+            mentions.push(node.attrs.id); 
+          }
+        });
+    
+        const uniqueMentions = [...new Set(mentions)];
+        useSelectedVariablesStore.getState().setSelectedVariables(uniqueMentions);
+      },
   });
-
   return (
     <div>
       <div className="text-sm">
@@ -148,11 +174,18 @@ export default function ComposeEditor({
       )}
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex justify-between items-center">
-        
-            <button onClick = {() => SendMassEmail()} className="font-main text-xs rounded-xs text-white font-semibold bg-blue-500 h-[1.7rem] w-[3rem]">
-              Send
-            </button>
-         
+        <button
+          onClick={() => GenerateSnippet(userId, editor.getHTML(), subject)}
+          className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
+        >
+          Generate Snippet
+        </button>
+        <button className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1">
+          Sync Data
+        </button>
+        <button className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1">
+          Send Mail
+        </button>
         <div className="flex gap-2">
           <Tooltip>
             <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
