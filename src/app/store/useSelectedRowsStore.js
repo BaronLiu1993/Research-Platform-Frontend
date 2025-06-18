@@ -10,10 +10,11 @@ export const useSelectedVariablesStore = create(
 
       addSelectedVariable: (variable) => {
         const current = get().selectedVariables;
-        set({ selectedVariables: [...current, variable] });
+        if (!current.includes(variable)) {
+          set({ selectedVariables: [...current, variable] });
+        }
       },
 
-      // Remove one variable
       removeSelectedVariable: (variable) =>
         set((state) => ({
           selectedVariables: state.selectedVariables.filter(

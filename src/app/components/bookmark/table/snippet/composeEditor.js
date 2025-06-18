@@ -36,6 +36,7 @@ import Snippets from "../popover/snippets";
 import AIPopover from "../popover/AIpopover";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
+import { DialogClose } from "@/shadcomponents/ui/dialog";
 
 export default function ComposeEditor({
   userId,
@@ -50,9 +51,6 @@ export default function ComposeEditor({
 
   useEffect(() => {
     setSelectedVariables([])
-    return () => {
-        clearSelectedVariables()
-    }
   }, [])
 
   const [subject, setSubject] = useState("");
@@ -98,6 +96,9 @@ export default function ComposeEditor({
           <div className="flex gap-2 px-4 py-1">
             <h1 className="text-black">Baron Liu</h1>
             <h2 className="text-[#787774]">baronliu1993@gmail.com</h2>
+            <DialogClose>
+                Close Dialog
+            </DialogClose>
           </div>
           <input className="px-4 py-1 w-full" placeholder="Add Recipient" />
           <input
@@ -180,9 +181,7 @@ export default function ComposeEditor({
         >
           Generate Snippet
         </button>
-        <button className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1">
-          Sync Data
-        </button>
+        
         <button className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1">
           Send Mail
         </button>

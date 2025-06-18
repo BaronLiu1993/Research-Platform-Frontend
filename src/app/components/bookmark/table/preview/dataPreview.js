@@ -1,3 +1,5 @@
+import React, { Suspense, lazy } from "react";
+
 import {
   Accordion,
   AccordionContent,
@@ -6,21 +8,76 @@ import {
 } from "@/shadcomponents/ui/accordion";
 import { Badge } from "@/shadcomponents/ui/badge";
 
+import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
+
+import { SyncSnippetData } from "@/app/actions/syncSnippetData";
+import { useState } from "react";
+import { Input } from "@/shadcomponents/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/shadcomponents/ui/publicationDialog";
+import { Button } from "@/shadcomponents/ui/button";
+
+// Dynamically import the component
+const Publications = lazy(() => import("./publications"));
+
+//Sync Data Here
 export default function DataPreview({ rowData, userId }) {
   console.log(rowData);
+  const selectedVariables = useSelectedVariablesStore(
+    (s) => s.selectedVariables
+  );
+  const [synced, setSynced] = useState(false);
+  console.log(selectedVariables);
+  const professorIDArray = rowData.map((data) => data.original.professor_id);
+  console.log(professorIDArray);
+  const [syncedData, setSyncedData] = useState(null);
+  const [selectedPublications, setSelectedPublications] = useState({});
+  const handleSelectTitle = (professorId, title) => {
+    setSelectedPublications((prev) => ({
+      ...prev,
+      [professorId]: title,
+    }));
+  };
+
+  const handleSyncSnippet = async () => {
+    const response = await SyncSnippetData(
+      userId,
+      professorIDArray,
+      selectedVariables
+    );
+    if (response.status == "synced") {
+      setSynced(true);
+    }
+    setSyncedData(response);
+  };
+
+  console.log(syncedData);
   return (
-    <div className="font-main antialiased text-gray-800 ">
+    <div className="font-main antialiased">
       <div className="text-xs font-semibold px-6">
-        <div className = "flex gap-2 items-center">
+        <div className="flex gap-2 items-center">
           <h1>Preview Recipients</h1>
-          <Badge className = "text-xs rounded-xs text-[#D44C47] bg-[#FDEBEC]">Not Synced</Badge>
+          {synced ? (
+            <Badge className="text-xs rounded-xs text-[#448361] bg-[#EDF3EC]">
+              Synced
+            </Badge>
+          ) : (
+            <Badge className="text-xs rounded-xs text-[#D44C47] bg-[#FDEBEC]">
+              Not Synced
+            </Badge>
+          )}
         </div>
-        <div className="font-light text-xs">
+        <div className="font-mdium text-xs">
           Get a dedicated view of the variables for each professor{" "}
         </div>
       </div>
 
-      <Accordion type="single" collapsible className="w-full p-4 max-w-[30rem]">
+      <Accordion type="single" collapsible className="w-full p-4">
         {rowData.map((row) => (
           <AccordionItem
             value={row.original.id}
@@ -28,41 +85,94 @@ export default function DataPreview({ rowData, userId }) {
             className=" border-gray-200 border-none"
           >
             <AccordionTrigger className="flex items-center gap-2 p-3 text-xs hover:no-underline rounded-xs font-medium text-[#37352F] hover:bg-[#F1F1EF] transition-colors duration-200 cursor-pointer group border-none">
-              <div className="flex items-center gap-1.5 flex-grow">
-                <div className="text-gray-900 group-hover:text-[#337EA9]">
-                  {row.original.name}
+              <div className="flex flex-col gap-1.5 flex-grow">
+                <div className="flex gap-2 items-center">
+                  <div className="text-gray-900">{row.original.name}</div>
+                  <div className="h-1 w-1 bg-gray-400 rounded-full"></div>
+                  <div className="text-gray-500">{row.original.email}</div>
                 </div>
-                <div className="h-1 w-1 bg-gray-400 rounded-full"></div>
-                <div className="text-gray-500">{row.original.email}</div>
+                <div className="flex gap-2">
+                  <Badge className="text-xs rounded-xs text-[#D44C47] bg-[#FDEBEC]">
+                    Preview Not Ready
+                  </Badge>
+                  <Badge className="text-xs rounded-xs text-[#D9730D] bg-[#FAEBDD]">
+                    Missing Data
+                  </Badge>
+                </div>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="pb-2 pt-0 px-3 text-sm text-gray-600 bg-gray-50 border-t border-gray-100">
-              <div className="grid grid-cols-1 gap-1 py-2">
-                {row.original.labs && (
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-700">Labs:</span>
-                    <span>{row.original.labs}</span>
-                  </div>
-                )}
-                {row.original.department && (
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-700">
-                      Department:
-                    </span>
-                    <span>{row.original.department}</span>
-                  </div>
-                )}
-                {row.original.faculty && (
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-700">Faculty:</span>
-                    <span>{row.original.faculty}</span>
-                  </div>
-                )}
-              </div>
+            <AccordionContent className="pb-2 pt-0 px-3 text-xs border-t border-gray-100">
+              {syncedData?.result && syncedData?.result?.length > 0 ? (
+                syncedData?.result
+                  .filter((prof) => prof.id === row.original.professor_id)
+                  .map((prof) => (
+                    <div key={prof.id} className="p-2">
+                      {prof.dynamicFields &&
+                      Object.entries(prof.dynamicFields).length > 0 ? (
+                        Object.entries(prof.dynamicFields).map(
+                          ([key, value]) => (
+                            <div key={key}>
+                              {key == "publications" ? (
+                                <div>
+                                  <Input
+                                    value={selectedPublications[prof.id] || ""}
+                                    onChange={(e) =>
+                                      handleSelectTitle(prof.id, e.target.value)
+                                    }
+                                  />
+                                  <Dialog>
+                                    <DialogTrigger asChild>
+                                      <Button>Find New Publications</Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="rounded-xs max-h-[30rem] w-[40rem] overflow-x-clip overflow-y-auto">
+                                      <DialogTitle></DialogTitle>
+                                      <DialogDescription>
+                                        <Suspense
+                                          fallback={
+                                            <div>Loading Publications...</div>
+                                          }
+                                        >
+                                          <Publications
+                                            professorId={prof.id}
+                                            onSelectTitle={(title) =>
+                                              handleSelectTitle(prof.id, title)
+                                            }
+                                          />
+                                        </Suspense>
+                                      </DialogDescription>
+                                    </DialogContent>
+                                  </Dialog>
+                                </div>
+                              ) : (
+                                <div>
+                                  <strong>{key}:</strong> {value ?? "No data"}
+                                  <Input
+                                    className="text-xs rounded-xs"
+                                    defaultValue={value}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          )
+                        )
+                      ) : (
+                        <div>N/A</div>
+                      )}
+                    </div>
+                  ))
+              ) : (
+                <div>No variables set</div>
+              )}
             </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
+      <button
+        onClick={handleSyncSnippet}
+        className="mx-6 font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
+      >
+        Sync Data
+      </button>
     </div>
   );
 }
