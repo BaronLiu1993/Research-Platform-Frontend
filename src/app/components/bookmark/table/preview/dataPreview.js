@@ -50,9 +50,25 @@ export default function DataPreview({ rowData, userId }) {
       professorIDArray,
       selectedVariables
     );
-    if (response.status == "synced") {
+
+    if (response?.result && Array.isArray(response.result)) {
+      const initialPublications = {};
+      for (const prof of response.result) {
+        if (
+          prof.dynamicFields &&
+          typeof prof.dynamicFields === "object" &&
+          "publications" in prof.dynamicFields
+        ) {
+          initialPublications[prof.id] = prof.dynamicFields.publications;
+        }
+      }
+      setSelectedPublications(initialPublications);
+    }
+
+    if (response?.status === "synced") {
       setSynced(true);
     }
+
     setSyncedData(response);
   };
 
@@ -113,16 +129,20 @@ export default function DataPreview({ rowData, userId }) {
                           ([key, value]) => (
                             <div key={key}>
                               {key == "publications" ? (
-                                <div>
+                                <div className="flex flex-col gap-1">
+                                  <strong>{key}:</strong>
                                   <Input
                                     value={selectedPublications[prof.id] || ""}
+                                    className="text-xs rounded-xs h-[2rem]"
                                     onChange={(e) =>
                                       handleSelectTitle(prof.id, e.target.value)
                                     }
                                   />
                                   <Dialog>
                                     <DialogTrigger asChild>
-                                      <Button>Find New Publications</Button>
+                                      <Button  className=" font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] w-fit hover:bg-blue-400 px-1 cursor-pointer">
+                                        Find New Publications
+                                      </Button>
                                     </DialogTrigger>
                                     <DialogContent className="rounded-xs max-h-[30rem] w-[40rem] overflow-x-clip overflow-y-auto">
                                       <DialogTitle></DialogTitle>
@@ -144,10 +164,13 @@ export default function DataPreview({ rowData, userId }) {
                                   </Dialog>
                                 </div>
                               ) : (
-                                <div>
-                                  <strong>{key}:</strong> {value ?? "No data"}
+                                <div className="flex flex-col gap-1">
+                                  <div>
+                                    {" "}
+                                    <strong>{key}:</strong> {value ?? "No data"}
+                                  </div>
                                   <Input
-                                    className="text-xs rounded-xs"
+                                    className="text-xs rounded-xs h-[2rem]"
                                     defaultValue={value}
                                   />
                                 </div>
