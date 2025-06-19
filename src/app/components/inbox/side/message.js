@@ -1,10 +1,9 @@
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Button } from "@/shadcomponents/ui/button";
 import { Separator } from "@/shadcomponents/ui/separator";
-import { Forward, Reply } from "lucide-react";
-import Display from "../editor/display";
+import { Eye, EyeClosed, Forward, Reply } from "lucide-react";
 
-export default function Message({ data, email, engagementData }) {
+export default function Message({ data, email, engagementData, seenData }) {
   return (
     <>
       <div className="font-main">
@@ -12,7 +11,12 @@ export default function Message({ data, email, engagementData }) {
           <div>
             <div className="space-x-2 flex flex-col gap-2">
               <span className="text-md font-semibold text-black">
-              {email === data.to.address ? <h1 className = "text-blue-500">Student </h1>: <h1 className = "text-purple-500">Professor</h1>} {data.subject}
+                {email === data.to.address ? (
+                  <h1 className="text-blue-500">Student </h1>
+                ) : (
+                  <h1 className="text-purple-500">Professor</h1>
+                )}{" "}
+                {data.subject}
               </span>
               <div className="space-x-2 flex">
                 <div>
@@ -24,39 +28,45 @@ export default function Message({ data, email, engagementData }) {
                 </div>
                 <div>
                   {email === data.to.address && (
-                    <div>
-                      {engagementData.opened ? (
-                        <Badge className="text-[10px] bg-green-500 rounded-xs">
-                          ENGAGED
-                        </Badge>
-                      ) : (
-                        <Badge className="text-[10px] bg-orange-500 rounded-xs">
-                          NOT SEEN
-                        </Badge>
-                      )}
-                      
+                    <div className="flex gap-2">
+                      <div>
+                        {seenData.opened_email ? (
+                          <div>
+                            <Badge className="text-[10px] bg-red-500 rounded-xs">
+                              <Eye />
+                              SEEN @{" "}
+                              {new Date(
+                                seenData.opened_email_at
+                              ).toLocaleString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "2-digit",
+                                hour12: true,
+                              })}
+                            </Badge>
+                          </div>
+                        ) : (
+                          <Badge className="text-[10px] bg-orange-500 rounded-xs">
+                            <EyeClosed />
+                            NOT SEEN
+                          </Badge>
+                        )}
+                      </div>
+                      <div>
+                        {engagementData.opened ? (
+                          <Badge className="text-[10px] bg-green-500 rounded-xs">
+                            ENGAGED WITH MEDIA @ {engagementData.opened_at}
+                          </Badge>
+                        ) : (
+                          <Badge className="text-[10px] bg-orange-500 rounded-xs">
+                            NO ENGAGEMENT
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   )}
-                  
                 </div>
-                <div>
-                  {email === data.to.address && (
-                    <div>
-                      {engagementData.opened ? (
-                        <Badge className="text-[10px] bg-purple-700 rounded-xs">
-                          FOLLOW UP
-                        </Badge>
-                      ) : (
-                        <Badge className="text-[10px] bg-orange-500 rounded-xs">
-                          WAIT...
-                        </Badge>
-                      )}
-                      
-                    </div>
-                  )}
-                  
-                </div>
-
                 {data.labels?.map((label, idx) => (
                   <div key={idx}>
                     <Badge className="text-[10px] rounded-xs text-[#979A9B] bg-[#F1F1EF]">
@@ -85,8 +95,8 @@ export default function Message({ data, email, engagementData }) {
           </div>
         </div>
         <div className="font px-6 text-xs">{`To ${data.to.name} <${data.to.address}>`}</div>
-        <div className="text-black px-6 py-6 tracking-wide text-xs">
-          <Display content = {data.body}/>
+        <div className="text-black px-6 py-6 tracking-wide text-xs flex flex-col gap-2">
+          <Badge className="rounded-xs">View in Gmail</Badge>
         </div>
         <div className="flex gap-4 px-6">
           <Button variant="outline" className="text-xs">

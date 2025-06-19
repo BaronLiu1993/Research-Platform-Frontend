@@ -59,7 +59,7 @@ export default function InboxClientWrapper({
             <h1 className="py-1 text-[15px] font-semibold text-black">
               Workflows
             </h1>
-          </div>
+          </div>  
           <div className="flex items-center justify-center gap-2">
             <ListFilter className="h-6 w-6 p-1 hover:bg-[#e9eaec] cursor-pointer rounded-xs text-blue-400" />
             <FileSliders className="h-6 w-6 p-1 hover:bg-[#e9eaec] cursor-pointer rounded-xs text-[#979A9B]" />
@@ -84,30 +84,6 @@ export default function InboxClientWrapper({
                   {" "}
                   <div className="flex items-center gap-2 min-w-0 basis-1/4 shrink-0 ">
                     <div className="w-[10rem] flex">
-                      <Badge
-                        className={`font-main rounded-xs   ${
-                          email.statusData.data === "Lost"
-                            ? "bg-red-700"
-                            : email.statusData.data === "Won"
-                            ? "bg-green-700"
-                            : email.statusData.data === "Interview"
-                            ? "bg-yellow-500"
-                            : email.statusData.data === "Important"
-                            ? "bg-purple-500"
-                            : "bg-blue-700"
-                        }`}
-                      >
-                        {email.statusData.data === "Lost"
-                          ? "😞"
-                          : email.statusData.data === "Won"
-                          ? "🎉"
-                          : email.statusData.data === "Interview"
-                          ? "📚"
-                          : email.statusData.data === "Important"
-                          ? "❗"
-                          : "🔄"}{" "}
-                        {email.statusData.data}
-                      </Badge>
                     </div>
                     <div className="w-[10rem] text-left">
                       <h1 className="font-semibold truncate">
@@ -186,35 +162,8 @@ export default function InboxClientWrapper({
                     <div className="w-full p-4 font-main">
                       <div className="px-4 space-x-2">
                         <div className="px-8 space-y-4">
-                          <div className="text-xs text-black font-mono">
-                            Tag workflows as{" "}
-                            <span className="text-blue-700  font-semibold">
-                              {"Won"}
-                            </span>{" "}
-                            or{" "}
-                            <span className="text-red-700  font-semibold">
-                              {"Lost"}
-                            </span>{" "}
-                            to keep things focused.{" "}
-                            <span className="text-blue-700  font-semibold">
-                              {"Won"}
-                            </span>{" "}
-                            workflows stay on top, while{" "}
-                            <span className="text-red-700  font-semibold">
-                              {"Lost"}
-                            </span>{" "}
-                            ones get tucked away.
-                          </div>
-                          <div className="space-x-4">
-                            <Button className="h-6 text-xs bg-white border-1 border-[#F4EEEE] text-black hover:bg-white cursor-pointer">
-                              <Check className="" />
-                              Won
-                            </Button>
-                            <Button className="h-6 text-xs bg-white border-1 border-[#F4EEEE] text-black hover:bg-white cursor-pointer">
-                              <X />
-                              Lost
-                            </Button>
-                          </div>
+                          
+                        
                         </div>
                       </div>
                       {openThreadId === email.threadId && (
@@ -230,6 +179,7 @@ export default function InboxClientWrapper({
                         >
                           <EmailSidebar
                             threadId={email.threadId}
+                            seenData ={email.seenData}
                             engagementData={email.engagementData}
                             userId={userId}
                             email={emails}

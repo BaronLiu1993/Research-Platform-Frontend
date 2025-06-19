@@ -33,6 +33,7 @@ import {
 import DeleteFollowUp from "../../button/compose/deleteFollowUp";
 import { SaveIndicator } from "./saveindicator";
 import Snippets from "../../popover/snippets";
+import { DialogClose } from "@/shadcomponents/ui/dialog";
 
 export default function ComposeEditor({
   draftData,
@@ -43,9 +44,11 @@ export default function ComposeEditor({
   to,
 }) {
   const saveTimeout = useRef(null);
-  const [open, setOpen] = useState(false) 
+  const [open, setOpen] = useState(false);
   const { setStatus } = useLoadingStore.getState();
   const [subject, setSubject] = useState("");
+
+  const handleFollowUp = () => {};
 
   const saveDraft = useCallback(
     async (content) => {
@@ -200,8 +203,9 @@ export default function ComposeEditor({
           <SaveIndicator />
         </div>
         <div className="flex gap-2">
-          <X className="h-4 w-4 text-[#787774]" />
-          <Minimize2 className="h-4 w-4 text-[#787774]" />
+          <DialogClose>
+            <X className="h-4 w-4 text-[#787774]" />
+          </DialogClose>
         </div>
       </div>
       <div className="text-sm">
@@ -232,7 +236,7 @@ export default function ComposeEditor({
           Send
         </button>
         <div className="flex gap-2">
-        <Tooltip>
+          <Tooltip>
             <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
               <BookText className="h-4 w-4" />
             </TooltipTrigger>
@@ -267,8 +271,8 @@ export default function ComposeEditor({
                 </TooltipContent>
               </Tooltip>
             </PopoverTrigger>
-            <PopoverContent className = "p-0">
-                <Snippets />
+            <PopoverContent className="p-0">
+              <Snippets />
             </PopoverContent>
           </Popover>
           <Tooltip>

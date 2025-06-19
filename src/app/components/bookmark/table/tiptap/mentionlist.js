@@ -7,21 +7,27 @@ import React, {
 } from "react";
 
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
+import { useAISnippetStore } from "@/app/store/useAISnippetStore";
 import { Braces } from "lucide-react";
 
 const MentionList = forwardRef((props, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  
+
   const scrollContainerRef = useRef(null);
 
   const addSelectedVariable = useSelectedVariablesStore(
     (state) => state.addSelectedVariable
   );
+  const addAISnippets = useAISnippetStore((state) => state.addAISnippets);
   const selectItem = (index) => {
     const item = props.items[index];
     if (item) {
       props.command({ id: item.variable });
-      addSelectedVariable(item.variable);
+      if (item.variable === "{{AIcontext}}") {
+        addAISnippets(item.variable);
+      } else {
+        addSelectedVariable(item.variable);
+      }
     }
   };
 
@@ -69,7 +75,7 @@ const MentionList = forwardRef((props, ref) => {
       <h1 className="text-xs font-semibold text-[#787774] px-3">
         Create New Variables
       </h1>
-  
+
       <div className="flex flex-col pr-1">
         <button className="flex font-main gap-2 items-center p-2 rounded-xs hover:cursor-pointer hover:bg-gray-100">
           <div>
@@ -83,18 +89,17 @@ const MentionList = forwardRef((props, ref) => {
           </div>
         </button>
       </div>
-  
+
       <div
         ref={scrollContainerRef}
         className="flex flex-col pr-1 max-h-[200px] overflow-y-auto mt-2"
       >
         {props.items.length ? (
-            
           <>
             <h1 className="text-xs font-semibold text-[#787774] px-3 pt-2">
               Prebuilt Variables
             </h1>
-  
+
             {props.items.map((item, index) => (
               <button
                 className={`flex font-main gap-2 items-center p-2 rounded-xs hover:bg-gray-100 ${
@@ -121,8 +126,6 @@ const MentionList = forwardRef((props, ref) => {
       </div>
     </div>
   );
-  
-  
 });
 
 export default MentionList;

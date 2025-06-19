@@ -36,6 +36,7 @@ import Snippets from "../popover/snippets";
 import AIPopover from "../popover/AIpopover";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
+import { useAISnippetStore } from "@/app/store/useAISnippetStore";
 import { DialogClose } from "@/shadcomponents/ui/dialog";
 
 export default function ComposeEditor({
@@ -47,10 +48,10 @@ export default function ComposeEditor({
 }) {
   //Mount the selected variables store
   const setSelectedVariables = useSelectedVariablesStore((s) => s.setSelectedVariables)
-  const clearSelectedVariables = useSelectedVariablesStore((s) => s.clearSelectedVariables)
-
+  const setAISnippet = useAISnippetStore((s) => s.setAISnippets)
   useEffect(() => {
     setSelectedVariables([])
+    setAISnippet([])
   }, [])
 
   const [subject, setSubject] = useState("");
@@ -87,6 +88,9 @@ export default function ComposeEditor({
     
         const uniqueMentions = [...new Set(mentions)];
         useSelectedVariablesStore.getState().setSelectedVariables(uniqueMentions);
+
+        const uniqueAIMentions = [...new Set(mentions)];
+        useAISnippetStore.getState().setAISnippets(uniqueMentions);
       },
   });
   return (

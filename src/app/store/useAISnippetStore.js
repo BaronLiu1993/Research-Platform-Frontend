@@ -1,31 +1,31 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export const useSelectedSnippetStore = create(
+export const useAISnippetStore = create(
   persist(
     (set, get) => ({
-      selectedSnippets: [],
+      selectedAISnippets: [],
 
-      setSelectedSnippets: (vars) => set({ selectedSnippets: vars }),
+      setAISnippets: (vars) => set({ selectedAISnippets: vars }),
 
-      addSelectedVariable: (variable) => {
-        const current = get().selectedSnippets;
+      addAISnippets: (variable) => {
+        const current = get().selectedAISnippets;
         if (!current.includes(variable)) {
-          set({ selectedSnippets: [...current, variable] });
+          set({ selectedAISnippets: [...current, variable] });
         }
       },
 
-      removeSelectedSnippets: (variable) =>
+      removeAISnippets: (variable) =>
         set((state) => ({
-          selectedSnippets: state.selectedSnippets.filter(
+          selectedAISnippets: state.selectedAISnippets.filter(
             (v) => v !== variable
           ),
         })),
 
-      clearSelectedVariables: () => set({ selectedSnippets: [] }),
+      clearAISnippets: () => set({ selectedAISnippets: [] }),
     }),
     {
-      name: "selected-variables-store",
+      name: "selected-AI-snippet-store",
     }
   )
 );
