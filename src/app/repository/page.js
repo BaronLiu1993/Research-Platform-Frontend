@@ -34,14 +34,14 @@ import {
 
 } from "lucide-react";
 
-export default async function Repository() {
+export default async function Repository({ searchParams }) {
   const cookieStore = await cookies(); //Get Cookie
   const access = cookieStore.get("access_token");
   const userId = cookieStore.get("user_id"); //Get UserID
-  const tableData = await fetch("http://localhost:8080/Taishan/");
-  const rawTableData = await tableData.json();
-  const parsedTableData = rawTableData.data;
+  const pageNumber = parseInt(searchParams?.page || "1")
 
+  const tableData = await fetch(`http://localhost:8080/Taishan/?page=${pageNumber}`);
+  const parsedTableData = await tableData.json();
   const rawUserProfile = await fetch("http://localhost:8080/auth/get-user-sidebar-info", {
     method: "GET",
     headers: {
@@ -149,8 +149,9 @@ export default async function Repository() {
             <div className="mt-4">
               <DataTable
                 generateColumns={generateColumns}
-                data={parsedTableData}
+                data={parsedTableData.tableData}
                 userId={userId.value}
+                pageNumber={pageNumber}
               />
             </div>
           </div>

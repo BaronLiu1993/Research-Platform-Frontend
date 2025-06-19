@@ -10,15 +10,6 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/shadcomponents/ui/pagination";
-
 import { ChevronDown, PersonStanding } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
@@ -36,8 +27,9 @@ import {
   TableRow,
   TableHead,
 } from "@/shadcomponents/ui/table";
+import Link from "next/link";
 
-export function DataTable({ data, userId, generateColumns }) {
+export function DataTable({ data, userId, generateColumns, pageNumber }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnColumnVisibility] = useState({});
@@ -57,6 +49,7 @@ export function DataTable({ data, userId, generateColumns }) {
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnColumnVisibility,
     getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
     state: { sorting, columnFilters, columnVisibility },
   });
 
@@ -164,55 +157,12 @@ export function DataTable({ data, userId, generateColumns }) {
       </Table>
 
       <div className="flex justify-end mt-2">
-        <Pagination>
-          <PaginationContent className="gap-1">
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  table.previousPage();
-                }}
-                className={
-                  !table.getCanPreviousPage()
-                    ? "pointer-events-none opacity-50"
-                    : ""
-                }
-              />
-            </PaginationItem>
-
-            {Array.from({ length: table.getPageCount() }).map((_, i) => (
-              <PaginationItem key={i}>
-                <PaginationLink
-                  href="#"
-                  isActive={i === table.getState().pagination.pageIndex}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    table.setPageIndex(i);
-                  }}
-                  className="text-xs"
-                >
-                  {i + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  table.nextPage();
-                }}
-                className={
-                  !table.getCanNextPage()
-                    ? "pointer-events-none opacity-50"
-                    : ""
-                }
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+          <Link>
+            Previous
+          </Link>
+          <Link>
+            Next
+          </Link>
       </div>
     </div>
   );
