@@ -28,11 +28,16 @@ import {
   TableHead,
 } from "@/shadcomponents/ui/table";
 import Link from "next/link";
+import { Input } from "@/shadcomponents/ui/input";
+import { Label } from "@/shadcomponents/ui/label";
 
 export function DataTable({ data, userId, generateColumns, pageNumber }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnColumnVisibility] = useState({});
+  const [query, setQuery] = useState("")
+
+  const pageCount = Math.ceil(pageNumber / 20);
 
   const columns = useMemo(
     () => generateColumns(userId),
@@ -61,7 +66,11 @@ export function DataTable({ data, userId, generateColumns, pageNumber }) {
           Full Data Repository
         </Badge>
         <div className="flex flex-wrap gap-2 items-center">
-          <div>
+
+          <div className = "flex">
+            <Label />
+          <Input onChange = {(e) => setQuery(e.target.value)} className = "w-[15rem] rounded-xs" placeholder = "Search Here"/>
+        
             <Badge className="bg-white border text-gray-500 py-1">
               Faculty <ChevronDown className="w-3 h-3 ml-1" />
             </Badge>
@@ -96,7 +105,7 @@ export function DataTable({ data, userId, generateColumns, pageNumber }) {
       </div>
 
       <Table className="text-sm w-[55rem]">
-        <TableHeader className = "bg-[#F4EEEE]">
+        <TableHeader className="bg-[#F4EEEE]">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -111,7 +120,9 @@ export function DataTable({ data, userId, generateColumns, pageNumber }) {
                         : undefined
                     }
                     className={
-                      canSort ? "cursor-pointer select-none text-xs " : "text-xs"
+                      canSort
+                        ? "cursor-pointer select-none text-xs "
+                        : "text-xs"
                     }
                   >
                     {flexRender(
@@ -157,12 +168,12 @@ export function DataTable({ data, userId, generateColumns, pageNumber }) {
       </Table>
 
       <div className="flex justify-end mt-2">
-          <Link>
-            Previous
-          </Link>
-          <Link>
-            Next
-          </Link>
+        <Link scroll={true} href={`?page/${pageNumber - 1}`}>
+          Previous
+        </Link>
+        <Link scroll={true} href={`?page/${pageNumber + 1}`}>
+          Next
+        </Link>
       </div>
     </div>
   );
