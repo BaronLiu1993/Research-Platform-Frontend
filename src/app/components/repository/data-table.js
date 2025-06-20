@@ -31,18 +31,24 @@ import Link from "next/link";
 import { Input } from "@/shadcomponents/ui/input";
 import { Label } from "@/shadcomponents/ui/label";
 
-export function DataTable({ data, userId, generateColumns, pageNumber }) {
+export function DataTable({
+  data,
+  userId,
+  generateColumns,
+  pageNumber,
+  search,
+}) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnColumnVisibility] = useState({});
-  const [query, setQuery] = useState("")
-
-  const pageCount = Math.ceil(pageNumber / 20);
+  const [query, setQuery] = useState("");
 
   const columns = useMemo(
     () => generateColumns(userId),
     [userId, generateColumns]
   );
+
+  console.log(query);
 
   const table = useReactTable({
     data,
@@ -66,11 +72,14 @@ export function DataTable({ data, userId, generateColumns, pageNumber }) {
           Full Data Repository
         </Badge>
         <div className="flex flex-wrap gap-2 items-center">
+          <div className="flex">
+            <Input
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-[15rem] rounded-xs"
+              placeholder="Search Here"
+            />
+            <Link href={`?page=1&search=${encodeURIComponent(query)}`}>Search</Link>
 
-          <div className = "flex">
-            <Label />
-          <Input onChange = {(e) => setQuery(e.target.value)} className = "w-[15rem] rounded-xs" placeholder = "Search Here"/>
-        
             <Badge className="bg-white border text-gray-500 py-1">
               Faculty <ChevronDown className="w-3 h-3 ml-1" />
             </Badge>
@@ -168,12 +177,8 @@ export function DataTable({ data, userId, generateColumns, pageNumber }) {
       </Table>
 
       <div className="flex justify-end mt-2">
-        <Link scroll={true} href={`?page/${pageNumber - 1}`}>
-          Previous
-        </Link>
-        <Link scroll={true} href={`?page/${pageNumber + 1}`}>
-          Next
-        </Link>
+        <Link href={`?page=${pageNumber - 1}&search=${search}`}>Previous</Link>
+        <Link href={`?page=${pageNumber + 1}&search=${search}`}>Next</Link>
       </div>
     </div>
   );

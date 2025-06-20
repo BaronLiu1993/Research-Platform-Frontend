@@ -35,22 +35,36 @@ import {
 } from "lucide-react";
 
 export default async function Repository({ searchParams }) {
-  const cookieStore = await cookies(); //Get Cookie
-  const access = cookieStore.get("access_token");
-  const userId = cookieStore.get("user_id"); //Get UserID
-  const pageNumber = parseInt(searchParams?.page || "1")
+  const cookieStore = cookies();
+  const access = cookieStore.get("access_token")?.value;
+  const userId = cookieStore.get("user_id")?.value;
 
-  const tableData = await fetch(`http://localhost:8080/Taishan/?page=${pageNumber}`);
-  const parsedTableData = await tableData.json();
-  const rawUserProfile = await fetch("http://localhost:8080/auth/get-user-sidebar-info", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${access.value}`,
-      "Content-Type": "application/json",
-    },
-  });
-  const parsedUserProfile = await rawUserProfile.json();
+  // Fallback and sanitation
+  const pageNumber = Number(searchParams?.page) || 1;
+  const rawSearch = searchParams?.search ?? "";
+  const search = encodeURIComponent(rawSearch.trim());
 
+  //Parallel Fetching
+  const [tableRes, profileRes] = await Promise.all([
+    fetch(`http://localhost:8080/taishan?page=${pageNumber}&search=${search}`),
+    fetch("http://localhost:8080/auth/get-user-sidebar-info", {
+      headers: {
+        Authorization: `Bearer ${access}`,
+        "Content-Type": "application/json",
+      },
+    }),
+  ]);
+
+  if (!tableRes.ok) {
+    return { error: "Table fetch failed" }; 
+  }
+
+  if (!profileRes.ok) {
+    return { error: "Profile fetch failed" }; 
+  }
+
+  const { tableData, tableCount } = await tableRes.json();
+  const parsedUserProfile = await profileRes.json();
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile}/>
@@ -149,9 +163,10 @@ export default async function Repository({ searchParams }) {
             <div className="mt-4">
               <DataTable
                 generateColumns={generateColumns}
-                data={parsedTableData.tableData}
-                userId={userId.value}
+                data={tableData}
+                userId={userId}
                 pageNumber={pageNumber}
+                search={search}
               />
             </div>
           </div>
