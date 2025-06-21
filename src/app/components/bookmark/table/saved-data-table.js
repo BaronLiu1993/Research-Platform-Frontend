@@ -67,18 +67,18 @@ export function SavedDataTable({ columns, data, userId }) {
   });
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-6">
         <Input
-          placeholder="Filter Professor..."
+          placeholder="☰ Filter Professors..."
           value={table.getColumn("name")?.getFilterValue() ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm rounded-xs"
         />
         <Sheet>
           <SheetTrigger>
-            <Button>Preview Merge</Button>
+            <Button className = "text-xs rounded-xs bg-[#E7F3F8] text-[#337EA9] hover:bg-[#E7F3F8] cursor-pointer">Preview Merge</Button>
           </SheetTrigger>
 
           <SheetContent>
@@ -119,9 +119,9 @@ export function SavedDataTable({ columns, data, userId }) {
           </SheetContent>
         </Sheet>
       </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+      <div>
+        <Table className = "border">
+          <TableHeader className = "">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {

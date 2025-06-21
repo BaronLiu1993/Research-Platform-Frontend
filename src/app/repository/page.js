@@ -125,7 +125,6 @@ export default async function Repository({ searchParams }) {
                 </div>
 
                 <div className="space-y-1 pt-6 pb-3">
-                  {/* Removed px-6 from here */}
                   <p className="text-[#37352F] text-[13px] w-[55rem] font-light">
                     Based on your research interests, we’ve curated a set of{" "}
                     <span className="font-bold text-blue-700 font-mono">

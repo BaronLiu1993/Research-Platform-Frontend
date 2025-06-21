@@ -17,14 +17,13 @@ import { Tag } from "lucide-react";
 
 export default async function Recommendations() {
   const cookieStore = await cookies();
-  const user_id = cookieStore.get("user_id");
-  const data = await fetch("http://localhost:8080/match-professors", {
-    method: "POST",
+  const userIdObj = cookieStore.get("user_id");
+  const userId = userIdObj.value
+  const data = await fetch(`http://localhost:8080/match-professors?userId=${userId}`, {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-
-    body: JSON.stringify({ student_id: user_id.value }),
     next: { revalidate: 3600 },
   });
 
@@ -59,7 +58,7 @@ export default async function Recommendations() {
                       professor_email={response.email}
                       professor_labs={response.labs}
                       professor_lab_url={response.lab_url}
-                      user_id={user_id.value}
+                      user_id={userId}
                     />
                   </div>
                   <div className="space-y-1.5 flex-grow mb-4">
@@ -95,7 +94,7 @@ export default async function Recommendations() {
                       professor_email={response.email}
                       professor_labs={response.labs}
                       professor_lab_url={response.lab_url}
-                      user_id={user_id.value}
+                      user_id={userId}
                     />
                   </div>
                 </div>

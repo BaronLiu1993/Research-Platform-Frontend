@@ -10,7 +10,7 @@ import {
   TabsTrigger,
 } from "@/shadcomponents/ui/tabs";
 
-import { Plus, MoreHorizontal, Columns, Leaf } from "lucide-react";
+import { Plus, MoreHorizontal, Columns, Leaf, Grid2X2, SquareKanban } from "lucide-react";
 
 import { Badge } from "@/shadcomponents/ui/badge";
 import { SavedDataTable } from "./table/saved-data-table";
@@ -81,7 +81,7 @@ export default async function Kanban({ userId, parsedSavedData, parsedInProgress
 
 
   return (
-    <div className="flex flex-col h-fit bg-gray-50 font-main overflow-hidden">
+    <div className="flex flex-col h-fit font-main overflow-hidden">
       <div className="border-b border-gray-200">
         <div className="px-4 pt-3 bg-white justify-between shrink-0">
           <div className="flex items-center gap-2">
@@ -109,9 +109,15 @@ export default async function Kanban({ userId, parsedSavedData, parsedInProgress
         </h2>
       </div>
       <Tabs defaultValue="table">
-        <TabsList>
-          <TabsTrigger value="kanban">Kanban</TabsTrigger>
-          <TabsTrigger value="table">Table</TabsTrigger>
+        <TabsList className = "bg-white px-4 mt-4">
+          <TabsTrigger value="kanban">
+            <SquareKanban />
+            Kanban
+          </TabsTrigger>
+          <TabsTrigger value="table">
+            <Grid2X2 />
+            Table
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="table">
           <SavedDataTable data = {columnsData[0].data} columns = {SavedColumns} userId = {userId}/>

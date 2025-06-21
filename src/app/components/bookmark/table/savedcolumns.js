@@ -1,6 +1,6 @@
 "use client";
 
-import { Clipboard, MoreHorizontal } from "lucide-react";
+import { AtSign, Clipboard, LayoutPanelLeft, LetterText, MoreHorizontal } from "lucide-react";
 import { Button } from "@/shadcomponents/ui/button";
 import {
   DropdownMenu,
@@ -24,6 +24,7 @@ export const SavedColumns = [
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
+        className = ""
       />
     ),
     cell: ({ row }) => (
@@ -41,7 +42,7 @@ export const SavedColumns = [
     cell: ({ row }) => {
       const action = row.original;
       return (
-        <DropdownMenu className="font-main">
+        <DropdownMenu className="font-main p-0">
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <MoreHorizontal className="h-3 w-3 text-[#787774]" />
@@ -58,9 +59,6 @@ export const SavedColumns = [
               <Clipboard className="h-3 w-3" />
               <span>Copy Professor Lab Link</span>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -70,14 +68,13 @@ export const SavedColumns = [
     accessorKey: "name",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          className="text-xs"
+        <button
+          className="text-xs font-semibold font-main text-[#787774] flex items-center gap-2"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
+          <LetterText className = "h-4 w-4"/>
           Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        </button>
       );
     },
     cell: ({ row }) => {
@@ -94,9 +91,10 @@ export const SavedColumns = [
     accessorKey: "faculty",
     header: ({ column }) => {
       return (
-        <Button variant="ghost" className="text-xs">
+        <button className="text-xs font-semibold font-main text-[#787774] flex items-center gap-2">
+          <AtSign className = "h-4 w-4"/>
           Faculty
-        </Button>
+        </button>
       );
     },
     cell: ({ row }) => {
@@ -112,9 +110,10 @@ export const SavedColumns = [
     accessorKey: "department",
     header: ({ column }) => {
       return (
-        <Button variant="ghost" className="text-xs">
+        <button className="text-xs font-semibold font-main text-[#787774] flex items-center gap-2">   
+          <LayoutPanelLeft className = "h-4 w-4"/>
           Department
-        </Button>
+        </button>
       );
     },
     cell: ({ row }) => {

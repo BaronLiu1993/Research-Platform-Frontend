@@ -10,12 +10,13 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 
-import { ChevronDown, PersonStanding } from "lucide-react";
+import { Beaker, Blocks, Brain, ChevronDown, CircuitBoard, Code, Heart, Microscope, PersonStanding, Settings } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shadcomponents/ui/dropdown-menu";
 
@@ -29,7 +30,6 @@ import {
 } from "@/shadcomponents/ui/table";
 import Link from "next/link";
 import { Input } from "@/shadcomponents/ui/input";
-import { Label } from "@/shadcomponents/ui/label";
 
 export function DataTable({
   data,
@@ -72,44 +72,99 @@ export function DataTable({
           Full Data Repository
         </Badge>
         <div className="flex flex-wrap gap-2 items-center">
-          <div className="flex">
-            <Input
-              onChange={(e) => setQuery(e.target.value)}
-              className="w-[15rem] rounded-xs"
-              placeholder="Search Here"
-            />
-            <Link href={`?page=1&search=${encodeURIComponent(query)}`}>Search</Link>
-
-            <Badge className="bg-white border text-gray-500 py-1">
-              Faculty <ChevronDown className="w-3 h-3 ml-1" />
-            </Badge>
-            <Badge className="bg-white border text-gray-500 px-2 py-1">
-              Department <ChevronDown className="w-3 h-3 ml-1" />
-            </Badge>
+          <div className="flex gap-6">
+            <div className="flex items-center gap-4">
+              <Input
+                onChange={(e) => setQuery(e.target.value)}
+                className="w-[15rem] rounded-xs"
+                placeholder="🔎 Search..."
+              />
+              <Link
+                className="text-xs text-[#337EA9] bg-[#E7F3F8] p-2 rounded-xs"
+                href={`?page=1&search=${encodeURIComponent(query)}`}
+              >
+                Search
+              </Link>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Badge className="bg-white border text-gray-500 px-2 py-1">
+                  Institution <ChevronDown className="w-3 h-3 ml-1" />
+                </Badge>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="rounded-xs font-main">
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <div className="rounded-full bg-[#9065B0] h-2 w-2"></div>
+                  University Health Network
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <div className="rounded-full bg-[#337EA9] h-2 w-2"></div>
+                  University of Toronto
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <div className="rounded-full bg-[#D44C47] h-2 w-2"></div>
+                  McMaster University
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <div className="rounded-full bg-[#CB912F] h-2 w-2"></div>
+                  Queen's University
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Badge className="bg-white border text-gray-500 px-2 py-1">
+                  Faculty <ChevronDown className="w-3 h-3 ml-1" />
+                </Badge>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="rounded-xs font-main">
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <Blocks className = "text-[#D9730D]"/>
+                  Applied Science and Engineering
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <Code className = "text-[#337EA9]"/>
+                  Computer Science
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <Heart className = "text-[#D44C47]"/>
+                  Health Science
+                </DropdownMenuItem>
+                
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Badge className="bg-white border text-gray-500 px-2 py-1">
+                  Department <ChevronDown className="w-3 h-3 ml-1" />
+                </Badge>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="rounded-xs font-main">
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <Settings className = "text-black"/>
+                  Mechanical Engineering
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <CircuitBoard className = "text-[#CB912F]"/>
+                  Computer Engineering
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <Microscope className = "text-[#D44C47]"/>
+                  Cancer Research
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <Beaker className = "text-[#9065B0]"/>
+                  Biochemistry
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
+                  <Brain className = "text-[#C14C8A]"/>
+                  Neuroscience
+                </DropdownMenuItem>
+                
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Badge variant="outline" className="text-gray-500 px-2 py-1">
-                Columns <ChevronDown className="w-3 h-3 ml-1" />
-              </Badge>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((col) => col.getCanHide())
-                .map((column) => (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(val) => column.toggleVisibility(!!val)}
-                    className="capitalize"
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
 
@@ -176,9 +231,9 @@ export function DataTable({
         </TableBody>
       </Table>
 
-      <div className="flex justify-end mt-2">
-        <Link href={`?page=${pageNumber - 1}&search=${search}`}>Previous</Link>
-        <Link href={`?page=${pageNumber + 1}&search=${search}`}>Next</Link>
+      <div className="flex justify-end mt-2 gap-4">
+        <Link className="text-xs text-[#337EA9] bg-[#E7F3F8] p-2 rounded-xs" href={`?page=${pageNumber - 1}&search=${search}`}>Previous</Link>
+        <Link className="text-xs text-[#337EA9] bg-[#E7F3F8] p-2 rounded-xs" href={`?page=${pageNumber + 1}&search=${search}`}>Next</Link>
       </div>
     </div>
   );
