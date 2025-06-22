@@ -44,13 +44,13 @@ export default {
         variable: "{{researchInterests}}",
       },
       {
-        title: "AI Context Component",
-        description: "Let AI Generate Text Snippets",
+        title: "Personal Portfolio",
+        description: "Insert AI Generated Portfolio",
         icon: (
           <Atom className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#337EA9]" />
         ),
         searchTerms: ["ordered", "point", "numbers"],
-        variable: "{{AIcontext}}",
+        variable: "{{Portfolio}}",
       },
       {
         title: "Professor School",
@@ -92,7 +92,7 @@ export default {
       .filter((item) =>
         item.title.toLowerCase().startsWith(query.toLowerCase())
       )
-      .slice(0, 5);
+      
   },
 
   render: () => {

@@ -12,21 +12,23 @@ import { Braces } from "lucide-react";
 
 const MentionList = forwardRef((props, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-
   const scrollContainerRef = useRef(null);
 
   const addSelectedVariable = useSelectedVariablesStore(
     (state) => state.addSelectedVariable
   );
+
   const addAISnippets = useAISnippetStore((state) => state.addAISnippets);
+
   const selectItem = (index) => {
     const item = props.items[index];
     if (item) {
-      props.command({ id: item.variable });
-      if (item.variable === "{{AIcontext}}") {
+      if (item.variable == "{{AIcontext}}") {
         addAISnippets(item.variable);
+        props.command({ id: item.variable });
       } else {
         addSelectedVariable(item.variable);
+        props.command({ id: item.variable });
       }
     }
   };
@@ -82,9 +84,9 @@ const MentionList = forwardRef((props, ref) => {
             <Braces className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#37352F]" />
           </div>
           <div className="flex flex-col justify-start items-start">
-            <span className="text-[12px] text-[#37352F]">Add Variable</span>
+            <span className="text-[12px] text-[#37352F]">Generate Section with AI</span>
             <span className="text-[12px] font-light text-[#787774]">
-              Repeat Repetitive Variables
+              Build Section with AI
             </span>
           </div>
         </button>

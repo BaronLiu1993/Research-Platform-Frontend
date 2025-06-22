@@ -43,12 +43,10 @@ import { useAISnippetStore } from "@/app/store/useAISnippetStore";
 import { usePointStore } from "@/app/store/usePointStore";
 import AIcontext from "../tiptap/AIcontext";
 
-export default function ComposeEditor({
+export default function DraftEditor({
   userId,
-  professorId,
-  fromName,
-  fromEmail,
-  to,
+  body, 
+  initialSubject
 }) {
   //Mount the selected variables store
   const setSelectedVariables = useSelectedVariablesStore(
@@ -70,17 +68,6 @@ export default function ComposeEditor({
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Mention.configure({
-        HTMLAttributes: {
-          class:
-            "prose bg-[#F6F3F9] text-[#9065B0] font-mono text-[14px] rounded-md",
-        },
-        suggestion: {
-          ...suggestion,
-          char: "/",
-          ignoreEvents: true,
-        },
-      }),
     ],
     editorProps: {
       attributes: {
@@ -88,30 +75,7 @@ export default function ComposeEditor({
           "prose prose-sm max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[13px] [&>*]:my-0 [&>*]:mb-0 [&>*]:mt-0",
       },
     },
-    content: "",
-    onUpdate({ editor }) {
-      const mentions = [];
-
-      editor.state.doc.descendants((node) => {
-        if (node.type.name === "mention") {
-          console.log(node.attrs.id)
-          if (node.attrs.id === "{{AIcontext}}") {
-            setAIOpenDialog(true);
-          }
-          mentions.push(node.attrs.id);
-        }
-      });
-
-      const uniqueMentions = [...new Set(mentions)];
-
-      const aiMentions = uniqueMentions.filter((id) => id === "{{AIcontext}}");
-      const normalMentions = uniqueMentions.filter(
-        (id) => id !== "{{AIcontext}}"
-      );
-
-      useSelectedVariablesStore.getState().setSelectedVariables(normalMentions);
-      useAISnippetStore.getState().setAISnippets(aiMentions);
-    },
+    content: body
   });
   return (
     <div>
@@ -135,7 +99,7 @@ export default function ComposeEditor({
             onChange={(e) => setSubject(e.target.value)}
             className="px-4 py-1 w-full"
             placeholder="Subject"
-            value={subject}
+            value={initialSubject}
           />
         </div>
       </div>

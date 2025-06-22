@@ -1,6 +1,6 @@
 "use server"
 
-export const BuildSnippet = async (userId) => {
+export const BuildSnippet = async (userId, style, resumePoints) => {
     const response = await fetch("http://localhost:8000/ai-edit", {
       method: "POST",
       headers: {
@@ -8,8 +8,9 @@ export const BuildSnippet = async (userId) => {
       },
       body: JSON.stringify({
         userId,
-        text: "/{{studentName}}, /{{professorName}}",
-        style: "engineering"
+        text: ["{{publication}}, {{labs}}, {{professorLastName}}"],
+        style,
+        resumePoints
       }),
     });
   

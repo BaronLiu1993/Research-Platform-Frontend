@@ -34,6 +34,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/shadcomponents/ui/composedialog";
+
 import { Input } from "@/shadcomponents/ui/input";
 import { Button } from "@/shadcomponents/ui/button";
 import { DialogDescription } from "@radix-ui/react-dialog";
@@ -47,11 +48,17 @@ import {
   Tag,
   Trash2,
 } from "lucide-react";
+import DraftEditor from "./snippet/drafteditor";
 
-export function SavedDataTable({ columns, data, userId }) {
+export function SavedDataTable({
+  columns,
+  data,
+  userId,
+  draftData
+}) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
-
+  console.log(draftData)
   const table = useReactTable({
     data,
     columns,
@@ -78,7 +85,9 @@ export function SavedDataTable({ columns, data, userId }) {
         />
         <Sheet>
           <SheetTrigger>
-            <Button className = "text-xs rounded-xs bg-[#E7F3F8] text-[#337EA9] hover:bg-[#E7F3F8] cursor-pointer">Preview Merge</Button>
+            <Button className="text-xs rounded-xs bg-[#E7F3F8] text-[#337EA9] hover:bg-[#E7F3F8] cursor-pointer">
+              Preview Merge
+            </Button>
           </SheetTrigger>
 
           <SheetContent>
@@ -101,7 +110,7 @@ export function SavedDataTable({ columns, data, userId }) {
                     <DialogContent>
                       <DialogTitle></DialogTitle>
                       <DialogDescription>
-                        <ComposeEditor userId = {userId}/>
+                        <ComposeEditor userId={userId} />
                       </DialogDescription>
                     </DialogContent>
                   </Dialog>
@@ -114,14 +123,17 @@ export function SavedDataTable({ columns, data, userId }) {
               </div>
             </SheetTitle>
             <SheetDescription>
-              <DataPreview userId = {userId} rowData={table.getSelectedRowModel().rows} />
+              <DataPreview
+                userId={userId}
+                rowData={table.getSelectedRowModel().rows}
+              />
             </SheetDescription>
           </SheetContent>
         </Sheet>
       </div>
       <div>
-        <Table className = "border">
-          <TableHeader className = "">
+        <Table className="border">
+          <TableHeader className="">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -168,6 +180,21 @@ export function SavedDataTable({ columns, data, userId }) {
             )}
           </TableBody>
         </Table>
+        {/*Review Drafts and Send Here*/}
+        <div>
+          {draftData.map((data) => (
+            <Dialog key={data.id}>
+              <DialogTrigger>
+                <span>{data.name}</span>
+                <span>{data.email}</span>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogTitle></DialogTitle>
+                <DraftEditor body = {data.body} initialSubject = {data.subject}/>
+              </DialogContent>
+            </Dialog>
+          ))}
+        </div>
       </div>
     </div>
   );

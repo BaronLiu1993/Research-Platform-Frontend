@@ -1,9 +1,13 @@
-"use server"
+"use server";
 
 import { cookies } from "next/headers";
 import Kanban from "../components/bookmark/kanban";
 
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/shadcomponents/ui/sidebar";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/shadcomponents/ui/sidebar";
 import { AppSidebar } from "../components/sidebar";
 import {
   Breadcrumb,
@@ -18,15 +22,18 @@ import { Laptop, MapIcon, MoveLeft, MoveRight, Plus } from "lucide-react";
 export default async function Bookmark() {
   const cookieStore = await cookies();
   const raw_user_id = cookieStore.get("user_id");
-  const user_id = raw_user_id.value
-  const access = cookieStore.get("access_token")
-  const rawUserProfile = await fetch("http://localhost:8080/auth/get-user-sidebar-info", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${access.value}`,
-      "Content-Type": "application/json",
-    },
-  });
+  const user_id = raw_user_id.value;
+  const access = cookieStore.get("access_token");
+  const rawUserProfile = await fetch(
+    "http://localhost:8080/auth/get-user-sidebar-info",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${access.value}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const parsedUserProfile = await rawUserProfile.json();
 
   const rawSavedData = await fetch(
@@ -53,13 +60,28 @@ export default async function Bookmark() {
 
   const inProgressData = await rawInProgressData.json();
   const parsedInProgressData = inProgressData.data;
-  
+
+  const draftData = await Promise.all(
+    parsedInProgressData.map(async (prof) => {
+      const rawDraftResults = await fetch(
+        `http://localhost:8080/gmail/resume-draft/${user_id}/${prof.professor_id}`
+      );
+      const parsedDraftResults = await rawDraftResults.json();
+      return {
+        id: prof.id,
+        name: prof.name,
+        email: prof.email,
+        ...parsedDraftResults,
+      };
+    })
+  );
+
   return (
     <SidebarProvider>
-      <AppSidebar student_data={parsedUserProfile}/>
+      <AppSidebar student_data={parsedUserProfile} />
       <SidebarInset>
-      <header className="flex h-8 shrink-0 items-center gap-2 px-6">
-          <SidebarTrigger className = "cursor-pointer"/>
+        <header className="flex h-8 shrink-0 items-center gap-2 px-6">
+          <SidebarTrigger className="cursor-pointer" />
           <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -95,7 +117,12 @@ export default async function Bookmark() {
 
         <div className="flex flex-1 overflow-y-auto font-main">
           <div className="w-full flex p-6 space-x-6">
-            <Kanban userId={user_id} parsedInProgressData={parsedInProgressData} parsedSavedData={parsedSavedData}/>
+            <Kanban
+              userId={user_id}
+              parsedInProgressData={parsedInProgressData}
+              draftData={draftData}
+              parsedSavedData={parsedSavedData}
+            />
           </div>
         </div>
       </SidebarInset>
