@@ -85,6 +85,7 @@ const generateColumns = (userId) => [
               <div className="flex space-x-4">
                 <SaveButton
                   professor_id={data.id}
+                  professor_email={data.email}
                   professor_name={data.name}
                   professor_url={data.url}
                   professor_research_interests={data.research_interests}

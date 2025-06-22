@@ -42,7 +42,7 @@ export function DataTable({
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnColumnVisibility] = useState({});
   const [query, setQuery] = useState("");
-
+  console.log(data)
   const columns = useMemo(
     () => generateColumns(userId),
     [userId, generateColumns]

@@ -6,7 +6,7 @@ export const createMassDrafts = async (userId, snippetId, fromName, fromEmail, d
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         userId,
-        dynamicFields,
+        professorData: dynamicFields.result,
         baseBody: {
           snippetId,
           fromName,

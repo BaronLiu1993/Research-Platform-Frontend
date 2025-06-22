@@ -26,8 +26,9 @@ export default async function Recommendations() {
     },
     next: { revalidate: 3600 },
   });
-
   const responses = await data.json();
+  console.log(responses)
+
   return (
     <>
       <div className="pb-6 w-[55rem]">

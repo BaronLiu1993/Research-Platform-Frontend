@@ -241,7 +241,7 @@ export default function DataPreview({ rowData, userId, parsedUserProfile, snippe
         Sync Data
       </button>
       <button
-        onClick={handleDraftGeneration(syncedData)}
+        onClick={() => handleDraftGeneration(syncedData)}
         className="mx-6 font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
       >
         Generate Drafts

@@ -38,6 +38,7 @@ export default function SaveButton({
         toast.success("Professor removed from saved.");
       } else {
         addSaved(professor_id);
+        console.log(professor_email)
         await Save(
           professor_id,
           professor_name,

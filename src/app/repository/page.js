@@ -54,7 +54,7 @@ export default async function Repository({ searchParams }) {
       },
     }),
   ]);
-
+  console.log(tableRes)
   if (!tableRes.ok) {
     return { error: "Table fetch failed" }; 
   }
