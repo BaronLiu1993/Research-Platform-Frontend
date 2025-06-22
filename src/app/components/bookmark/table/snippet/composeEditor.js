@@ -45,10 +45,8 @@ import AIcontext from "../tiptap/AIcontext";
 
 export default function ComposeEditor({
   userId,
-  professorId,
-  fromName,
-  fromEmail,
-  to,
+  snippetId,
+  setSnippetId,
 }) {
   //Mount the selected variables store
   const setSelectedVariables = useSelectedVariablesStore(
@@ -113,6 +111,13 @@ export default function ComposeEditor({
       useAISnippetStore.getState().setAISnippets(aiMentions);
     },
   });
+
+  const handleSnippetGeneration = async (userId, body, subject) => {
+    const response = await GenerateSnippet(userId, body, subject)
+    setSnippetId(response.snippetId)
+  }
+  console.log(snippetId)
+
   return (
     <div>
       <Dialog open={AIOpenDialog} onOpenChange={setAIOpenDialog}>
@@ -206,7 +211,7 @@ export default function ComposeEditor({
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex justify-between items-center">
         <button
-          onClick={() => GenerateSnippet(userId, editor.getHTML(), subject)}
+          onClick={() => handleSnippetGeneration(userId, editor.getHTML(), subject)}
           className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
         >
           Generate Snippet

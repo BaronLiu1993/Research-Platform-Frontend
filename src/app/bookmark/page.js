@@ -121,6 +121,7 @@ export default async function Bookmark() {
               userId={user_id}
               parsedInProgressData={parsedInProgressData}
               draftData={draftData}
+              parsedUserProfile = {parsedUserProfile}
               parsedSavedData={parsedSavedData}
             />
           </div>

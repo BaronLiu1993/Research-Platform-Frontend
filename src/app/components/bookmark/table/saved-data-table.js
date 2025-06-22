@@ -54,11 +54,16 @@ export function SavedDataTable({
   columns,
   data,
   userId,
-  draftData
+  draftData,
+  parsedUserProfile,
 }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
-  console.log(draftData)
+  const [snippetId, setSnippetId] = useState("");
+
+  console.log(snippetId);
+  console.log(draftData);
+  console.log(parsedUserProfile);
   const table = useReactTable({
     data,
     columns,
@@ -110,7 +115,11 @@ export function SavedDataTable({
                     <DialogContent>
                       <DialogTitle></DialogTitle>
                       <DialogDescription>
-                        <ComposeEditor userId={userId} />
+                        <ComposeEditor
+                          userId={userId}
+                          snippetId={snippetId}
+                          setSnippetId={setSnippetId}
+                        />
                       </DialogDescription>
                     </DialogContent>
                   </Dialog>
@@ -126,6 +135,8 @@ export function SavedDataTable({
               <DataPreview
                 userId={userId}
                 rowData={table.getSelectedRowModel().rows}
+                parsedUserProfile={parsedUserProfile}
+                snippetId={snippetId}
               />
             </SheetDescription>
           </SheetContent>
@@ -190,7 +201,7 @@ export function SavedDataTable({
               </DialogTrigger>
               <DialogContent>
                 <DialogTitle></DialogTitle>
-                <DraftEditor body = {data.body} initialSubject = {data.subject}/>
+                <DraftEditor body={data.body} initialSubject={data.subject} />
               </DialogContent>
             </Dialog>
           ))}

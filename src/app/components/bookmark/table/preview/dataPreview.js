@@ -21,12 +21,13 @@ import {
   DialogTrigger,
 } from "@/shadcomponents/ui/publicationDialog";
 import { Button } from "@/shadcomponents/ui/button";
+import { createMassDrafts } from "@/app/actions/createMassDrafts";
 
 // Dynamically import the component
 const Publications = lazy(() => import("./publications"));
 
 //Sync Data Here
-export default function DataPreview({ rowData, userId }) {
+export default function DataPreview({ rowData, userId, parsedUserProfile, snippetId }) {
   console.log(rowData);
   const selectedVariables = useSelectedVariablesStore(
     (s) => s.selectedVariables
@@ -36,12 +37,35 @@ export default function DataPreview({ rowData, userId }) {
   const professorIDArray = rowData.map((data) => data.original.professor_id);
   console.log(professorIDArray);
   const [syncedData, setSyncedData] = useState(null);
+
   const [selectedPublications, setSelectedPublications] = useState({});
   const handleSelectTitle = (professorId, title) => {
     setSelectedPublications((prev) => ({
       ...prev,
       [professorId]: title,
     }));
+  };
+
+
+  //Handle Field Changes and Edits the User Wants to Make
+  const handleFieldChange = (professorId, key, newValue) => {
+    setSyncedData((prev) => {
+      if (!prev?.result) return prev;
+
+      const newResult = prev.result.map((prof) => {
+        if (prof.id !== professorId) return prof;
+
+        return {
+          ...prof,
+          dynamicFields: {
+            ...prof.dynamicFields,
+            [key]: newValue,
+          },
+        };
+      });
+
+      return { ...prev, result: newResult };
+    });
   };
 
   const handleSyncSnippet = async () => {
@@ -64,12 +88,25 @@ export default function DataPreview({ rowData, userId }) {
       }
       setSelectedPublications(initialPublications);
     }
-
     if (response?.status === "synced") {
       setSynced(true);
     }
-
     setSyncedData(response);
+  };
+  console.log(snippetId)
+
+  const handleDraftGeneration = async (dynamicFields) => {
+    console.log("Fired");
+    console.log(dynamicFields)
+    await createMassDrafts(
+      userId,
+      snippetId,
+      `${parsedUserProfile?.student_firstname ?? ""} ${
+        parsedUserProfile?.student_lastname ?? ""
+      }`.trim(),
+      parsedUserProfile.student_email,
+      dynamicFields
+    );
   };
 
   console.log(syncedData);
@@ -140,7 +177,7 @@ export default function DataPreview({ rowData, userId }) {
                                   />
                                   <Dialog>
                                     <DialogTrigger asChild>
-                                      <Button  className=" font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] w-fit hover:bg-blue-400 px-1 cursor-pointer">
+                                      <Button className=" font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] w-fit hover:bg-blue-400 px-1 cursor-pointer">
                                         Find New Publications
                                       </Button>
                                     </DialogTrigger>
@@ -171,7 +208,14 @@ export default function DataPreview({ rowData, userId }) {
                                   </div>
                                   <Input
                                     className="text-xs rounded-xs h-[2rem]"
-                                    defaultValue={value}
+                                    value={value || ""}
+                                    onChange={(e) =>
+                                      handleFieldChange(
+                                        prof.id,
+                                        key,
+                                        e.target.value
+                                      )
+                                    }
                                   />
                                 </div>
                               )}
@@ -195,6 +239,12 @@ export default function DataPreview({ rowData, userId }) {
         className="mx-6 font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
       >
         Sync Data
+      </button>
+      <button
+        onClick={handleDraftGeneration(syncedData)}
+        className="mx-6 font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
+      >
+        Generate Drafts
       </button>
     </div>
   );
