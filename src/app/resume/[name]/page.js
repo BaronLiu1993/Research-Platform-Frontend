@@ -26,10 +26,8 @@ import {
   MoveLeft,
   MoveRight,
   PencilLineIcon,
-  PersonStanding,
   PersonStandingIcon,
   Plus,
-  Sheet,
 } from "lucide-react";
 
 export default function resume() {

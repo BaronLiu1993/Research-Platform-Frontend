@@ -16,7 +16,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
-import EditorInteractive from "../interactiveresume/editorinteractive";
 
 export default function Builder() {
   const [resumeFile, setResumeFile] = useState(null);
@@ -208,12 +207,6 @@ export default function Builder() {
         ) : (
           <div className="flex items-start space-x-6">
             <div className="w-screen">
-              {/*<EditorInteractive
-                student_experience={experience}
-                student_projects={projects}
-                student_contact={contact}
-                student_personal_information={personalInformation}
-              />*/}
               <Editor
                 student_experience={experience}
                 student_projects={projects}
