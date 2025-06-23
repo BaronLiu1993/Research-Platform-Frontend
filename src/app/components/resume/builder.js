@@ -54,7 +54,7 @@ export default function Builder() {
 
   return (
     <>
-      <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-md flex justify-center font-main">
+      <div className="mt-20 rounded-md flex justify-center font-main">
         {!parsedResume ? (
           <div className="flex flex-col mt-20">
             <h1 className="p-4 text-4xl font-semibold">

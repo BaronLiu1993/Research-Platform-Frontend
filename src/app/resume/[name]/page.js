@@ -105,10 +105,11 @@ export default function resume() {
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <div className=" space-x-2 select-none bg-gray-100">
+          <div className=" space-x-2 select-none">
             <Builder researchInterests={research_interests} />
           </div>
           <button onClick={handleSendDataToEmail}>Email Page</button>
+          {/*<button onClick={handleSendDataToEmail}>Email Page</button>*/}
         </SidebarInset>
       </SidebarProvider>
     </>

@@ -56,7 +56,7 @@ function ResumeDisplayWrapperInner({ resume }) {
         }
       }
 
-      pdf.save(`${resume.personal_information[0].first_name}_Resume.pdf`);
+      pdf.save(`${resume.personal_information[0].first_name}_Resume.pdf` || "Resume");
     } catch (error) {
       console.error("PDF generation failed:", error);
     } finally {
