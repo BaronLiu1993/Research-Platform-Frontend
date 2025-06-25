@@ -26,6 +26,9 @@ import {
   Database,
   Check,
   X,
+  GlassWater,
+  Group,
+  Info,
 } from "lucide-react";
 
 import EngagementButton from "./badges/engagementButton";
@@ -41,6 +44,12 @@ import {
 import Compose from "./editor/compose";
 import ComposeFollowUp from "./button/compose/composeFollowUp";
 import ContinueFollowUp from "./button/compose/continueFollowUp";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/shadcomponents/ui/tabs";
 const EmailSidebar = lazy(() => import("./side/emailsidebar"));
 
 export default function InboxClientWrapper({
@@ -55,16 +64,59 @@ export default function InboxClientWrapper({
       <div className="font-main py-6">
         <div className="flex items-center justify-between space-x-2 px-5 py-3">
           <div className="flex items-center gap-2">
-            <Inbox className="h-5 w-5 text-red-700" />
+            <GlassWater className="h-5 w-5 text-red-700" />
             <h1 className="py-1 text-[15px] font-semibold text-black">
               Workflows
             </h1>
-          </div>  
+          </div>
           <div className="flex items-center justify-center gap-2">
             <ListFilter className="h-6 w-6 p-1 hover:bg-[#e9eaec] cursor-pointer rounded-xs text-blue-400" />
             <FileSliders className="h-6 w-6 p-1 hover:bg-[#e9eaec] cursor-pointer rounded-xs text-[#979A9B]" />
             <RotateCw className="h-6 w-6 p-1 hover:bg-[#e9eaec] cursor-pointer rounded-xs text-[#979A9B]" />
           </div>
+        </div>
+        <div>
+          <Tabs className="bg-white">
+            <TabsList className="bg-white">
+              <TabsTrigger
+                className="text-sm font-medium py-4 pr-10 flex flex-col"
+                value="primary"
+              >
+                <div className="flex items-center gap-2">
+                  <Inbox className="h-8 w-8" />
+                  Primary
+                </div>
+                <div className = "text-xs">
+                  In the Works
+                </div>
+              </TabsTrigger>
+              <TabsTrigger
+                className="text-sm font-medium py-4 pr-10"
+                value="promotions"
+              >
+                <Tag />
+                Replied
+              </TabsTrigger>
+              <TabsTrigger
+                className="text-sm font-medium py-4 pr-10"
+                value="social"
+              >
+                <Group />
+                Social
+              </TabsTrigger>
+              <TabsTrigger
+                className="text-sm font-medium py-4 pr-10"
+                value="updates"
+              >
+                <Info />
+                Updates
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="primary">primary</TabsContent>
+            <TabsContent value="promotions">promotions</TabsContent>
+            <TabsContent value="social">social</TabsContent>
+            <TabsContent value="updates">updates</TabsContent>
+          </Tabs>
         </div>
         <div>
           {threadArrayEmailResponse.map((email) => (
@@ -83,8 +135,7 @@ export default function InboxClientWrapper({
                 >
                   {" "}
                   <div className="flex items-center gap-2 min-w-0 basis-1/4 shrink-0 ">
-                    <div className="w-[10rem] flex">
-                    </div>
+                    <div className="w-[10rem] flex"></div>
                     <div className="w-[10rem] text-left">
                       <h1 className="font-semibold truncate">
                         {email.thread_title}
@@ -161,10 +212,7 @@ export default function InboxClientWrapper({
                   <SheetDescription>
                     <div className="w-full p-4 font-main">
                       <div className="px-4 space-x-2">
-                        <div className="px-8 space-y-4">
-                          
-                        
-                        </div>
+                        <div className="px-8 space-y-4"></div>
                       </div>
                       {openThreadId === email.threadId && (
                         <Suspense
@@ -179,7 +227,7 @@ export default function InboxClientWrapper({
                         >
                           <EmailSidebar
                             threadId={email.threadId}
-                            seenData ={email.seenData}
+                            seenData={email.seenData}
                             engagementData={email.engagementData}
                             userId={userId}
                             email={emails}

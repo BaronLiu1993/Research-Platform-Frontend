@@ -24,7 +24,7 @@ export async function handleLogin(prevState, formData) {
       try {
         const responseText = await loginResponse.text();
         errorBody = JSON.parse(responseText);
-      } catch (_) {}
+      } catch {}
       return {
         message:
           errorBody.message ||

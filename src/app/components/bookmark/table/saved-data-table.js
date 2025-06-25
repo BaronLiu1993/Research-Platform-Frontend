@@ -45,10 +45,15 @@ import {
   Database,
   Ellipsis,
   FolderOpen,
+  Leaf,
+  LeafIcon,
+  Paperclip,
+  Pencil,
   Tag,
   Trash2,
 } from "lucide-react";
-import DraftEditor from "./snippet/drafteditor";
+import DraftEditor from "./snippet/draftEditor";
+import { Badge } from "@/shadcomponents/ui/badge";
 
 export function SavedDataTable({
   columns,
@@ -78,7 +83,7 @@ export function SavedDataTable({
     },
   });
   return (
-    <div>
+    <div className="px-4">
       <div className="flex items-center py-4 gap-6">
         <Input
           placeholder="☰ Filter Professors..."
@@ -193,18 +198,41 @@ export function SavedDataTable({
         </Table>
         {/*Review Drafts and Send Here*/}
         <div>
-          {draftData.map((data) => (
-            <Dialog key={data.id}>
-              <DialogTrigger>
-                <span>{data.name}</span>
-                <span>{data.email}</span>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogTitle></DialogTitle>
-                <DraftEditor body={data.body} initialSubject={data.subject} />
-              </DialogContent>
-            </Dialog>
-          ))}
+          <div className="py-6">
+            <div className="font-semibold flex gap-2">
+              <Paperclip className="text-[#787774]" />
+              Reviewed Drafts
+            </div>
+            <div className="flex items-center py-2 space-x-2">
+              <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
+                <Pencil />
+                Edit
+              </Badge>
+              <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
+              <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">
+                By Jie Xuan Liu
+              </h2>
+            </div>
+          </div>
+
+          <div className="flex flex-col">
+            {draftData.map((data) => (
+              <Dialog key={data.id}>
+                <DialogTrigger className=" p-2 border-b-1 pointer-cursor flex items-center gap-2 hover:bg-[#F1F1EF]">
+                  <div className="h-1.5 w-1.5 rounded-full bg-blue-400"></div>
+                  <div className="flex gap-2">
+                    <span className="text-sm font-semibold">{data.name}</span>
+                    <span className="text-sm font-light">{data.email}</span>
+                  </div>
+                  <Trash2 className = "h-6 w-6 p-1 hover:bg-red-200 rounded-xs cusror-pointer"/>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogTitle></DialogTitle>
+                  <DraftEditor body={data.body} initialSubject={data.subject} />
+                </DialogContent>
+              </Dialog>
+            ))}
+          </div>
         </div>
       </div>
     </div>
