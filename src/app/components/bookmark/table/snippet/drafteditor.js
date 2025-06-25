@@ -20,6 +20,7 @@ import {
   Strikethrough,
   Trash2,
   Wand2,
+  X,
 } from "lucide-react";
 import {
   Popover,
@@ -32,8 +33,14 @@ import {
   TooltipTrigger,
 } from "@/shadcomponents/ui/tooltip";
 
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose } from "@/shadcomponents/ui/dialog";
-
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/shadcomponents/ui/dialog";
 
 import Snippets from "../popover/snippets";
 import AIPopover from "../popover/AIpopover";
@@ -42,45 +49,37 @@ import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 import { useAISnippetStore } from "@/app/store/useAISnippetStore";
 import { usePointStore } from "@/app/store/usePointStore";
 import AIcontext from "../tiptap/AIcontext";
+import { saveDraftToServer } from "@/app/actions/updateFollowUp";
 
-export default function DraftEditor({
-  userId,
-  body, 
-  initialSubject
-}) {
-  //Mount the selected variables store
-  const setSelectedVariables = useSelectedVariablesStore(
-    (s) => s.setSelectedVariables
-  );
-  const setAISnippet = useAISnippetStore((s) => s.setAISnippets);
-  const resumePoints = usePointStore((state) => state.loadedResumePoints);
-  console.log(resumePoints)
-  
-  useEffect(() => {
-    setSelectedVariables([]);
-    setAISnippet([]);
-  }, []);
-
+export default function DraftEditor({ userId, body, initialSubject }) {
   const [subject, setSubject] = useState("");
-  const [open, setOpen] = useState(false);
   const [AIOpenDialog, setAIOpenDialog] = useState(false);
-  console.log(AIOpenDialog)
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-    ],
+    extensions: [StarterKit],
     editorProps: {
       attributes: {
         class:
           "prose prose-sm max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[13px] [&>*]:my-0 [&>*]:mb-0 [&>*]:mt-0",
       },
     },
-    content: body
+    content: body,
   });
+
+  const handleUpdateDraft = async () => {
+    const data = {
+      fromName,
+      fromEmail: "baronliu1993@gmail.com",
+      to: "jiexuan.liu@mail.utoronto.ca",
+      body: editor.getHTML(),
+      subject,
+    };
+    const response = await saveDraftToServer(data, userId, professorId);
+  };
+
   return (
     <div>
       <Dialog open={AIOpenDialog} onOpenChange={setAIOpenDialog}>
-        <DialogContent className = "p-0 rounded-xs">
+        <DialogContent className="p-0 rounded-xs">
           <DialogTitle></DialogTitle>
           <DialogDescription>
             <AIcontext />
@@ -88,11 +87,15 @@ export default function DraftEditor({
         </DialogContent>
       </Dialog>
       <div className="text-sm">
+        <div className="flex justify-end px-4">
+          <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] cursor-pointer hover:text-red-500">
+            <X className="h-6 w-6 p-1 rounded-xs" />
+          </DialogClose>
+        </div>
         <div className="flex flex-col">
           <div className="flex gap-2 px-4 py-1">
             <h1 className="text-black">Baron Liu</h1>
             <h2 className="text-[#787774]">baronliu1993@gmail.com</h2>
-            <DialogClose>Close Dialog</DialogClose>
           </div>
           <input className="px-4 py-1 w-full" placeholder="Add Recipient" />
           <input
@@ -168,79 +171,10 @@ export default function DraftEditor({
         </BubbleMenu>
       )}
       <EditorContent editor={editor} />
-      <div className="font-main p-4 flex justify-between items-center">
-        <button
-          onClick={() => GenerateSnippet(userId, editor.getHTML(), subject)}
-          className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
-        >
-          Generate Snippet
-        </button>
-
+      <div className="font-main p-4 flex items-center">
         <button className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1">
-          Send Mail
+          Save Draft
         </button>
-        <div className="flex gap-2">
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <BookText className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Attachments
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <Paperclip className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Attachments
-            </TooltipContent>
-          </Tooltip>
-          <Popover modal={true} className="rounded-xs">
-            <PopoverTrigger>
-              <Tooltip>
-                <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-                  <Wand2 className="h-4 w-4" />
-                </TooltipTrigger>
-                <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-                  AI Tools
-                </TooltipContent>
-              </Tooltip>
-            </PopoverTrigger>
-            <PopoverContent className="w-[30rem] rounded-xs">
-              <AIPopover
-                userId = {userId}
-                onSnippetGenerated={(snippet) => {
-                  if (snippet?.body) editor?.commands.setContent(snippet.body);
-                  if (snippet?.subject) setSubject(snippet.subject);
-                }}
-              />
-            </PopoverContent>
-          </Popover>
-          <Popover open={open} onOpenChange={setOpen} modal={true}>
-            <PopoverTrigger>
-              <Tooltip>
-                <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-                  <CurlyBraces className="h-4 w-4" />
-                </TooltipTrigger>
-                <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-                  Snippets
-                </TooltipContent>
-              </Tooltip>
-            </PopoverTrigger>
-            <PopoverContent>
-              <Snippets />
-            </PopoverContent>
-          </Popover>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-red-100 p-1 rounded-xs cursor-pointer">
-              <Trash2 />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Delete
-            </TooltipContent>
-          </Tooltip>
-        </div>
       </div>
     </div>
   );

@@ -29,6 +29,11 @@ import {
   GlassWater,
   Group,
   Info,
+  Reply,
+  CircleOff,
+  Scan,
+  Newspaper,
+  MessageSquareX,
 } from "lucide-react";
 
 import EngagementButton from "./badges/engagementButton";
@@ -79,37 +84,86 @@ export default function InboxClientWrapper({
           <Tabs className="bg-white">
             <TabsList className="bg-white">
               <TabsTrigger
-                className="text-sm font-medium py-4 pr-10 flex flex-col"
+                className="text-sm font-medium py-6 gap-2 pr-10 flex"
                 value="primary"
               >
-                <div className="flex items-center gap-2">
-                  <Inbox className="h-8 w-8" />
-                  Primary
+                <CircleOff className="h-10 w-10" />
+
+                <div className="flex items-start flex-col">
+                  <span className="flex gap-2">
+                    No Replies
+                    <Badge className="bg-[#FAF1F5] text-[#C14C8A] rounded-md">
+                      3
+                    </Badge>
+                  </span>
+                  <span className="text-xs font-light">Follow Up Maybe?</span>
                 </div>
-                <div className = "text-xs">
-                  In the Works
+              </TabsTrigger>
+              <TabsTrigger
+                className="text-sm font-medium py-6 gap-2 pr-10 flex"
+                value="replied"
+              >
+                <Reply className="h-10 w-10" />
+
+                <div className="flex items-start flex-col">
+                  <span className="flex gap-2">
+                    Replied
+                    <Badge className="bg-[#E7F3F8] text-[#337EA9] rounded-md">
+                      3
+                    </Badge>
+                  </span>
+                  <span className="text-xs font-light">
+                    Someone's Interested
+                  </span>
                 </div>
               </TabsTrigger>
               <TabsTrigger
-                className="text-sm font-medium py-4 pr-10"
-                value="promotions"
+                className="text-sm font-medium py-6 gap-2 pr-10 flex"
+                value="interviews"
               >
-                <Tag />
-                Replied
+                <Scan className="h-10 w-10" />
+
+                <div className="flex items-start flex-col">
+                  <span className="flex gap-2">
+                    Interviews
+                    <Badge className="bg-[#F6F3F9] text-[#9065B0] rounded-md">
+                      3
+                    </Badge>
+                  </span>
+                  <span className="text-xs font-light">Good Luck!</span>
+                </div>
               </TabsTrigger>
               <TabsTrigger
-                className="text-sm font-medium py-4 pr-10"
-                value="social"
+                className="text-sm font-medium py-6 gap-2 pr-10 flex"
+                value="offers"
               >
-                <Group />
-                Social
+                <Newspaper className="h-10 w-10" />
+
+                <div className="flex items-start flex-col">
+                  <span className="flex gap-2">
+                    Offers
+                    <Badge className="bg-[#EDF3EC] text-[#448361] rounded-md">
+                      3
+                    </Badge>
+                  </span>
+                  <span className="text-xs font-light">Congratulations!</span>
+                </div>
               </TabsTrigger>
               <TabsTrigger
-                className="text-sm font-medium py-4 pr-10"
-                value="updates"
+                className="text-sm font-medium py-6 gap-2 pr-10 flex"
+                value="lost"
               >
-                <Info />
-                Updates
+                <MessageSquareX className="h-10 w-10" />
+
+                <div className="flex items-start flex-col">
+                  <span className = "flex gap-2">
+                    Lost
+                    <Badge className="bg-[#FDEBEC] text-[#D44C47] rounded-md">
+                      3
+                    </Badge>
+                  </span>
+                  <span className="text-xs font-light">Don't Give Up!</span>
+                </div>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="primary">primary</TabsContent>

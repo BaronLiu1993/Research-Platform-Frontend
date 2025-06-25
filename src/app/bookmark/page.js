@@ -68,7 +68,7 @@ export default async function Bookmark() {
       );
       const parsedDraftResults = await rawDraftResults.json();
       return {
-        id: prof.id,
+        id: prof.professor_id,
         name: prof.name,
         email: prof.email,
         ...parsedDraftResults,
