@@ -2,8 +2,8 @@
 
 export const ExecuteMassSend = async (
   userId,
-  userEmail,
   userName,
+  userEmail,
   professorData
 ) => {
   try {
@@ -14,8 +14,8 @@ export const ExecuteMassSend = async (
       },
       body: JSON.stringify({
         userId,
-        userEmail,
         userName,
+        userEmail: "luobagel@gmail.com",
         professorData,
       }),
     });

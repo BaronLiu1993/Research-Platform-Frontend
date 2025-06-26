@@ -73,6 +73,7 @@ export default function DataPreview({
   };
 
   const handleSyncSnippet = async () => {
+    console.log("Synced")
     const response = await SyncSnippetData(
       userId,
       professorIDArray,
