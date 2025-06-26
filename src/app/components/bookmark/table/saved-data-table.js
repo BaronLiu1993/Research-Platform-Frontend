@@ -119,8 +119,8 @@ export function SavedDataTable({
             </Button>
           </SheetTrigger>
 
-          <SheetContent>
-            <SheetTitle>
+          <SheetContent className = "rounded-xs">
+            <SheetTitle className = "p-2">
               <div className="flex justify-between p-1">
                 <SheetClose>
                   <FolderOpen className="text-blue-700 h-6.5 w-6.5 p-1 rounded-xs cursor-pointer hover:bg-[#F1F1EF]" />

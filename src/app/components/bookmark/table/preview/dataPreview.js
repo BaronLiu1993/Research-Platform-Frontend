@@ -27,7 +27,12 @@ import { createMassDrafts } from "@/app/actions/createMassDrafts";
 const Publications = lazy(() => import("./publications"));
 
 //Sync Data Here
-export default function DataPreview({ rowData, userId, parsedUserProfile, snippetId }) {
+export default function DataPreview({
+  rowData,
+  userId,
+  parsedUserProfile,
+  snippetId,
+}) {
   console.log(rowData);
   const selectedVariables = useSelectedVariablesStore(
     (s) => s.selectedVariables
@@ -45,7 +50,6 @@ export default function DataPreview({ rowData, userId, parsedUserProfile, snippe
       [professorId]: title,
     }));
   };
-
 
   //Handle Field Changes and Edits the User Wants to Make
   const handleFieldChange = (professorId, key, newValue) => {
@@ -93,11 +97,11 @@ export default function DataPreview({ rowData, userId, parsedUserProfile, snippe
     }
     setSyncedData(response);
   };
-  console.log(snippetId)
+  console.log(snippetId);
 
   const handleDraftGeneration = async (dynamicFields) => {
     console.log("Fired");
-    console.log(dynamicFields)
+    console.log(dynamicFields);
     await createMassDrafts(
       userId,
       snippetId,
@@ -234,18 +238,21 @@ export default function DataPreview({ rowData, userId, parsedUserProfile, snippe
           </AccordionItem>
         ))}
       </Accordion>
-      <button
-        onClick={handleSyncSnippet}
-        className="mx-6 font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
-      >
-        Sync Data
-      </button>
-      <button
-        onClick={() => handleDraftGeneration(syncedData)}
-        className="mx-6 font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
-      >
-        Generate Drafts
-      </button>
+      {synced ? (
+        <button
+          onClick={() => handleDraftGeneration(syncedData)}
+          className="mx-6 font-main text-xs rounded-xs text-[#448361] bg-[#EDF3EC] h-[1.7rem] px-1"
+        >
+          Generate Drafts
+        </button>
+      ) : (
+        <button
+          onClick={handleSyncSnippet}
+          className="mx-6 font-main text-xs rounded-xs bg-[#E7F3F8] text-[#337EA9] h-[1.7rem] px-1"
+        >
+          Sync Data
+        </button>
+      )}
     </div>
   );
 }

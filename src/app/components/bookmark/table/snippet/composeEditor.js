@@ -20,6 +20,7 @@ import {
   Strikethrough,
   Trash2,
   Wand2,
+  X,
 } from "lucide-react";
 import {
   Popover,
@@ -32,8 +33,14 @@ import {
   TooltipTrigger,
 } from "@/shadcomponents/ui/tooltip";
 
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription, DialogClose } from "@/shadcomponents/ui/dialog";
-
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/shadcomponents/ui/dialog";
 
 import Snippets from "../popover/snippets";
 import AIPopover from "../popover/AIpopover";
@@ -42,20 +49,17 @@ import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 import { useAISnippetStore } from "@/app/store/useAISnippetStore";
 import { usePointStore } from "@/app/store/usePointStore";
 import AIcontext from "../tiptap/AIcontext";
+import { Badge } from "@/shadcomponents/ui/badge";
 
-export default function ComposeEditor({
-  userId,
-  snippetId,
-  setSnippetId,
-}) {
+export default function ComposeEditor({ userId, snippetId, setSnippetId, userName, userEmail }) {
   //Mount the selected variables store
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
   );
   const setAISnippet = useAISnippetStore((s) => s.setAISnippets);
   const resumePoints = usePointStore((state) => state.loadedResumePoints);
-  console.log(resumePoints)
-  
+  console.log(resumePoints);
+
   useEffect(() => {
     setSelectedVariables([]);
     setAISnippet([]);
@@ -64,7 +68,7 @@ export default function ComposeEditor({
   const [subject, setSubject] = useState("");
   const [open, setOpen] = useState(false);
   const [AIOpenDialog, setAIOpenDialog] = useState(false);
-  console.log(AIOpenDialog)
+  console.log(AIOpenDialog);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -92,7 +96,7 @@ export default function ComposeEditor({
 
       editor.state.doc.descendants((node) => {
         if (node.type.name === "mention") {
-          console.log(node.attrs.id)
+          console.log(node.attrs.id);
           if (node.attrs.id === "{{AIcontext}}") {
             setAIOpenDialog(true);
           }
@@ -113,15 +117,15 @@ export default function ComposeEditor({
   });
 
   const handleSnippetGeneration = async (userId, body, subject) => {
-    const response = await GenerateSnippet(userId, body, subject)
-    setSnippetId(response.snippetId)
-  }
-  console.log(snippetId)
+    const response = await GenerateSnippet(userId, body, subject);
+    setSnippetId(response.snippetId);
+  };
+  console.log(snippetId);
 
   return (
     <div>
       <Dialog open={AIOpenDialog} onOpenChange={setAIOpenDialog}>
-        <DialogContent className = "p-0 rounded-xs">
+        <DialogContent className="p-0 rounded-xs">
           <DialogTitle></DialogTitle>
           <DialogDescription>
             <AIcontext />
@@ -129,11 +133,18 @@ export default function ComposeEditor({
         </DialogContent>
       </Dialog>
       <div className="text-sm">
+        <div className="flex justify-between px-4">
+          <Badge className="text-[#9F6B53] bg-[#F4EEEE] rounded-xs">
+            Template Builder
+          </Badge>
+          <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] cursor-pointer hover:text-red-500">
+            <X className="h-6 w-6 p-1 rounded-xs" />
+          </DialogClose>
+        </div>
         <div className="flex flex-col">
           <div className="flex gap-2 px-4 py-1">
             <h1 className="text-black">Baron Liu</h1>
             <h2 className="text-[#787774]">baronliu1993@gmail.com</h2>
-            <DialogClose>Close Dialog</DialogClose>
           </div>
           <input className="px-4 py-1 w-full" placeholder="Add Recipient" />
           <input
@@ -211,14 +222,12 @@ export default function ComposeEditor({
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex justify-between items-center">
         <button
-          onClick={() => handleSnippetGeneration(userId, editor.getHTML(), subject)}
-          className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
+          onClick={() =>
+            handleSnippetGeneration(userId, editor.getHTML(), subject)
+          }
+          className="font-main text-xs rounded-xs text-[#337EA9] cursor-pointer bg-[#E7F3F8] h-[1.7rem] px-1"
         >
           Generate Snippet
-        </button>
-
-        <button className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1">
-          Send Mail
         </button>
         <div className="flex gap-2">
           <Tooltip>
@@ -250,7 +259,7 @@ export default function ComposeEditor({
             </PopoverTrigger>
             <PopoverContent className="w-[30rem] rounded-xs">
               <AIPopover
-                userId = {userId}
+                userId={userId}
                 onSnippetGenerated={(snippet) => {
                   if (snippet?.body) editor?.commands.setContent(snippet.body);
                   if (snippet?.subject) setSubject(snippet.subject);
