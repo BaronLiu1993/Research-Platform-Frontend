@@ -51,7 +51,14 @@ import { usePointStore } from "@/app/store/usePointStore";
 import AIcontext from "../tiptap/AIcontext";
 import { Badge } from "@/shadcomponents/ui/badge";
 
-export default function ComposeEditor({ userId, snippetId, setSnippetId, userName, userEmail }) {
+export default function ComposeEditor({
+  userId,
+  snippetId,
+  setSnippetId,
+  userName,
+  userEmail,
+  parsedSnippetData,
+}) {
   //Mount the selected variables store
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
@@ -68,6 +75,14 @@ export default function ComposeEditor({ userId, snippetId, setSnippetId, userNam
   const [subject, setSubject] = useState("");
   const [open, setOpen] = useState(false);
   const [AIOpenDialog, setAIOpenDialog] = useState(false);
+
+  const handleSnippetSelection = (subject, body) => {
+    console.log(subject);
+    console.log(body);
+    setSubject(subject);
+    editor?.commands.setContent(body);
+  };
+
   console.log(AIOpenDialog);
   const editor = useEditor({
     extensions: [
@@ -279,7 +294,13 @@ export default function ComposeEditor({ userId, snippetId, setSnippetId, userNam
               </Tooltip>
             </PopoverTrigger>
             <PopoverContent>
-              <Snippets />
+              <Snippets
+                parsedSnippetData={parsedSnippetData}
+                onSnippetSelection={(subject, body) => {
+                  if (body) editor?.commands.setContent(body);
+                  if (subject) setSubject(subject);
+                }}
+              />
             </PopoverContent>
           </Popover>
           <Tooltip>

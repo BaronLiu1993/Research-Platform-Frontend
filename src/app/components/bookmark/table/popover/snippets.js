@@ -6,53 +6,45 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/shadcomponents/ui/command";
 
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/shadcomponents/ui/dialog";
+  Bell,
+  BookOpenText,
+  CalendarClock,
+  Heart,
+  Hospital,
+  Plus,
+  Settings,
+} from "lucide-react";
 
-import { Bell, Calendar1, CalendarClock, Plus } from "lucide-react";
-import CreateEditor from "./createEditor";
-
-export default function Snippets() {
+export default function Snippets({ parsedSnippetData, onSnippetSelection }) {
+  console.log(parsedSnippetData);
+  const handleSnippetSend = (subject, body) => {
+    console.log("fired")
+    onSnippetSelection(subject, body);
+  };
   return (
     <Command className="font-main w-full max-w-[20rem]">
-      <CommandInput
-        className="text-xs"
-        placeholder="Type a command or search..."
-      />
+      <CommandInput className="text-xs" placeholder="Search Built-In..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Create">
-          <CommandItem>
-            <Dialog>
-              <DialogTrigger className = "flex items-center gap-2">
-                <Plus />
-                <div className="text-xs justify-start items-start flex flex-col">
-                  <h1 className="text-[#37352F]">New Snippet</h1>
-                  <h2 className="text-[#787774] font-light">
-                    Create a new snippet
-                  </h2>
-                </div>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogTitle></DialogTitle>
-                <DialogContent className = "rounded-xs">
-                    <CreateEditor />
-                </DialogContent>
-              </DialogContent>
-            </Dialog>
-          </CommandItem>
+        <CommandGroup heading="Your Snippets">
+          {parsedSnippetData.map((data, idx) => (
+            <CommandItem
+              key={idx}
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => handleSnippetSend(data.snippet_subject, data.snippet_html)}
+            >
+              <BookOpenText />
+              <div className="text-xs justify-start items-start flex flex-col">
+                <h1 className="text-[#37352F]">{data.snippet_name}</h1>
+                <h2 className="text-[#787774] font-light">
+                  {data.snippet_subject.slice(0, 30)}
+                </h2>
+              </div>
+            </CommandItem>
+          ))}
         </CommandGroup>
         <CommandGroup heading="Built-In Snippets">
           <CommandItem>
@@ -65,7 +57,7 @@ export default function Snippets() {
             </div>
           </CommandItem>
           <CommandItem>
-            <CalendarClock className="text-green-500" />
+            <Settings className="text-green-500" />
             <div className="text-xs">
               <h1 className="font-semibold text-[#37352F]">Engineering</h1>
               <h2 className="text-neutral-500">
@@ -74,7 +66,7 @@ export default function Snippets() {
             </div>
           </CommandItem>
           <CommandItem>
-            <CalendarClock className="text-green-500" />
+            <Hospital className="text-red-500" />
             <div className="text-xs">
               <h1 className="font-semibold text-[#37352F]">Medical Research</h1>
               <h2 className="text-neutral-500">

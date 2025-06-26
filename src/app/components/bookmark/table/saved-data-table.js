@@ -64,6 +64,7 @@ export function SavedDataTable({
   userId,
   draftData,
   parsedUserProfile,
+  parsedSnippetData
 }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -143,6 +144,7 @@ export function SavedDataTable({
                           userId={userId}
                           snippetId={snippetId}
                           setSnippetId={setSnippetId}
+                          parsedSnippetData={parsedSnippetData}
                         />
                       </DialogDescription>
                     </DialogContent>
@@ -161,6 +163,7 @@ export function SavedDataTable({
                 rowData={table.getSelectedRowModel().rows}
                 parsedUserProfile={parsedUserProfile}
                 snippetId={snippetId}
+                
               />
             </SheetDescription>
           </SheetContent>

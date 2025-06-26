@@ -24,42 +24,34 @@ export default async function Bookmark() {
   const raw_user_id = cookieStore.get("user_id");
   const user_id = raw_user_id.value;
   const access = cookieStore.get("access_token");
-  const rawUserProfile = await fetch(
-    "http://localhost:8080/auth/get-user-sidebar-info",
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${access.value}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  const parsedUserProfile = await rawUserProfile.json();
+  //Fetch all in Parallel
+  const [rawSavedData, rawInProgressData, rawSnippetData, rawUserProfile] =
+    await Promise.all([
+      fetch(`http://localhost:8080/kanban/get-saved/${user_id}`),
+      fetch(`http://localhost:8080/kanban/get-in-progress/${user_id}`),
+      fetch(`http://localhost:8080/get-all-snippets/${user_id}`),
+      fetch("http://localhost:8080/auth/get-user-sidebar-info", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${access.value}`,
+          "Content-Type": "application/json",
+        },
+      }),
+    ]);
+  
+  const [savedDataJson, inProgressJson, snippetJson, userProfileJson] = await Promise.all([
+    rawSavedData.json(),
+    rawInProgressData.json(),
+    rawSnippetData.json(),
+    rawUserProfile.json()
+  ])
 
-  const rawSavedData = await fetch(
-    `http://localhost:8080/kanban/get-saved/${user_id}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  const savedData = await rawSavedData.json();
-  const parsedSavedData = savedData.data;
+  //Extract
+  const parsedInProgressData = inProgressJson.data;
+  const parsedSavedData = savedDataJson.data;
+  const parsedSnippetJson = snippetJson.message
+  const parsedUserProfile = userProfileJson
 
-  const rawInProgressData = await fetch(
-    `http://localhost:8080/kanban/get-in-progress/${user_id}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  const inProgressData = await rawInProgressData.json();
-  const parsedInProgressData = inProgressData.data;
 
   const draftData = await Promise.all(
     parsedInProgressData.map(async (prof) => {
@@ -121,8 +113,9 @@ export default async function Bookmark() {
               userId={user_id}
               parsedInProgressData={parsedInProgressData}
               draftData={draftData}
-              parsedUserProfile = {parsedUserProfile}
+              parsedUserProfile={parsedUserProfile}
               parsedSavedData={parsedSavedData}
+              parsedSnippetData={parsedSnippetJson}
             />
           </div>
         </div>
