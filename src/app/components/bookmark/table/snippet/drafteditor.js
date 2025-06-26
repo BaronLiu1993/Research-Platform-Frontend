@@ -22,16 +22,7 @@ import {
   Wand2,
   X,
 } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shadcomponents/ui/popover";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/shadcomponents/ui/tooltip";
+
 
 import {
   Dialog,
@@ -42,16 +33,12 @@ import {
   DialogClose,
 } from "@/shadcomponents/ui/dialog";
 
-import Snippets from "../popover/snippets";
-import AIPopover from "../popover/AIpopover";
-import { GenerateSnippet } from "@/app/actions/generateSnippet";
-import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
-import { useAISnippetStore } from "@/app/store/useAISnippetStore";
-import { usePointStore } from "@/app/store/usePointStore";
 import AIcontext from "../tiptap/AIcontext";
 import { saveDraftToServer } from "@/app/actions/updateFollowUp";
+import { Badge } from "@/shadcomponents/ui/badge";
+import { saveDraft } from "../../api/saveDraft";
 
-export default function DraftEditor({ userId, body, initialSubject }) {
+export default function DraftEditor({fromName, fromEmail, to, userId, professorId, body, initialSubject }) {
   const [subject, setSubject] = useState("");
   const [AIOpenDialog, setAIOpenDialog] = useState(false);
   const editor = useEditor({
@@ -64,17 +51,27 @@ export default function DraftEditor({ userId, body, initialSubject }) {
     },
     content: body,
   });
+  console.log(userId)
+  console.log(fromName)
+  console.log(fromEmail)
+  console.log(to)
 
   const handleUpdateDraft = async () => {
     const data = {
-      fromName,
+      fromName: fromName,
       fromEmail: "baronliu1993@gmail.com",
       to: "jiexuan.liu@mail.utoronto.ca",
       body: editor.getHTML(),
-      subject,
+      subject: subject,
     };
-    const response = await saveDraftToServer(data, userId, professorId);
+    console.log(data.subject)
+    console.log(data)
+    console.log(userId)
+    console.log(professorId)
+    const response = await saveDraft(data, userId, professorId);
   };
+
+  console.log(subject)
 
   return (
     <div>
@@ -87,7 +84,8 @@ export default function DraftEditor({ userId, body, initialSubject }) {
         </DialogContent>
       </Dialog>
       <div className="text-sm">
-        <div className="flex justify-end px-4">
+        <div className="flex justify-between px-4">
+          <Badge className = "text-[#D9730D] bg-[#FAEBDD] rounded-xs">Unsent Draft</Badge>
           <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] cursor-pointer hover:text-red-500">
             <X className="h-6 w-6 p-1 rounded-xs" />
           </DialogClose>
@@ -102,7 +100,7 @@ export default function DraftEditor({ userId, body, initialSubject }) {
             onChange={(e) => setSubject(e.target.value)}
             className="px-4 py-1 w-full"
             placeholder="Subject"
-            value={initialSubject}
+            defaultValue={initialSubject}
           />
         </div>
       </div>
@@ -172,7 +170,7 @@ export default function DraftEditor({ userId, body, initialSubject }) {
       )}
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex items-center">
-        <button className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1">
+        <button className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1 " onClick = {handleUpdateDraft}>
           Save Draft
         </button>
       </div>

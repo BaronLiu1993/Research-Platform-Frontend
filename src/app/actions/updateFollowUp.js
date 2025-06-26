@@ -1,7 +1,7 @@
 "use server";
 
 export async function saveDraftToServer(data, userId, professorId) {
-  console.log(data)
+  console.log(data);
   const response = await fetch(
     `http://localhost:8080/gmail/update-follow-up-draft/${userId}/${professorId}`,
     {

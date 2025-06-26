@@ -50,7 +50,6 @@ export default async function InboxEmail() {
       const statusData = await status.json()
       const engagementData = await enagagementStatus.json()
       const seenData = await seenStatus.json()
-
       return { ...obj, engagementData, statusData, draftData, seenData}
     })
   )

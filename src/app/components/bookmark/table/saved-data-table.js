@@ -233,12 +233,12 @@ export function SavedDataTable({
               </h2>
             </div>
             <div className="bg-[#FAEBDD] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D9730D]">
-              <Info />
+              <Info className = "h-4 w-4"/>
               <span className = "text-xs"> Review Your Drafts Before Bulk Sending</span>
             </div>
           </div>
 
-          <DraftList draftData={draftData} />
+          <DraftList draftData={draftData} parsedUserProfile = {parsedUserProfile}/>
         </div>
       </div>
     </div>
