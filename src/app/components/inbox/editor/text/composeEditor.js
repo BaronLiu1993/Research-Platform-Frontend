@@ -43,12 +43,15 @@ export default function ComposeEditor({
   fromEmail,
   to,
 }) {
+
   const saveTimeout = useRef(null);
   const [open, setOpen] = useState(false);
   const { setStatus } = useLoadingStore.getState();
   const [subject, setSubject] = useState("");
 
-  const handleFollowUp = () => {};
+  const handleSendFollowUp = () => {
+    
+  };
 
   const saveDraft = useCallback(
     async (content) => {

@@ -64,8 +64,6 @@ export default function InboxClientWrapper({
   emails,
 }) {
   const [openThreadId, setOpenThreadId] = useState("");
-  console.log(userId);
-  console.log(emails);
   console.log(threadArrayEmailResponse);
   return (
     <>
