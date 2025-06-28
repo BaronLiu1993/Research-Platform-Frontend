@@ -231,6 +231,7 @@ export default function InboxClientWrapper({
                                     <ContinueFollowUp />
                                   ) : (
                                     <ComposeFollowUp
+                                      threadId={email.threadId}
                                       userId={userId}
                                       professorId={email.professorId}
                                       userEmail={email.userEmail}
@@ -245,6 +246,7 @@ export default function InboxClientWrapper({
                                   draftData={email.draftData}
                                   userId={userId}
                                   professorId={email.professorId}
+                                  threadId={email.threadId}
                                   fromName={email.userName}
                                   fromEmail={email.userEmail}
                                   to={email.professorEmail}

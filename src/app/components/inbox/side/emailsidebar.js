@@ -17,7 +17,6 @@ export default function EmailSidebar({
   seenData,
 }) {
   const [threadData, setThreadData] = useState([]);
-
   useEffect(() => {
     const fetchResponseThread = async () => {
       const mailData = await fetch(

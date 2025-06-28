@@ -1,8 +1,10 @@
 "use client";
 
+import { CreateFollowUp } from "@/app/actions/createFollowUp";
 import { Button } from "@/shadcomponents/ui/button";
 
 export default function ComposeFollowUp({
+  threadId,
   userId,
   professorId,
   userEmail,
@@ -18,18 +20,8 @@ export default function ComposeFollowUp({
   };
 
   const handleCreateFollowUp = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8080/gmail/create-follow-up-draft/${userId}/${professorId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-    } catch {}
+    console.log(threadId)
+    await CreateFollowUp(data, userId, professorId, threadId)
   };
 
   return (
