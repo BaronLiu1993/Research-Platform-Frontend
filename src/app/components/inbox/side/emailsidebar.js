@@ -69,7 +69,7 @@ export default function EmailSidebar({
                         )}
                       </div>
                       <div>
-                        {email === message.to.address && (
+                        {email !== message.to.address && (
                           <div className="flex gap-2">
                             <div>
                               {seenData.opened_email ? (
