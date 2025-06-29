@@ -1,6 +1,6 @@
-export const DeleteFollowUpDraft = async (draftId) => {
+export const DeleteFollowUpDraft = async (userId, draftId) => {
   try {
-    const response = await fetch(`http://localhost:8080/gmail/delete-reply-draft/${draftId}`, {
+    const response = await fetch(`http://localhost:8080/gmail/delete-follow-up-draft/${userId}/${draftId}`, {
       method: "DELETE",
     });
   } catch (err) {

@@ -32,7 +32,6 @@ import {
 import Snippets from "../../popover/snippets";
 import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { executeSendFollowUp } from "@/app/actions/executeSendFollowUp";
-import { Button } from "@/shadcomponents/ui/button";
 import DeleteFollowUp from "../../button/compose/deleteFollowUp";
 
 export default function ComposeEditor({
@@ -211,7 +210,7 @@ export default function ComposeEditor({
           </Tooltip>
           <Tooltip>
             <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <DeleteFollowUp draftId ={draftData.draft_id}/>
+              <DeleteFollowUp userId = {userId} draftId ={draftData.draft_id}/>
             </TooltipTrigger>
             <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
               Delete Draft
