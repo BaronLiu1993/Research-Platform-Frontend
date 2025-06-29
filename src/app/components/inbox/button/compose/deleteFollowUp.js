@@ -1,21 +1,16 @@
+import { DeleteFollowUpDraft } from "@/app/actions/deleteFollowUpDraft";
 import { Trash2 } from "lucide-react";
 
-export default function DeleteFollowUp({ userId, professorId }) {
+export default function DeleteFollowUp({ draftId }) {
   const handleDeleteFollowUp = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/gmail/delete-follow-up-draft/${userId}/${professorId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } catch {}
+    const response = await DeleteFollowUpDraft(draftId)
   };
+
   return (
     <>
-      <div onClick = {handleDeleteFollowUp}>
+      <button onClick = {handleDeleteFollowUp}>
         <Trash2 className="h-4 w-4 hover:text-red-500" />
-      </div>
+      </button>
     </>
   );
 }

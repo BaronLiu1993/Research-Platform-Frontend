@@ -1,8 +1,7 @@
 "use client";
 
 import { saveDraftToServer } from "@/app/actions/updateFollowUp";
-import { useLoadingStore } from "@/app/store/useLoadingStore";
-import { useRef, useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
@@ -12,10 +11,10 @@ import {
   Italic,
   List,
   ListTodo,
-  Minimize2,
   Paperclip,
   PencilRuler,
   Strikethrough,
+  Trash2,
   Wand2,
   X,
 } from "lucide-react";
@@ -33,6 +32,8 @@ import {
 import Snippets from "../../popover/snippets";
 import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { executeSendFollowUp } from "@/app/actions/executeSendFollowUp";
+import { Button } from "@/shadcomponents/ui/button";
+import DeleteFollowUp from "../../button/compose/deleteFollowUp";
 
 export default function ComposeEditor({
   draftData,
@@ -46,8 +47,12 @@ export default function ComposeEditor({
   const [open, setOpen] = useState(false);
   const [subject, setSubject] = useState("");
 
-  const handleSendFollowUp = () => {
-    executeSendFollowUp(userId, draftData.draft_id, draftData.tracking_id);
+  const handleSendFollowUp = async () => {
+    await executeSendFollowUp(
+      userId,
+      draftData.draft_id,
+      draftData.tracking_id
+    );
   };
 
   const handleSaveDraft = async () => {
@@ -59,7 +64,6 @@ export default function ComposeEditor({
       subject,
     };
     await saveDraftToServer(data, userId, professorId, threadId);
-    console.log(`saved draft successfully`);
   };
 
   const editor = useEditor({
@@ -154,8 +158,8 @@ export default function ComposeEditor({
       )}
 
       <div className="text-sm">
-        <DialogClose className = "py-2 px-4 flex justify-end items-end w-full">
-          <X className="h-4 w-4 text-[#787774]"/>
+        <DialogClose className="py-2 px-4 flex justify-end items-end w-full">
+          <X className="h-4 w-4 text-[#787774]" />
         </DialogClose>
         <div className="flex flex-col">
           <div className="flex gap-2 px-4 py-1">
@@ -203,6 +207,14 @@ export default function ComposeEditor({
             </TooltipTrigger>
             <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
               Attachments
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
+              <DeleteFollowUp draftId ={draftData.draft_id}/>
+            </TooltipTrigger>
+            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
+              Delete Draft
             </TooltipContent>
           </Tooltip>
           <Tooltip>
