@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
-import { Trash2 } from "lucide-react";
+import { Calendar, Send, Trash2 } from "lucide-react";
 
 import { ExecuteMassSend } from "@/app/actions/executeMassSend";
 
@@ -15,15 +15,29 @@ import {
 
 import DraftEditor from "./drafteditor";
 import { Button } from "@/shadcomponents/ui/button";
-import { useAnimationFrame } from "framer-motion";
+import { ScheduleFollowUp } from "@/app/actions/scheduleFollowUp";
 
 export default function DraftList({ draftData, parsedUserProfile }) {
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
 
   const handleSubmit = async () => {
-    const response = await ExecuteMassSend(parsedUserProfile.user_id, `${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`, parsedUserProfile.student_email, selected)
-  }
+    const response = await ExecuteMassSend(
+      parsedUserProfile.user_id,
+      `${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`,
+      parsedUserProfile.student_email,
+      selected
+    );
+  };
+
+  const handleSendFollowUp = async () => {
+    const response = await ScheduleFollowUp(
+      parsedUserProfile.user_id,
+      `${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`,
+      parsedUserProfile.student_email,
+      selected
+    );
+  };
 
   const handleCheck = (id, name, email) => {
     setSelected((prev) => {
@@ -60,7 +74,9 @@ export default function DraftList({ draftData, parsedUserProfile }) {
             <DialogTrigger className="p-2 border-b w-full flex items-center justify-between gap-2 hover:bg-[#F1F1EF]">
               <Checkbox
                 checked={selected.some((item) => item.id === data.id)}
-                onCheckedChange={() => handleCheck(data.id, data.name, data.email)}
+                onCheckedChange={() =>
+                  handleCheck(data.id, data.name, data.email)
+                }
                 onClick={(e) => e.stopPropagation()}
               />
               <div className="h-1.5 w-1.5 rounded-full bg-blue-400" />
@@ -86,9 +102,20 @@ export default function DraftList({ draftData, parsedUserProfile }) {
           </Dialog>
         ))}
       </div>
-      <div>
-        <Button className="rounded-xs text-[#337EA9] bg-[#E7F3F8] hover:bg-[#E7F3F8] cursor-pointer" onClick = {handleSubmit}>
+      <div className="flex gap-4">
+        <Button
+          className="rounded-xs text-[#337EA9] bg-[#E7F3F8] hover:bg-[#E7F3F8] cursor-pointer"
+          onClick={handleSubmit}
+        >
+          <Send />
           Send Selected
+        </Button>
+        <Button
+          className="rounded-xs text-[#D9730D] bg-[#FAEBDD] hover:bg-[#FAEBDD] cursor-pointer"
+          onClick={handleSendFollowUp}
+        >
+          <Calendar />
+          Schedule Follow Up
         </Button>
       </div>
     </div>
