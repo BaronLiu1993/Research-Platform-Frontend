@@ -13,9 +13,7 @@ export async function saveDraftToServer(data, userId, professorId, threadId) {
         body: JSON.stringify(data),
       }
     );
-  
-    if (!response.ok) throw new Error("Failed to save draft");
-  
+    
     return { status: "ok" };
   } catch (err) {
     console.log(err)
