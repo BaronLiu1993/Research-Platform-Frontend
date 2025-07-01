@@ -2,9 +2,9 @@
 
 import * as React from "react"
 
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Button } from "@/shadcomponents/ui/button"
+import { Calendar } from "@/shadcomponents/ui/calendar"
+import { Card, CardContent, CardFooter } from "@/shadcomponents/ui/card"
 
 export default function Calendar20() {
   const [date, setDate] = React.useState(new Date(2025, 5, 12))

@@ -16,6 +16,13 @@ import {
 import DraftEditor from "./drafteditor";
 import { Button } from "@/shadcomponents/ui/button";
 import { ScheduleFollowUp } from "@/app/actions/scheduleFollowUp";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/shadcomponents/ui/popover";
+
+import Calendar20 from "@/shadcomponents/ui/calendar-20";
 
 export default function DraftList({ draftData, parsedUserProfile }) {
   const [selected, setSelected] = useState([]);
@@ -110,13 +117,20 @@ export default function DraftList({ draftData, parsedUserProfile }) {
           <Send />
           Send Selected
         </Button>
-        <Button
-          className="rounded-xs text-[#D9730D] bg-[#FAEBDD] hover:bg-[#FAEBDD] cursor-pointer"
-          onClick={handleSendFollowUp}
-        >
-          <Calendar />
-          Schedule Follow Up
-        </Button>
+        <Popover>
+          <PopoverTrigger>
+            <Button
+              className="rounded-xs text-[#D9730D] bg-[#FAEBDD] hover:bg-[#FAEBDD] cursor-pointer"
+              onClick={handleSendFollowUp}
+            >
+              <Calendar />
+              Schedule Follow Up
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="p-0 w-[40rem]">
+            <Calendar20 />
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );
