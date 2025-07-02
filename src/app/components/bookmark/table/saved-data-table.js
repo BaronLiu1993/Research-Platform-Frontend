@@ -41,6 +41,7 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import ComposeEditor from "./snippet/composeEditor";
 import DataPreview from "./preview/dataPreview";
 import {
+  Bot,
   Clock,
   Cloud,
   Database,
@@ -57,12 +58,14 @@ import {
 } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import DraftList from "./snippet/draftList";
+import FollowUpList from "./snippet/followUpList";
 
 export function SavedDataTable({
   columns,
   data,
   userId,
   draftData,
+  parsedCompletedData,
   parsedUserProfile,
   parsedSnippetData
 }) {
@@ -242,6 +245,29 @@ export function SavedDataTable({
           </div>
 
           <DraftList draftData={draftData} parsedUserProfile = {parsedUserProfile}/>
+        </div>
+        <div>
+          <div className="py-6">
+            <div className="font-semibold flex gap-2">
+              <Bot className="text-[#787774]" />
+              Automate Follow Up
+            </div>
+            <div className="flex items-center py-2 space-x-2">
+              <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
+                <Pencil />
+                Edit
+              </Badge>
+              <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
+              <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">
+                By Jie Xuan Liu
+              </h2>
+            </div>
+            <div className="bg-[#FAEBDD] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D9730D]">
+              <Info className = "h-4 w-4"/>
+              <span className = "text-xs"> Review Follow Ups Before Queuing</span>
+            </div>
+          </div>
+          <FollowUpList parsedCompletedData = {parsedCompletedData} draftData = {draftData} parsedUserProfile = {parsedUserProfile}/>
         </div>
       </div>
     </div>

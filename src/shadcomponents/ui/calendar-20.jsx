@@ -1,37 +1,44 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { Button } from "@/shadcomponents/ui/button"
-import { Calendar } from "@/shadcomponents/ui/calendar"
-import { Card, CardContent, CardFooter } from "@/shadcomponents/ui/card"
+import { Button } from "@/shadcomponents/ui/button";
+import { Calendar } from "@/shadcomponents/ui/calendar";
+import { Card, CardContent, CardFooter } from "@/shadcomponents/ui/card";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogTitle,
+} from "@radix-ui/react-dialog";
+
+import FollowUpEditor from "@/app/components/bookmark/table/snippet/followUpEditor";
 
 export default function Calendar20() {
-  const [date, setDate] = React.useState(new Date(2025, 5, 12))
-  const [selectedTime, setSelectedTime] = React.useState("10:00")
+  const [date, setDate] = React.useState(new Date(2025, 5, 12));
+  const [selectedTime, setSelectedTime] = React.useState("10:00");
   const timeSlots = Array.from({ length: 37 }, (_, i) => {
-    const totalMinutes = i * 15
-    const hour = Math.floor(totalMinutes / 60) + 9
-    const minute = totalMinutes % 60
-    return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
-  })
-
-  const bookedDates = Array.from({ length: 3 }, (_, i) => new Date(2025, 5, 17 + i))
+    const totalMinutes = i * 15;
+    const hour = Math.floor(totalMinutes / 60) + 9;
+    const minute = totalMinutes % 60;
+    return `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
+  });
+  console.log(date);
 
   return (
-    <Card className="gap-0 p-0">
-      <CardContent className="relative p-0 md:pr-48">
-        <div className="p-6">
+    <Card className="gap-0 p-0 font-main rounded-none shadow-none border-0">
+      <CardContent className="relative p-0 md:pr-48 rounded-2xl">
+        <div className="p-4">
           <Calendar
             mode="single"
             selected={date}
             onSelect={setDate}
             defaultMonth={date}
-            disabled={bookedDates}
             showOutsideDays={false}
-            modifiers={{
-              booked: bookedDates,
-            }}
             modifiersClassNames={{
               booked: "[&>button]:line-through opacity-100",
             }}
@@ -40,17 +47,18 @@ export default function Calendar20() {
               formatWeekdayName: (date) => {
                 return date.toLocaleString("en-US", { weekday: "short" });
               },
-            }} />
+            }}
+          />
         </div>
-        <div
-          className="no-scrollbar inset-y-0 right-0 flex max-h-72 w-full scroll-pb-6 flex-col gap-4 overflow-y-auto border-t p-6 md:absolute md:max-h-none md:w-48 md:border-t-0 md:border-l">
+        <div className="no-scrollbar inset-y-0 right-0 flex max-h-72 w-full scroll-pb-6 flex-col gap-4 overflow-y-auto border-t p-6 md:absolute md:max-h-none md:w-48 md:border-t-0 md:border-l">
           <div className="grid gap-2">
             {timeSlots.map((time) => (
               <Button
                 key={time}
                 variant={selectedTime === time ? "default" : "outline"}
                 onClick={() => setSelectedTime(time)}
-                className="w-full shadow-none">
+                className="w-full shadow-none rounded-xs cursor-pointer"
+              >
                 {time}
               </Button>
             ))}
@@ -61,7 +69,7 @@ export default function Calendar20() {
         <div className="text-sm">
           {date && selectedTime ? (
             <>
-              Your meeting is booked for{" "}
+              Follow Up is Scheduled For{" "}
               <span className="font-medium">
                 {" "}
                 {date?.toLocaleDateString("en-US", {
@@ -73,14 +81,15 @@ export default function Calendar20() {
               at <span className="font-medium">{selectedTime}</span>.
             </>
           ) : (
-            <>Select a date and time for your meeting.</>
+            <>Select Date and Time for Automated Follow Up Email.</>
           )}
         </div>
         <Button
           disabled={!date || !selectedTime}
-          className="w-full md:ml-auto md:w-auto"
-          variant="outline">
-          Continue
+          className="w-full md:ml-auto md:w-auto rounded-xs text-[#448361] bg-[#EDF3EC] border-0 hover:text-[#448361] cursor-pointer"
+          variant="outline"
+        >
+          Submit
         </Button>
       </CardFooter>
     </Card>

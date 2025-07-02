@@ -25,10 +25,11 @@ export default async function Bookmark() {
   const user_id = raw_user_id.value;
   const access = cookieStore.get("access_token");
   //Fetch all in Parallel
-  const [rawSavedData, rawInProgressData, rawSnippetData, rawUserProfile] =
+  const [rawSavedData, rawInProgressData, rawCompletedData, rawSnippetData, rawUserProfile] =
     await Promise.all([
       fetch(`http://localhost:8080/kanban/get-saved/${user_id}`),
       fetch(`http://localhost:8080/kanban/get-in-progress/${user_id}`),
+      fetch(`http://localhost:8080/kanban/get-completed/${user_id}`),
       fetch(`http://localhost:8080/get-all-snippets/${user_id}`),
       fetch("http://localhost:8080/auth/get-user-sidebar-info", {
         method: "GET",
@@ -39,9 +40,10 @@ export default async function Bookmark() {
       }),
     ]);
   
-  const [savedDataJson, inProgressJson, snippetJson, userProfileJson] = await Promise.all([
+  const [savedDataJson, inProgressJson, completedData, snippetJson, userProfileJson] = await Promise.all([
     rawSavedData.json(),
     rawInProgressData.json(),
+    rawCompletedData.json(),
     rawSnippetData.json(),
     rawUserProfile.json()
   ])
@@ -49,8 +51,9 @@ export default async function Bookmark() {
   //Extract
   const parsedInProgressData = inProgressJson.data;
   const parsedSavedData = savedDataJson.data;
-  const parsedSnippetJson = snippetJson.message
-  const parsedUserProfile = userProfileJson
+  const parsedCompletedData = completedData.data;
+  const parsedSnippetJson = snippetJson.message;
+  const parsedUserProfile = userProfileJson;
 
 
   const draftData = await Promise.all(
@@ -112,6 +115,7 @@ export default async function Bookmark() {
             <Kanban
               userId={user_id}
               parsedInProgressData={parsedInProgressData}
+              parsedCompletedData={parsedCompletedData}
               draftData={draftData}
               parsedUserProfile={parsedUserProfile}
               parsedSavedData={parsedSavedData}
