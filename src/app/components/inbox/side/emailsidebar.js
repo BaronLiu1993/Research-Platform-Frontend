@@ -20,7 +20,7 @@ export default function EmailSidebar({
   useEffect(() => {
     const fetchResponseThread = async () => {
       const mailData = await fetch(
-        `http://localhost:8080/gmail/get-full-email-chain/${userId}/${threadId}`,
+        `http://localhost:8080/inbox/get-full-email-chain/${userId}/${threadId}`,
         {
           method: "GET",
           headers: {
@@ -50,13 +50,14 @@ export default function EmailSidebar({
                   <div className="space-x-2 flex flex-col gap-2">
                     <span className="text-md flex flex-col font-semibold text-black">
                       {email === message.to.address ? (
-                        <span className = "flex flex-col">
-                          {" "}
-                          <Badge className = "rounded-xs">Student</Badge> {message.subject} 
+                        <span className="flex flex-col">
+                          <span className="rounded-xs">From Professor</span>
+                          <span className = "font-light"> {message.subject || "No Subject"} </span>
                         </span>
                       ) : (
                         <span>
-                          {message.subject} <Badge className = "rounded-xs">Professor</Badge>
+                          <span className="rounded-xs">From Student</span>
+                          <span className = "font-light"> {message.subject || "No Subject"} </span>
                         </span>
                       )}{" "}
                     </span>

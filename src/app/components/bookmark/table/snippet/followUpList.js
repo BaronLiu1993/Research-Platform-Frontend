@@ -15,7 +15,6 @@ import {
 } from "@/shadcomponents/ui/composedialog";
 
 import { Button } from "@/shadcomponents/ui/button";
-import { ScheduleFollowUp } from "@/app/actions/scheduleFollowUp";
 import FollowUpEditor from "./followUpEditor";
 
 export default function FollowUpList({

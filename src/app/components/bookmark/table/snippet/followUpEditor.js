@@ -48,7 +48,6 @@ import { GenerateSnippet } from "@/app/actions/generateSnippet";
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 import AIcontext from "../tiptap/AIcontext";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { ScheduleFollowUp } from "@/app/actions/scheduleFollowUp";
 import Calendar20 from "@/shadcomponents/ui/calendar-20";
 
 export default function FollowUpEditor({ userId, userName, userEmail }) {

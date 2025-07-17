@@ -7,7 +7,7 @@ export const ExecuteMassSend = async (
   professorData
 ) => {
   try {
-    const response = await fetch("http://localhost:8080/gmail/mass-send", {
+    const response = await fetch("http://localhost:8080/send/mass-send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15,11 +15,12 @@ export const ExecuteMassSend = async (
       body: JSON.stringify({
         userId,
         userName,
-        userEmail: "luobagel@gmail.com",
+        userEmail: "jiexuan.liu@mail.utoronto.ca",
         professorData,
       }),
     });
     const data = await response.json();
+    console.log(data)
     return data;
   } catch {
     return "Error";

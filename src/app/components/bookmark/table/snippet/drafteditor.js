@@ -282,7 +282,7 @@ export default function DraftEditor({
       <div className="font-main p-4 flex items-center">
         <button
           className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1 "
-          onClick={handleUpdateDraft}
+          onClick={() => handleUpdateDraft()}
         >
           Save Draft
         </button>

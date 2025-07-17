@@ -1,7 +1,7 @@
-export const CreateFollowUp = async (data, userId, professorId, threadId) => {
+export const CreateReply = async (data, userId, professorId, threadId) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/gmail/create-follow-up-draft/${userId}/${professorId}/${threadId}`,
+      `http://localhost:8080/draft/create-follow-up-draft/${userId}/${professorId}/${threadId}`,
       {
         method: "POST",
         headers: {

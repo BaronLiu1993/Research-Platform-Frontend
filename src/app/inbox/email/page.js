@@ -33,7 +33,7 @@ export default async function InboxEmail() {
   const userId = cookieStore.get("user_id");
   const access = cookieStore.get("access_token");
   const emailResponse = await fetch(
-    `http://localhost:8080/gmail/get-email-chain/${userId.value}`,
+    `http://localhost:8080/inbox/get-email-chain/${userId.value}`,
     {
       method: "GET",
     }
@@ -42,10 +42,10 @@ export default async function InboxEmail() {
   const threadArrayEmailResponse = parsedEmailResponse.threadArray;
   const combinedArray = await Promise.all(
     threadArrayEmailResponse.map(async (obj) => {
-      const enagagementStatus = await fetch(`http://localhost:8080/gmail/get-engagement/${obj.threadId}/${obj.messageId}`)
-      const status = await fetch(`http://localhost:8080/gmail/get-status/${userId.value}/${obj.professorId}`)
-      const draft = await fetch(`http://localhost:8080/gmail/resume-follow-up-draft/${userId.value}/${obj.professorId}`)
-      const seenStatus = await fetch(`http://localhost:8080/gmail/get-seen/${obj.threadId}/${obj.messageId}`)
+      const enagagementStatus = await fetch(`http://localhost:8080/inbox/get-engagement/${obj.threadId}/${obj.messageId}`)
+      const status = await fetch(`http://localhost:8080/inbox/get-status/${userId.value}/${obj.professorId}`)
+      const draft = await fetch(`http://localhost:8080/draft/resume-follow-up-draft/${userId.value}/${obj.professorId}`)
+      const seenStatus = await fetch(`http://localhost:8080/inbox/get-seen/${obj.threadId}/${obj.messageId}`)
       const draftData = await draft.json()
       const statusData = await status.json()
       const engagementData = await enagagementStatus.json()

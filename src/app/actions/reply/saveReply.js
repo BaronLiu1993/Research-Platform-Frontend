@@ -1,10 +1,9 @@
 "use server";
 
-export async function saveDraftToServer(data, userId, professorId, threadId) {
-  console.log(data);
+export async function SaveReply(data, userId, professorId, threadId) {
   try {
     const response = await fetch(
-      `http://localhost:8080/gmail/update-follow-up-draft/${userId}/${professorId}/${threadId}`,
+      `http://localhost:8080/draft/update-follow-up-draft/${userId}/${professorId}/${threadId}`,
       {
         method: "PUT",
         headers: {

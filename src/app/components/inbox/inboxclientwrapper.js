@@ -64,7 +64,6 @@ export default function InboxClientWrapper({
   emails,
 }) {
   const [openThreadId, setOpenThreadId] = useState("");
-  console.log(threadArrayEmailResponse);
   return (
     <>
       <div className="font-main py-6">

@@ -1,12 +1,12 @@
 "use server";
 
-export const executeSendFollowUp = async (userId, draftId, trackingId) => {
+export const SendReply = async (userId, draftId, trackingId) => {
   try {
     if (!userId || !draftId || !trackingId) {
       return;
     }
     const response = await fetch(
-      `http://localhost:8080/gmail/send-follow-up/${userId}/${draftId}/${trackingId}`,
+      `http://localhost:8080/draft/send-follow-up/${userId}/${draftId}/${trackingId}`,
       {
         method: "POST",
         headers: {
@@ -17,7 +17,11 @@ export const executeSendFollowUp = async (userId, draftId, trackingId) => {
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error("[SEND] Failed to send draft. Response:", response.status, errText);
+      console.error(
+        "[SEND] Failed to send draft. Response:",
+        response.status,
+        errText
+      );
     } else {
       console.log("[SEND] Follow-up sent successfully.");
     }

@@ -15,7 +15,6 @@ import {
 
 import DraftEditor from "./drafteditor";
 import { Button } from "@/shadcomponents/ui/button";
-import { ScheduleFollowUp } from "@/app/actions/scheduleFollowUp";
 import ComposeEditor from "./composeEditor";
 
 
@@ -107,6 +106,7 @@ export default function DraftList({ draftData, parsedUserProfile }) {
       <div className="flex gap-4">
         <Button
           className="rounded-xs text-[#337EA9] bg-[#E7F3F8] hover:bg-[#E7F3F8] cursor-pointer"
+          onClick = {() => handleSubmit()}
         >
           <Send />
           Send Selected
