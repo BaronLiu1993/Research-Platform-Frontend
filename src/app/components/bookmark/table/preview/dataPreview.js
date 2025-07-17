@@ -21,7 +21,7 @@ import {
   DialogTrigger,
 } from "@/shadcomponents/ui/publicationDialog";
 import { Button } from "@/shadcomponents/ui/button";
-import { createMassDrafts } from "@/app/actions/createMassDrafts";
+import { createMassDrafts } from "@/app/actions/queue/createMassDrafts";
 
 // Dynamically import the component
 const Publications = lazy(() => import("./publications"));

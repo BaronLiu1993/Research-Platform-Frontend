@@ -1,7 +1,7 @@
 "use client";
 
-import { removeFromSaved } from "../api/removeFromSaved";
-import { Save } from "../api/save";
+import { RemoveFromSaved } from "../api/delete/removeFromSaved";
+import { Save } from "../api/post/save";
 
 import { Button } from "@/shadcomponents/ui/button";
 import { useSavedStore } from "@/app/store/useSavedStore";
@@ -34,7 +34,7 @@ export default function SaveButton({
     try {
       if (isSaved) {
         removeSaved(professor_id);
-        const result = await removeFromSaved(professor_id, user_id);
+        const result = await RemoveFromSaved(professor_id, user_id);
         toast.success("Professor removed from saved.");
       } else {
         addSaved(professor_id);

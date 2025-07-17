@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateFollowUp } from "@/app/actions/createFollowUp";
+import { CreateReply } from "@/app/actions/reply/createReply";
 import { Button } from "@/shadcomponents/ui/button";
 
 export default function ComposeFollowUp({
@@ -21,7 +21,7 @@ export default function ComposeFollowUp({
 
   const handleCreateFollowUp = async () => {
     console.log(threadId)
-    await CreateFollowUp(data, userId, professorId, threadId)
+    await CreateReply(data, userId, professorId, threadId)
   };
 
   return (

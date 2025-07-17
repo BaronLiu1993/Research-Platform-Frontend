@@ -4,8 +4,7 @@ import { useState } from "react";
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
 import { Calendar, Send, Trash2 } from "lucide-react";
 
-import { ExecuteMassSend } from "@/app/actions/executeMassSend";
-
+import { ExecuteMassSend } from "@/app/actions/queue/executeMassSend";
 import {
   Dialog,
   DialogTitle,

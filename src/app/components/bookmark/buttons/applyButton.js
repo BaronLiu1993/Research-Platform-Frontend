@@ -1,8 +1,8 @@
 "use client";
 
 //API calls
-import { Apply } from "../api/apply";
-import { removeFromApply } from "../api/removeFromApply";
+import { Apply } from "../api/post/apply";
+import { RemoveFromApply } from "../api/delete/removeFromApply";
 
 //other imports
 import { useState } from "react";
@@ -109,7 +109,7 @@ export default function ApplyButton({
   const handleDeleteApplication = async () => {
     setLoading(true);
     try {
-      await removeFromApply(user_id, professor_id)
+      await RemoveFromApply(user_id, professor_id)
       removeApplied(professor_id);
       toast.info("Application removed.");
     } catch (error) {

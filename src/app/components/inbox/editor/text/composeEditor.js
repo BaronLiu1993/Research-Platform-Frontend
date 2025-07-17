@@ -1,6 +1,6 @@
 "use client";
 
-import { saveDraftToServer } from "@/app/actions/updateFollowUp";
+import { SaveReply } from "@/app/actions/reply/saveReply";
 import { useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -31,7 +31,8 @@ import {
 } from "@/shadcomponents/ui/tooltip";
 import Snippets from "../../popover/snippets";
 import { DialogClose } from "@/shadcomponents/ui/dialog";
-import { executeSendFollowUp } from "@/app/actions/executeSendFollowUp";
+
+import { SendReply } from "@/app/actions/reply/sendReply";
 import DeleteFollowUp from "../../button/compose/deleteFollowUp";
 
 export default function ComposeEditor({
@@ -47,7 +48,7 @@ export default function ComposeEditor({
   const [subject, setSubject] = useState("");
   console.log(draftData)
   const handleSendFollowUp = async () => {
-    await executeSendFollowUp(
+    await SendReply(
       userId,
       draftData.draft_id,
       draftData.tracking_id
@@ -62,7 +63,7 @@ export default function ComposeEditor({
       body: editor?.getHTML(),
       subject,
     };
-    await saveDraftToServer(data, userId, professorId, threadId);
+    await SaveReply(data, userId, professorId, threadId);
   };
 
   const editor = useEditor({
@@ -72,7 +73,7 @@ export default function ComposeEditor({
         class: "max-w-[35.9rem] w-full h-full min-h-[300px] p-1 text-[13px]",
       },
     },
-    content: draftData.body,
+    content: draftData.body || "",
   });
 
   return (

@@ -2,17 +2,13 @@
 
 import "tippy.js/dist/tippy.css";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 
-import Mention from "@tiptap/extension-mention";
-import suggestion from "../tiptap/suggestion";
 import StarterKit from "@tiptap/starter-kit";
 import {
   ALargeSmall,
   Bold,
-  BookText,
-  CurlyBraces,
   IndentDecrease,
   IndentIncrease,
   Italic,
@@ -39,9 +35,8 @@ import {
 
 import AIcontext from "../tiptap/AIcontext";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { saveDraft } from "../../api/saveDraft";
-import { AIEditDraft } from "../../api/AIEditDraft";
-
+import { saveDraft } from "../../api/drafts/saveDraft";
+import { AIEditDraft } from "../../api/drafts/AIEditDraft";
 import {
   Select,
   SelectContent,

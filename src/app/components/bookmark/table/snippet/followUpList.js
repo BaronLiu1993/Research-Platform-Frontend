@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
 import { Send, Trash2 } from "lucide-react";
 
-import { ExecuteMassSend } from "@/app/actions/executeMassSend";
-
 import {
   Dialog,
   DialogTitle,

@@ -22,11 +22,7 @@ import {
   Wand2,
   X,
 } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shadcomponents/ui/popover";
+
 import {
   Tooltip,
   TooltipContent,

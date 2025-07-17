@@ -1,9 +1,9 @@
-import { DeleteFollowUpDraft } from "@/app/actions/deleteFollowUpDraft";
+import { DeleteReply } from "@/app/actions/reply/deleteReply";
 import { Trash2 } from "lucide-react";
 
 export default function DeleteFollowUp({ userId, draftId }) {
   const handleDeleteFollowUp = async () => {
-    const response = await DeleteFollowUpDraft(userId, draftId)
+    const response = await DeleteReply(userId, draftId)
   };
 
   return (
