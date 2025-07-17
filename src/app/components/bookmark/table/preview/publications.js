@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchPublications } from "./fetchPublications";
+import { fetchPublications } from "@/app/actions/publications/fetchPublications";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Calendar, Link2, Newspaper, Plus, PlusCircle } from "lucide-react";
 

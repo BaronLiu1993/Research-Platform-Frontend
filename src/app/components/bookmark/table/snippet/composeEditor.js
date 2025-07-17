@@ -133,7 +133,6 @@ export default function ComposeEditor({
     const response = await GenerateSnippet(userId, body, subject);
     setSnippetId(response.snippetId);
   };
-  console.log(snippetId);
 
   return (
     <div>
