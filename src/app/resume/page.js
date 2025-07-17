@@ -1,7 +1,3 @@
-"use client";
-
-import { useParams, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import Builder from "@/app/components/resume/builder";
 
 import {
@@ -16,10 +12,8 @@ import {
 import {
   SidebarProvider,
   SidebarInset,
-  SidebarTrigger,
 } from "@/shadcomponents/ui/sidebar";
 
-import { Separator } from "@/shadcomponents/ui/separator";
 import {
   Laptop,
   MapIcon,
@@ -31,25 +25,6 @@ import {
 } from "lucide-react";
 
 export default function resume() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const research_interests = searchParams.getAll("research_interests");
-  const professor_name = searchParams.get("professor_name");
-  const professor_email = searchParams.get("professor_email");
-  const professor_id = searchParams.get("professor_id");
-
-  const handleSendDataToEmail = (url) => {
-    router.push(
-      `/email?url=${encodeURIComponent(
-        url
-      )}&professor_interests=${encodeURIComponent(
-        research_interests
-      )}&name=${encodeURIComponent(professor_name)}&email=${encodeURIComponent(
-        professor_email
-      )}&id=${encodeURIComponent(professor_id)}`
-    );
-  };
-
   return (
     <>
       <SidebarProvider>
@@ -108,8 +83,6 @@ export default function resume() {
           <div className=" space-x-2 select-none">
             <Builder researchInterests={research_interests} />
           </div>
-          <button onClick={handleSendDataToEmail}>Email Page</button>
-          {/*<button onClick={handleSendDataToEmail}>Email Page</button>*/}
         </SidebarInset>
       </SidebarProvider>
     </>

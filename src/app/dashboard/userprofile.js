@@ -45,7 +45,6 @@ export default function UserProfile({ studentData }) {
             />
           </div>
 
-          {/* Major */}
           <div className="mb-3 space-y-2">
             <Badge className="bg-blue-100 hover:bg-blue-200 text-blue-800 flex items-center gap-2 border border-blue-200">
               <UserCircle className="h-4 w-4" />

@@ -121,7 +121,6 @@ const languages = [
   { label: "한국어", value: "ko" },
   { label: "English", value: "en" },
 ];
-
 export function AppSidebar({ student_data, ...props }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");

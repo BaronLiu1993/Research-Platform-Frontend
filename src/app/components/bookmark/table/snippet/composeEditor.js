@@ -50,6 +50,7 @@ import { useAISnippetStore } from "@/app/store/useAISnippetStore";
 import { usePointStore } from "@/app/store/usePointStore";
 import AIcontext from "../tiptap/AIcontext";
 import { Badge } from "@/shadcomponents/ui/badge";
+import VariablePopover from "../popover/Variablepopover";
 
 export default function ComposeEditor({
   userId,
@@ -245,14 +246,23 @@ export default function ComposeEditor({
           Generate Snippet
         </button>
         <div className="flex gap-2">
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <BookText className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Attachments
-            </TooltipContent>
-          </Tooltip>
+          <Popover modal={true}>
+            <PopoverTrigger>
+              <Tooltip>
+                <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
+                  <BookText className="h-4 w-4" />
+                </TooltipTrigger>
+                <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
+                  Create Variables
+                </TooltipContent>
+              </Tooltip>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div>
+                <VariablePopover />
+              </div>
+            </PopoverContent>
+          </Popover>
           <Tooltip>
             <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
               <Paperclip className="h-4 w-4" />
@@ -261,7 +271,7 @@ export default function ComposeEditor({
               Attachments
             </TooltipContent>
           </Tooltip>
-          <Popover modal={true} className="rounded-xs">
+          <Popover modal={true}>
             <PopoverTrigger>
               <Tooltip>
                 <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
@@ -272,7 +282,7 @@ export default function ComposeEditor({
                 </TooltipContent>
               </Tooltip>
             </PopoverTrigger>
-            <PopoverContent className="w-[30rem] rounded-xs">
+            <PopoverContent className="w-[30rem]">
               <AIPopover
                 userId={userId}
                 onSnippetGenerated={(snippet) => {
