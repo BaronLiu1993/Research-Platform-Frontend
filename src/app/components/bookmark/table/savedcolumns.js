@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/shadcomponents/ui/dropdown-menu";
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
-import { ArrowUpDown } from "lucide-react";
 
 export const SavedColumns = [
   {

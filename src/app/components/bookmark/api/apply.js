@@ -27,7 +27,7 @@ export async function Apply(
   };
   try {
     const response = await fetch(
-      `http://localhost:8080/kanban/add-in-progress/${user_id}/${professor_id}`,
+      `http://localhost:8080/inprogress/kanban/add-in-progress/${user_id}/${professor_id}`,
       {
         method: "POST",
         headers: {

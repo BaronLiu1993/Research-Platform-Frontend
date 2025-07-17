@@ -46,7 +46,7 @@ export default async function Repository({ searchParams }) {
 
   //Parallel Fetching
   const [tableRes, profileRes] = await Promise.all([
-    fetch(`http://localhost:8080/taishan?page=${pageNumber}&search=${search}`),
+    fetch(`http://localhost:8080/repository/taishan?page=${pageNumber}&search=${search}`),
     fetch("http://localhost:8080/auth/get-user-sidebar-info", {
       headers: {
         Authorization: `Bearer ${access}`,
@@ -54,7 +54,6 @@ export default async function Repository({ searchParams }) {
       },
     }),
   ]);
-  console.log(tableRes)
   if (!tableRes.ok) {
     return { error: "Table fetch failed" }; 
   }

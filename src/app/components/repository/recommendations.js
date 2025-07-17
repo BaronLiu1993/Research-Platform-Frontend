@@ -19,7 +19,7 @@ export default async function Recommendations() {
   const cookieStore = await cookies();
   const userIdObj = cookieStore.get("user_id");
   const userId = userIdObj.value
-  const data = await fetch(`http://localhost:8080/match-professors?userId=${userId}`, {
+  const data = await fetch(`http://localhost:8080/repository/match-professors?userId=${userId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

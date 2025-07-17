@@ -6,7 +6,7 @@ export const SyncSnippetData = async (
   variableArray
 ) => {
   const response = await fetch(
-    `http://localhost:8080/sync-fetchable-variables/${userId}`,
+    `http://localhost:8080/snippets/sync-fetchable-variables/${userId}`,
     {
       method: "POST",
       headers: {

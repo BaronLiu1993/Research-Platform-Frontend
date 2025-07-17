@@ -1,8 +1,6 @@
 export const saveDraft = async (data, student_id, professor_id) => {
-  console.log(data.body)
-  console.log(data.subject)
   try {
-    const response = await fetch(`http://localhost:8080/gmail/update-draft/${student_id}/${professor_id}`, {
+    const response = await fetch(`http://localhost:8080/draft/update-draft/${student_id}/${professor_id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

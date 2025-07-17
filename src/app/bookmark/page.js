@@ -27,10 +27,10 @@ export default async function Bookmark() {
   //Fetch all in Parallel
   const [rawSavedData, rawInProgressData, rawCompletedData, rawSnippetData, rawUserProfile] =
     await Promise.all([
-      fetch(`http://localhost:8080/kanban/get-saved/${user_id}`),
-      fetch(`http://localhost:8080/kanban/get-in-progress/${user_id}`),
-      fetch(`http://localhost:8080/kanban/get-completed/${user_id}`),
-      fetch(`http://localhost:8080/get-all-snippets/${user_id}`),
+      fetch(`http://localhost:8080/saved/kanban/get-saved/${user_id}`),
+      fetch(`http://localhost:8080/inprogress/kanban/get-in-progress/${user_id}`),
+      fetch(`http://localhost:8080/completed/kanban/get-completed/${user_id}`),
+      fetch(`http://localhost:8080/snippets/get-all/${user_id}`),
       fetch("http://localhost:8080/auth/get-user-sidebar-info", {
         method: "GET",
         headers: {
@@ -48,7 +48,8 @@ export default async function Bookmark() {
     rawUserProfile.json()
   ])
 
-  //Extract
+  
+
   const parsedInProgressData = inProgressJson.data;
   const parsedSavedData = savedDataJson.data;
   const parsedCompletedData = completedData.data;
@@ -59,7 +60,7 @@ export default async function Bookmark() {
   const draftData = await Promise.all(
     parsedInProgressData.map(async (prof) => {
       const rawDraftResults = await fetch(
-        `http://localhost:8080/gmail/resume-draft/${user_id}/${prof.professor_id}`
+        `http://localhost:8080/draft/resume-draft/${user_id}/${prof.professor_id}`
       );
       const parsedDraftResults = await rawDraftResults.json();
       return {

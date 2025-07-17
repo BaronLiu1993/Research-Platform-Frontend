@@ -66,7 +66,6 @@ export default function ComposeEditor({
   );
   const setAISnippet = useAISnippetStore((s) => s.setAISnippets);
   const resumePoints = usePointStore((state) => state.loadedResumePoints);
-  console.log(resumePoints);
 
   useEffect(() => {
     setSelectedVariables([]);
@@ -78,8 +77,6 @@ export default function ComposeEditor({
   const [AIOpenDialog, setAIOpenDialog] = useState(false);
 
   const handleSnippetSelection = (subject, body) => {
-    console.log(subject);
-    console.log(body);
     setSubject(subject);
     editor?.commands.setContent(body);
   };

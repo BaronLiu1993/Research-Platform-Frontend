@@ -28,7 +28,7 @@ export async function Save(
   };
   try {
     const response = await fetch(
-      `http://localhost:8080/kanban/add-saved/${user_id}/${professor_id}`,
+      `http://localhost:8080/saved/kanban/add-saved/${user_id}/${professor_id}`,
       {
         method: "POST",
         headers: {

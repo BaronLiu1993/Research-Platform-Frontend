@@ -3,7 +3,7 @@
 export async function removeFromSaved(professor_id, user_id) {
   try {
     const response = await fetch(
-      `http://localhost:8080/kanban/remove-saved/${user_id}/${professor_id}`,
+      `http://localhost:8080/saved/kanban/remove-saved/${user_id}/${professor_id}`,
       {
         method: "DELETE",
         headers: {
