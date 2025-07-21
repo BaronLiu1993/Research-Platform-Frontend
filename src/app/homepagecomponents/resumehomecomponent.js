@@ -1,6 +1,3 @@
-import Image from "next/image";
-import Resume from '../../../public/resume.png'
-
 export default function resumehomecomponent () {
     return (
         <>
@@ -44,7 +41,6 @@ export default function resumehomecomponent () {
         
                         <div className = "h-[20rem] border-1 rounded-md flex flex-col">
                             <div className = "bg-slate-100 flex flex-col items-center rounded-md h-[2rem] w-[20rem] m-2">
-                                <Image src={Resume} alt="Placeholder"/>
                                 
                             </div>
                         </div>

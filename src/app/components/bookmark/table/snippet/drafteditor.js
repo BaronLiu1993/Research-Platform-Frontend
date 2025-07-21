@@ -33,7 +33,6 @@ import {
   DialogClose,
 } from "@/shadcomponents/ui/dialog";
 
-import AIcontext from "../tiptap/AIcontext";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { saveDraft } from "../../api/drafts/saveDraft";
 import { AIEditDraft } from "../../api/drafts/AIEditDraft";

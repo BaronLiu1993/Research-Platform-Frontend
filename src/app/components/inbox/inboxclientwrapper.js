@@ -91,7 +91,7 @@ export default function InboxClientWrapper({
 
                 <div className="flex items-start flex-col">
                   <span className="flex gap-2">
-                    No Replies
+                    No Responses
                     <Badge className="bg-[#FAF1F5] text-[#C14C8A] rounded-md">
                       3
                     </Badge>
@@ -107,62 +107,12 @@ export default function InboxClientWrapper({
 
                 <div className="flex items-start flex-col">
                   <span className="flex gap-2">
-                    Replied
+                    Responses
                     <Badge className="bg-[#E7F3F8] text-[#337EA9] rounded-md">
                       3
                     </Badge>
                   </span>
-                  <span className="text-xs font-light">
-                    Someone's Interested
-                  </span>
-                </div>
-              </TabsTrigger>
-              <TabsTrigger
-                className="text-sm font-medium py-6 gap-2 pr-10 flex"
-                value="interviews"
-              >
-                <Scan className="h-10 w-10" />
-
-                <div className="flex items-start flex-col">
-                  <span className="flex gap-2">
-                    Interviews
-                    <Badge className="bg-[#F6F3F9] text-[#9065B0] rounded-md">
-                      3
-                    </Badge>
-                  </span>
-                  <span className="text-xs font-light">Good Luck!</span>
-                </div>
-              </TabsTrigger>
-              <TabsTrigger
-                className="text-sm font-medium py-6 gap-2 pr-10 flex"
-                value="offers"
-              >
-                <Newspaper className="h-10 w-10" />
-
-                <div className="flex items-start flex-col">
-                  <span className="flex gap-2">
-                    Offers
-                    <Badge className="bg-[#EDF3EC] text-[#448361] rounded-md">
-                      3
-                    </Badge>
-                  </span>
-                  <span className="text-xs font-light">Congratulations!</span>
-                </div>
-              </TabsTrigger>
-              <TabsTrigger
-                className="text-sm font-medium py-6 gap-2 pr-10 flex"
-                value="lost"
-              >
-                <MessageSquareX className="h-10 w-10" />
-
-                <div className="flex items-start flex-col">
-                  <span className="flex gap-2">
-                    Lost
-                    <Badge className="bg-[#FDEBEC] text-[#D44C47] rounded-md">
-                      3
-                    </Badge>
-                  </span>
-                  <span className="text-xs font-light">Don't Give Up!</span>
+                  <span className="text-xs font-light">New Replies</span>
                 </div>
               </TabsTrigger>
             </TabsList>

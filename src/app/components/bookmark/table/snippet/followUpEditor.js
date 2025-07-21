@@ -38,11 +38,7 @@ import {
   DialogClose,
 } from "@/shadcomponents/ui/dialog";
 
-import Snippets from "../popover/snippets";
-import AIPopover from "../popover/AIpopover";
-import { GenerateSnippet } from "@/app/actions/generateSnippet";
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
-import AIcontext from "../tiptap/AIcontext";
 import { Badge } from "@/shadcomponents/ui/badge";
 import Calendar20 from "@/shadcomponents/ui/calendar-20";
 
@@ -226,15 +222,6 @@ export default function FollowUpEditor({ userId, userName, userEmail }) {
                 </TooltipTrigger>
                 <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
                   Attachments
-                </TooltipContent>
-              </Tooltip>
-
-              <Tooltip>
-                <TooltipTrigger className="hover:bg-red-100 p-1 rounded-xs cursor-pointer">
-                  <Trash2 />
-                </TooltipTrigger>
-                <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-                  Delete
                 </TooltipContent>
               </Tooltip>
             </div>

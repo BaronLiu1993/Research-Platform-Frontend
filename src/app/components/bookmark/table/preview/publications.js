@@ -8,12 +8,13 @@ export default function Publications({ professorId, onSelectTitle }) {
   useEffect(() => {
     const handleFetchPublications = async () => {
       const response = (await fetchPublications(professorId)) || [];
-      const data = response?.publicationsData || response || [];
+      console.log(response)
+      const data = response?.message || [];
       setPublications(data);
     };
     handleFetchPublications();
   }, [professorId]);
-  console.log(publications);
+  console.log(publications)
   return (
     <>
       <div className="font-main">

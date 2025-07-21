@@ -14,7 +14,6 @@ import {
 
 import DraftEditor from "./drafteditor";
 import { Button } from "@/shadcomponents/ui/button";
-import ComposeEditor from "./composeEditor";
 
 
 export default function DraftList({ draftData, parsedUserProfile }) {

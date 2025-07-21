@@ -1,9 +1,9 @@
 "use server"
 
-export async function fetchPublications(professorId) {
+export async function fetchPublications(authorId) {
     try {
       
-      const publicationData = await fetch(`http://localhost:8080/get-publications/${professorId}`, {
+      const publicationData = await fetch(`http://localhost:8080/publication/author/1741101`, {
         method: "GET",
       });
       const parsedPublicationData = await publicationData.json();
@@ -11,7 +11,7 @@ export async function fetchPublications(professorId) {
       return parsedPublicationData;
     } catch (err) {
       console.error("Failed to fetch publications", err);
-      return [];
+      return;
     }
   }
   

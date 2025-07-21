@@ -42,15 +42,13 @@ import {
   DialogClose,
 } from "@/shadcomponents/ui/dialog";
 
-import Snippets from "../popover/snippets";
-import AIPopover from "../popover/AIpopover";
-import { GenerateSnippet } from "@/app/actions/generateSnippet";
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 import { useAISnippetStore } from "@/app/store/useAISnippetStore";
 import { usePointStore } from "@/app/store/usePointStore";
-import AIcontext from "../tiptap/AIcontext";
 import { Badge } from "@/shadcomponents/ui/badge";
-import VariablePopover from "../popover/Variablepopover";
+import AIcontext from "../tiptap/AIcontext";
+import AIPopover from "../popover/AIpopover";
+import { GenerateSnippet } from "@/app/actions/generateSnippet";
 
 export default function ComposeEditor({
   userId,
@@ -76,12 +74,6 @@ export default function ComposeEditor({
   const [open, setOpen] = useState(false);
   const [AIOpenDialog, setAIOpenDialog] = useState(false);
 
-  const handleSnippetSelection = (subject, body) => {
-    setSubject(subject);
-    editor?.commands.setContent(body);
-  };
-
-  console.log(AIOpenDialog);
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -242,23 +234,6 @@ export default function ComposeEditor({
           Generate Snippet
         </button>
         <div className="flex gap-2">
-          <Popover modal={true}>
-            <PopoverTrigger>
-              <Tooltip>
-                <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-                  <BookText className="h-4 w-4" />
-                </TooltipTrigger>
-                <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-                  Create Variables
-                </TooltipContent>
-              </Tooltip>
-            </PopoverTrigger>
-            <PopoverContent>
-              <div>
-                <VariablePopover />
-              </div>
-            </PopoverContent>
-          </Popover>
           <Tooltip>
             <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
               <Paperclip className="h-4 w-4" />
@@ -288,35 +263,6 @@ export default function ComposeEditor({
               />
             </PopoverContent>
           </Popover>
-          <Popover open={open} onOpenChange={setOpen} modal={true}>
-            <PopoverTrigger>
-              <Tooltip>
-                <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-                  <CurlyBraces className="h-4 w-4" />
-                </TooltipTrigger>
-                <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-                  Snippets
-                </TooltipContent>
-              </Tooltip>
-            </PopoverTrigger>
-            <PopoverContent>
-              <Snippets
-                parsedSnippetData={parsedSnippetData}
-                onSnippetSelection={(subject, body) => {
-                  if (body) editor?.commands.setContent(body);
-                  if (subject) setSubject(subject);
-                }}
-              />
-            </PopoverContent>
-          </Popover>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-red-100 p-1 rounded-xs cursor-pointer">
-              <Trash2 />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Delete
-            </TooltipContent>
-          </Tooltip>
         </div>
       </div>
     </div>
