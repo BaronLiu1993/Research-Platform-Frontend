@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useState } from "react";
 
 import {
   Accordion,
@@ -7,11 +7,6 @@ import {
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
 import { Badge } from "@/shadcomponents/ui/badge";
-
-import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
-
-import { SyncSnippetData } from "@/app/actions/syncSnippetData";
-import { useState } from "react";
 import { Input } from "@/shadcomponents/ui/input";
 import {
   Dialog,
@@ -21,59 +16,57 @@ import {
   DialogTrigger,
 } from "@/shadcomponents/ui/publicationDialog";
 import { Button } from "@/shadcomponents/ui/button";
+
+import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
+import { SyncSnippetData } from "@/app/actions/syncSnippetData";
 import { createMassDrafts } from "@/app/actions/queue/createMassDrafts";
 
-// Dynamically import the component
 const Publications = lazy(() => import("./publications"));
 
-//Sync Data Here
 export default function DataPreview({
   rowData,
   userId,
   parsedUserProfile,
   snippetId,
 }) {
-  console.log(rowData);
   const selectedVariables = useSelectedVariablesStore(
     (s) => s.selectedVariables
   );
-  const [synced, setSynced] = useState(false);
-  console.log(selectedVariables);
-  const professorIDArray = rowData.map((data) => data.original.professor_id);
-  console.log(professorIDArray);
-  const [syncedData, setSyncedData] = useState(null);
 
+  const [synced, setSynced] = useState(false);
+  const [syncedData, setSyncedData] = useState(null);
   const [selectedPublications, setSelectedPublications] = useState({});
+  const [activeProfessorId, setActiveProfessorId] = useState(null);
+
+  const professorIDArray = rowData.map((data) => data.original.professor_id);
+
   const handleSelectTitle = (professorId, title) => {
     setSelectedPublications((prev) => ({
       ...prev,
       [professorId]: title,
     }));
+    handleFieldChange(professorId, "publications", title);
   };
-
-  //Handle Field Changes and Edits the User Wants to Make
+  console.log(syncedData)
   const handleFieldChange = (professorId, key, newValue) => {
     setSyncedData((prev) => {
       if (!prev?.result) return prev;
-
-      const newResult = prev.result.map((prof) => {
-        if (prof.id !== professorId) return prof;
-
-        return {
-          ...prof,
-          dynamicFields: {
-            ...prof.dynamicFields,
-            [key]: newValue,
-          },
-        };
-      });
-
+      const newResult = prev.result.map((prof) =>
+        prof.id !== professorId
+          ? prof
+          : {
+              ...prof,
+              dynamicFields: {
+                ...prof.dynamicFields,
+                [key]: newValue,
+              },
+            }
+      );
       return { ...prev, result: newResult };
     });
   };
 
   const handleSyncSnippet = async () => {
-    console.log("Synced")
     const response = await SyncSnippetData(
       userId,
       professorIDArray,
@@ -93,16 +86,12 @@ export default function DataPreview({
       }
       setSelectedPublications(initialPublications);
     }
-    if (response?.status === "synced") {
-      setSynced(true);
-    }
+
+    if (response?.status === "synced") setSynced(true);
     setSyncedData(response);
   };
-  console.log(snippetId);
 
   const handleDraftGeneration = async (dynamicFields) => {
-    console.log("Fired");
-    console.log(dynamicFields);
     await createMassDrafts(
       userId,
       snippetId,
@@ -114,24 +103,23 @@ export default function DataPreview({
     );
   };
 
-  console.log(syncedData);
   return (
     <div className="font-main antialiased">
       <div className="text-xs font-semibold px-6">
         <div className="flex gap-2 items-center">
           <h1>Preview Recipients</h1>
-          {synced ? (
-            <Badge className="text-xs rounded-xs text-[#448361] bg-[#EDF3EC]">
-              Synced
-            </Badge>
-          ) : (
-            <Badge className="text-xs rounded-xs text-[#D44C47] bg-[#FDEBEC]">
-              Not Synced
-            </Badge>
-          )}
+          <Badge
+            className={`text-xs rounded-xs ${
+              synced
+                ? "text-[#448361] bg-[#EDF3EC]"
+                : "text-[#D44C47] bg-[#FDEBEC]"
+            }`}
+          >
+            {synced ? "Synced" : "Not Synced"}
+          </Badge>
         </div>
-        <div className="font-mdium text-xs">
-          Get a dedicated view of the variables for each professor{" "}
+        <div className="font-medium text-xs text-muted-foreground">
+          Get a dedicated view of the variables for each professor.
         </div>
       </div>
 
@@ -140,13 +128,13 @@ export default function DataPreview({
           <AccordionItem
             value={row.original.id}
             key={row.original.id}
-            className=" border-gray-200 border-none"
+            className="border-none"
           >
-            <AccordionTrigger className="flex items-center gap-2 p-3 text-xs hover:no-underline rounded-xs font-medium text-[#37352F] hover:bg-[#F1F1EF] transition-colors duration-200 cursor-pointer group border-none">
+            <AccordionTrigger className="flex items-center gap-2 p-3 text-xs hover:no-underline rounded-xs font-medium text-[#37352F] hover:bg-[#F1F1EF] transition-colors duration-200 cursor-pointer group">
               <div className="flex flex-col gap-1.5 flex-grow">
                 <div className="flex gap-2 items-center">
                   <div className="text-gray-900">{row.original.name}</div>
-                  <div className="h-1 w-1 bg-gray-400 rounded-full"></div>
+                  <div className="h-1 w-1 bg-gray-400 rounded-full" />
                   <div className="text-gray-500">{row.original.email}</div>
                 </div>
                 <div className="flex gap-2">
@@ -159,9 +147,10 @@ export default function DataPreview({
                 </div>
               </div>
             </AccordionTrigger>
+
             <AccordionContent className="pb-2 pt-0 px-3 text-xs border-t border-gray-100">
-              {syncedData?.result && syncedData?.result?.length > 0 ? (
-                syncedData?.result
+              {syncedData?.result?.length > 0 ? (
+                syncedData.result
                   .filter((prof) => prof.id === row.original.professor_id)
                   .map((prof) => (
                     <div key={prof.id} className="p-2">
@@ -169,9 +158,9 @@ export default function DataPreview({
                       Object.entries(prof.dynamicFields).length > 0 ? (
                         Object.entries(prof.dynamicFields).map(
                           ([key, value]) => (
-                            <div key={key}>
-                              {key == "publications" ? (
-                                <div className="flex flex-col gap-1">
+                            <div key={key} className="mb-4">
+                              {key === "publications" ? (
+                                <div className="flex flex-col gap-2">
                                   <strong>{key}:</strong>
                                   <Input
                                     value={selectedPublications[prof.id] || ""}
@@ -182,11 +171,16 @@ export default function DataPreview({
                                   />
                                   <Dialog>
                                     <DialogTrigger asChild>
-                                      <Button className=" font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] w-fit hover:bg-blue-400 px-1 cursor-pointer">
+                                      <Button
+                                        onClick={() =>
+                                          setActiveProfessorId(prof.id)
+                                        }
+                                        className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] w-fit hover:bg-blue-400 px-2"
+                                      >
                                         Find New Publications
                                       </Button>
                                     </DialogTrigger>
-                                    <DialogContent className="rounded-xs max-h-[30rem] w-[40rem] overflow-x-clip overflow-y-auto">
+                                    <DialogContent className="rounded-xs max-h-[30rem] w-[40rem] overflow-y-auto">
                                       <DialogTitle></DialogTitle>
                                       <DialogDescription>
                                         <Suspense
@@ -195,9 +189,13 @@ export default function DataPreview({
                                           }
                                         >
                                           <Publications
-                                            professorId={prof.id}
+                                            key={activeProfessorId}
+                                            professorId={activeProfessorId}
                                             onSelectTitle={(title) =>
-                                              handleSelectTitle(prof.id, title)
+                                              handleSelectTitle(
+                                                activeProfessorId,
+                                                title
+                                              )
                                             }
                                           />
                                         </Suspense>
@@ -208,7 +206,6 @@ export default function DataPreview({
                               ) : (
                                 <div className="flex flex-col gap-1">
                                   <div>
-                                    {" "}
                                     <strong>{key}:</strong> {value ?? "No data"}
                                   </div>
                                   <Input
@@ -239,21 +236,24 @@ export default function DataPreview({
           </AccordionItem>
         ))}
       </Accordion>
-      {synced ? (
-        <button
-          onClick={() => handleDraftGeneration(syncedData)}
-          className="mx-6 font-main text-xs rounded-xs text-[#448361] bg-[#EDF3EC] h-[1.7rem] px-1"
-        >
-          Generate Drafts
-        </button>
-      ) : (
-        <button
-          onClick={handleSyncSnippet}
-          className="mx-6 font-main text-xs rounded-xs bg-[#E7F3F8] text-[#337EA9] h-[1.7rem] px-1"
-        >
-          Sync Data
-        </button>
-      )}
+
+      <div className="mt-4 px-6">
+        {synced ? (
+          <button
+            onClick={() => handleDraftGeneration(syncedData)}
+            className="font-main text-xs rounded-xs text-[#448361] bg-[#EDF3EC] h-[1.7rem] px-2"
+          >
+            Generate Drafts
+          </button>
+        ) : (
+          <button
+            onClick={handleSyncSnippet}
+            className="font-main text-xs rounded-xs bg-[#E7F3F8] text-[#337EA9] h-[1.7rem] px-2"
+          >
+            Sync Data
+          </button>
+        )}
+      </div>
     </div>
   );
 }

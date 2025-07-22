@@ -24,7 +24,6 @@ export default async function Bookmark() {
   const raw_user_id = cookieStore.get("user_id");
   const user_id = raw_user_id.value;
   const access = cookieStore.get("access_token");
-  //Fetch all in Parallel
   const [rawSavedData, rawInProgressData, rawCompletedData, rawSnippetData, rawUserProfile] =
     await Promise.all([
       fetch(`http://localhost:8080/saved/kanban/get-saved/${user_id}`),

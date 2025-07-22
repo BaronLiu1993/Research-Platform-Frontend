@@ -101,14 +101,6 @@ export default function DraftEditor({
 
   return (
     <div>
-      <Dialog open={AIOpenDialog} onOpenChange={setAIOpenDialog}>
-        <DialogContent className="p-0 rounded-xs">
-          <DialogTitle></DialogTitle>
-          <DialogDescription>
-            <AIcontext />
-          </DialogDescription>
-        </DialogContent>
-      </Dialog>
       <div className="text-sm">
         <div className="flex justify-between px-4">
           <Badge className="text-[#D9730D] bg-[#FAEBDD] rounded-xs">
@@ -179,7 +171,7 @@ export default function DraftEditor({
                     placeholder="✏️ How Should I Edit?"
                   />
                 </div>
-                <div className = "font-main text-xs flex flex-col gap-2 justify-start items-start">
+                <div className="font-main text-xs flex flex-col gap-2 justify-start items-start">
                   <button
                     onClick={() =>
                       handleAIEditDraft(userId, profId, "Make more confident")

@@ -43,10 +43,6 @@ const statusConfig = {
 };
 
 export default async function Kanban({ userId, parsedSavedData, parsedInProgressData, parsedCompletedData, draftData, parsedUserProfile, parsedSnippetData}) {
-  //Client Wrapper
-  //Improve server handling to redirect to an error page
-
-  console.log(parsedCompletedData)
   const inProgressResponses = parsedInProgressData || [];
   const inCompleteResponses = parsedSavedData || [];
   const completedResponses = parsedCompletedData || [];

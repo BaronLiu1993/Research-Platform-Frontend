@@ -15,10 +15,10 @@ import {
 import DraftEditor from "./drafteditor";
 import { Button } from "@/shadcomponents/ui/button";
 
-
 export default function DraftList({ draftData, parsedUserProfile }) {
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
+
 
   const handleSubmit = async () => {
     const response = await ExecuteMassSend(
@@ -37,6 +37,11 @@ export default function DraftList({ draftData, parsedUserProfile }) {
       selected
     );
   };
+
+  const handleDeleteDraft = async (draftId) => {
+
+  }
+
 
   const handleCheck = (id, name, email) => {
     setSelected((prev) => {
@@ -59,8 +64,6 @@ export default function DraftList({ draftData, parsedUserProfile }) {
     setCheckAll(!checkAll);
   };
 
-  console.log(draftData);
-  console.log(selected);
   return (
     <div className="flex flex-col gap-4">
       <div>
@@ -83,7 +86,9 @@ export default function DraftList({ draftData, parsedUserProfile }) {
                 <span className="text-sm font-semibold">{data.name}</span>
                 <span className="text-sm font-light">{data.email}</span>
               </div>
-              <Trash2 className="ml-auto h-6 w-6 p-1 hover:bg-red-200 rounded-xs cursor-pointer" />
+              <Button className="ml-auto bg-gray-50 text-black h-6 w-6 p-1 hover:bg-red-200 rounded-xs cursor-pointer">
+                <Trash2  />
+              </Button>
             </DialogTrigger>
 
             <DialogContent>
@@ -104,11 +109,11 @@ export default function DraftList({ draftData, parsedUserProfile }) {
       <div className="flex gap-4">
         <Button
           className="rounded-xs text-[#337EA9] bg-[#E7F3F8] hover:bg-[#E7F3F8] cursor-pointer"
-          onClick = {() => handleSubmit()}
+          onClick={() => handleSubmit()}
         >
           <Send />
           Send Selected
-        </Button>  
+        </Button>
       </div>
     </div>
   );
