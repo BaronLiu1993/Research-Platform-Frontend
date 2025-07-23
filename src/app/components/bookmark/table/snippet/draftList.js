@@ -14,11 +14,13 @@ import {
 
 import DraftEditor from "./drafteditor";
 import { Button } from "@/shadcomponents/ui/button";
+import { DeleteDrafts } from "@/app/actions/delete/deleteDrafts";
 
 export default function DraftList({ draftData, parsedUserProfile }) {
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
 
+  console.log(draftData);
 
   const handleSubmit = async () => {
     const response = await ExecuteMassSend(
@@ -38,10 +40,9 @@ export default function DraftList({ draftData, parsedUserProfile }) {
     );
   };
 
-  const handleDeleteDraft = async (draftId) => {
-
-  }
-
+  const handleDeleteDraft = async (draftId, userId, professorId) => {
+    await DeleteDrafts(draftId, userId, professorId);
+  };
 
   const handleCheck = (id, name, email) => {
     setSelected((prev) => {
@@ -86,8 +87,17 @@ export default function DraftList({ draftData, parsedUserProfile }) {
                 <span className="text-sm font-semibold">{data.name}</span>
                 <span className="text-sm font-light">{data.email}</span>
               </div>
-              <Button className="ml-auto bg-gray-50 text-black h-6 w-6 p-1 hover:bg-red-200 rounded-xs cursor-pointer">
-                <Trash2  />
+              <Button
+                onClick={() =>
+                  handleDeleteDraft(
+                    data.draftId,
+                    parsedUserProfile.user_id,
+                    data.id
+                  )
+                }
+                className="ml-auto bg-gray-50 text-black h-6 w-6 p-1 hover:bg-red-200 rounded-xs cursor-pointer"
+              >
+                <Trash2 />
               </Button>
             </DialogTrigger>
 

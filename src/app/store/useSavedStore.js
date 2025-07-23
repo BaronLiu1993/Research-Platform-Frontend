@@ -7,6 +7,7 @@ export const useSavedStore = create(
       savedStore: [],
       setSavedStore: (professors) => set({ savedStore: professors }),
       addSavedStore: (point) =>
+        
         set((state) => ({
           savedStore: [...state.savedStore, point],
         })),

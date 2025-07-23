@@ -42,10 +42,10 @@ export default function ApplyButton({
 }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const appliedStore = useAppliedStore((state) => state.appliedStore);
+  const applied = useAppliedStore((state) => state.appliedStore);
   const addApplied = useAppliedStore((state) => state.addAppliedStore);
   const removeApplied = useAppliedStore((state) => state.removeAppliedStore);
-  const alreadyApplied = appliedStore.includes(professor_id);
+  const alreadyApplied = applied.includes(professor_id);
 
   const applyPageUrl = {
     pathname: `/resume/${encodeURIComponent(professor_name)}`,

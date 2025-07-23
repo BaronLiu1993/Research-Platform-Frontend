@@ -58,22 +58,24 @@ export default async function Bookmark() {
   const parsedUserProfile = userProfileJson;
 
 
-
+  
   const draftData = await Promise.all(
     parsedDraftData.map(async (prof) => {
       const rawDraftResults = await fetch(
         `http://localhost:8080/draft/resume-draft/${prof.draft_id}/${user_id}`
       );
       const parsedDraftResults = await rawDraftResults.json();
-      console.log(parsedDraftResults)
       return {
-        id: prof.professor_id,
+        id: prof.id,
+        draftId: prof.draft_id,
         name: prof.name,
         email: prof.email,
         ...parsedDraftResults,
       };
     })
   );
+
+
 
   return (
     <SidebarProvider>

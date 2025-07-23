@@ -25,7 +25,6 @@ export default function SaveButton({
   const saved = useSavedStore((state) => state.savedStore);
   const addSaved = useSavedStore((state) => state.addSavedStore);
   const removeSaved = useSavedStore((state) => state.removeSavedStore);
-
   const [loading, setLoading] = useState(false);
   const isSaved = saved.includes(professor_id);
 

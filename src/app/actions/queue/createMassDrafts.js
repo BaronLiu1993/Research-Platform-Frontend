@@ -1,3 +1,5 @@
+import { MassAddApplied } from "./massAddApplied";
+
 export const createMassDrafts = async (
   userId,
   snippetId,
@@ -6,6 +8,7 @@ export const createMassDrafts = async (
   dynamicFields
 ) => {
   try {
+    console.log(dynamicFields);
     const response = await fetch(
       `http://localhost:8080/send/snippet-create-draft`,
       {
@@ -23,6 +26,7 @@ export const createMassDrafts = async (
       }
     );
 
+    await MassAddApplied(dynamicFields.result)
     const result = await response.json();
     return result;
   } catch {

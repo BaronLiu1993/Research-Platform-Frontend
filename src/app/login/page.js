@@ -35,6 +35,7 @@ export default function Login() {
       hasRedirected.current = true;
       setSavedProfessors(state.savedProfessors);
       setAppliedProfessors(state.appliedProfessors);
+
       const timer = setTimeout(() => {
         router.push("/repository");
       }, 1000);

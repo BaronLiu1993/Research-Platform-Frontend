@@ -92,21 +92,25 @@ export async function handleLogin(prevState, formData) {
         ),
       ]);
 
-    const appliedProfessorsUI = await appliedProfessorResponse.json();
-    const savedProfessorUI = await savedProfessorResponse.json();
+    const [savedProfessorData, appliedProfessorData] = await Promise.all([
+      savedProfessorResponse.json(),
+      appliedProfessorResponse.json(),
+    ]);
+
+    const savedProfessorUI = savedProfessorData.saved_professors;
+    const appliedProfessorsUI = appliedProfessorData.applied_professors;
 
     return {
       message: "Sucessfully, Redirecting...",
-      savedProfessors: savedProfessorUI.saved_professors,
-      appliedProfessors: appliedProfessorsUI.applied_professors,
+      savedProfessors: savedProfessorUI,
+      appliedProfessors: appliedProfessorsUI,
       success: true,
     };
   } catch (error) {
     if (error.message === "NEXT_REDIRECT") throw error;
     if (error.cause && error.cause.code === "ECONNREFUSED") {
       return {
-        message:
-          "Could not connect to the authentication server. Is it running?",
+        message: "Could not connect to the authentication server",
         savedProfessors: [],
         appliedProfessors: [],
         success: false,
