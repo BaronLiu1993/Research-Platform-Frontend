@@ -1,8 +1,3 @@
-/*
-Deprecated Component, but I will Save for the Future If Needed 
-*/
-
-import { Input } from "@/shadcomponents/ui/input";
 import {
   Blocks,
   WholeWord,

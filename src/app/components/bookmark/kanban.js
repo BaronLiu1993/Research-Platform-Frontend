@@ -157,10 +157,10 @@ export default async function Kanban({ userId, parsedSavedData, parsedInProgress
                     </div>
                     <div className="p-2 space-y-3 overflow-y-auto flex-grow">
                       {col.data.length > 0 ? (
-                        col.data.map((item, index) => (
+                        col.data.map(item => (
                           <CardComponent
-                            key={item.id || index}
-                            prof_id={item.id || index}
+                            key={item.id}
+                            prof_id={item.id}
                             title={item.name}
                             url={item.url}
                             school={item.school}

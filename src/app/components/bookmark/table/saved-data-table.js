@@ -72,10 +72,6 @@ export function SavedDataTable({
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [snippetId, setSnippetId] = useState("");
-
-  console.log(snippetId);
-  console.log(draftData);
-  console.log(parsedUserProfile);
   const table = useReactTable({
     data,
     columns,

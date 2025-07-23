@@ -24,10 +24,11 @@ export default async function Bookmark() {
   const raw_user_id = cookieStore.get("user_id");
   const user_id = raw_user_id.value;
   const access = cookieStore.get("access_token");
-  const [rawSavedData, rawInProgressData, rawCompletedData, rawSnippetData, rawUserProfile] =
+  const [rawSavedData, rawInProgressData, rawDraftData, rawCompletedData, rawSnippetData, rawUserProfile] =
     await Promise.all([
       fetch(`http://localhost:8080/saved/kanban/get-saved/${user_id}`),
       fetch(`http://localhost:8080/inprogress/kanban/get-in-progress/${user_id}`),
+      fetch(`http://localhost:8080/inprogress/fetch/draft/${user_id}`),
       fetch(`http://localhost:8080/completed/kanban/get-completed/${user_id}`),
       fetch(`http://localhost:8080/snippets/get-all/${user_id}`),
       fetch("http://localhost:8080/auth/get-user-sidebar-info", {
@@ -39,29 +40,32 @@ export default async function Bookmark() {
       }),
     ]);
   
-  const [savedDataJson, inProgressJson, completedData, snippetJson, userProfileJson] = await Promise.all([
+  const [savedDataJson, inProgressJson, draftJson, completedJson, snippetJson, userProfileJson] = await Promise.all([
     rawSavedData.json(),
     rawInProgressData.json(),
+    rawDraftData.json(),
     rawCompletedData.json(),
     rawSnippetData.json(),
     rawUserProfile.json()
   ])
 
-  
 
   const parsedInProgressData = inProgressJson.data;
   const parsedSavedData = savedDataJson.data;
-  const parsedCompletedData = completedData.data;
+  const parsedDraftData = draftJson.data
+  const parsedCompletedData = completedJson.data;
   const parsedSnippetJson = snippetJson.message;
   const parsedUserProfile = userProfileJson;
 
 
+
   const draftData = await Promise.all(
-    parsedInProgressData.map(async (prof) => {
+    parsedDraftData.map(async (prof) => {
       const rawDraftResults = await fetch(
-        `http://localhost:8080/draft/resume-draft/${user_id}/${prof.professor_id}`
+        `http://localhost:8080/draft/resume-draft/${prof.draft_id}/${user_id}`
       );
       const parsedDraftResults = await rawDraftResults.json();
+      console.log(parsedDraftResults)
       return {
         id: prof.professor_id,
         name: prof.name,
