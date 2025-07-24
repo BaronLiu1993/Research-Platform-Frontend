@@ -55,6 +55,7 @@ export default function DraftEditor({
   to,
   userId,
   professorId,
+  draftId,
   body,
   initialSubject,
 }) {
@@ -80,7 +81,7 @@ export default function DraftEditor({
       body: editor.getHTML(),
       subject: subject,
     };
-    const response = await saveDraft(data, userId, professorId);
+    const response = await saveDraft(data, draftId, userId);
   };
 
   const handleAIEditDraft = async () => {
@@ -268,7 +269,7 @@ export default function DraftEditor({
       <div className="font-main p-4 flex items-center">
         <button
           className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1 "
-          onClick={() => handleUpdateDraft()}
+          onClick={handleUpdateDraft}
         >
           Save Draft
         </button>

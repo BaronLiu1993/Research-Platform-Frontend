@@ -65,6 +65,7 @@ export default function DraftList({ draftData, parsedUserProfile }) {
     setCheckAll(!checkAll);
   };
 
+
   return (
     <div className="flex flex-col gap-4">
       <div>
@@ -100,7 +101,6 @@ export default function DraftList({ draftData, parsedUserProfile }) {
                 <Trash2 />
               </Button>
             </DialogTrigger>
-
             <DialogContent>
               <DialogTitle></DialogTitle>
               <DraftEditor
@@ -108,6 +108,7 @@ export default function DraftList({ draftData, parsedUserProfile }) {
                 professorId={data.id}
                 fromName={`${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`}
                 fromEmail={parsedUserProfile.student_email}
+                draftId={data.draftId}
                 to={data.email}
                 body={data.body}
                 initialSubject={data.subject}
