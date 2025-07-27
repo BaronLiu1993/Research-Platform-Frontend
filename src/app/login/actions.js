@@ -91,8 +91,6 @@ export async function handleLogin(prevState, formData) {
       appliedProfessorResponse.json(),
     ]);
 
-    console.log(savedProfessorData)
-
     const savedProfessorUI = savedProfessorData.data;
     const appliedProfessorsUI = appliedProfessorData.data;
 

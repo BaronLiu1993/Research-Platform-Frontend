@@ -41,11 +41,13 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import ComposeEditor from "./snippet/composeEditor";
 import DataPreview from "./preview/dataPreview";
 import {
+  BookAIcon,
   Bot,
   Clock,
   Cloud,
   Database,
   Ellipsis,
+  File,
   FolderOpen,
   Hammer,
   Info,
@@ -59,6 +61,10 @@ import {
 import { Badge } from "@/shadcomponents/ui/badge";
 import DraftList from "./snippet/draftList";
 import FollowUpList from "./snippet/followUpList";
+import { Label } from "@/shadcomponents/ui/label";
+
+import { UploadResume } from "@/app/actions/upload/uploadResume";
+import { UploadTranscript } from "@/app/actions/upload/uploadTranscript";
 
 export function SavedDataTable({
   columns,
@@ -67,11 +73,13 @@ export function SavedDataTable({
   draftData,
   parsedCompletedData,
   parsedUserProfile,
-  parsedSnippetData
+  parsedSnippetData,
 }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [snippetId, setSnippetId] = useState("");
+  const [resume, setResume] = useState(null)
+  const [transcript, setTranscript] = useState(null)
   const table = useReactTable({
     data,
     columns,
@@ -85,8 +93,56 @@ export function SavedDataTable({
       columnFilters,
     },
   });
+
+  const handleUploadTranscript = async () => {
+    await UploadTranscript(transcript, userId)
+  }
+
+  const handleUploadResume = async () => {
+    console.log("fired")
+    await UploadResume(resume, userId)
+  }
+
+  console.log(resume)
   return (
     <div className="px-4">
+      <div className="flex flex-col gap-4 py-4">
+        <div>
+          <div className="font-semibold flex gap-2">
+            <BookAIcon className="text-[#787774]" />
+            Automate File Uploading
+          </div>
+          <div className="flex items-center py-2 space-x-2">
+            <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
+              <File />
+              Upload Email Attachments
+            </Badge>
+            <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
+            <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">
+              By Jie Xuan Liu
+            </h2>
+          </div>
+          <div className="bg-[#FAEBDD] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D9730D]">
+            <Info className="h-4 w-4" />
+            <span className="text-xs">
+              All Your Uploaded Files are Saved On Your Personal Google Drive to
+              Ensure Data Privacy
+            </span>
+          </div>
+        </div>
+        <div className="flex gap-4">
+          <div className="flex flex-col gap-2">
+            <Label>Upload Resume</Label>
+            <Input onChange = {(e) => setResume(e.target.files?.[0])} type="file" className="rounded-xs " />
+            <Button onClick = {handleUploadResume} className="w-fit rounded-xs text-xs">Upload</Button>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label>Upload Transcript</Label>
+            <Input onChange = {(e) => setTranscript(e.target.files?.[0])} type="file" className="rounded-xs" />
+            <Button onClick = {handleUploadTranscript} className="w-fit rounded-xs text-xs">Upload</Button>
+          </div>
+        </div>
+      </div>
       <div>
         <div className="font-semibold flex gap-2">
           <Cloud className="text-[#787774]" />
@@ -119,8 +175,8 @@ export function SavedDataTable({
             </Button>
           </SheetTrigger>
 
-          <SheetContent className = "rounded-xs">
-            <SheetTitle className = "p-2">
+          <SheetContent className="rounded-xs">
+            <SheetTitle className="p-2">
               <div className="flex justify-between p-1">
                 <SheetClose>
                   <FolderOpen className="text-blue-700 h-6.5 w-6.5 p-1 rounded-xs cursor-pointer hover:bg-[#F1F1EF]" />
@@ -162,7 +218,6 @@ export function SavedDataTable({
                 rowData={table.getSelectedRowModel().rows}
                 parsedUserProfile={parsedUserProfile}
                 snippetId={snippetId}
-                
               />
             </SheetDescription>
           </SheetContent>
@@ -235,12 +290,18 @@ export function SavedDataTable({
               </h2>
             </div>
             <div className="bg-[#FAEBDD] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D9730D]">
-              <Info className = "h-4 w-4"/>
-              <span className = "text-xs"> Review Your Drafts Before Bulk Sending</span>
+              <Info className="h-4 w-4" />
+              <span className="text-xs">
+                {" "}
+                Review Your Drafts Before Bulk Sending
+              </span>
             </div>
           </div>
 
-          <DraftList draftData={draftData} parsedUserProfile = {parsedUserProfile}/>
+          <DraftList
+            draftData={draftData}
+            parsedUserProfile={parsedUserProfile}
+          />
         </div>
         <div>
           <div className="py-6">
@@ -259,11 +320,15 @@ export function SavedDataTable({
               </h2>
             </div>
             <div className="bg-[#FAEBDD] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D9730D]">
-              <Info className = "h-4 w-4"/>
-              <span className = "text-xs"> Review Follow Ups Before Queuing</span>
+              <Info className="h-4 w-4" />
+              <span className="text-xs"> Review Follow Ups Before Queuing</span>
             </div>
           </div>
-          <FollowUpList parsedCompletedData = {parsedCompletedData} draftData = {draftData} parsedUserProfile = {parsedUserProfile}/>
+          <FollowUpList
+            parsedCompletedData={parsedCompletedData}
+            draftData={draftData}
+            parsedUserProfile={parsedUserProfile}
+          />
         </div>
       </div>
     </div>
