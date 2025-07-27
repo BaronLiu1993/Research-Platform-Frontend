@@ -65,6 +65,12 @@ import { Label } from "@/shadcomponents/ui/label";
 
 import { UploadResume } from "@/app/actions/upload/uploadResume";
 import { UploadTranscript } from "@/app/actions/upload/uploadTranscript";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/shadcomponents/ui/accordion";
 
 export function SavedDataTable({
   columns,
@@ -78,8 +84,8 @@ export function SavedDataTable({
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [snippetId, setSnippetId] = useState("");
-  const [resume, setResume] = useState(null)
-  const [transcript, setTranscript] = useState(null)
+  const [resume, setResume] = useState(null);
+  const [transcript, setTranscript] = useState(null);
   const table = useReactTable({
     data,
     columns,
@@ -95,15 +101,13 @@ export function SavedDataTable({
   });
 
   const handleUploadTranscript = async () => {
-    await UploadTranscript(transcript, userId)
-  }
+    await UploadTranscript(transcript, userId);
+  };
 
   const handleUploadResume = async () => {
-    console.log("fired")
-    await UploadResume(resume, userId)
-  }
+    await UploadResume(resume, userId);
+  };
 
-  console.log(resume)
   return (
     <div className="px-4">
       <div className="flex flex-col gap-4 py-4">
@@ -131,16 +135,41 @@ export function SavedDataTable({
           </div>
         </div>
         <div className="flex gap-4">
-          <div className="flex flex-col gap-2">
-            <Label>Upload Resume</Label>
-            <Input onChange = {(e) => setResume(e.target.files?.[0])} type="file" className="rounded-xs " />
-            <Button onClick = {handleUploadResume} className="w-fit rounded-xs text-xs">Upload</Button>
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label>Upload Transcript</Label>
-            <Input onChange = {(e) => setTranscript(e.target.files?.[0])} type="file" className="rounded-xs" />
-            <Button onClick = {handleUploadTranscript} className="w-fit rounded-xs text-xs">Upload</Button>
-          </div>
+          <Accordion type="multiple">
+            <AccordionItem value="upload">
+              <AccordionTrigger>Upload Files</AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col gap-2">
+                  <Label>Upload Resume</Label>
+                  <Input
+                    onChange={(e) => setResume(e.target.files?.[0])}
+                    type="file"
+                    className="rounded-xs "
+                  />
+                  <Button
+                    onClick={handleUploadResume}
+                    className="w-fit rounded-xs text-xs"
+                  >
+                    Upload
+                  </Button>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label>Upload Transcript</Label>
+                  <Input
+                    onChange={(e) => setTranscript(e.target.files?.[0])}
+                    type="file"
+                    className="rounded-xs"
+                  />
+                  <Button
+                    onClick={handleUploadTranscript}
+                    className="w-fit rounded-xs text-xs"
+                  >
+                    Upload
+                  </Button>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </div>
       <div>
