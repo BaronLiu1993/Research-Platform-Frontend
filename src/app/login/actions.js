@@ -75,30 +75,26 @@ export async function handleLogin(prevState, formData) {
 
     const [savedProfessorResponse, appliedProfessorResponse] =
       await Promise.all([
-        fetch(`http://localhost:8080/auth/get-professor-ids/${userId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+        fetch(`http://localhost:8080/saved/repository/get-all-savedId/${userId}`, {
+          method: "GET"
         }),
         fetch(
-          `http://localhost:8080/auth/get-applied-professor-ids/${userId}`,
+          `http://localhost:8080/inprogress/repository/get-all-appliedId/${userId}`,
           {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            method: "GET"
           }
         ),
       ]);
-
+    
     const [savedProfessorData, appliedProfessorData] = await Promise.all([
       savedProfessorResponse.json(),
       appliedProfessorResponse.json(),
     ]);
 
-    const savedProfessorUI = savedProfessorData.saved_professors;
-    const appliedProfessorsUI = appliedProfessorData.applied_professors;
+    console.log(savedProfessorData)
+
+    const savedProfessorUI = savedProfessorData.data;
+    const appliedProfessorsUI = appliedProfessorData.data;
 
     return {
       message: "Sucessfully, Redirecting...",
@@ -107,6 +103,7 @@ export async function handleLogin(prevState, formData) {
       success: true,
     };
   } catch (error) {
+    console.log(error)
     if (error.message === "NEXT_REDIRECT") throw error;
     if (error.cause && error.cause.code === "ECONNREFUSED") {
       return {
