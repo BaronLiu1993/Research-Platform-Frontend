@@ -24,7 +24,7 @@ export default async function Bookmark() {
   const raw_user_id = cookieStore.get("user_id");
   const user_id = raw_user_id.value;
   const access = cookieStore.get("access_token");
-  const [rawSavedData, rawInProgressData, rawDraftData, rawCompletedData, rawSnippetData, rawUserProfile] =
+  const [rawSavedData, rawInProgressData, rawDraftData, rawCompletedData, rawSnippetData, rawUserProfile, rawResumeData, rawTranscriptData] =
     await Promise.all([
       fetch(`http://localhost:8080/saved/kanban/get-saved/${user_id}`),
       fetch(`http://localhost:8080/inprogress/kanban/get-in-progress/${user_id}`),
@@ -38,17 +38,24 @@ export default async function Bookmark() {
           "Content-Type": "application/json",
         },
       }),
+      fetch(`http://localhost:8080/storage/get-resume/${user_id}`, {
+        method: "GET"
+      }), 
+      fetch(`http://localhost:8080/storage/get-transcript/${user_id}`, {
+        method: "GET"
+      }), 
     ]);
   
-  const [savedDataJson, inProgressJson, draftJson, completedJson, snippetJson, userProfileJson] = await Promise.all([
+  const [savedDataJson, inProgressJson, draftJson, completedJson, snippetJson, userProfileJson, resumeData, transcriptData] = await Promise.all([
     rawSavedData.json(),
     rawInProgressData.json(),
     rawDraftData.json(),
     rawCompletedData.json(),
     rawSnippetData.json(),
-    rawUserProfile.json()
+    rawUserProfile.json(),
+    rawResumeData.json(),
+    rawTranscriptData.json()
   ])
-
 
   const parsedInProgressData = inProgressJson.data;
   const parsedSavedData = savedDataJson.data;
@@ -56,14 +63,15 @@ export default async function Bookmark() {
   const parsedCompletedData = completedJson.data;
   const parsedSnippetJson = snippetJson.message;
   const parsedUserProfile = userProfileJson;
+  const parsedResumeData = resumeData
+  const parsedTranscriptData = transcriptData
 
-
-  
   const draftData = await Promise.all(
     parsedDraftData.map(async (prof) => {
       const rawDraftResults = await fetch(
         `http://localhost:8080/draft/resume-draft/${prof.draft_id}/${user_id}`
       );
+
       const parsedDraftResults = await rawDraftResults.json();
       return {
         id: prof.id,
@@ -126,6 +134,8 @@ export default async function Bookmark() {
               parsedUserProfile={parsedUserProfile}
               parsedSavedData={parsedSavedData}
               parsedSnippetData={parsedSnippetJson}
+              parsedResumeData={parsedResumeData}
+              parsedTranscriptData={parsedTranscriptData}
             />
           </div>
         </div>

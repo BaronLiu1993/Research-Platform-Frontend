@@ -7,7 +7,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shadcomponents/ui/dropdown-menu";
 import { Checkbox } from "@/shadcomponents/ui/checkbox";

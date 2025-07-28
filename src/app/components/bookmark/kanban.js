@@ -42,7 +42,7 @@ const statusConfig = {
   },
 };
 
-export default async function Kanban({ userId, parsedSavedData, parsedInProgressData, parsedCompletedData, draftData, parsedUserProfile, parsedSnippetData}) {
+export default async function Kanban({ userId, parsedSavedData, parsedInProgressData, parsedCompletedData, draftData, parsedUserProfile, parsedSnippetData, parsedResumeData, parsedTranscriptData}) {
   const inProgressResponses = parsedInProgressData || [];
   const inCompleteResponses = parsedSavedData || [];
   const completedResponses = parsedCompletedData || [];
@@ -117,7 +117,7 @@ export default async function Kanban({ userId, parsedSavedData, parsedInProgress
           </TabsTrigger>
         </TabsList>
         <TabsContent value="table">
-          <SavedDataTable parsedUserProfile = {parsedUserProfile} data = {columnsData[0].data} columns = {SavedColumns} draftData = {draftData} parsedCompletedData = {parsedCompletedData} userId = {userId} parsedInProgressData = {parsedInProgressData} parsedSnippetData={parsedSnippetData}/>
+          <SavedDataTable parsedTranscriptData = {parsedTranscriptData} parsedResumeData ={parsedResumeData} parsedUserProfile = {parsedUserProfile} data = {columnsData[0].data} columns = {SavedColumns} draftData = {draftData} parsedCompletedData = {parsedCompletedData} userId = {userId} parsedInProgressData = {parsedInProgressData} parsedSnippetData={parsedSnippetData}/>
         </TabsContent>
         <TabsContent value="kanban">
           <div className="flex-grow p-3 sm:p-4 overflow-x-auto">

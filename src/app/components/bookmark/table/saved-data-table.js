@@ -46,8 +46,12 @@ import {
   Clock,
   Cloud,
   Database,
+  Download,
   Ellipsis,
+  Eye,
   File,
+  FileCheck2,
+  FileX2,
   FolderOpen,
   Hammer,
   Info,
@@ -61,7 +65,6 @@ import {
 import { Badge } from "@/shadcomponents/ui/badge";
 import DraftList from "./snippet/draftList";
 import FollowUpList from "./snippet/followUpList";
-import { Label } from "@/shadcomponents/ui/label";
 
 import { UploadResume } from "@/app/actions/upload/uploadResume";
 import { UploadTranscript } from "@/app/actions/upload/uploadTranscript";
@@ -71,6 +74,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
+import { Label } from "@/shadcomponents/ui/label";
 
 export function SavedDataTable({
   columns,
@@ -80,6 +84,8 @@ export function SavedDataTable({
   parsedCompletedData,
   parsedUserProfile,
   parsedSnippetData,
+  parsedResumeData,
+  parsedTranscriptData,
 }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -108,6 +114,7 @@ export function SavedDataTable({
     await UploadResume(resume, userId);
   };
 
+  console.log(parsedTranscriptData);
   return (
     <div className="px-4">
       <div className="flex flex-col gap-4 py-4">
@@ -136,37 +143,146 @@ export function SavedDataTable({
         </div>
         <div className="flex gap-4">
           <Accordion type="multiple">
-            <AccordionItem value="upload">
-              <AccordionTrigger>Upload Files</AccordionTrigger>
+            <AccordionItem value="upload-resume">
+              <AccordionTrigger>
+                {parsedResumeData.success ? (
+                  <div className="bg-[#EDF3EC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#448361]">
+                    <FileCheck2 className="h-4 w-4" />
+                    <span className="text-xs">Resume Uploaded</span>
+                  </div>
+                ) : (
+                  <div className="bg-[#FDEBEC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D44C47]">
+                    <FileX2 className="h-4 w-4" />
+                    <span className="text-xs">Resume Missing</span>
+                  </div>
+                )}
+              </AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-col gap-2">
-                  <Label>Upload Resume</Label>
-                  <Input
-                    onChange={(e) => setResume(e.target.files?.[0])}
-                    type="file"
-                    className="rounded-xs "
-                  />
-                  <Button
-                    onClick={handleUploadResume}
-                    className="w-fit rounded-xs text-xs"
-                  >
-                    Upload
-                  </Button>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Label>Upload Transcript</Label>
-                  <Input
-                    onChange={(e) => setTranscript(e.target.files?.[0])}
-                    type="file"
-                    className="rounded-xs"
-                  />
-                  <Button
-                    onClick={handleUploadTranscript}
-                    className="w-fit rounded-xs text-xs"
-                  >
-                    Upload
-                  </Button>
-                </div>
+                {parsedResumeData.success ? (
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-2">
+                      <h1 className="font-bold">
+                        {parsedResumeData.data.name}
+                      </h1>
+                      <div className="flex gap-4">
+                        <a
+                          className="text-[#448361] bg-[#EDF3EC] text-xs p-1 gap-2 flex items-center justify-center"
+                          target="_blank"
+                          href={parsedResumeData.data.webViewLink}
+                        >
+                          <File className="p-1" />
+                          <span>View In Google Drive</span>
+                        </a>
+                        <a
+                          className="text-[#337EA9] bg-[#E7F3F8] text-xs p-1 gap-2 flex items-center justify-center"
+                          target="_blank"
+                          href={parsedResumeData.data.webContentLink}
+                        >
+                          <Download className="p-1" />
+                          <span>Download File</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2">
+                        <Label>Update Resume File</Label>
+                        <Input
+                          onChange={(e) => setResume(e.target.files?.[0])}
+                          type="file"
+                          className="rounded-xs"
+                        />
+                      </div>
+                      {resume ? (
+                        <Button
+                          onClick={handleUploadResume}
+                          className="w-fit rounded-xs text-xs"
+                        >
+                          Upload
+                        </Button>
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      onChange={(e) => setResume(e.target.files?.[0])}
+                      type="file"
+                      className="rounded-xs"
+                    />
+                    {resume ? (
+                      <Button
+                        onClick={handleUploadResume}
+                        className="w-fit rounded-xs text-xs"
+                      >
+                        Upload
+                      </Button>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
+                )}
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="upload-transcripts">
+              <AccordionTrigger>
+                {parsedTranscriptData.success ? (
+                  <div className="bg-[#EDF3EC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#448361]">
+                    <FileCheck2 className="h-4 w-4" />
+                    <span className="text-xs">Transcript Uploaded</span>
+                  </div>
+                ) : (
+                  <div className="bg-[#FDEBEC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D44C47]">
+                    <FileX2 className="h-4 w-4" />
+                    <span className="text-xs">Transcript Missing</span>
+                  </div>
+                )}
+              </AccordionTrigger>
+              <AccordionContent>
+                {parsedTranscriptData.success ? (
+                  <div className="flex flex-col gap-2">
+                    <h1 className="font-bold">
+                      {parsedTranscriptData.data.name}
+                    </h1>
+                    <div className="flex gap-4">
+                      <a
+                        className="text-[#448361] bg-[#EDF3EC] text-xs p-1 gap-2 flex items-center justify-center"
+                        target="_blank"
+                        href={parsedTranscriptData.data.webViewLink}
+                      >
+                        <File className="p-1" />
+                        <span>View In Google Drive</span>
+                      </a>
+                      <a
+                        className="text-[#337EA9] bg-[#E7F3F8] text-xs p-1 gap-2 flex items-center justify-center"
+                        target="_blank"
+                        href={parsedTranscriptData.data.webContentLink}
+                      >
+                        <Download className="p-1" />
+                        <span>Download File</span>
+                      </a>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <Input
+                      onChange={(e) => setTranscript(e.target.files?.[0])}
+                      type="file"
+                      className="rounded-xs"
+                    />
+                    {transcript ? (
+                      <Button
+                        onClick={handleUploadTranscript}
+                        className="w-fit rounded-xs text-xs"
+                      >
+                        Upload
+                      </Button>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
+                )}
               </AccordionContent>
             </AccordionItem>
           </Accordion>
