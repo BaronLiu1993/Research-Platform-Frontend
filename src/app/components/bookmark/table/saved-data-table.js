@@ -166,7 +166,7 @@ export function SavedDataTable({
                       </h1>
                       <div className="flex gap-4">
                         <a
-                          className="text-[#448361] bg-[#EDF3EC] text-xs p-1 gap-2 flex items-center justify-center"
+                          className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
                           target="_blank"
                           href={parsedResumeData.data.webViewLink}
                         >
@@ -174,7 +174,7 @@ export function SavedDataTable({
                           <span>View In Google Drive</span>
                         </a>
                         <a
-                          className="text-[#337EA9] bg-[#E7F3F8] text-xs p-1 gap-2 flex items-center justify-center"
+                          className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
                           target="_blank"
                           href={parsedResumeData.data.webContentLink}
                         >
@@ -195,7 +195,7 @@ export function SavedDataTable({
                       {resume ? (
                         <Button
                           onClick={handleUploadResume}
-                          className="w-fit rounded-xs text-xs"
+                          className="text-[#37352F] bg-[#F1F1EF] font-semibold w-fit rounded-xs text-xs"
                         >
                           Upload
                         </Button>
@@ -214,7 +214,7 @@ export function SavedDataTable({
                     {resume ? (
                       <Button
                         onClick={handleUploadResume}
-                        className="w-fit rounded-xs text-xs"
+                        className="text-[#37352F] bg-[#F1F1EF] font-semibold w-fit rounded-xs text-xs"
                       >
                         Upload
                       </Button>
@@ -241,27 +241,37 @@ export function SavedDataTable({
               </AccordionTrigger>
               <AccordionContent>
                 {parsedTranscriptData.success ? (
-                  <div className="flex flex-col gap-2">
-                    <h1 className="font-bold">
-                      {parsedTranscriptData.data.name}
-                    </h1>
-                    <div className="flex gap-4">
-                      <a
-                        className="text-[#448361] bg-[#EDF3EC] text-xs p-1 gap-2 flex items-center justify-center"
-                        target="_blank"
-                        href={parsedTranscriptData.data.webViewLink}
-                      >
-                        <File className="p-1" />
-                        <span>View In Google Drive</span>
-                      </a>
-                      <a
-                        className="text-[#337EA9] bg-[#E7F3F8] text-xs p-1 gap-2 flex items-center justify-center"
-                        target="_blank"
-                        href={parsedTranscriptData.data.webContentLink}
-                      >
-                        <Download className="p-1" />
-                        <span>Download File</span>
-                      </a>
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-2">
+                      <h1 className="font-bold">
+                        {parsedTranscriptData.data.name}
+                      </h1>
+                      <div className="flex gap-4">
+                        <a
+                          className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
+                          target="_blank"
+                          href={parsedTranscriptData.data.webViewLink}
+                        >
+                          <File className="p-1" />
+                          <span>View In Google Drive</span>
+                        </a>
+                        <a
+                          className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
+                          target="_blank"
+                          href={parsedTranscriptData.data.webContentLink}
+                        >
+                          <Download className="p-1" />
+                          <span>Download File</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <Label>Update Transcript File</Label>
+                      <Input
+                        onChange={(e) => setResume(e.target.files?.[0])}
+                        type="file"
+                        className="rounded-xs"
+                      />
                     </div>
                   </div>
                 ) : (
@@ -274,7 +284,7 @@ export function SavedDataTable({
                     {transcript ? (
                       <Button
                         onClick={handleUploadTranscript}
-                        className="w-fit rounded-xs text-xs"
+                        className="text-[#37352F] bg-[#F1F1EF] font-semibold w-fit rounded-xs text-xs"
                       >
                         Upload
                       </Button>

@@ -24,29 +24,46 @@ export default async function Bookmark() {
   const raw_user_id = cookieStore.get("user_id");
   const user_id = raw_user_id.value;
   const access = cookieStore.get("access_token");
-  const [rawSavedData, rawInProgressData, rawDraftData, rawCompletedData, rawSnippetData, rawUserProfile, rawResumeData, rawTranscriptData] =
-    await Promise.all([
-      fetch(`http://localhost:8080/saved/kanban/get-saved/${user_id}`),
-      fetch(`http://localhost:8080/inprogress/kanban/get-in-progress/${user_id}`),
-      fetch(`http://localhost:8080/inprogress/fetch/draft/${user_id}`),
-      fetch(`http://localhost:8080/completed/kanban/get-completed/${user_id}`),
-      fetch(`http://localhost:8080/snippets/get-all/${user_id}`),
-      fetch("http://localhost:8080/auth/get-user-sidebar-info", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${access.value}`,
-          "Content-Type": "application/json",
-        },
-      }),
-      fetch(`http://localhost:8080/storage/get-resume/${user_id}`, {
-        method: "GET"
-      }), 
-      fetch(`http://localhost:8080/storage/get-transcript/${user_id}`, {
-        method: "GET"
-      }), 
-    ]);
-  
-  const [savedDataJson, inProgressJson, draftJson, completedJson, snippetJson, userProfileJson, resumeData, transcriptData] = await Promise.all([
+  const [
+    rawSavedData,
+    rawInProgressData,
+    rawDraftData,
+    rawCompletedData,
+    rawSnippetData,
+    rawUserProfile,
+    rawResumeData,
+    rawTranscriptData,
+  ] = await Promise.all([
+    fetch(`http://localhost:8080/saved/kanban/get-saved/${user_id}`),
+    fetch(`http://localhost:8080/inprogress/kanban/get-in-progress/${user_id}`),
+    fetch(`http://localhost:8080/inprogress/fetch/draft/${user_id}`),
+    fetch(`http://localhost:8080/completed/kanban/get-completed/${user_id}`),
+    fetch(`http://localhost:8080/snippets/get-all/${user_id}`),
+    fetch("http://localhost:8080/auth/get-user-sidebar-info", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${access.value}`,
+        "Content-Type": "application/json",
+      },
+    }),
+    fetch(`http://localhost:8080/storage/get-resume/${user_id}`, {
+      method: "GET",
+    }),
+    fetch(`http://localhost:8080/storage/get-transcript/${user_id}`, {
+      method: "GET",
+    }),
+  ]);
+
+  const [
+    savedDataJson,
+    inProgressJson,
+    draftJson,
+    completedJson,
+    snippetJson,
+    userProfileJson,
+    resumeData,
+    transcriptData,
+  ] = await Promise.all([
     rawSavedData.json(),
     rawInProgressData.json(),
     rawDraftData.json(),
@@ -54,37 +71,40 @@ export default async function Bookmark() {
     rawSnippetData.json(),
     rawUserProfile.json(),
     rawResumeData.json(),
-    rawTranscriptData.json()
-  ])
+    rawTranscriptData.json(),
+  ]);
 
   const parsedInProgressData = inProgressJson.data;
   const parsedSavedData = savedDataJson.data;
-  const parsedDraftData = draftJson.data
+  const parsedDraftData = draftJson.data;
   const parsedCompletedData = completedJson.data;
   const parsedSnippetJson = snippetJson.message;
   const parsedUserProfile = userProfileJson;
-  const parsedResumeData = resumeData
-  const parsedTranscriptData = transcriptData
+  const parsedResumeData = resumeData;
+  const parsedTranscriptData = transcriptData;
 
-  const draftData = await Promise.all(
+  let draftData = await Promise.all(
     parsedDraftData.map(async (prof) => {
+      console.log(prof);
       const rawDraftResults = await fetch(
         `http://localhost:8080/draft/resume-draft/${prof.draft_id}/${user_id}`
       );
 
       const parsedDraftResults = await rawDraftResults.json();
-      return {
-        id: prof.id,
-        draftId: prof.draft_id,
-        name: prof.name,
-        email: prof.email,
-        ...parsedDraftResults,
-      };
+      if (parsedDraftResults.draftExists) {
+        return {
+          id: prof.id,
+          draftId: prof.draft_id,
+          name: prof.name,
+          email: prof.email,
+          ...parsedDraftResults,
+        };
+      } else {
+        return null
+      }
     })
   );
-
-
-
+  draftData = draftData.filter(Boolean);
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile} />

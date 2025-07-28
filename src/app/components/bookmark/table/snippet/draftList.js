@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
-import { Calendar, Send, Trash2 } from "lucide-react";
+import { Calendar, FileSymlink, Send, Trash2 } from "lucide-react";
 
 import { ExecuteMassSend } from "@/app/actions/queue/executeMassSend";
 import {
@@ -15,13 +15,11 @@ import {
 import DraftEditor from "./drafteditor";
 import { Button } from "@/shadcomponents/ui/button";
 import { DeleteDrafts } from "@/app/actions/delete/deleteDrafts";
+import { ExecuteMassSendWithAttachments } from "@/app/actions/queue/executeMassSendWithAttachments";
 
 export default function DraftList({ draftData, parsedUserProfile }) {
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
-
-  console.log(draftData);
-
   const handleSubmit = async () => {
     const response = await ExecuteMassSend(
       parsedUserProfile.user_id,
@@ -31,8 +29,8 @@ export default function DraftList({ draftData, parsedUserProfile }) {
     );
   };
 
-  const handleSendFollowUp = async () => {
-    const response = await ScheduleFollowUp(
+  const handleSubmitWithAttachments = async () => {
+    const response = await ExecuteMassSendWithAttachments(
       parsedUserProfile.user_id,
       `${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`,
       parsedUserProfile.student_email,
@@ -64,7 +62,6 @@ export default function DraftList({ draftData, parsedUserProfile }) {
     }
     setCheckAll(!checkAll);
   };
-
 
   return (
     <div className="flex flex-col gap-4">
@@ -124,6 +121,13 @@ export default function DraftList({ draftData, parsedUserProfile }) {
         >
           <Send />
           Send Selected
+        </Button>
+        <Button
+          className="rounded-xs text-[#337EA9] bg-[#E7F3F8] hover:bg-[#E7F3F8] cursor-pointer"
+          onClick={() => handleSubmitWithAttachments()}
+        >
+          <FileSymlink />
+          Send Selected With Attachments
         </Button>
       </div>
     </div>
