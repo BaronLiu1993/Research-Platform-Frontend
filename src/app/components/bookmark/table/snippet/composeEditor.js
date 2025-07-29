@@ -52,11 +52,9 @@ import { GenerateSnippet } from "@/app/actions/generateSnippet";
 
 export default function ComposeEditor({
   userId,
-  snippetId,
   setSnippetId,
   userName,
   userEmail,
-  parsedSnippetData,
 }) {
   //Mount the selected variables store
   const setSelectedVariables = useSelectedVariablesStore(
@@ -71,7 +69,6 @@ export default function ComposeEditor({
   }, []);
 
   const [subject, setSubject] = useState("");
-  const [open, setOpen] = useState(false);
   const [AIOpenDialog, setAIOpenDialog] = useState(false);
 
   const editor = useEditor({
@@ -147,8 +144,8 @@ export default function ComposeEditor({
         </div>
         <div className="flex flex-col">
           <div className="flex gap-2 px-4 py-1">
-            <h1 className="text-black">Baron Liu</h1>
-            <h2 className="text-[#787774]">baronliu1993@gmail.com</h2>
+            <h1 className="text-black">{userName}</h1>
+            <h2 className="text-[#787774]">{userEmail}</h2>
           </div>
           <input className="px-4 py-1 w-full" placeholder="Add Recipient" />
           <input

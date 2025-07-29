@@ -47,7 +47,6 @@ export default function DataPreview({
     }));
     handleFieldChange(professorId, "publications", title);
   };
-  console.log(syncedData)
   const handleFieldChange = (professorId, key, newValue) => {
     setSyncedData((prev) => {
       if (!prev?.result) return prev;

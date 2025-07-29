@@ -83,7 +83,6 @@ export function SavedDataTable({
   draftData,
   parsedCompletedData,
   parsedUserProfile,
-  parsedSnippetData,
   parsedResumeData,
   parsedTranscriptData,
 }) {
@@ -354,7 +353,6 @@ export function SavedDataTable({
                           userId={userId}
                           snippetId={snippetId}
                           setSnippetId={setSnippetId}
-                          parsedSnippetData={parsedSnippetData}
                         />
                       </DialogDescription>
                     </DialogContent>
@@ -481,7 +479,6 @@ export function SavedDataTable({
           </div>
           <FollowUpList
             parsedCompletedData={parsedCompletedData}
-            draftData={draftData}
             parsedUserProfile={parsedUserProfile}
           />
         </div>

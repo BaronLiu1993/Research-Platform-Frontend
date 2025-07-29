@@ -29,7 +29,6 @@ export default async function Bookmark() {
     rawInProgressData,
     rawDraftData,
     rawCompletedData,
-    rawSnippetData,
     rawUserProfile,
     rawResumeData,
     rawTranscriptData,
@@ -38,7 +37,6 @@ export default async function Bookmark() {
     fetch(`http://localhost:8080/inprogress/kanban/get-in-progress/${user_id}`),
     fetch(`http://localhost:8080/inprogress/fetch/draft/${user_id}`),
     fetch(`http://localhost:8080/completed/kanban/get-completed/${user_id}`),
-    fetch(`http://localhost:8080/snippets/get-all/${user_id}`),
     fetch("http://localhost:8080/auth/get-user-sidebar-info", {
       method: "GET",
       headers: {
@@ -59,7 +57,6 @@ export default async function Bookmark() {
     inProgressJson,
     draftJson,
     completedJson,
-    snippetJson,
     userProfileJson,
     resumeData,
     transcriptData,
@@ -68,7 +65,6 @@ export default async function Bookmark() {
     rawInProgressData.json(),
     rawDraftData.json(),
     rawCompletedData.json(),
-    rawSnippetData.json(),
     rawUserProfile.json(),
     rawResumeData.json(),
     rawTranscriptData.json(),
@@ -78,7 +74,6 @@ export default async function Bookmark() {
   const parsedSavedData = savedDataJson.data;
   const parsedDraftData = draftJson.data;
   const parsedCompletedData = completedJson.data;
-  const parsedSnippetJson = snippetJson.message;
   const parsedUserProfile = userProfileJson;
   const parsedResumeData = resumeData;
   const parsedTranscriptData = transcriptData;
@@ -153,7 +148,6 @@ export default async function Bookmark() {
               draftData={draftData}
               parsedUserProfile={parsedUserProfile}
               parsedSavedData={parsedSavedData}
-              parsedSnippetData={parsedSnippetJson}
               parsedResumeData={parsedResumeData}
               parsedTranscriptData={parsedTranscriptData}
             />

@@ -60,7 +60,6 @@ export default function DraftEditor({
   initialSubject,
 }) {
   const [subject, setSubject] = useState("");
-  const [AIOpenDialog, setAIOpenDialog] = useState(false);
   const [command, setCommand] = useState("");
   const editor = useEditor({
     extensions: [StarterKit],
@@ -81,7 +80,7 @@ export default function DraftEditor({
       body: editor.getHTML(),
       subject: subject,
     };
-    const response = await saveDraft(data, draftId, userId);
+    await saveDraft(data, draftId, userId);
   };
 
   const handleAIEditDraft = async () => {
@@ -95,11 +94,7 @@ export default function DraftEditor({
       ),
       command
     );
-    console.log(response);
   };
-
-  console.log(subject);
-
   return (
     <div>
       <div className="text-sm">
@@ -113,8 +108,8 @@ export default function DraftEditor({
         </div>
         <div className="flex flex-col">
           <div className="flex gap-2 px-4 py-1">
-            <h1 className="text-black">Baron Liu</h1>
-            <h2 className="text-[#787774]">baronliu1993@gmail.com</h2>
+            <h1 className="text-black">{fromName}</h1>
+            <h2 className="text-[#787774]">{fromEmail}</h2>
           </div>
           <input className="px-4 py-1 w-full" placeholder="Add Recipient" />
           <input
