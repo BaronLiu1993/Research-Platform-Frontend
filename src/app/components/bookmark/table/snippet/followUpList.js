@@ -21,7 +21,7 @@ export default function FollowUpList({
 }) {
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
-
+  console.log(selected)
   const handleCheck = (professor_id, name, email) => {
     setSelected((prev) => {
       const exists = prev.some((item) => item.professor_id === professor_id);
@@ -84,6 +84,7 @@ export default function FollowUpList({
                 userId={parsedUserProfile.user_id}
                 fromName={`${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`}
                 fromEmail={parsedUserProfile.student_email}
+                professorIDArray={selected}
               />
             </DialogDescription>
           </DialogContent>

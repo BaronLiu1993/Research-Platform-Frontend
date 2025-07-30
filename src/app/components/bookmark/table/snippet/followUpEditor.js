@@ -2,9 +2,10 @@
 
 import "tippy.js/dist/tippy.css";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
-
+import Mention from "@tiptap/extension-mention";
+import suggestion from "../tiptap/suggestion";
 import StarterKit from "@tiptap/starter-kit";
 import {
   ALargeSmall,
@@ -12,17 +13,14 @@ import {
   IndentDecrease,
   IndentIncrease,
   Italic,
-  Link,
   List,
   ListTodo,
-  Paperclip,
   Pencil,
-  PencilRuler,
   Strikethrough,
-  Trash2,
   Wand2,
   X,
 } from "lucide-react";
+import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 
 import { Badge } from "@/shadcomponents/ui/badge";
 import { AIEditDraft } from "../../api/drafts/AIEditDraft";
@@ -37,15 +35,41 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/shadcomponents/ui/popover";
-
+import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
+import { SyncSnippetData } from "@/app/actions/syncSnippetData";
 import { createMassDrafts } from "@/app/actions/queue/createMassDrafts";
 
-export default function FollowUpEditor({ userId, fromName, fromEmail }) {
+
+export default function FollowUpEditor({ userId, fromName, fromEmail, professorIDArray}) {
   const [subject, setSubject] = useState("");
   const [command, setCommand] = useState("");
+  const setSelectedVariables = useSelectedVariablesStore(
+    (s) => s.setSelectedVariables
+  );
+  const selectedVariables = useSelectedVariablesStore(
+    (s) => s.selectedVariables
+  );
+
+  useEffect(() => {
+    setSelectedVariables([]);
+  }, []);
+
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Mention.configure({
+        HTMLAttributes: {
+          class:
+            "prose bg-[#F6F3F9] text-[#9065B0] font-mono text-[14px] rounded-md",
+        },
+        suggestion: {
+          ...suggestion,
+          char: "/",
+          ignoreEvents: true,
+        },
+      }),
+    ],
     editorProps: {
       attributes: {
         class:
@@ -53,6 +77,16 @@ export default function FollowUpEditor({ userId, fromName, fromEmail }) {
       },
     },
     content: "",
+    onUpdate({ editor }) {
+      let mentions = [];
+
+      editor.state.doc.descendants((node) => {
+        if (node.type.name === "mention") {
+          mentions.push(node.attrs.id);
+        }
+      });
+      useSelectedVariablesStore.getState().setSelectedVariables(mentions);
+    },
   });
 
   const handleAIEditDraft = async () => {
@@ -69,12 +103,17 @@ export default function FollowUpEditor({ userId, fromName, fromEmail }) {
   };
 
   const handleCreateFollowUpDrafts = async () => {
-    const response = await GenerateSnippet(userId, editor.getHTML(), subject);
+    console.log("fired")
+    console.log(editor.getHTML())
+    console.log(subject)
+    const response = GenerateSnippet(userId, editor.getHTML(), subject);
+    console.log(response)
     const dynamicFields = await SyncSnippetData(
       userId,
       professorIDArray,
       selectedVariables
     );
+    console.log(dynamicFields)
     await createMassDrafts(
       userId,
       response.snippetId,
@@ -82,31 +121,6 @@ export default function FollowUpEditor({ userId, fromName, fromEmail }) {
       fromEmail,
       dynamicFields
     );
-  };
-
-  const handleSyncSnippet = async () => {
-    const response = await SyncSnippetData(
-      userId,
-      professorIDArray,
-      selectedVariables
-    );
-
-    if (response?.result && Array.isArray(response.result)) {
-      const initialPublications = {};
-      for (const prof of response.result) {
-        if (
-          prof.dynamicFields &&
-          typeof prof.dynamicFields === "object" &&
-          "publications" in prof.dynamicFields
-        ) {
-          initialPublications[prof.id] = prof.dynamicFields.publications;
-        }
-      }
-      setSelectedPublications(initialPublications);
-    }
-
-    if (response?.status === "synced") setSynced(true);
-    setSyncedData(response);
   };
 
   return (
@@ -277,7 +291,7 @@ export default function FollowUpEditor({ userId, fromName, fromEmail }) {
       <div className="font-main p-4 flex items-center">
         <button
           className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1 "
-          onClick={handleUpdateDraft}
+          onClick={handleCreateFollowUpDrafts}
         >
           Generate Draft
         </button>

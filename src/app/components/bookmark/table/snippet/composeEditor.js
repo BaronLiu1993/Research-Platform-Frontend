@@ -35,7 +35,6 @@ import {
 
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogTitle,
   DialogDescription,
@@ -44,7 +43,6 @@ import {
 
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 import { useAISnippetStore } from "@/app/store/useAISnippetStore";
-import { usePointStore } from "@/app/store/usePointStore";
 import { Badge } from "@/shadcomponents/ui/badge";
 import AIcontext from "../tiptap/AIcontext";
 import AIPopover from "../popover/AIpopover";
@@ -60,9 +58,9 @@ export default function ComposeEditor({
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
   );
-  const setAISnippet = useAISnippetStore((s) => s.setAISnippets);
-  const resumePoints = usePointStore((state) => state.loadedResumePoints);
 
+  const setAISnippet = useAISnippetStore((s) => s.setAISnippets);
+  
   useEffect(() => {
     setSelectedVariables([]);
     setAISnippet([]);
@@ -98,23 +96,10 @@ export default function ComposeEditor({
 
       editor.state.doc.descendants((node) => {
         if (node.type.name === "mention") {
-          console.log(node.attrs.id);
-          if (node.attrs.id === "{{AIcontext}}") {
-            setAIOpenDialog(true);
-          }
           mentions.push(node.attrs.id);
         }
       });
-
-      const uniqueMentions = [...new Set(mentions)];
-
-      const aiMentions = uniqueMentions.filter((id) => id === "{{AIcontext}}");
-      const normalMentions = uniqueMentions.filter(
-        (id) => id !== "{{AIcontext}}"
-      );
-
-      useSelectedVariablesStore.getState().setSelectedVariables(normalMentions);
-      useAISnippetStore.getState().setAISnippets(aiMentions);
+      useSelectedVariablesStore.getState().setSelectedVariables(mentions);
     },
   });
 
