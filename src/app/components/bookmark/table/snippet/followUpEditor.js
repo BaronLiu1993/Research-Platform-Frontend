@@ -39,11 +39,18 @@ import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
 import { SyncSnippetData } from "@/app/actions/syncSnippetData";
 import { createMassDrafts } from "@/app/actions/queue/createMassDrafts";
+import { createMassFollowUpDrafts } from "@/app/actions/queue/createMassFollowUpDrafts";
+import FollowUpButton from "./followUpButton";
 
-
-export default function FollowUpEditor({ userId, fromName, fromEmail, professorIDArray}) {
+export default function FollowUpEditor({
+  userId,
+  fromName,
+  fromEmail,
+  professorIDArray,
+}) {
   const [subject, setSubject] = useState("");
   const [command, setCommand] = useState("");
+  const [option, setOption] = useState(true);
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
   );
@@ -103,24 +110,65 @@ export default function FollowUpEditor({ userId, fromName, fromEmail, professorI
   };
 
   const handleCreateFollowUpDrafts = async () => {
-    console.log("fired")
-    console.log(editor.getHTML())
-    console.log(subject)
-    const response = GenerateSnippet(userId, editor.getHTML(), subject);
-    console.log(response)
+    console.log("fired");
+    console.log(editor.getHTML());
+    console.log(subject);
+    console.log(userId);
+    const response = await GenerateSnippet(userId, editor.getHTML(), subject);
+    console.log(response.snippetId);
     const dynamicFields = await SyncSnippetData(
       userId,
       professorIDArray,
       selectedVariables
     );
-    console.log(dynamicFields)
-    await createMassDrafts(
+    if (response.snippetId) {
+      const draftResponse = await createMassFollowUpDrafts(
+        userId,
+        response.snippetId,
+        fromName,
+        fromEmail,
+        dynamicFields
+      );
+      if (draftResponse.success) {
+        const response = await ExecuteMassSend(
+          userId,
+          fromName,
+          fromEmail,
+          professorIDArray
+        );
+      }
+    }
+  };
+
+  const handleCreateFollowUpDraftsWithAttachments = async () => {
+    console.log("fired");
+    console.log(editor.getHTML());
+    console.log(subject);
+    console.log(userId);
+    const response = await GenerateSnippet(userId, editor.getHTML(), subject);
+    console.log(response.snippetId);
+    const dynamicFields = await SyncSnippetData(
       userId,
-      response.snippetId,
-      fromName,
-      fromEmail,
-      dynamicFields
+      professorIDArray,
+      selectedVariables
     );
+    if (response.snippetId) {
+      const draftResponse = await createMassFollowUpDrafts(
+        userId,
+        response.snippetId,
+        fromName,
+        fromEmail,
+        dynamicFields
+      );
+      if (draftResponse.success) {
+        const response = await ExecuteMassSend(
+          userId,
+          fromName,
+          fromEmail,
+          professorIDArray
+        );
+      }
+    }
   };
 
   return (
@@ -289,12 +337,16 @@ export default function FollowUpEditor({ userId, fromName, fromEmail, professorI
       )}
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex items-center">
-        <button
-          className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1 "
-          onClick={handleCreateFollowUpDrafts}
-        >
-          Generate Draft
-        </button>
+        {option ? (
+          <FollowUpButton sendFollowUp = {handleCreateFollowUpDrafts} sendFollowUpWithAttachments = {handleCreateFollowUpDraftsWithAttachments} />
+        ) : (
+          <button
+            className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
+            onClick={() => setOption(true)}
+          >
+            Generate Draft
+          </button>
+        )}
       </div>
     </div>
   );

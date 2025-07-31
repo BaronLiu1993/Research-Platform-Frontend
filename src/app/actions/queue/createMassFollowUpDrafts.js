@@ -25,9 +25,13 @@ export const createMassFollowUpDrafts = async (
       }
     );
 
-    await MassAddApplied(dynamicFields.result)
+    await MassAddApplied(dynamicFields.result);
     const result = await response.json();
-    return result;
+    if (!response.ok) {
+      return { success: false, message: "Queue Failed" };
+    } else {
+      return { success: true, message: "Successfully Queued" };
+    }
   } catch {
     return "Error";
   }

@@ -32,7 +32,7 @@ export default function DraftList({ draftData, parsedUserProfile }) {
   const handleSubmitWithAttachments = async () => {
     const response = await ExecuteMassSendWithAttachments(
       parsedUserProfile.user_id,
-      `${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`,
+      `${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`,
       parsedUserProfile.student_email,
       selected
     );

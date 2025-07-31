@@ -113,7 +113,6 @@ export function SavedDataTable({
     await UploadResume(resume, userId);
   };
 
-  console.log(parsedTranscriptData);
   return (
     <div className="px-4">
       <div className="flex flex-col gap-4 py-4">

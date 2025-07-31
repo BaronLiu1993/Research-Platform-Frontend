@@ -21,28 +21,23 @@ export default function FollowUpList({
 }) {
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
-  console.log(selected)
-  const handleCheck = (professor_id, name, email) => {
-    setSelected((prev) => {
-      const exists = prev.some((item) => item.professor_id === professor_id);
-      if (exists) {
-        return prev.filter((item) => item.professor_id !== professor_id);
-      }
-      return [...prev, { professor_id, name, email }];
-    });
+  console.log(selected);
+  const handleCheck = (professor_id) => {
+    setSelected((prev) =>
+      prev.includes(professor_id)
+        ? prev.filter((id) => id !== professor_id)
+        : [...prev, professor_id]
+    );
   };
 
   const handleCheckAll = () => {
     if (checkAll) {
       setSelected([]);
     } else {
-      setSelected(
-        parsedCompletedData.map(({ professor_id, name, email }) => ({ professor_id, name, email }))
-      );
+      setSelected(parsedCompletedData.map((prof) => prof.professor_id));
     }
     setCheckAll(!checkAll);
   };
-
 
   return (
     <div className="flex flex-col gap-4">
@@ -54,12 +49,11 @@ export default function FollowUpList({
         {parsedCompletedData.map((data) => (
           <div key={data.id} className="flex items-center gap-2">
             <Checkbox
-              checked={selected.some((item) => item.professor_id === data.professor_id)}
-              onCheckedChange={() =>
-                handleCheck(data.professor_id, data.name, data.email)
-              }
+              checked={selected.includes(data.professor_id)}
+              onCheckedChange={() => handleCheck(data.professor_id)}
               onClick={(e) => e.stopPropagation()}
             />
+
             <div className="h-1.5 w-1.5 rounded-full bg-blue-400" />
             <div className="flex gap-2">
               <span className="text-sm font-semibold">{data.name}</span>
