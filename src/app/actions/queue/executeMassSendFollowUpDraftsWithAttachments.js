@@ -7,7 +7,7 @@ export const ExecuteMassFollowUpDraftsWithAttachments = async (
   professorData
 ) => {
   try {
-    const response = await fetch("http://localhost:8080/send/mass-send-with-attachments", {
+    const response = await fetch("http://localhost:8080/send/mass-send-followup-with-attachments", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
