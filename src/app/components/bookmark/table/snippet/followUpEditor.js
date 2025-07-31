@@ -38,9 +38,10 @@ import {
 import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
 import { SyncSnippetData } from "@/app/actions/syncSnippetData";
-import { createMassDrafts } from "@/app/actions/queue/createMassDrafts";
 import { createMassFollowUpDrafts } from "@/app/actions/queue/createMassFollowUpDrafts";
 import FollowUpButton from "./followUpButton";
+import { ExecuteMassFollowUpDraftsWithAttachments } from "@/app/actions/queue/executeMassSendFollowUpDraftsWithAttachments";
+import { ExecuteMassSendFollowUpDrafts } from "@/app/actions/queue/executeMassSendFollowUpDrafts";
 
 export default function FollowUpEditor({
   userId,
@@ -50,7 +51,6 @@ export default function FollowUpEditor({
 }) {
   const [subject, setSubject] = useState("");
   const [command, setCommand] = useState("");
-  const [option, setOption] = useState(true);
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
   );
@@ -130,7 +130,7 @@ export default function FollowUpEditor({
         dynamicFields
       );
       if (draftResponse.success) {
-        const response = await ExecuteMassSend(
+        const response = await ExecuteMassSendFollowUpDrafts(
           userId,
           fromName,
           fromEmail,
@@ -161,7 +161,8 @@ export default function FollowUpEditor({
         dynamicFields
       );
       if (draftResponse.success) {
-        const response = await ExecuteMassSend(
+        console.log(draftResponse.success)
+        const response = await ExecuteMassFollowUpDraftsWithAttachments(
           userId,
           fromName,
           fromEmail,
@@ -337,16 +338,12 @@ export default function FollowUpEditor({
       )}
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex items-center">
-        {option ? (
-          <FollowUpButton sendFollowUp = {handleCreateFollowUpDrafts} sendFollowUpWithAttachments = {handleCreateFollowUpDraftsWithAttachments} />
-        ) : (
-          <button
-            className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] px-1"
-            onClick={() => setOption(true)}
-          >
-            Generate Draft
-          </button>
-        )}
+        <FollowUpButton
+          sendFollowUp={handleCreateFollowUpDrafts}
+          sendFollowUpWithAttachments={
+            handleCreateFollowUpDraftsWithAttachments
+          }
+        />
       </div>
     </div>
   );
