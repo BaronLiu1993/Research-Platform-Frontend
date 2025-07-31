@@ -7,7 +7,7 @@ export const ExecuteMassSendFollowUpDrafts = async (
   professorData
 ) => {
   try {
-    const response = await fetch("http://localhost:8080/send/mass-send", {
+    const response = await fetch("http://localhost:8080/send/mass-send-followup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

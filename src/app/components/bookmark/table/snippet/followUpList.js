@@ -20,21 +20,38 @@ export default function FollowUpList({
   parsedUserProfile,
 }) {
   const [selected, setSelected] = useState([]);
+  const [totalSelected, setTotalSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
   console.log(selected);
+  console.log(totalSelected);
   const handleCheck = (professor_id) => {
     setSelected((prev) =>
       prev.includes(professor_id)
         ? prev.filter((id) => id !== professor_id)
         : [...prev, professor_id]
     );
+    setTotalSelected((prev) => {
+      const exists = prev.some((item) => item.professor_id === professor_id);
+      if (exists) {
+        return prev.filter((item) => item.professor_id !== professor_id);
+      }
+      return [...prev, { professor_id, name, email }];
+    });
   };
 
   const handleCheckAll = () => {
     if (checkAll) {
       setSelected([]);
+      setTotalSelected([]);
     } else {
       setSelected(parsedCompletedData.map((prof) => prof.professor_id));
+      setTotalSelected(
+        parsedCompletedData.map(({ professor_id, name, email }) => ({
+          professor_id,
+          name,
+          email,
+        }))
+      );
     }
     setCheckAll(!checkAll);
   };
@@ -47,7 +64,7 @@ export default function FollowUpList({
           <span className="text-sm font-semibold">Select All</span>
         </div>
         {parsedCompletedData.map((data) => (
-          <div key={data.id} className="flex items-center gap-2">
+          <div key={data.id} className="flex items-center gap-2 p-2 ">
             <Checkbox
               checked={selected.includes(data.professor_id)}
               onCheckedChange={() => handleCheck(data.professor_id)}
@@ -79,6 +96,7 @@ export default function FollowUpList({
                 fromName={`${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`}
                 fromEmail={parsedUserProfile.student_email}
                 professorIDArray={selected}
+                totalProfessorData={totalSelected}
               />
             </DialogDescription>
           </DialogContent>

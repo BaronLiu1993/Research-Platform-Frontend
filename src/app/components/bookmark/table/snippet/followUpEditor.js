@@ -48,6 +48,7 @@ export default function FollowUpEditor({
   fromName,
   fromEmail,
   professorIDArray,
+  totalProfessorData
 }) {
   const [subject, setSubject] = useState("");
   const [command, setCommand] = useState("");
@@ -134,7 +135,7 @@ export default function FollowUpEditor({
           userId,
           fromName,
           fromEmail,
-          professorIDArray
+          totalProfessorData
         );
       }
     }
