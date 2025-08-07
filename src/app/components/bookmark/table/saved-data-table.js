@@ -43,24 +43,19 @@ import DataPreview from "./preview/dataPreview";
 import {
   BookAIcon,
   Bot,
-  Clock,
   Cloud,
-  Database,
   Download,
-  Ellipsis,
-  Eye,
+  DraftingCompass,
   File,
   FileCheck2,
   FileX2,
   FolderOpen,
   Hammer,
+  HammerIcon,
   Info,
-  Leaf,
-  LeafIcon,
+  Mail,
   Paperclip,
   Pencil,
-  Tag,
-  Trash2,
 } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import DraftList from "./snippet/draftList";
@@ -91,6 +86,8 @@ export function SavedDataTable({
   const [snippetId, setSnippetId] = useState("");
   const [resume, setResume] = useState(null);
   const [transcript, setTranscript] = useState(null);
+  const [generateView, setGenerateView] = useState(false);
+
   const table = useReactTable({
     data,
     columns,
@@ -323,8 +320,9 @@ export function SavedDataTable({
         />
         <Sheet>
           <SheetTrigger>
-            <Button className="text-xs rounded-xs bg-[#E7F3F8] text-[#337EA9] hover:bg-[#E7F3F8] cursor-pointer">
-              Preview Merge
+            <Button className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2">
+              <Mail />
+              Begin Mail Merge
             </Button>
           </SheetTrigger>
 
@@ -339,10 +337,11 @@ export function SavedDataTable({
                   <Dialog>
                     <DialogTrigger>
                       <Button
-                        variant="outline"
-                        className="h-6 text-xs bg-white border border-[#F4EEEE] text-black hover:bg-white cursor-pointer"
+                        onClick={() => setGenerateView(true)}
+                        className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2"
                       >
-                        Begin Mail Merge
+                        <DraftingCompass />
+                        Generate Drafts
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -356,11 +355,6 @@ export function SavedDataTable({
                       </DialogDescription>
                     </DialogContent>
                   </Dialog>
-                  <Database className="h-6.5 w-6.5 p-1 text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
-                  <Trash2 className="text-[#787774] h-6.5 w-6.5 p-1 hover:bg-red-100 hover:text-red-700 cursor-pointer rounded-xs" />
-                  <Tag className="h-6.5 w-6.5 p-1 text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
-                  <Clock className="h-6.5 w-6.5 p-1 text text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
-                  <Ellipsis className="h-6.5 w-6.5 p-1 text text-[#787774] hover:bg-[#F4EEEE] cursor-pointer" />
                 </div>
               </div>
             </SheetTitle>
@@ -370,6 +364,7 @@ export function SavedDataTable({
                 rowData={table.getSelectedRowModel().rows}
                 parsedUserProfile={parsedUserProfile}
                 snippetId={snippetId}
+                generateView={generateView}
               />
             </SheetDescription>
           </SheetContent>
@@ -424,7 +419,6 @@ export function SavedDataTable({
             )}
           </TableBody>
         </Table>
-        {/*Review Drafts and Send Here*/}
         <div>
           <div className="py-6">
             <div className="font-semibold flex gap-2">
@@ -434,7 +428,7 @@ export function SavedDataTable({
             <div className="flex items-center py-2 space-x-2">
               <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
                 <Pencil />
-                Edit
+                Edit Drafts
               </Badge>
               <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
               <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">
@@ -444,7 +438,6 @@ export function SavedDataTable({
             <div className="bg-[#FAEBDD] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D9730D]">
               <Info className="h-4 w-4" />
               <span className="text-xs">
-                {" "}
                 Review Your Drafts Before Bulk Sending
               </span>
             </div>
@@ -463,8 +456,8 @@ export function SavedDataTable({
             </div>
             <div className="flex items-center py-2 space-x-2">
               <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
-                <Pencil />
-                Edit
+                <HammerIcon />
+                Generate Follow Up
               </Badge>
               <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
               <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">

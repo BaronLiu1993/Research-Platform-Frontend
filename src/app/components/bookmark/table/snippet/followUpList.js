@@ -22,9 +22,7 @@ export default function FollowUpList({
   const [selected, setSelected] = useState([]);
   const [totalSelected, setTotalSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
-  console.log(selected);
-  console.log(totalSelected);
-  const handleCheck = (professor_id) => {
+  const handleCheck = ({ professor_id, name, email }) => {
     setSelected((prev) =>
       prev.includes(professor_id)
         ? prev.filter((id) => id !== professor_id)
@@ -63,27 +61,37 @@ export default function FollowUpList({
           <Checkbox checked={checkAll} onCheckedChange={handleCheckAll} />
           <span className="text-sm font-semibold">Select All</span>
         </div>
-        {parsedCompletedData.map((data) => (
-          <div key={data.id} className="flex items-center gap-2 p-2 ">
-            <Checkbox
-              checked={selected.includes(data.professor_id)}
-              onCheckedChange={() => handleCheck(data.professor_id)}
-              onClick={(e) => e.stopPropagation()}
-            />
-
-            <div className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-            <div className="flex gap-2">
-              <span className="text-sm font-semibold">{data.name}</span>
-              <span className="text-sm font-light">{data.email}</span>
-            </div>
-            <Trash2 className="ml-auto h-6 w-6 p-1 hover:bg-red-200 rounded-xs cursor-pointer" />
+        {parsedCompletedData ? (
+          <div className="font-sans text-sm p-4 font-light">
+            No Drafts Found
           </div>
-        ))}
+        ) : (
+          parsedCompletedData.map((data) => (
+            <div key={data.id} className="flex items-center gap-2 p-2 ">
+              <Checkbox
+                checked={selected.includes(data.professor_id)}
+                onCheckedChange={() =>
+                  handleCheck({
+                    professor_id: data.professor_id,
+                    name: data.name,
+                    email: data.email,
+                  })
+                }
+                onClick={(e) => e.stopPropagation()}
+              />
+              <div className="flex gap-2">
+                <span className="text-sm font-semibold">{data.name}</span>
+                <span className="text-sm font-light">{data.email}</span>
+              </div>
+              <Trash2 className="ml-auto h-6 w-6 p-1 hover:bg-red-200 rounded-xs cursor-pointer" />
+            </div>
+          ))
+        )}
       </div>
       <div className="flex gap-4">
         <Dialog>
           <DialogTrigger>
-            <Button className="rounded-xs text-[#337EA9] bg-[#E7F3F8] hover:bg-[#E7F3F8] cursor-pointer">
+            <Button className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2">
               <Send />
               Send Follow Up
             </Button>

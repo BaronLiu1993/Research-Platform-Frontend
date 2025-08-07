@@ -7,7 +7,7 @@ export default function Compose({userId, professorId, fromName, fromEmail, to, d
   return (
     <div>
       <DialogTitle className="hidden"></DialogTitle>
-      <ComposeEditor draftData = {draftData} userId={userId} professorId={professorId} fromName={fromEmail} fromEmail ={fromEmail} to = {to}/>
+      <ComposeEditor draftData = {draftData} userId={userId} professorId={professorId} fromName={fromName} fromEmail ={fromEmail} to = {to}/>
     </div>
   );
 }

@@ -83,7 +83,7 @@ export default function DraftEditor({
   };
 
   const handleAIEditDraft = async () => {
-    const response = await AIEditDraft(
+    await AIEditDraft(
       userId,
       professorId,
       editor?.state.doc.textBetween(

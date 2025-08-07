@@ -46,7 +46,6 @@ export default async function Kanban({ userId, parsedSavedData, parsedInProgress
   const inProgressResponses = parsedInProgressData || [];
   const inCompleteResponses = parsedSavedData || [];
   const completedResponses = parsedCompletedData || [];
-  const followUpResponses = [];
 
   const columnsData = [
     {
@@ -66,13 +65,7 @@ export default async function Kanban({ userId, parsedSavedData, parsedInProgress
       statusKey: "completed",
       data: completedResponses,
       cardComponent: KanbanCardCompleted,
-    },
-    {
-      id: "followup",
-      statusKey: "follow_up",
-      data: followUpResponses,
-      cardComponent: KanbanCardFollowUp,
-    },
+    }
   ];
 
 

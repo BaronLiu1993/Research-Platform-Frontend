@@ -21,7 +21,7 @@ export default function DraftList({ draftData, parsedUserProfile }) {
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
   const handleSubmit = async () => {
-    const response = await ExecuteMassSend(
+    await ExecuteMassSend(
       parsedUserProfile.user_id,
       `${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`,
       parsedUserProfile.student_email,
@@ -30,7 +30,7 @@ export default function DraftList({ draftData, parsedUserProfile }) {
   };
 
   const handleSubmitWithAttachments = async () => {
-    const response = await ExecuteMassSendWithAttachments(
+    await ExecuteMassSendWithAttachments(
       parsedUserProfile.user_id,
       `${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`,
       parsedUserProfile.student_email,
@@ -70,61 +70,68 @@ export default function DraftList({ draftData, parsedUserProfile }) {
           <Checkbox checked={checkAll} onCheckedChange={handleCheckAll} />
           <span className="text-sm font-semibold">Select All</span>
         </div>
-        {draftData.map((data) => (
-          <Dialog key={data.id}>
-            <DialogTrigger className="p-2 border-b w-full flex items-center justify-between gap-2 hover:bg-[#F1F1EF]">
-              <Checkbox
-                checked={selected.some((item) => item.id === data.id)}
-                onCheckedChange={() =>
-                  handleCheck(data.id, data.name, data.email)
-                }
-                onClick={(e) => e.stopPropagation()}
-              />
-              <div className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-              <div className="flex gap-2">
-                <span className="text-sm font-semibold">{data.name}</span>
-                <span className="text-sm font-light">{data.email}</span>
-              </div>
-              <Button
-                onClick={() =>
-                  handleDeleteDraft(
-                    data.draftId,
-                    parsedUserProfile.user_id,
-                    data.id
-                  )
-                }
-                className="ml-auto bg-gray-50 text-black h-6 w-6 p-1 hover:bg-red-200 rounded-xs cursor-pointer"
-              >
-                <Trash2 />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogTitle></DialogTitle>
-              <DraftEditor
-                userId={parsedUserProfile.user_id}
-                professorId={data.id}
-                fromName={`${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`}
-                fromEmail={parsedUserProfile.student_email}
-                draftId={data.draftId}
-                to={data.email}
-                body={data.body}
-                initialSubject={data.subject}
-              />
-            </DialogContent>
-          </Dialog>
-        ))}
+        {draftData ? (
+          <div className="font-sans text-sm p-4 font-light">
+            No Drafts Found
+          </div>
+        ) : (
+          draftData.map((data) => (
+            <Dialog key={data.id}>
+              <DialogTrigger className="p-2 border-b w-full flex items-center justify-between gap-2 hover:bg-[#F1F1EF]">
+                <Checkbox
+                  checked={selected.some((item) => item.id === data.id)}
+                  onCheckedChange={() =>
+                    handleCheck(data.id, data.name, data.email)
+                  }
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <div className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+                <div className="flex gap-2">
+                  <span className="text-sm font-semibold">{data.name}</span>
+                  <span className="text-sm font-light">{data.email}</span>
+                </div>
+                <Button
+                  onClick={() =>
+                    handleDeleteDraft(
+                      data.draftId,
+                      parsedUserProfile.user_id,
+                      data.id
+                    )
+                  }
+                  className="ml-auto bg-gray-50 text-black h-6 w-6 p-1 hover:bg-red-200 rounded-xs cursor-pointer"
+                >
+                  <Trash2 />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogTitle></DialogTitle>
+                <DraftEditor
+                  userId={parsedUserProfile.user_id}
+                  professorId={data.id}
+                  fromName={`${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`}
+                  fromEmail={parsedUserProfile.student_email}
+                  draftId={data.draftId}
+                  to={data.email}
+                  body={data.body}
+                  initialSubject={data.subject}
+                />
+              </DialogContent>
+            </Dialog>
+          ))
+        )}
       </div>
       <div className="flex gap-4">
         <Button
-          className="rounded-xs text-[#337EA9] bg-[#E7F3F8] hover:bg-[#E7F3F8] cursor-pointer"
-          onClick={() => handleSubmit()}
+          className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2"
+          onClick={handleSubmit}
         >
-          <Send />
+          <Send className="w-4 h-4" />
           Send Selected
         </Button>
+
         <Button
-          className="rounded-xs text-[#337EA9] bg-[#E7F3F8] hover:bg-[#E7F3F8] cursor-pointer"
-          onClick={() => handleSubmitWithAttachments()}
+          className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2"
+          onClick={handleSubmitWithAttachments}
         >
           <FileSymlink />
           Send Selected With Attachments

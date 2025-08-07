@@ -54,18 +54,17 @@ export default function ComposeEditor({
   userName,
   userEmail,
 }) {
-  //Mount the selected variables store
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
   );
 
   const setAISnippet = useAISnippetStore((s) => s.setAISnippets);
-  
+
   useEffect(() => {
     setSelectedVariables([]);
     setAISnippet([]);
   }, []);
-
+  
   const [subject, setSubject] = useState("");
   const [AIOpenDialog, setAIOpenDialog] = useState(false);
 

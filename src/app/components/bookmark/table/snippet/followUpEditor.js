@@ -111,12 +111,7 @@ export default function FollowUpEditor({
   };
 
   const handleCreateFollowUpDrafts = async () => {
-    console.log("fired");
-    console.log(editor.getHTML());
-    console.log(subject);
-    console.log(userId);
     const response = await GenerateSnippet(userId, editor.getHTML(), subject);
-    console.log(response.snippetId);
     const dynamicFields = await SyncSnippetData(
       userId,
       professorIDArray,
@@ -142,12 +137,7 @@ export default function FollowUpEditor({
   };
 
   const handleCreateFollowUpDraftsWithAttachments = async () => {
-    console.log("fired");
-    console.log(editor.getHTML());
-    console.log(subject);
-    console.log(userId);
     const response = await GenerateSnippet(userId, editor.getHTML(), subject);
-    console.log(response.snippetId);
     const dynamicFields = await SyncSnippetData(
       userId,
       professorIDArray,
@@ -162,8 +152,7 @@ export default function FollowUpEditor({
         dynamicFields
       );
       if (draftResponse.success) {
-        console.log(draftResponse.success)
-        const response = await ExecuteMassFollowUpDraftsWithAttachments(
+        await ExecuteMassFollowUpDraftsWithAttachments(
           userId,
           fromName,
           fromEmail,
