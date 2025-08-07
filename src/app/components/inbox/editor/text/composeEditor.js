@@ -14,7 +14,6 @@ import {
   Paperclip,
   PencilRuler,
   Strikethrough,
-  Trash2,
   Wand2,
   X,
 } from "lucide-react";
@@ -46,7 +45,6 @@ export default function ComposeEditor({
 }) {
   const [open, setOpen] = useState(false);
   const [subject, setSubject] = useState("");
-  console.log(draftData)
   const handleSendFollowUp = async () => {
     await SendReply(
       userId,

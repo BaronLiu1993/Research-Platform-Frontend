@@ -5,7 +5,6 @@ import { Eye, EyeClosed, Forward, Reply } from "lucide-react";
 import Display from "../editor/text/display";
 
 export default function Message({ data, email, engagementData, seenData }) {
-  console.log(email)
   return (
     <>
       <div className="font-main">

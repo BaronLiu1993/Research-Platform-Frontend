@@ -28,7 +28,7 @@ export async function handleLogin(prevState, formData) {
       return {
         message:
           errorBody.message ||
-          `Wrong Email or Password (Status: ${loginResponse.status})`,
+          `Wrong Email or Password`,
         savedProfessors: [],
         appliedProfessors: [],
         success: false,
