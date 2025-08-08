@@ -32,11 +32,7 @@ export default async function InboxEmail() {
   const cookieStore = cookies();
   const userId = cookieStore.get("user_id")
   const access = cookieStore.get("access_token")
-  console.log(userId)
-  console.log(access)
-
   let threadArrayEmailResponse = [];
-
   try {
     const emailResponse = await fetch(
       `http://localhost:8080/inbox/get-email-chain/${userId}`,
