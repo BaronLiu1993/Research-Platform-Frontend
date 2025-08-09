@@ -7,11 +7,10 @@ export default function ContinueFollowUp() {
   return (
     <>
       <Button
-        className="rounded-sm bg-[#FAEBDD] text-[#CB912F] cursor-pointer hover:bg-[#F5D7B5]"
+        className="rounded-sm bg-[#EDF3EC] text-[#448361] cursor-pointer hover:bg-[#D6E6D4]"
       >
         <ArrowRight />
-        Continue Follow Up
-
+        Continue Reply
       </Button>
     </>
   );

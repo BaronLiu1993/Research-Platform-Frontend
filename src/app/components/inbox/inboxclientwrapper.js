@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense, lazy } from "react";
+import { useState, Suspense, lazy, useEffect } from "react";
 
 import {
   Sheet,
@@ -13,11 +13,6 @@ import {
 
 import {
   FolderOpen,
-  Trash2,
-  Tag,
-  Ellipsis,
-  Clock,
-  Database,
   Inbox,
   Lightbulb,
 } from "lucide-react";
@@ -42,12 +37,35 @@ export default function InboxClientWrapper({
   emails,
 }) {
   const [openThreadId, setOpenThreadId] = useState("");
-  console.log(threadArrayEmailResponse);
+
+  const [draftExistsMap, setDraftExistsMap] = useState(() => {
+    const map = {};
+    threadArrayEmailResponse.forEach((email) => {
+      map[email.threadId] = email.draftData.draftExists;
+    });
+    return map;
+  });
+
+  useEffect(() => {
+    const map = {};
+    threadArrayEmailResponse.forEach(email => {
+      map[email.threadId] = email.draftData.draftExists;
+    });
+    setDraftExistsMap(map);
+  }, [threadArrayEmailResponse]);
+
+  function handleCreateReply(threadId) {
+    setDraftExistsMap((prev) => ({
+      ...prev,
+      [threadId]: true,
+    }));
+  }
+
   return (
     <>
-      <div className="font-main py-6">
+      <div className="font-main p-6 w-full">
         <div>
-          <div className="border-b border-gray-200 w-[60rem]">
+          <div className="w-full border-b-1 my-4">
             <div className="px-4 pt-3 bg-white justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <Inbox className="h-5 w-5 text-gray-500" />
@@ -69,7 +87,7 @@ export default function InboxClientWrapper({
             </h2>
           </div>
 
-          <div>
+          <div className="w-full">
             {threadArrayEmailResponse.length > 0 ? (
               threadArrayEmailResponse?.map((email) => (
                 <Sheet
@@ -79,12 +97,9 @@ export default function InboxClientWrapper({
                   }}
                   key={email.threadId}
                 >
-                  <SheetTrigger>
-                    <div
-                      className={`flex border-1 justify-between items-center p-2 hover:bg-[#F4EEEE] rounded-xs cursor-pointer font-main text-[12.5px] space-x-4 w-[60rem]`}
-                    >
-                      {" "}
-                      <div className="flex ">
+                  <SheetTrigger asChild>
+                    <div className="w-full flex justify-between items-center p-2 hover:bg-gray-100 rounded-xs cursor-pointer font-main text-[12.5px] space-x-4">
+                      <div className="flex">
                         <div className="flex"></div>
                         <div className="text-left">
                           <h1 className="font-semibold truncate">
@@ -94,10 +109,7 @@ export default function InboxClientWrapper({
                       </div>
                       <div className="flex items-center gap-2 overflow-hidden basis-1/2">
                         <h1 className="font-semibold truncate max-w-[40%]">
-                          {email.firstMessageData.subject}
-                        </h1>
-                        <h1 className="text-[#979A9B] truncate max-w-[60%]">
-                          {email.firstMessageData.body}
+                          {email.firstMessageData.subject || "No Subject"}
                         </h1>
                       </div>
                       <div className="flex items-center gap-2 shrink-0 basis-1/4 justify-end">
@@ -125,7 +137,7 @@ export default function InboxClientWrapper({
                           <Dialog>
                             <DialogTrigger asChild>
                               <div>
-                                {email.draftData.draftExists ? (
+                                {draftExistsMap[email.threadId] ? (
                                   <ContinueFollowUp />
                                 ) : (
                                   <ComposeFollowUp
@@ -135,6 +147,9 @@ export default function InboxClientWrapper({
                                     userEmail={email.userEmail}
                                     professorEmail={email.professorEmail}
                                     userName={email.userName}
+                                    onCreateReply={() =>
+                                      handleCreateReply(email.threadId)
+                                    }
                                   />
                                 )}
                               </div>
@@ -151,7 +166,6 @@ export default function InboxClientWrapper({
                               />
                             </DialogContent>
                           </Dialog>
-
                         </div>
                       </div>
 

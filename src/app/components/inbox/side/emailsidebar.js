@@ -45,21 +45,21 @@ export default function EmailSidebar({
             key={idx}
           >
             <AccordionItem value={`item-${idx}`}>
-              <AccordionTrigger className="underline-none hover:bg-[#F1F1EF] p-4">
+              <AccordionTrigger className="underline-none cursor-pointer hover:bg-[#F1F1EF] p-4">
                 <div>
                   <div className="space-x-2 flex flex-col gap-2">
                     <span className="text-md flex flex-col font-semibold text-black">
                       {email === message.to.address ? (
                         <span className="flex flex-col">
-                          <span className="rounded-xs">From Professor</span>
-                          <span className = "font-light"> {message.subject || "No Subject"} </span>
+                          <span className="rounded-xs">Professor Message</span>
+                          <span className = "font-light">Subject: {message.subject || "No Subject"} </span>
                         </span>
                       ) : (
-                        <span>
-                          <span className="rounded-xs">From Student</span>
-                          <span className = "font-light"> {message.subject || "No Subject"} </span>
+                        <span className = "flex flex-col">
+                          <span className="rounded-xs">Student Message</span>
+                          <span className = "font-light">Subject: {message.subject || "No Subject"} </span>
                         </span>
-                      )}{" "}
+                      )}
                     </span>
                     <div className="space-x-2 flex">
                       <div>
@@ -99,7 +99,7 @@ export default function EmailSidebar({
                             <div>
                               {engagementData.opened ? (
                                 <Badge className="text-[10px] bg-green-500 rounded-xs">
-                                  ENGAGED WITH MEDIA @{" "}
+                                  ENGAGED WITH MEDIA @
                                   {engagementData.opened_at}
                                 </Badge>
                               ) : (
@@ -111,13 +111,15 @@ export default function EmailSidebar({
                           </div>
                         )}
                       </div>
+                      <div>
                       {message.labels?.map((label, idx) => (
                         <div key={idx}>
-                          <Badge className="text-[10px] rounded-xs text-[#979A9B] bg-[#F1F1EF]">
+                          <Badge className="text-[10px] rounded-xs text-black bg-[#F1F1EF]">
                             {label}
                           </Badge>
                         </div>
                       ))}
+                      </div>
                     </div>
                   </div>
                 </div>

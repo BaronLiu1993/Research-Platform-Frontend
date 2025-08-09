@@ -11,8 +11,10 @@ import {
   Italic,
   List,
   ListTodo,
+  Loader,
   Paperclip,
   PencilRuler,
+  Send,
   Strikethrough,
   Wand2,
   X,
@@ -33,6 +35,7 @@ import { DialogClose } from "@/shadcomponents/ui/dialog";
 
 import { SendReply } from "@/app/actions/reply/sendReply";
 import DeleteFollowUp from "../../button/compose/deleteFollowUp";
+import { toast } from "sonner";
 
 export default function ComposeEditor({
   draftData,
@@ -43,21 +46,29 @@ export default function ComposeEditor({
   fromEmail,
   to,
 }) {
-  const [open, setOpen] = useState(false);
   const [subject, setSubject] = useState("");
   const handleSendFollowUp = async () => {
-    await SendReply(
-      userId,
-      draftData.draft_id,
-      draftData.tracking_id
-    );
+    try {
+      const data = {
+        fromName,
+        fromEmail: "baronliu1993@gmail.com",
+        to,
+        body: editor?.getHTML(),
+        subject,
+      };
+      await SaveReply(data, userId, professorId, threadId);
+      await SendReply(userId, draftData.draft_id, draftData.tracking_id);
+      toast("Reply Sent!")
+    } catch {
+      toast("Failed to Send!")
+    }
   };
 
   const handleSaveDraft = async () => {
     const data = {
       fromName,
       fromEmail: "baronliu1993@gmail.com",
-      to: "jiexuan.liu@mail.utoronto.ca",
+      to,
       body: editor?.getHTML(),
       subject,
     };
@@ -68,7 +79,8 @@ export default function ComposeEditor({
     extensions: [StarterKit],
     editorProps: {
       attributes: {
-        class: "max-w-[35.9rem] w-full h-full min-h-[300px] p-1 text-[13px]",
+        class:
+          "prose prose-p:my-0 max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[14px]",
       },
     },
     content: draftData.body || "",
@@ -78,31 +90,10 @@ export default function ComposeEditor({
     <div>
       {editor && (
         <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-          <div className="flex rounded-md border border-gray-100 bg-white p-1 shadow-sm">
+          <div className="flex rounded-sm border border-gray-100 bg-white p-1 shadow-sm">
             <button
               onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 font-main text-xs gap-2 mx-1 flex ${
-                editor.isActive("bold")
-                  ? "hover:bg-[#F1F1EFs] text-blue-400"
-                  : ""
-              }`}
-            >
-              <PencilRuler className="w-4 h-4" /> <span>Revise</span>
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 font-main text-xs gap-2 mx-1 flex ${
-                editor.isActive("bold")
-                  ? "hover:bg-[#F1F1EFs] text-blue-400"
-                  : ""
-              }`}
-            >
-              <Wand2 className="w-4 h-4" /> <span>Generate with AI</span>
-            </button>
-            <div className="text-gray-200 border-l-1"></div>
-            <button
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 ${
+              className={`rounded-md p-1 cursor-pointer hover:bg-gray-100 ${
                 editor.isActive("bold")
                   ? "hover:bg-[#F1F1EFs] text-blue-400"
                   : ""
@@ -112,7 +103,7 @@ export default function ComposeEditor({
             </button>
             <button
               onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 ${
+              className={`rounded-md p-1 cursor-pointer hover:bg-gray-100 ${
                 editor.isActive("italic")
                   ? "hover:bg-[#F1F1EFs] text-blue-400"
                   : ""
@@ -122,7 +113,7 @@ export default function ComposeEditor({
             </button>
             <button
               onClick={() => editor.chain().focus().toggleStrike().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 ${
+              className={`rounded-md p-1 cursor-pointer hover:bg-gray-100 ${
                 editor.isActive("strike")
                   ? "hover:bg-[#F1F1EFs] text-blue-400"
                   : ""
@@ -133,7 +124,7 @@ export default function ComposeEditor({
             <div className="text-gray-200 border-l-1"></div>
             <button
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 ${
+              className={`rounded-md p-1 cursor-pointer hover:bg-gray-100 ${
                 editor.isActive("orderedList")
                   ? "hover:bg-[#F1F1EFs] text-blue-400"
                   : ""
@@ -143,7 +134,7 @@ export default function ComposeEditor({
             </button>
             <button
               onClick={() => editor.chain().focus().toggleBulletList().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 ${
+              className={`rounded-md p-1 cursor-pointer hover:bg-gray-100 ${
                 editor.isActive("bulletList")
                   ? "hover:bg-[#F1F1EFs] text-blue-400"
                   : ""
@@ -156,21 +147,29 @@ export default function ComposeEditor({
       )}
 
       <div className="text-sm">
-        <DialogClose className="py-2 px-4 flex justify-end items-end w-full">
-          <X className="h-4 w-4 text-[#787774]" />
-        </DialogClose>
+        <div className="flex justify-end p-2">
+          <DialogClose className="p-2 rounded-sm w-fit cursor-pointer hover:bg-gray-100 flex">
+            <X className="h-4 w-4 text-[#787774] hover:text-red-500" />
+          </DialogClose>
+        </div>
+
         <div className="flex flex-col">
           <div className="flex gap-2 px-4 py-1">
             <h1 className="text-black">{fromName}</h1>
             <h2 className="text-[#787774]">{fromEmail}</h2>
           </div>
-          <input className="px-4 py-1 w-full" value={to} variant="ghost" />
+          <input
+            className="px-4 py-1 w-full"
+            value={to}
+            readOnly
+            variant="ghost"
+          />
           <input
             onChange={(e) => setSubject(e.target.value)}
+            value={subject}
             className="px-4 py-1 w-full"
             placeholder="Subject"
             variant="ghost"
-            defaultValue={draftData.subject}
           />
         </div>
       </div>
@@ -179,69 +178,26 @@ export default function ComposeEditor({
         <div className="flex gap-4">
           <button
             onClick={() => handleSaveDraft()}
-            className="font-main text-xs rounded-xs text-[#337EA9] font-semibold bg-[#E7F3F8] h-[1.7rem] w-fit px-1"
+            className="rounded-sm flex  items-center gap-2 p-2 text-sm text-[#337EA9] font-semibold bg-[#E7F3F8] cursor-pointer hover:bg-[#D0E7F0]"
           >
-            Save Draft
+            <Loader />
+            Save For Later
           </button>
           <button
             onClick={() => handleSendFollowUp()}
-            className="font-main text-xs rounded-xs text-[#448361] font-semibold bg-[#EDF3EC] cursor-pointer h-[1.7rem] w-fit px-1"
+            className="rounded-sm bg-[#EDF3EC] flex items-center gap-2 p-2 font-semibold text-sm text-[#448361] cursor-pointer hover:bg-[#D6E6D4]"
           >
-            Send Email
+            <Send />
+            Send Email Now
           </button>
         </div>
         <div className="flex gap-2">
           <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <BookText className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Attachments
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <Paperclip className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Attachments
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <DeleteFollowUp userId = {userId} draftId ={draftData.draft_id}/>
+            <TooltipTrigger className="hover:text-red-500 p-2 cursor-pointer hover:bg-gray-100">
+              <DeleteFollowUp userId={userId} draftId={draftData.draft_id} />
             </TooltipTrigger>
             <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
               Delete Draft
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <Wand2 className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              AI Tools
-            </TooltipContent>
-          </Tooltip>
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <Tooltip>
-                <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-                  <CurlyBraces className="h-4 w-4" />
-                </TooltipTrigger>
-                <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-                  Snippets
-                </TooltipContent>
-              </Tooltip>
-            </PopoverTrigger>
-            <PopoverContent className="p-0">
-              <Snippets />
-            </PopoverContent>
-          </Popover>
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-red-100 p-1 rounded-xs cursor-pointer"></TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Delete
             </TooltipContent>
           </Tooltip>
         </div>

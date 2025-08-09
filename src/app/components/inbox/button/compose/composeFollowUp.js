@@ -11,6 +11,7 @@ export default function ComposeFollowUp({
   userEmail,
   userName,
   professorEmail,
+  onCreateReply
 }) {
   const data = {
     fromEmail: "baronliu1993@gmail.com",
@@ -22,7 +23,9 @@ export default function ComposeFollowUp({
 
   const handleCreateFollowUp = async () => {
     await CreateReply(data, userId, professorId, threadId)
+    onCreateReply?.();
   };
+  
 
   return (
     <>
