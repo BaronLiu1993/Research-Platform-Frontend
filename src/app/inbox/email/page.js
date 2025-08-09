@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+// ... keep your imports unchanged ...
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,9 +15,7 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from "@/shadcomponents/ui/sidebar";
-
 import { AppSidebar } from "@/app/components/sidebar";
-
 import {
   MoveLeft,
   MoveRight,
@@ -25,74 +24,155 @@ import {
   MapIcon,
   Mail,
 } from "lucide-react";
-
 import InboxClientWrapper from "@/app/components/inbox/inboxclientwrapper";
 
+async function safeJson(resp) {
+  try {
+    return await resp.json();
+  } catch (err) {
+    const text = await resp.text().catch(() => "<no body>");
+    return { __jsonError: true, text };
+  }
+}
+
+async function fetchWithTrace(url, opts = {}) {
+  console.log(`➡️ fetch: ${url}`);
+  let resp;
+  try {
+    resp = await fetch(url, opts);
+  } catch (err) {
+    console.error(`🚨 Network error fetching ${url}:`, err);
+    throw err;
+  }
+
+  if (!resp.ok) {
+    const body = await resp.text().catch(() => "<no body>");
+    console.error(`🚨 Non-OK response from ${url}: status=${resp.status}`, body);
+    // still return object to avoid throwing here, upstream can handle
+    return { ok: false, status: resp.status, body };
+  }
+
+  const parsed = await safeJson(resp);
+  if (parsed?.__jsonError) {
+    console.warn(`⚠️ JSON parse error for ${url}:`, parsed.text);
+  }
+  return { ok: true, parsed };
+}
+
 export default async function InboxEmail() {
+  console.log("=== InboxEmail server rendering START ===");
   const cookieStore = cookies();
-  const userId = cookieStore.get("user_id")
-  const access = cookieStore.get("access_token")
+  const userCookie = cookieStore.get("user_id");
+  const accessCookie = cookieStore.get("access_token");
+
+  console.log("cookie objects:", { userCookie, accessCookie });
+
+  const userIdVal = userCookie?.value ?? null;
+  const accessVal = accessCookie?.value ?? null;
+
+  console.log("resolved values:", { userIdVal, accessVal });
+
+  if (!userIdVal) {
+    console.error("❌ No user_id cookie found — aborting server fetches.");
+    // render fallback UI or return early
+    return (
+      <SidebarProvider>
+        <AppSidebar student_data={{ student_email: "" }} />
+        <SidebarInset>
+          <div className="p-6">Could not identify user — please sign in.</div>
+        </SidebarInset>
+      </SidebarProvider>
+    );
+  }
+
   let threadArrayEmailResponse = [];
   try {
-    const emailResponse = await fetch(
-      `http://localhost:8080/inbox/get-email-chain/${userId}`,
+    const resp = await fetchWithTrace(
+      `http://localhost:8080/inbox/get-email-chain/${encodeURIComponent(userIdVal)}`,
       { method: "GET" }
     );
-    const parsedEmailResponse = await emailResponse.json();
-    threadArrayEmailResponse = parsedEmailResponse.threadArray ?? [];
+    if (!resp.ok) {
+      console.warn("get-email-chain returned non-ok, using empty array");
+      threadArrayEmailResponse = [];
+    } else {
+      const parsedEmailResponse = resp.parsed;
+      console.log("get-email-chain parsed:", parsedEmailResponse);
+      threadArrayEmailResponse = parsedEmailResponse?.threadArray ?? [];
+    }
   } catch (err) {
+    console.error("❌ Error in get-email-chain fetch:", err);
     threadArrayEmailResponse = [];
   }
 
+  console.log("threadArrayEmailResponse length:", threadArrayEmailResponse.length);
+
+  // map and enrich every thread with several dependent fetches
   const combinedArray = await Promise.all(
-    threadArrayEmailResponse.map(async (obj) => {
+    threadArrayEmailResponse.map(async (obj, index) => {
+      console.log(`\n--- processing thread index ${index} threadId=${obj.threadId} professorId=${obj.professorId} ---`);
+
+      // create endpoint urls using the concrete userIdVal and obj fields (encode components)
+      const urls = {
+        engagement: `http://localhost:8080/inbox/get-engagement/${encodeURIComponent(obj.threadId)}/${encodeURIComponent(obj.messageId)}`,
+        status: `http://localhost:8080/inbox/get-status/${encodeURIComponent(userIdVal)}/${encodeURIComponent(obj.professorId)}`,
+        draft: `http://localhost:8080/draft/resume-follow-up-draft/${encodeURIComponent(userIdVal)}/${encodeURIComponent(obj.professorId)}`,
+        seen: `http://localhost:8080/inbox/get-seen/${encodeURIComponent(obj.threadId)}/${encodeURIComponent(obj.messageId)}`,
+      };
+
       try {
-        const [engagement, status, draft, seen] = await Promise.all([
-          fetch(`http://localhost:8080/inbox/get-engagement/${obj.threadId}/${obj.messageId}`),
-          fetch(`http://localhost:8080/inbox/get-status/${userId}/${obj.professorId}`),
-          fetch(`http://localhost:8080/draft/resume-follow-up-draft/${userId}/${obj.professorId}`),
-          fetch(`http://localhost:8080/inbox/get-seen/${obj.threadId}/${obj.messageId}`),
+        const [engagementResp, statusResp, draftResp, seenResp] = await Promise.all([
+          fetchWithTrace(urls.engagement),
+          fetchWithTrace(urls.status),
+          fetchWithTrace(urls.draft),
+          fetchWithTrace(urls.seen),
         ]);
 
-        const [engagementData, statusData, draftData, seenData] = await Promise.all([
-          engagement.json(),
-          status.json(),
-          draft.json(),
-          seen.json(),
-        ]);
+        const engagementData = engagementResp.ok ? engagementResp.parsed : {};
+        const statusData = statusResp.ok ? statusResp.parsed : {};
+        const draftData = draftResp.ok ? draftResp.parsed : {};
+        const seenData = seenResp.ok ? seenResp.parsed : {};
+
+        console.log(`-> enriched object index ${index}`, {
+          engagementOk: engagementResp.ok,
+          statusOk: statusResp.ok,
+          draftOk: draftResp.ok,
+          seenOk: seenResp.ok,
+        });
 
         return { ...obj, engagementData, statusData, draftData, seenData };
       } catch (err) {
-        return {
-          ...obj,
-          engagementData: {},
-          statusData: {},
-          draftData: {},
-          seenData: {},
-        };
+        console.error(`❌ Error enriching thread at index ${index}:`, err);
+        return { ...obj, engagementData: {}, statusData: {}, draftData: {}, seenData: {} };
       }
     })
   );
 
-  let parsedUserProfile = {
-    student_email: "",
-  };
+  console.log("combinedArray assembled, length:", combinedArray.length);
 
+  // fetch user sidebar/profile
+  let parsedUserProfile = { student_email: "" };
   try {
-    const rawUserProfile = await fetch(
-      "http://localhost:8080/auth/get-user-sidebar-info",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${access?.value}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    parsedUserProfile = await rawUserProfile.json();
-  } catch {
-    //Redirect to Home
+    const authUrl = "http://localhost:8080/auth/get-user-sidebar-info";
+    const resp = await fetchWithTrace(authUrl, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessVal}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!resp.ok) {
+      console.warn("auth/get-user-sidebar-info returned non-ok, using fallback profile");
+    } else {
+      parsedUserProfile = resp.parsed;
+    }
+  } catch (err) {
+    console.error("❌ Error fetching user profile:", err);
   }
+
+  console.log("parsedUserProfile:", parsedUserProfile);
+
+  console.log("=== InboxEmail server rendering END ===");
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile} />
@@ -144,7 +224,7 @@ export default async function InboxEmail() {
         <InboxClientWrapper
           emails={parsedUserProfile.student_email ?? ""}
           threadArrayEmailResponse={combinedArray}
-          userId={userId}
+          userId={userIdVal}
         />
       </SidebarInset>
     </SidebarProvider>

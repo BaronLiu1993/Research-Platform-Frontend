@@ -2,6 +2,7 @@
 
 import { CreateReply } from "@/app/actions/reply/createReply";
 import { Button } from "@/shadcomponents/ui/button";
+import { Reply } from "lucide-react";
 
 export default function ComposeFollowUp({
   threadId,
@@ -14,13 +15,12 @@ export default function ComposeFollowUp({
   const data = {
     fromEmail: "baronliu1993@gmail.com",
     fromName: userName,
-    to: "jiexuan.liu@mail.utoronto.ca",
+    to: professorEmail,
     subject: "",
     message: "",
   };
 
   const handleCreateFollowUp = async () => {
-    console.log(threadId)
     await CreateReply(data, userId, professorId, threadId)
   };
 
@@ -28,9 +28,10 @@ export default function ComposeFollowUp({
     <>
       <Button
         onClick={handleCreateFollowUp}
-        className="h-6 text-xs bg-white border border-[#F4EEEE] text-black hover:bg-white cursor-pointer"
+        className="rounded-sm bg-[#FAEBDD] text-[#CB912F] cursor-pointer hover:bg-[#F5D7B5]"
       >
-        Generate Follow Up
+        <Reply />
+        Reply
       </Button>
     </>
   );

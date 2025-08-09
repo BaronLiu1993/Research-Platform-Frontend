@@ -87,7 +87,7 @@ export default function ComposeEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[13px] [&>*]:my-0 [&>*]:mb-0 [&>*]:mt-0",
+          "prose max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[14px] [&>*]:my-0 [&>*]:mb-0 [&>*]:mt-0",
       },
     },
     content: "",

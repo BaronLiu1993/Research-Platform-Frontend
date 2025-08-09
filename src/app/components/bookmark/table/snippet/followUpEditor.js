@@ -128,7 +128,6 @@ export default function FollowUpEditor({
         professorIDArray,
         selectedVariables
       );
-      console.log(dynamicFields)
       if (response.snippetId) {
         const draftResponse = await createMassFollowUpDrafts(
           userId,

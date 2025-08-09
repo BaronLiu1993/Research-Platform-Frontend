@@ -1,14 +1,17 @@
 "use client";
 
 import { Button } from "@/shadcomponents/ui/button";
+import { ArrowRight } from "lucide-react";
 
 export default function ContinueFollowUp() {
   return (
     <>
       <Button
-        className="h-6 text-xs bg-[#F6F3F9] border-2 border-[#F4EEEE] text-[#9065B0] hover:bg-[#F6F3F9] hover:text-purple-900 cursor-pointer"
+        className="rounded-sm bg-[#FAEBDD] text-[#CB912F] cursor-pointer hover:bg-[#F5D7B5]"
       >
+        <ArrowRight />
         Continue Follow Up
+
       </Button>
     </>
   );
