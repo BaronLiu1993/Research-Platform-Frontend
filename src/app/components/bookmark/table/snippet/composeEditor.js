@@ -15,6 +15,7 @@ import {
   Italic,
   List,
   ListTodo,
+  Loader,
   Paperclip,
   PencilRuler,
   Strikethrough,
@@ -64,7 +65,7 @@ export default function ComposeEditor({
     setSelectedVariables([]);
     setAISnippet([]);
   }, []);
-  
+
   const [subject, setSubject] = useState("");
   const [AIOpenDialog, setAIOpenDialog] = useState(false);
 
@@ -210,41 +211,11 @@ export default function ComposeEditor({
           onClick={() =>
             handleSnippetGeneration(userId, editor.getHTML(), subject)
           }
-          className="font-main text-xs rounded-xs text-[#337EA9] cursor-pointer bg-[#E7F3F8] h-[1.7rem] px-1"
+          className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2 text-sm"
         >
+          <Loader className = "h-4 w-4"/>
           Generate Snippet
         </button>
-        <div className="flex gap-2">
-          <Tooltip>
-            <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-              <Paperclip className="h-4 w-4" />
-            </TooltipTrigger>
-            <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-              Attachments
-            </TooltipContent>
-          </Tooltip>
-          <Popover modal={true}>
-            <PopoverTrigger>
-              <Tooltip>
-                <TooltipTrigger className="hover:bg-[#F4EEEE] p-1 rounded-xs cursor-pointer">
-                  <Wand2 className="h-4 w-4" />
-                </TooltipTrigger>
-                <TooltipContent className="font-main font-semibold rounded-xs text-[12px] leading-4">
-                  AI Tools
-                </TooltipContent>
-              </Tooltip>
-            </PopoverTrigger>
-            <PopoverContent className="w-[30rem]">
-              <AIPopover
-                userId={userId}
-                onSnippetGenerated={(snippet) => {
-                  if (snippet?.body) editor?.commands.setContent(snippet.body);
-                  if (snippet?.subject) setSubject(snippet.subject);
-                }}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
       </div>
     </div>
   );

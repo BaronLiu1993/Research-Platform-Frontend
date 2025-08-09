@@ -57,15 +57,12 @@ export default function FollowUpList({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <div className="flex items-center gap-2 p-2 border-b">
+        <div className="flex items-center gap-2 p-2 border-1">
           <Checkbox checked={checkAll} onCheckedChange={handleCheckAll} />
           <span className="text-sm font-semibold">Select All</span>
         </div>
-        {parsedCompletedData ? (
-          <div className="font-sans text-sm p-4 font-light">
-            No Drafts Found
-          </div>
-        ) : (
+        <div className = "border-1">
+        {parsedCompletedData.length > 0 ? (
           parsedCompletedData.map((data) => (
             <div key={data.id} className="flex items-center gap-2 p-2 ">
               <Checkbox
@@ -83,10 +80,14 @@ export default function FollowUpList({
                 <span className="text-sm font-semibold">{data.name}</span>
                 <span className="text-sm font-light">{data.email}</span>
               </div>
-              <Trash2 className="ml-auto h-6 w-6 p-1 hover:bg-red-200 rounded-xs cursor-pointer" />
             </div>
           ))
+        ) : (
+          <div className="font-sans text-sm p-4 font-light">
+            No Drafts Found
+          </div>
         )}
+        </div>
       </div>
       <div className="flex gap-4">
         <Dialog>

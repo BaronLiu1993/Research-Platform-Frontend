@@ -2,7 +2,7 @@
 
 import "tippy.js/dist/tippy.css";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import Mention from "@tiptap/extension-mention";
 import suggestion from "../tiptap/suggestion";
@@ -23,18 +23,7 @@ import {
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 
 import { Badge } from "@/shadcomponents/ui/badge";
-import { AIEditDraft } from "../../api/drafts/AIEditDraft";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/shadcomponents/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shadcomponents/ui/popover";
+import { toast } from "sonner";
 import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
 import { SyncSnippetData } from "@/app/actions/syncSnippetData";
@@ -48,10 +37,11 @@ export default function FollowUpEditor({
   fromName,
   fromEmail,
   professorIDArray,
-  totalProfessorData
+  totalProfessorData,
 }) {
   const [subject, setSubject] = useState("");
-  const [command, setCommand] = useState("");
+  const closeRef = useRef(null);
+
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
   );
@@ -97,27 +87,15 @@ export default function FollowUpEditor({
     },
   });
 
-  const handleAIEditDraft = async () => {
-    const response = await AIEditDraft(
-      userId,
-      professorId,
-      editor?.state.doc.textBetween(
-        editor?.state.selection.from,
-        editor?.state.selection.to,
-        " "
-      ),
-      command
-    );
-  };
-
   const handleCreateFollowUpDrafts = async () => {
-    const response = await GenerateSnippet(userId, editor.getHTML(), subject);
-    const dynamicFields = await SyncSnippetData(
-      userId,
-      professorIDArray,
-      selectedVariables
-    );
-    if (response.snippetId) {
+    try {
+      const response = await GenerateSnippet(userId, editor.getHTML(), subject);
+
+      const dynamicFields = await SyncSnippetData(
+        userId,
+        professorIDArray,
+        selectedVariables
+      );
       const draftResponse = await createMassFollowUpDrafts(
         userId,
         response.snippetId,
@@ -126,39 +104,54 @@ export default function FollowUpEditor({
         dynamicFields
       );
       if (draftResponse.success) {
-        const response = await ExecuteMassSendFollowUpDrafts(
+        const sendResponse = await ExecuteMassSendFollowUpDrafts(
           userId,
           fromName,
           fromEmail,
           totalProfessorData
         );
+        closeRef.current?.click();
+        toast("Follow Up Emails Sent!");
+      } else {
+        toast("Failed To Queue Follow Up Emails");
       }
+    } catch (error) {
+      toast("Failed To Send Follow Up Email");
     }
   };
 
   const handleCreateFollowUpDraftsWithAttachments = async () => {
-    const response = await GenerateSnippet(userId, editor.getHTML(), subject);
-    const dynamicFields = await SyncSnippetData(
-      userId,
-      professorIDArray,
-      selectedVariables
-    );
-    if (response.snippetId) {
-      const draftResponse = await createMassFollowUpDrafts(
+    try {
+      const response = await GenerateSnippet(userId, editor.getHTML(), subject);
+      const dynamicFields = await SyncSnippetData(
         userId,
-        response.snippetId,
-        fromName,
-        fromEmail,
-        dynamicFields
+        professorIDArray,
+        selectedVariables
       );
-      if (draftResponse.success) {
-        await ExecuteMassFollowUpDraftsWithAttachments(
+      console.log(dynamicFields)
+      if (response.snippetId) {
+        const draftResponse = await createMassFollowUpDrafts(
           userId,
+          response.snippetId,
           fromName,
           fromEmail,
-          professorIDArray
+          dynamicFields
         );
+        if (draftResponse.success) {
+          await ExecuteMassFollowUpDraftsWithAttachments(
+            userId,
+            fromName,
+            fromEmail,
+            totalProfessorData
+          );
+          closeRef.current?.click();
+          toast("Follow Up Email With Attachments Sent!");
+        } else {
+          toast("Failed To Queue Follow Up Emails");
+        }
       }
+    } catch {
+      toast("Failed To Send Follow Up Email With Attachments");
     }
   };
 
@@ -186,146 +179,6 @@ export default function FollowUpEditor({
           />
         </div>
       </div>
-      {editor && (
-        <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-          <div className="flex items-center rounded-xs text-[#37352F] border-1 border-gray-100 bg-white p-1 shadow-sm">
-            <Select>
-              <SelectTrigger className="border-0 shadow-none p-0 m-0 max-h-fit font-main text-xs ">
-                <Pencil className="w-4 h-4 text-[#9A6DD7]" />
-                <span className="text-[#37352F] font-medium">Revise</span>
-              </SelectTrigger>
-              <SelectContent className="rounded-xs">
-                <SelectItem value="light" className="p-1 hover:bg-gray-100">
-                  <button className="flex gap-2 font-main text-xs">
-                    <IndentDecrease />
-                    Shorten
-                  </button>
-                </SelectItem>
-                <SelectItem value="dark" className="p-1 hover:bg-gray-100">
-                  <button className="flex gap-2 font-main text-xs">
-                    <IndentIncrease />
-                    Lengthen
-                  </button>
-                </SelectItem>
-                <SelectItem value="system" className="p-1 hover:bg-gray-100 ">
-                  <button className="flex gap-2 font-main text-xs">
-                    <ALargeSmall />
-                    Grammar
-                  </button>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Popover>
-              <PopoverTrigger>
-                <button
-                  onClick={() => handleAIEditDraft(userId, professorId)}
-                  className="rounded-md p-1 hover:bg-gray-100 font-main text-xs gap-2 mx-1 flex"
-                >
-                  <Wand2 className="w-4 h-4 text-[#529CCA]" />
-                  <span className="font-medium">Generate</span>
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="rounded-xs flex flex-col gap-2">
-                <div className="flex flex-col font-main">
-                  <input
-                    className="h-[1.7rem] rounded-xs border-1 p-1"
-                    placeholder="✏️ How Should I Edit?"
-                  />
-                </div>
-                <div className="font-main text-xs flex flex-col gap-2 justify-start items-start">
-                  <button
-                    onClick={() =>
-                      handleAIEditDraft(userId, profId, "Make more confident")
-                    }
-                  >
-                    💪 Confident Rewrite
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      handleAIEditDraft(
-                        userId,
-                        profId,
-                        "Explain why this research matters"
-                      )
-                    }
-                  >
-                    🎯 Add Research Relevance
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      handleAIEditDraft(
-                        userId,
-                        profId,
-                        "Improve flow and grammar"
-                      )
-                    }
-                  >
-                    🧹 Fix Grammar & Flow
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      handleAIEditDraft(
-                        userId,
-                        profId,
-                        "Add availability and commitment"
-                      )
-                    }
-                  >
-                    📅 Add Schedule/Availability
-                  </button>
-                </div>
-              </PopoverContent>
-            </Popover>
-
-            <div className="text-gray-200 border-l-1"></div>
-            <button
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 ${
-                editor.isActive("bold") ? "text-blue-400" : ""
-              }`}
-            >
-              <Bold className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleItalic().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 ${
-                editor.isActive("italic") ? "text-blue-400" : ""
-              }`}
-            >
-              <Italic className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleStrike().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 ${
-                editor.isActive("strike") ? "text-blue-400" : ""
-              }`}
-            >
-              <Strikethrough className="w-4 h-4" />
-            </button>
-            <div className="text-gray-200 border-l-1"></div>
-            <button
-              onClick={() => editor.chain().focus().toggleOrderedList().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 ${
-                editor.isActive("orderedList") ? "text-blue-400" : ""
-              }`}
-            >
-              <ListTodo className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleBulletList().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 ${
-                editor.isActive("bulletList") ? "text-blue-400" : ""
-              }`}
-            >
-              <List className="w-4 h-4" />
-            </button>
-          </div>
-        </BubbleMenu>
-      )}
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex items-center">
         <FollowUpButton
@@ -335,6 +188,9 @@ export default function FollowUpEditor({
           }
         />
       </div>
+      <DialogClose asChild>
+        <button ref={closeRef} style={{ display: "none" }} />
+      </DialogClose>
     </div>
   );
 }
