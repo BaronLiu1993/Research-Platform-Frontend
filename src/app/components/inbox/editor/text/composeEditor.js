@@ -36,6 +36,7 @@ import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { SendReply } from "@/app/actions/reply/sendReply";
 import DeleteFollowUp from "../../button/compose/deleteFollowUp";
 import { toast } from "sonner";
+import { Dialog } from "@/shadcomponents/ui/composedialog";
 
 export default function ComposeEditor({
   draftData,
@@ -58,21 +59,26 @@ export default function ComposeEditor({
       };
       await SaveReply(data, userId, professorId, threadId);
       await SendReply(userId, draftData.draft_id, draftData.tracking_id);
-      toast("Reply Sent!")
+      toast("Reply Sent!");
     } catch {
-      toast("Failed to Send!")
+      toast("Failed to Send!");
     }
   };
 
   const handleSaveDraft = async () => {
-    const data = {
-      fromName,
-      fromEmail: "baronliu1993@gmail.com",
-      to,
-      body: editor?.getHTML(),
-      subject,
-    };
-    await SaveReply(data, userId, professorId, threadId);
+    try {
+      const data = {
+        fromName,
+        fromEmail: "baronliu1993@gmail.com",
+        to,
+        body: editor?.getHTML(),
+        subject,
+      };
+      await SaveReply(data, userId, professorId, threadId);
+      toast("Saved Successfully");
+    } catch {
+      toast("Failed To Save");
+    }
   };
 
   const editor = useEditor({
@@ -176,20 +182,24 @@ export default function ComposeEditor({
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex justify-between items-center">
         <div className="flex gap-4">
-          <button
-            onClick={() => handleSaveDraft()}
-            className="rounded-sm flex  items-center gap-2 p-2 text-sm text-[#337EA9] font-semibold bg-[#E7F3F8] cursor-pointer hover:bg-[#D0E7F0]"
-          >
-            <Loader />
-            Save For Later
-          </button>
-          <button
-            onClick={() => handleSendFollowUp()}
-            className="rounded-sm bg-[#EDF3EC] flex items-center gap-2 p-2 font-semibold text-sm text-[#448361] cursor-pointer hover:bg-[#D6E6D4]"
-          >
-            <Send />
-            Send Email Now
-          </button>
+          <DialogClose asChild>
+            <button
+              onClick={() => handleSaveDraft()}
+              className="rounded-sm flex  items-center gap-2 p-2 text-sm text-[#337EA9] font-semibold bg-[#E7F3F8] cursor-pointer hover:bg-[#D0E7F0]"
+            >
+              <Loader />
+              Save For Later
+            </button>
+          </DialogClose>
+          <DialogClose asChild>
+            <button
+              onClick={() => handleSendFollowUp()}
+              className="rounded-sm bg-[#EDF3EC] flex items-center gap-2 p-2 font-semibold text-sm text-[#448361] cursor-pointer hover:bg-[#D6E6D4]"
+            >
+              <Send />
+              Send Email Now
+            </button>
+          </DialogClose>
         </div>
         <div className="flex gap-2">
           <Tooltip>

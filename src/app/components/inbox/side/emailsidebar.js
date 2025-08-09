@@ -13,10 +13,12 @@ export default function EmailSidebar({
   threadId,
   userId,
   email,
-  engagementData,
-  seenData,
+  engagementData = {},
+  seenData = {},
 }) {
-  const [threadData, setThreadData] = useState([]);
+  const [threadData, setThreadData] = useState(null);
+  console.log(threadData);
+
   useEffect(() => {
     const fetchResponseThread = async () => {
       const mailData = await fetch(
@@ -34,106 +36,114 @@ export default function EmailSidebar({
 
     if (threadId && userId) fetchResponseThread();
   }, [threadId, userId]);
+
+  if (!threadData) return <div>Loading...</div>;
+
   return (
     <div className="h-[80vh] bg-white overflow-y-auto">
       <div className="space-y-4">
-        {threadData?.messageArray?.map((message, idx) => (
+        {threadData.messageArray?.map((message, idx) => (
           <Accordion
-            className="underline-none cursor-pointer"
-            type="single"
-            collapsible
-            key={idx}
-          >
-            <AccordionItem value={`item-${idx}`}>
-              <AccordionTrigger className="underline-none cursor-pointer hover:bg-[#F1F1EF] p-4">
-                <div>
-                  <div className="space-x-2 flex flex-col gap-2">
-                    <span className="text-md flex flex-col font-semibold text-black">
-                      {email === message.to.address ? (
-                        <span className="flex flex-col">
-                          <span className="rounded-xs">Professor Message</span>
-                          <span className = "font-light">Subject: {message.subject || "No Subject"} </span>
+          className="cursor-pointer"
+          type="single"
+          collapsible
+          key={idx}
+        >
+          <AccordionItem value={`item-${idx}`}>
+            <AccordionTrigger className="cursor-pointer hover:bg-[#F1F1EF] p-4 underline-none">
+              <div>
+                <div className="space-x-2 flex flex-col gap-2">
+                  <span className="text-md flex flex-col font-semibold text-black underline-none">
+                    {email === message.to.address ? (
+                      <span className="flex flex-col underline-none">
+                        <span className="rounded-xs underline-none">Professor Message</span>
+                        <span className="font-light underline-none">
+                          Subject: {message.subject || "No Subject"}{" "}
                         </span>
-                      ) : (
-                        <span className = "flex flex-col">
-                          <span className="rounded-xs">Student Message</span>
-                          <span className = "font-light">Subject: {message.subject || "No Subject"} </span>
+                      </span>
+                    ) : (
+                      <span className="flex flex-col underline-none">
+                        <span className="rounded-xs underline-none">Student Message</span>
+                        <span className="font-light underline-none">
+                          Subject: {message.subject || "No Subject"}{" "}
                         </span>
-                      )}
-                    </span>
-                    <div className="space-x-2 flex">
-                      <div>
+                      </span>
+                    )}
+                  </span>
+                  <div className="space-x-2 flex flex-wrap items-center gap-2">
+                    {!message?.labels?.includes("DRAFT") && (
+                      <>
                         {email !== message.to.address && (
-                          <Badge className="bg-green-500 text-[10px] rounded-xs">
+                          <Badge className="bg-green-500 text-[10px] rounded-xs underline-none">
                             RECEIVED
                           </Badge>
                         )}
-                      </div>
-                      <div>
+        
                         {email !== message.to.address && (
-                          <div className="flex gap-2">
+                          <div className="flex gap-2 underline-none">
                             <div>
                               {seenData.opened_email ? (
-                                <div>
-                                  <Badge className="text-[10px] bg-red-500 rounded-xs">
-                                    <Eye />
-                                    SEEN @{" "}
-                                    {new Date(
-                                      seenData.opened_email_at
-                                    ).toLocaleString("en-US", {
+                                <Badge className="text-[10px] bg-red-500 rounded-xs flex items-center gap-1 underline-none">
+                                  <Eye className="w-3 h-3" />
+                                  SEEN @{" "}
+                                  {new Date(seenData.opened_email_at).toLocaleString(
+                                    "en-US",
+                                    {
                                       month: "short",
                                       day: "numeric",
                                       hour: "numeric",
                                       minute: "2-digit",
                                       hour12: true,
-                                    })}
-                                  </Badge>
-                                </div>
+                                    }
+                                  )}
+                                </Badge>
                               ) : (
-                                <Badge className="text-[10px] bg-orange-500 rounded-xs">
-                                  <EyeClosed />
+                                <Badge className="text-[10px] bg-orange-500 rounded-xs flex items-center gap-1 underline-none">
+                                  <EyeClosed className="w-3 h-3" />
                                   NOT SEEN
                                 </Badge>
                               )}
                             </div>
                             <div>
                               {engagementData.opened ? (
-                                <Badge className="text-[10px] bg-green-500 rounded-xs">
-                                  ENGAGED WITH MEDIA @
-                                  {engagementData.opened_at}
+                                <Badge className="text-[10px] bg-green-500 rounded-xs underline-none">
+                                  ENGAGED WITH MEDIA @ {engagementData.opened_at}
                                 </Badge>
                               ) : (
-                                <Badge className="text-[10px] bg-orange-500 rounded-xs">
+                                <Badge className="text-[10px] bg-orange-500 rounded-xs underline-none">
                                   NO ENGAGEMENT
                                 </Badge>
                               )}
                             </div>
                           </div>
                         )}
-                      </div>
-                      <div>
+                      </>
+                    )}
+        
+                    <div className="flex flex-wrap gap-1 underline-none">
                       {message.labels?.map((label, idx) => (
-                        <div key={idx}>
-                          <Badge className="text-[10px] rounded-xs text-black bg-[#F1F1EF]">
-                            {label}
-                          </Badge>
-                        </div>
+                        <Badge
+                          key={idx}
+                          className="text-[10px] rounded-xs text-black bg-[#F1F1EF] underline-none"
+                        >
+                          {label}
+                        </Badge>
                       ))}
-                      </div>
                     </div>
                   </div>
                 </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <Message
-                  data={message}
-                  email={email}
-                  engagementData={engagementData}
-                  seenData={seenData}
-                />
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent>
+              <Message
+                data={message}
+                email={email}
+                engagementData={engagementData}
+                seenData={seenData}
+              />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>        
         ))}
       </div>
     </div>
