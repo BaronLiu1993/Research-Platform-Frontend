@@ -39,6 +39,10 @@ export default function EmailSidebar({
 
   if (!threadData) return <div>Loading...</div>;
 
+  console.log(threadData)
+  console.log(email)
+  
+
   return (
     <div className="h-[80vh] bg-white overflow-y-auto">
       <div className="space-y-4">
@@ -53,7 +57,7 @@ export default function EmailSidebar({
               <div>
                 <div className="space-x-2 flex flex-col gap-2">
                   <span className="text-md flex flex-col font-semibold text-black underline-none">
-                    {email === message.to.address ? (
+                    {message.to.address === "baronliu1993@gmail.com" ? (
                       <span className="flex flex-col underline-none">
                         <span className="rounded-xs underline-none">Professor Message</span>
                         <span className="font-light underline-none">
@@ -72,13 +76,13 @@ export default function EmailSidebar({
                   <div className="space-x-2 flex flex-wrap items-center gap-2">
                     {!message?.labels?.includes("DRAFT") && (
                       <>
-                        {email !== message.to.address && (
+                        {message.to.address != "baronliu1993@gmail.com" && (
                           <Badge className="bg-green-500 text-[10px] rounded-xs underline-none">
                             RECEIVED
                           </Badge>
                         )}
         
-                        {email !== message.to.address && (
+                        {message.to.address != "baronliu1993@gmail.com" && (
                           <div className="flex gap-2 underline-none">
                             <div>
                               {seenData.opened_email ? (

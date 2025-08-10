@@ -24,6 +24,7 @@ import { DeleteDrafts } from "@/app/actions/delete/deleteDrafts";
 import { ExecuteMassSendWithAttachments } from "@/app/actions/queue/executeMassSendWithAttachments";
 
 export default function DraftList({ draftData, parsedUserProfile }) {
+  console.log(draftData)
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
   const handleSubmit = async () => {

@@ -36,7 +36,6 @@ async function safeJson(resp) {
 }
 
 async function fetchWithTrace(url, opts = {}) {
-  console.log(`➡️ fetch: ${url}`);
   let resp;
   try {
     resp = await fetch(url, opts);
@@ -48,7 +47,6 @@ async function fetchWithTrace(url, opts = {}) {
   if (!resp.ok) {
     const body = await resp.text().catch(() => "<no body>");
     console.error(`🚨 Non-OK response from ${url}: status=${resp.status}`, body);
-    // still return object to avoid throwing here, upstream can handle
     return { ok: false, status: resp.status, body };
   }
 
@@ -92,26 +90,17 @@ export default async function InboxEmail() {
       { method: "GET" }
     );
     if (!resp.ok) {
-      console.warn("get-email-chain returned non-ok, using empty array");
       threadArrayEmailResponse = [];
     } else {
       const parsedEmailResponse = resp.parsed;
-      console.log("get-email-chain parsed:", parsedEmailResponse);
       threadArrayEmailResponse = parsedEmailResponse?.threadArray ?? [];
     }
   } catch (err) {
-    console.error("❌ Error in get-email-chain fetch:", err);
     threadArrayEmailResponse = [];
   }
 
-  console.log("threadArrayEmailResponse length:", threadArrayEmailResponse.length);
-
-  // map and enrich every thread with several dependent fetches
   const combinedArray = await Promise.all(
     threadArrayEmailResponse.map(async (obj, index) => {
-      console.log(`\n--- processing thread index ${index} threadId=${obj.threadId} professorId=${obj.professorId} ---`);
-
-      // create endpoint urls using the concrete userIdVal and obj fields (encode components)
       const urls = {
         engagement: `http://localhost:8080/inbox/get-engagement/${encodeURIComponent(obj.threadId)}/${encodeURIComponent(obj.messageId)}`,
         status: `http://localhost:8080/inbox/get-status/${encodeURIComponent(userIdVal)}/${encodeURIComponent(obj.professorId)}`,
@@ -141,15 +130,12 @@ export default async function InboxEmail() {
 
         return { ...obj, engagementData, statusData, draftData, seenData };
       } catch (err) {
-        console.error(`❌ Error enriching thread at index ${index}:`, err);
         return { ...obj, engagementData: {}, statusData: {}, draftData: {}, seenData: {} };
       }
     })
   );
 
-  console.log("combinedArray assembled, length:", combinedArray.length);
 
-  // fetch user sidebar/profile
   let parsedUserProfile = { student_email: "" };
   try {
     const authUrl = "http://localhost:8080/auth/get-user-sidebar-info";
@@ -171,8 +157,9 @@ export default async function InboxEmail() {
   }
 
   console.log("parsedUserProfile:", parsedUserProfile);
-
+  console.log(combinedArray)
   console.log("=== InboxEmail server rendering END ===");
+  console.log(threadArrayEmailResponse)
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile} />

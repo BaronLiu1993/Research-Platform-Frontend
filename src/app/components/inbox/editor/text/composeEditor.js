@@ -47,6 +47,7 @@ export default function ComposeEditor({
   fromEmail,
   to,
 }) {
+  console.log(draftData)
   const [subject, setSubject] = useState("");
   const handleSendFollowUp = async () => {
     try {
@@ -164,15 +165,12 @@ export default function ComposeEditor({
             <h1 className="text-black">{fromName}</h1>
             <h2 className="text-[#787774]">{fromEmail}</h2>
           </div>
-          <input
-            className="px-4 py-1 w-full"
-            value={to}
-            readOnly
-            variant="ghost"
-          />
+          <div className="flex gap-2 px-4 py-1">
+            <h1 className="text-black">{to}</h1>
+          </div>
           <input
             onChange={(e) => setSubject(e.target.value)}
-            value={subject}
+            defaultValue={draftData.subject || ""} 
             className="px-4 py-1 w-full"
             placeholder="Subject"
             variant="ghost"

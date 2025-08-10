@@ -22,8 +22,9 @@ import { Laptop, MapIcon, MoveLeft, MoveRight, Plus } from "lucide-react";
 export default async function Bookmark() {
   const cookieStore = await cookies();
   const raw_user_id = cookieStore.get("user_id");
-  const user_id = raw_user_id.value;
+  const user_id = raw_user_id?.value;
   const access = cookieStore.get("access_token");
+
   const [
     rawSavedData,
     rawInProgressData,
@@ -40,7 +41,7 @@ export default async function Bookmark() {
     fetch("http://localhost:8080/auth/get-user-sidebar-info", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${access.value}`,
+        Authorization: `Bearer ${access?.value}`,
         "Content-Type": "application/json",
       },
     }),
@@ -70,36 +71,40 @@ export default async function Bookmark() {
     rawTranscriptData.json(),
   ]);
 
-  const parsedInProgressData = inProgressJson.data;
-  const parsedSavedData = savedDataJson.data;
-  const parsedDraftData = draftJson.data;
-  const parsedCompletedData = completedJson.data;
-  const parsedUserProfile = userProfileJson;
-  const parsedResumeData = resumeData;
-  const parsedTranscriptData = transcriptData;
+  // ✅ Always default to an empty array if data is missing
+  const parsedInProgressData = inProgressJson?.data ?? [];
+  const parsedSavedData = savedDataJson?.data ?? [];
+  const parsedDraftData = draftJson?.data ?? [];
+  const parsedCompletedData = completedJson?.data ?? [];
+  const parsedUserProfile = userProfileJson ?? {};
+  const parsedResumeData = resumeData ?? {};
+  const parsedTranscriptData = transcriptData ?? {};
 
   let draftData = await Promise.all(
-    parsedDraftData.map(async (prof) => {
-      console.log(prof);
-      const rawDraftResults = await fetch(
-        `http://localhost:8080/draft/resume-draft/${prof.draft_id}/${user_id}`
-      );
-
-      const parsedDraftResults = await rawDraftResults.json();
-      if (parsedDraftResults.draftExists) {
-        return {
-          id: prof.id,
-          draftId: prof.draft_id,
-          name: prof.name,
-          email: prof.email,
-          ...parsedDraftResults,
-        };
-      } else {
-        return null
+    (parsedDraftData ?? []).map(async (prof) => {
+      try {
+        const rawDraftResults = await fetch(
+          `http://localhost:8080/draft/resume-draft/${prof.draft_id}/${user_id}`
+        );
+        const parsedDraftResults = await rawDraftResults.json();
+        if (parsedDraftResults.draftExists) {
+          return {
+            id: prof.id,
+            draftId: prof.draft_id,
+            name: prof.name,
+            email: prof.email,
+            ...parsedDraftResults,
+          };
+        }
+      } catch (err) {
+        console.error(`Error fetching draft for ${prof.draft_id}:`, err);
       }
+      return null;
     })
   );
+
   draftData = draftData.filter(Boolean);
+
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile} />

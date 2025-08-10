@@ -39,7 +39,6 @@ export default function InboxClientWrapper({
   emails,
 }) {
   const [openThreadId, setOpenThreadId] = useState("");
-
   const [draftExistsMap, setDraftExistsMap] = useState(() => {
     const map = {};
     threadArrayEmailResponse.forEach((email) => {
