@@ -44,7 +44,6 @@ export default function EmailSidebar({
       <div className="space-y-4">
         {threadData.messageArray?.map((message, idx) => (
           <Accordion
-          className="cursor-pointer"
           type="single"
           collapsible
           key={idx}

@@ -8,7 +8,9 @@ export default function Display({ emailContent }) {
     extensions: [StarterKit],
     editorProps: {
       attributes: {
-        class: "max-w-[35.9rem] w-full h-full min-h-[300px] p-1 text-[13px]",
+        class:
+          "max-w-[35.9rem] w-full h-full min-h-[300px] p-1 text-[13px] " +
+          "select-none pointer-events-none filter-blur",
       },
     },
     content: emailContent,
@@ -17,6 +19,13 @@ export default function Display({ emailContent }) {
   return (
     <div>
       <EditorContent editor={editor} />
+      <style jsx>{`
+        .filter-blur {
+          filter: blur(4px);
+          user-select: none; /* no selection */
+          pointer-events: none; /* disables clicking */
+        }
+      `}</style>
     </div>
   );
 }
