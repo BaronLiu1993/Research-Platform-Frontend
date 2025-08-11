@@ -1,5 +1,4 @@
 import KanbanCardCompleted from "./cards/kanbancardcompleted";
-import KanbanCardFollowUp from "./cards/kanbancardfollowup";
 import KanbanCardInComplete from "./cards/kanbancardincomplete";
 import KanbanCardInProgress from "./cards/kanbancardinprogress";
 
@@ -33,12 +32,6 @@ const statusConfig = {
     dotColor: "bg-green-500",
     textColor: "text-green-700",
     bgColor: "bg-green-100",
-  },
-  follow_up: {
-    title: "Follow Up",
-    dotColor: "bg-purple-500",
-    textColor: "text-purple-700",
-    bgColor: "bg-purple-100",
   },
 };
 

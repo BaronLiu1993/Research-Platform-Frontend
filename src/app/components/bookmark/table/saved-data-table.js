@@ -88,6 +88,7 @@ export function SavedDataTable({
   const [resume, setResume] = useState(null);
   const [transcript, setTranscript] = useState(null);
   const [generateView, setGenerateView] = useState(false);
+  const [draftsView, setDraftsView] = useState(true);
 
   const table = useReactTable({
     data,
@@ -102,6 +103,14 @@ export function SavedDataTable({
       columnFilters,
     },
   });
+
+  const handleGenerateDrafts = async () => {
+    if (draftsView) {
+      setDraftsView(false);
+    } else {
+      setDraftsView(true);
+    }
+  };
 
   const handleUploadTranscript = async () => {
     await UploadTranscript(transcript, userId);
@@ -337,13 +346,15 @@ export function SavedDataTable({
                 <div className="flex space-x-2 h-6.5">
                   <Dialog>
                     <DialogTrigger>
-                      <Button
-                        onClick={() => setGenerateView(true)}
-                        className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2"
-                      >
-                        <DraftingCompass />
-                        Generate Drafts
-                      </Button>
+                      {draftsView && (
+                        <Button
+                          onClick={handleGenerateDrafts}
+                          className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2"
+                        >
+                          <DraftingCompass />
+                          Generate Drafts
+                        </Button>
+                      )}
                     </DialogTrigger>
                     <DialogContent>
                       <DialogTitle></DialogTitle>
@@ -352,6 +363,8 @@ export function SavedDataTable({
                           userId={userId}
                           snippetId={snippetId}
                           setSnippetId={setSnippetId}
+                          handleGenerateDrafts={handleGenerateDrafts}
+                          setGenerateView={setGenerateView}
                         />
                       </DialogDescription>
                     </DialogContent>
@@ -439,7 +452,8 @@ export function SavedDataTable({
             <div className="bg-[#FAEBDD] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D9730D]">
               <Info className="h-4 w-4" />
               <span className="text-xs">
-                Edit Your Drafts By Clicking on the Professors Emails. Review Drafts Before Bulk Sending.
+                Edit Your Drafts By Clicking on the Professors Emails. Review
+                Drafts Before Bulk Sending.
               </span>
             </div>
           </div>

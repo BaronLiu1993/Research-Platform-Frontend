@@ -123,123 +123,126 @@ export default function DataPreview({
           Get a dedicated view of the variables for each professor.
         </div>
       </div>
-
-      <Accordion type="single" collapsible className="w-full p-4">
-        {rowData ? (
-          rowData.map((row) => (
-            <AccordionItem
-              value={row.original.id}
-              key={row.original.id}
-              className="border-none"
-            >
-              <AccordionTrigger className="flex items-center gap-2 p-3 text-xs hover:no-underline rounded-xs font-medium text-[#37352F] hover:bg-[#F1F1EF] transition-colors duration-200 cursor-pointer group">
-                <div className="flex flex-col gap-1.5 flex-grow">
-                  <div className="flex gap-2 items-center">
-                    <div className="text-gray-900">{row.original.name}</div>
-                    <div className="h-1 w-1 bg-gray-400 rounded-full" />
-                    <div className="text-gray-500">{row.original.email}</div>
+      <div className = "flex items-center justify-center py-10">
+        {rowData.length > 0 ? (
+          <Accordion type="single" collapsible className="w-full p-4">
+            {rowData.map((row) => (
+              <AccordionItem
+                value={row.original.id}
+                key={row.original.id}
+                className="border-none"
+              >
+                <AccordionTrigger className="flex items-center gap-2 p-3 text-xs hover:no-underline rounded-xs font-medium text-[#37352F] hover:bg-[#F1F1EF] transition-colors duration-200 cursor-pointer group">
+                  <div className="flex flex-col gap-1.5 flex-grow">
+                    <div className="flex gap-2 items-center">
+                      <div className="text-gray-900">{row.original.name}</div>
+                      <div className="h-1 w-1 bg-gray-400 rounded-full" />
+                      <div className="text-gray-500">{row.original.email}</div>
+                    </div>
                   </div>
-                  
-                </div>
-              </AccordionTrigger>
+                </AccordionTrigger>
 
-              <AccordionContent className="pb-2 pt-0 px-3 text-xs border-t border-gray-100">
-                {syncedData?.result?.length > 0 ? (
-                  syncedData.result
-                    .filter((prof) => prof.id === row.original.professor_id)
-                    .map((prof) => (
-                      <div key={prof.id} className="p-2">
-                        {prof.dynamicFields &&
-                        Object.entries(prof.dynamicFields).length > 0 ? (
-                          Object.entries(prof.dynamicFields).map(
-                            ([key, value]) => (
-                              <div key={key} className="mb-4">
-                                {key === "publications" ? (
-                                  <div className="flex flex-col gap-2">
-                                    <strong>{key}:</strong>
-                                    <Input
-                                      value={
-                                        selectedPublications[prof.id] || ""
-                                      }
-                                      className="text-xs rounded-xs h-[2rem]"
-                                      onChange={(e) =>
-                                        handleSelectTitle(
-                                          prof.id,
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                    <Dialog>
-                                      <DialogTrigger asChild>
-                                        <Button
-                                          onClick={() =>
-                                            setActiveProfessorId(prof.id)
-                                          }
-                                          className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] w-fit hover:bg-blue-400 px-2"
-                                        >
-                                          Find New Publications
-                                        </Button>
-                                      </DialogTrigger>
-                                      <DialogContent className="rounded-xs max-h-[30rem] w-[40rem] overflow-y-auto">
-                                        <DialogTitle></DialogTitle>
-                                        <DialogDescription>
-                                          <Suspense
-                                            fallback={
-                                              <div>Loading Publications...</div>
+                <AccordionContent className="pb-2 pt-0 px-3 text-xs border-t border-gray-100">
+                  {syncedData?.result?.length > 0 ? (
+                    syncedData.result
+                      .filter((prof) => prof.id === row.original.professor_id)
+                      .map((prof) => (
+                        <div key={prof.id} className="p-2">
+                          {prof.dynamicFields &&
+                          Object.entries(prof.dynamicFields).length > 0 ? (
+                            Object.entries(prof.dynamicFields).map(
+                              ([key, value]) => (
+                                <div key={key} className="mb-4">
+                                  {key === "publications" ? (
+                                    <div className="flex flex-col gap-2">
+                                      <strong>{key}:</strong>
+                                      <Input
+                                        value={
+                                          selectedPublications[prof.id] || ""
+                                        }
+                                        className="text-xs rounded-xs h-[2rem]"
+                                        onChange={(e) =>
+                                          handleSelectTitle(
+                                            prof.id,
+                                            e.target.value
+                                          )
+                                        }
+                                      />
+                                      <Dialog>
+                                        <DialogTrigger asChild>
+                                          <Button
+                                            onClick={() =>
+                                              setActiveProfessorId(prof.id)
                                             }
+                                            className="font-main text-xs rounded-xs text-white bg-blue-500 h-[1.7rem] w-fit hover:bg-blue-400 px-2"
                                           >
-                                            <Publications
-                                              key={activeProfessorId}
-                                              professorId={activeProfessorId}
-                                              onSelectTitle={(title) =>
-                                                handleSelectTitle(
-                                                  activeProfessorId,
-                                                  title
-                                                )
+                                            Find New Publications
+                                          </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="rounded-xs max-h-[30rem] w-[40rem] overflow-y-auto">
+                                          <DialogTitle></DialogTitle>
+                                          <DialogDescription>
+                                            <Suspense
+                                              fallback={
+                                                <div>
+                                                  Loading Publications...
+                                                </div>
                                               }
-                                            />
-                                          </Suspense>
-                                        </DialogDescription>
-                                      </DialogContent>
-                                    </Dialog>
-                                  </div>
-                                ) : (
-                                  <div className="flex flex-col gap-1">
-                                    <div>
-                                      <strong>{key}:</strong>{" "}
-                                      {value ?? "No data"}
+                                            >
+                                              <Publications
+                                                key={activeProfessorId}
+                                                professorId={activeProfessorId}
+                                                onSelectTitle={(title) =>
+                                                  handleSelectTitle(
+                                                    activeProfessorId,
+                                                    title
+                                                  )
+                                                }
+                                              />
+                                            </Suspense>
+                                          </DialogDescription>
+                                        </DialogContent>
+                                      </Dialog>
                                     </div>
-                                    <Input
-                                      className="text-xs rounded-xs h-[2rem]"
-                                      value={value || ""}
-                                      onChange={(e) =>
-                                        handleFieldChange(
-                                          prof.id,
-                                          key,
-                                          e.target.value
-                                        )
-                                      }
-                                    />
-                                  </div>
-                                )}
-                              </div>
+                                  ) : (
+                                    <div className="flex flex-col gap-1">
+                                      <div>
+                                        <strong>{key}:</strong>{" "}
+                                        {value ?? "No data"}
+                                      </div>
+                                      <Input
+                                        className="text-xs rounded-xs h-[2rem]"
+                                        value={value || ""}
+                                        onChange={(e) =>
+                                          handleFieldChange(
+                                            prof.id,
+                                            key,
+                                            e.target.value
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                              )
                             )
-                          )
-                        ) : (
-                          <div>N/A</div>
-                        )}
-                      </div>
-                    ))
-                ) : (
-                  <div className = "p-4 font-light">No variables set</div>
-                )}
-              </AccordionContent>
-            </AccordionItem>
-          ))
+                          ) : (
+                            <div>N/A</div>
+                          )}
+                        </div>
+                      ))
+                  ) : (
+                    <div className="p-4 font-light">No variables set</div>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         ) : (
-          <div className="p-3">No Professors Selected</div>
+          <div className="text-black">No Professors Selected</div>
         )}
-      </Accordion>
+      </div>
+
       <div className="fixed bottom-6 right-6 z-50">
         {generateView &&
           (synced ? (

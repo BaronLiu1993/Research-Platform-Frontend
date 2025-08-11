@@ -46,14 +46,16 @@ import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 import { useAISnippetStore } from "@/app/store/useAISnippetStore";
 import { Badge } from "@/shadcomponents/ui/badge";
 import AIcontext from "../tiptap/AIcontext";
-import AIPopover from "../popover/AIpopover";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
+import { toast } from "sonner";
 
 export default function ComposeEditor({
   userId,
   setSnippetId,
   userName,
   userEmail,
+  handleGenerateDrafts,
+  setGenerateView,
 }) {
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
@@ -87,7 +89,7 @@ export default function ComposeEditor({
     editorProps: {
       attributes: {
         class:
-          "prose max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[14px] [&>*]:my-0 [&>*]:mb-0 [&>*]:mt-0",
+          "prose prose-p:my-0 max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[14px]",
       },
     },
     content: "",
@@ -104,8 +106,14 @@ export default function ComposeEditor({
   });
 
   const handleSnippetGeneration = async (userId, body, subject) => {
-    const response = await GenerateSnippet(userId, body, subject);
-    setSnippetId(response.snippetId);
+    if (body.trim().length === 0 || subject.trim().length === 0) {
+      handleGenerateDrafts()
+      toast("Empty Draft")
+    } else {
+      const response = await GenerateSnippet(userId, body, subject);
+      setGenerateView(true);
+      setSnippetId(response.snippetId);
+    }
   };
 
   return (
@@ -123,8 +131,10 @@ export default function ComposeEditor({
           <Badge className="text-[#9F6B53] bg-[#F4EEEE] rounded-xs">
             Template Builder
           </Badge>
-          <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] cursor-pointer hover:text-red-500">
-            <X className="h-6 w-6 p-1 rounded-xs" />
+          <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500">
+            <button className="cursor-pointer" onClick={handleGenerateDrafts}>
+              <X className="h-6 w-6 p-1 rounded-xs" />
+            </button>
           </DialogClose>
         </div>
         <div className="flex flex-col">
@@ -144,22 +154,6 @@ export default function ComposeEditor({
       {editor && (
         <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
           <div className="flex rounded-xs text-[#37352F] border-1 border-gray-100 bg-white p-1 shadow-sm">
-            <button
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 font-main text-xs gap-2 mx-1 flex ${
-                editor.isActive("bold") ? "text-blue-400" : ""
-              }`}
-            >
-              <PencilRuler className="w-4 h-4" /> <span>Revise</span>
-            </button>
-            <button
-              onClick={() => editor.chain().focus().toggleBold().run()}
-              className={`rounded-md p-1 hover:bg-gray-100 font-main text-xs gap-2 mx-1 flex ${
-                editor.isActive("bold") ? "text-blue-400" : ""
-              }`}
-            >
-              <Wand2 className="w-4 h-4" /> <span>Generate with AI</span>
-            </button>
             <div className="text-gray-200 border-l-1"></div>
             <button
               onClick={() => editor.chain().focus().toggleBold().run()}
@@ -207,15 +201,17 @@ export default function ComposeEditor({
       )}
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex justify-between items-center">
-        <button
-          onClick={() =>
-            handleSnippetGeneration(userId, editor.getHTML(), subject)
-          }
-          className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2 text-sm"
-        >
-          <Loader className = "h-4 w-4"/>
-          Generate Snippet
-        </button>
+        <DialogClose>
+          <button
+            onClick={() =>
+              handleSnippetGeneration(userId, editor.getHTML(), subject)
+            }
+            className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2 text-sm"
+          >
+            <Loader className="h-4 w-4" />
+            Generate Snippet
+          </button>
+        </DialogClose>
       </div>
     </div>
   );

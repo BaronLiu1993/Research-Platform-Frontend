@@ -7,46 +7,20 @@ import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 
 import StarterKit from "@tiptap/starter-kit";
 import {
-  ALargeSmall,
   Bold,
-  IndentDecrease,
-  IndentIncrease,
   Italic,
-  Link,
   List,
   ListTodo,
-  Paperclip,
-  Pencil,
-  PencilRuler,
   Strikethrough,
-  Trash2,
-  Wand2,
   X,
 } from "lucide-react";
 
 import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
   DialogClose,
 } from "@/shadcomponents/ui/dialog";
 
 import { Badge } from "@/shadcomponents/ui/badge";
 import { saveDraft } from "../../api/drafts/saveDraft";
-import { AIEditDraft } from "../../api/drafts/AIEditDraft";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/shadcomponents/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shadcomponents/ui/popover";
 
 export default function DraftEditor({
   fromName,
@@ -82,18 +56,6 @@ export default function DraftEditor({
     await saveDraft(data, draftId, userId);
   };
 
-  const handleAIEditDraft = async () => {
-    await AIEditDraft(
-      userId,
-      professorId,
-      editor?.state.doc.textBetween(
-        editor?.state.selection.from,
-        editor?.state.selection.to,
-        " "
-      ),
-      command
-    );
-  };
   return (
     <div>
       <div className="text-sm">
@@ -122,99 +84,6 @@ export default function DraftEditor({
       {editor && (
         <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
           <div className="flex items-center rounded-xs text-[#37352F] border-1 border-gray-100 bg-white p-1 shadow-sm">
-            <Select>
-              <SelectTrigger className="border-0 shadow-none p-0 m-0 max-h-fit font-main text-xs ">
-                <Pencil className="w-4 h-4 text-[#9A6DD7]" />
-                <span className="text-[#37352F] font-medium">Revise</span>
-              </SelectTrigger>
-              <SelectContent className="rounded-xs">
-                <SelectItem value="light" className="p-1 hover:bg-gray-100">
-                  <button className="flex gap-2 font-main text-xs">
-                    <IndentDecrease />
-                    Shorten
-                  </button>
-                </SelectItem>
-                <SelectItem value="dark" className="p-1 hover:bg-gray-100">
-                  <button className="flex gap-2 font-main text-xs">
-                    <IndentIncrease />
-                    Lengthen
-                  </button>
-                </SelectItem>
-                <SelectItem value="system" className="p-1 hover:bg-gray-100 ">
-                  <button className="flex gap-2 font-main text-xs">
-                    <ALargeSmall />
-                    Grammar
-                  </button>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Popover>
-              <PopoverTrigger>
-                <button
-                  onClick={() => handleAIEditDraft(userId, professorId)}
-                  className="rounded-md p-1 hover:bg-gray-100 font-main text-xs gap-2 mx-1 flex"
-                >
-                  <Wand2 className="w-4 h-4 text-[#529CCA]" />
-                  <span className="font-medium">Generate</span>
-                </button>
-              </PopoverTrigger>
-              <PopoverContent className="rounded-xs flex flex-col gap-2">
-                <div className="flex flex-col font-main">
-                  <input
-                    className="h-[1.7rem] rounded-xs border-1 p-1"
-                    placeholder="✏️ How Should I Edit?"
-                  />
-                </div>
-                <div className="font-main text-xs flex flex-col gap-2 justify-start items-start">
-                  <button
-                    onClick={() =>
-                      handleAIEditDraft(userId, profId, "Make more confident")
-                    }
-                  >
-                    💪 Confident Rewrite
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      handleAIEditDraft(
-                        userId,
-                        profId,
-                        "Explain why this research matters"
-                      )
-                    }
-                  >
-                    🎯 Add Research Relevance
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      handleAIEditDraft(
-                        userId,
-                        profId,
-                        "Improve flow and grammar"
-                      )
-                    }
-                  >
-                    🧹 Fix Grammar & Flow
-                  </button>
-
-                  <button
-                    onClick={() =>
-                      handleAIEditDraft(
-                        userId,
-                        profId,
-                        "Add availability and commitment"
-                      )
-                    }
-                  >
-                    📅 Add Schedule/Availability
-                  </button>
-                </div>
-              </PopoverContent>
-            </Popover>
-
-            <div className="text-gray-200 border-l-1"></div>
             <button
               onClick={() => editor.chain().focus().toggleBold().run()}
               className={`rounded-md p-1 hover:bg-gray-100 ${
