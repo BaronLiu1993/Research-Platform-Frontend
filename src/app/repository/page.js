@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 
-import { SearchForm } from "@/shadcomponents/ui/search-form";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -21,7 +20,6 @@ import { AppSidebar } from "../components/sidebar";
 import generateColumns from "../components/repository/columns";
 import { DataTable } from "../components/repository/data-table";
 import Recommendations from "../components/repository/recommendations";
-import FilterRecommendations from "./filterrecommendations";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
   Database,
@@ -115,7 +113,7 @@ export default async function Repository({ searchParams }) {
                 <div className="flex items-center py-2 space-x-2">
                   <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
                     <Database />
-                    Data Engineering
+                    Recommended Professors
                   </Badge>
                   <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
                   <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">
@@ -147,14 +145,7 @@ export default async function Repository({ searchParams }) {
                   </p>
                 </div>
               </div>{" "}
-              <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
-                <Database />
-                Recommended Professors
-              </Badge>
-              <div className="flex items-center">
-                <SearchForm className="font-main min-w-[20rem]" />
-                <FilterRecommendations />
-              </div>
+        
               <Recommendations />
             </div>
 

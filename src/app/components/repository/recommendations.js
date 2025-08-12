@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 
 //Buttons
-import ApplyButton from "../bookmark/buttons/applyButton";
 import SaveButton from "../bookmark/buttons/saveButton";
 
 import {
@@ -83,21 +82,7 @@ export default async function Recommendations() {
                       ))}
                     </div>
                   </div>
-                  <div className="flex pt-4 border-t border-gray-300">
-                    <ApplyButton
-                      professor_id={response.professor_id}
-                      professor_name={response.name}
-                      professor_url={response.url}
-                      professor_research_interests={response.research_interests}
-                      professor_school={response.school}
-                      professor_faculty={response.faculty}
-                      professor_department={response.department}
-                      professor_email={response.email}
-                      professor_labs={response.labs}
-                      professor_lab_url={response.lab_url}
-                      user_id={userId}
-                    />
-                  </div>
+                 
                 </div>
               </CarouselItem>
             ))}

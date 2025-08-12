@@ -6,7 +6,6 @@ import { Badge } from "@/shadcomponents/ui/badge";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -95,20 +94,6 @@ const generateColumns = (userId) => [
                   professor_labs={data.labs}
                   professor_lab_url={data.lab_url}
                   user_id={userId}
-                />
-
-                <ApplyButton
-                  professor_id={data.id}
-                  professor_name={data.name}
-                  professor_url={data.url}
-                  professor_research_interests={data.research_interests}
-                  professor_school={data.school}
-                  professor_faculty={data.faculty}
-                  professor_department={data.department}
-                  professor_labs={data.labs}
-                  professor_lab_url={data.lab_url}
-                  user_id={userId}
-                  professor_email={data.email}
                 />
               </div>
             </DialogHeader>

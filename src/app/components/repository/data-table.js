@@ -14,7 +14,6 @@ import { Beaker, Blocks, Brain, ChevronDown, CircuitBoard, Code, Heart, Microsco
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -67,10 +66,6 @@ export function DataTable({
   return (
     <div className="rounded-md py-2 w-[55rem]">
       <div className="flex flex-col gap-2 pb-2">
-        <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
-          <PersonStanding />
-          Full Data Repository
-        </Badge>
         <div className="flex flex-wrap gap-2 items-center">
           <div className="flex gap-6">
             <div className="flex items-center gap-4">
@@ -80,10 +75,10 @@ export function DataTable({
                 placeholder="🔎 Search..."
               />
               <Link
-                className="text-xs text-[#337EA9] bg-[#E7F3F8] p-2 rounded-xs"
+                className="text-sm font-semibold text-[#337EA9] bg-[#E7F3F8] p-2 rounded-sm"
                 href={`?page=1&search=${encodeURIComponent(query)}`}
               >
-                Search
+                Search Research Topics
               </Link>
             </div>
             <DropdownMenu>
