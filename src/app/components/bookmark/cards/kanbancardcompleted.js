@@ -36,7 +36,7 @@ export default function KanbanCardCompleted({
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   return (
-    <div className="rounded-md border border-gray-200 bg-white w-full p-4 font-sans shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
+    <div className="rounded-xs border border-gray-200 bg-white w-full p-4 font-sans shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
       <div className="flex items-center space-x-2 mb-2">
         <Check className="h-4 w-4 text-green-400" />
         <h2 className="font-medium text-gray-800 text-base leading-tight break-words">

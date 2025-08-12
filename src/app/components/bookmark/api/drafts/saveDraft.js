@@ -16,6 +16,8 @@ export const saveDraft = async (data, draftId, studentId) => {
         }),
       }
     );
+    const updatedState = response.json()
+    return updatedState
   } catch (error) {
     console.log(error);
   }

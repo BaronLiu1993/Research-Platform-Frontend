@@ -89,6 +89,7 @@ export function SavedDataTable({
   const [transcript, setTranscript] = useState(null);
   const [generateView, setGenerateView] = useState(false);
   const [draftsView, setDraftsView] = useState(true);
+  
 
   const table = useReactTable({
     data,

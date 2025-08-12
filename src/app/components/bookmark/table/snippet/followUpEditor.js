@@ -71,7 +71,7 @@ export default function FollowUpEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[13px] [&>*]:my-0 [&>*]:mb-0 [&>*]:mt-0",
+        "prose prose-p:my-0 max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[14px]",
       },
     },
     content: "",
@@ -159,7 +159,7 @@ export default function FollowUpEditor({
       <div className="text-sm">
         <div className="flex justify-between px-4">
           <Badge className="text-[#D9730D] bg-[#FAEBDD] rounded-xs">
-            Unsent Draft
+            Unsent Follow Up
           </Badge>
           <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] cursor-pointer hover:text-red-500">
             <X className="h-6 w-6 p-1 rounded-xs" />

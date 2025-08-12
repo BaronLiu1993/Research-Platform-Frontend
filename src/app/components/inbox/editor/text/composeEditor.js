@@ -6,31 +6,22 @@ import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
   Bold,
-  BookText,
-  CurlyBraces,
   Italic,
   List,
   ListTodo,
   Loader,
-  Paperclip,
-  PencilRuler,
   Send,
   Strikethrough,
   Wand2,
   X,
 } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shadcomponents/ui/popover";
+
 
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/shadcomponents/ui/tooltip";
-import Snippets from "../../popover/snippets";
 import { DialogClose } from "@/shadcomponents/ui/dialog";
 
 import { SendReply } from "@/app/actions/reply/sendReply";
@@ -47,7 +38,6 @@ export default function ComposeEditor({
   fromEmail,
   to,
 }) {
-  console.log(draftData)
   const [subject, setSubject] = useState("");
   const handleSendFollowUp = async () => {
     try {
@@ -183,7 +173,7 @@ export default function ComposeEditor({
           <DialogClose asChild>
             <button
               onClick={() => handleSaveDraft()}
-              className="rounded-sm flex  items-center gap-2 p-2 text-sm text-[#337EA9] font-semibold bg-[#E7F3F8] cursor-pointer hover:bg-[#D0E7F0]"
+              className="rounded-sm flex items-center gap-2 p-2 text-sm text-[#337EA9] font-semibold bg-[#E7F3F8] cursor-pointer hover:bg-[#D0E7F0]"
             >
               <Loader />
               Save For Later
