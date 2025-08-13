@@ -28,12 +28,13 @@ export default function SaveButton({
   const [loading, setLoading] = useState(false);
   const isSaved = saved.includes(professor_id);
 
+console.log(professor_id)
   const handleToggle = async () => {
     setLoading(true);
     try {
       if (isSaved) {
         removeSaved(professor_id);
-        const result = await RemoveFromSaved(professor_id, user_id);
+        await RemoveFromSaved(professor_id, user_id);
         toast.success("Professor removed from saved.");
       } else {
         addSaved(professor_id);

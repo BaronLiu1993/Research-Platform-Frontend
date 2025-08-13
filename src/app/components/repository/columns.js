@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 
 import SaveButton from "../bookmark/buttons/saveButton";
-import ApplyButton from "../bookmark/buttons/applyButton";
 import Link from "next/link";
 
 const generateColumns = (userId) => [
@@ -55,8 +54,10 @@ const generateColumns = (userId) => [
                   </h1>
                   <div className="flex items-center space-x-1.5 text-xs text-[#787774] truncate">
                     <span>{data.department || "N/A Department"}</span>
-                    
-                    {data.school && <span className = "text-[#787774]">@ {data.school}</span>}
+
+                    {data.school && (
+                      <span className="text-[#787774]">@ {data.school}</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -80,10 +81,10 @@ const generateColumns = (userId) => [
               <DialogTitle className="text-lg font-semibold text-gray-900">
                 {data.name}
               </DialogTitle>
-    
+
               <div className="flex space-x-4">
                 <SaveButton
-                  professor_id={data.id}
+                  professor_id={data.id || data.professor_id}
                   professor_email={data.email}
                   professor_name={data.name}
                   professor_url={data.url}
@@ -101,7 +102,7 @@ const generateColumns = (userId) => [
             <div className="grid gap-3 py-4 px-6 text-sm max-h-[60vh] overflow-y-auto">
               {" "}
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1 underline">
+                <Label className="text-right font-medium text-gray-500 pt-1">
                   School
                 </Label>
                 <Badge className="col-span-1 bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
@@ -110,7 +111,7 @@ const generateColumns = (userId) => [
                 </Badge>
               </div>
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1 underline">
+                <Label className="text-right font-medium text-gray-500 pt-1 ">
                   Department
                 </Label>
                 <Badge className="col-span-1 bg-purple-50 text-purple-700 font-medium text-xs py-1 px-2 border border-purple-200/50 flex items-start text-left whitespace-normal">
@@ -119,7 +120,7 @@ const generateColumns = (userId) => [
                 </Badge>
               </div>
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1 underline">
+                <Label className="text-right font-medium text-gray-500 pt-1 ">
                   Faculty
                 </Label>
                 <Badge className="col-span-1 bg-green-50 text-green-700 font-medium text-xs py-1 px-2 border border-green-200/50 flex items-start text-left whitespace-normal">
@@ -128,19 +129,21 @@ const generateColumns = (userId) => [
                 </Badge>
               </div>
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1 underline">
+                <Label className="text-right font-medium text-gray-500 pt-1 ">
                   Profile
                 </Label>
                 <Link
                   href={data.url}
                   target="_blank"
-                  className="col-span-1 text-blue-500 underline font-medium text-xs py-1 px-2 flex items-start text-left whitespace-normal"
+                  className="col-span-1 text-blue-500 font-medium text-xs py-1 px-2 flex items-start text-left whitespace-normal"
                 >
-                  <span className="break-words">{data.url || "No URL"}</span>
+                  <span className="break-words underline">
+                    {data.url || "No URL"}
+                  </span>
                 </Link>
               </div>
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1 underline">
+                <Label className="text-right font-medium text-gray-500 pt-1 ">
                   Interests
                 </Label>
                 <div className="col-span-1 flex flex-wrap gap-1.5">
@@ -160,7 +163,7 @@ const generateColumns = (userId) => [
                 </div>
               </div>
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1 underline">
+                <Label className="text-right font-medium text-gray-500 pt-1 ">
                   Lab Affiliation
                 </Label>
                 <Badge className="col-span-1 bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
@@ -172,24 +175,22 @@ const generateColumns = (userId) => [
               </div>
               {data.lab_url && (
                 <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                  <Label className="text-right font-medium text-gray-500 pt-1 underline">
+                  <Label className="text-right font-medium text-gray-500 pt-1 ">
                     Visit Lab
                   </Label>
                   <Link
                     href={data.lab_url}
                     target="_blank"
-                    className="col-span-1 text-blue-500 underline font-medium text-xs py-1 px-2 flex items-start text-left whitespace-normal"
+                    className="col-span-1 text-blue-500  font-medium text-xs py-1 px-2 flex items-start text-left whitespace-normal"
                   >
-                    <span className="break-words">
-                      {data.lab_url || "No Lab URL"}
-                    </span>
+                    <span className="break-words underline">Lab Website</span>
                   </Link>
                 </div>
               )}
             </div>
 
             {/*<div className="space-y-1.5 pt-2 pb-3 px-6">
-              <Label className="font-medium text-gray-600 text-sm underline">
+              <Label className="font-medium text-gray-600 text-sm ">
                 Description
               </Label>
               <div className="rounded-md border border-gray-200 p-3 text-xs text-gray-700 bg-gray-50/70 min-h-[70px] max-h-[150px] overflow-y-auto prose prose-xs prose-slate">

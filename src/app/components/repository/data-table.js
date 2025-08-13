@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -10,7 +10,19 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 
-import { Beaker, Blocks, Brain, ChevronDown, CircuitBoard, Code, Heart, Microscope, PersonStanding, Settings } from "lucide-react";
+import {
+  Beaker,
+  Blocks,
+  Brain,
+  ChevronDown,
+  CircuitBoard,
+  Code,
+  Heart,
+  Inspect,
+  Microscope,
+  PersonStanding,
+  Settings,
+} from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
   DropdownMenu,
@@ -41,14 +53,11 @@ export function DataTable({
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnColumnVisibility] = useState({});
   const [query, setQuery] = useState("");
-  console.log(data)
+
   const columns = useMemo(
     () => generateColumns(userId),
     [userId, generateColumns]
   );
-
-  console.log(query);
-
   const table = useReactTable({
     data,
     columns,
@@ -62,25 +71,36 @@ export function DataTable({
     manualPagination: true,
     state: { sorting, columnFilters, columnVisibility },
   });
+  const handleSearch = useCallback(
+    (e) => {
+      e.preventDefault();
+      window.location.href = `?page=1&search=${encodeURIComponent(query)}`;
+    },
+    [query]
+  );
+
+  console.log(data)
 
   return (
     <div className="rounded-md py-2 w-[55rem]">
       <div className="flex flex-col gap-2 pb-2">
         <div className="flex flex-wrap gap-2 items-center">
           <div className="flex gap-6">
-            <div className="flex items-center gap-4">
+            <form onSubmit={handleSearch} className="flex items-center gap-4">
               <Input
+                value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="w-[15rem] rounded-xs"
                 placeholder="🔎 Search..."
               />
-              <Link
-                className="text-sm font-semibold text-[#337EA9] bg-[#E7F3F8] p-2 rounded-sm"
-                href={`?page=1&search=${encodeURIComponent(query)}`}
+              <button
+                type="submit"
+                className="text-sm flex items-center gap-2 font-light text-[#337EA9] bg-[#E7F3F8] p-2 rounded-sm hover:bg-[#D1E9F0] transition-colors"
               >
+                <Inspect />
                 Search Research Topics
-              </Link>
-            </div>
+              </button>
+            </form>
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Badge className="bg-white border text-gray-500 px-2 py-1">
@@ -106,7 +126,7 @@ export function DataTable({
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            
+
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Badge className="bg-white border text-gray-500 px-2 py-1">
@@ -115,18 +135,17 @@ export function DataTable({
               </DropdownMenuTrigger>
               <DropdownMenuContent className="rounded-xs font-main">
                 <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
-                  <Blocks className = "text-[#D9730D]"/>
+                  <Blocks className="text-[#D9730D]" />
                   Applied Science and Engineering
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
-                  <Code className = "text-[#337EA9]"/>
+                  <Code className="text-[#337EA9]" />
                   Computer Science
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
-                  <Heart className = "text-[#D44C47]"/>
+                  <Heart className="text-[#D44C47]" />
                   Health Science
                 </DropdownMenuItem>
-                
               </DropdownMenuContent>
             </DropdownMenu>
             <DropdownMenu>
@@ -137,26 +156,25 @@ export function DataTable({
               </DropdownMenuTrigger>
               <DropdownMenuContent className="rounded-xs font-main">
                 <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
-                  <Settings className = "text-black"/>
+                  <Settings className="text-black" />
                   Mechanical Engineering
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
-                  <CircuitBoard className = "text-[#CB912F]"/>
+                  <CircuitBoard className="text-[#CB912F]" />
                   Computer Engineering
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
-                  <Microscope className = "text-[#D44C47]"/>
+                  <Microscope className="text-[#D44C47]" />
                   Cancer Research
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
-                  <Beaker className = "text-[#9065B0]"/>
+                  <Beaker className="text-[#9065B0]" />
                   Biochemistry
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-xs rounded-xs font-normal text-[#37352F]">
-                  <Brain className = "text-[#C14C8A]"/>
+                  <Brain className="text-[#C14C8A]" />
                   Neuroscience
                 </DropdownMenuItem>
-                
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -164,7 +182,7 @@ export function DataTable({
       </div>
 
       <Table className="text-sm w-[55rem]">
-        <TableHeader className="bg-[#F4EEEE]">
+        <TableHeader className="border-1">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -199,7 +217,7 @@ export function DataTable({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody>
+        <TableBody className="border-1">
           {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
@@ -227,8 +245,18 @@ export function DataTable({
       </Table>
 
       <div className="flex justify-end mt-2 gap-4">
-        <Link className="text-xs text-[#337EA9] bg-[#E7F3F8] p-2 rounded-xs" href={`?page=${pageNumber - 1}&search=${search}`}>Previous</Link>
-        <Link className="text-xs text-[#337EA9] bg-[#E7F3F8] p-2 rounded-xs" href={`?page=${pageNumber + 1}&search=${search}`}>Next</Link>
+        <Link
+          className="text-sm text-[#337EA9] hover:bg-[#D1E9F0] transition-colors bg-[#E7F3F8] p-2 rounded-xs"
+          href={`?page=${pageNumber - 1}&search=${search}`}
+        >
+          Previous
+        </Link>
+        <Link
+          className="text-sm hover:bg-[#D1E9F0] transition-colors text-[#337EA9] bg-[#E7F3F8] p-2 rounded-xs"
+          href={`?page=${pageNumber + 1}&search=${search}`}
+        >
+          Next
+        </Link>
       </div>
     </div>
   );

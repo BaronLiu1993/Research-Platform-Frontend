@@ -48,7 +48,7 @@ export default async function Recommendations() {
                 <div className="rounded-xs p-4 bg-white hover:shadow-sm transition-shadow duration-200 flex flex-col h-full border-1 border-gray-300">
                   <div className="flex justify-end -mt-2 -mr-2">
                     <SaveButton
-                      professor_id={response.professor_id}
+                      professor_id={response.id}
                       professor_name={response.name}
                       professor_url={response.url}
                       professor_research_interests={response.research_interests}
@@ -77,7 +77,7 @@ export default async function Recommendations() {
                           className="text-xs bg-[#eeeeee] rounded-xs text-neutral-700 px-2 py-0.5"
                         >
                           <Tag />
-                          {interest}
+                          {interest.slice(0, 20)}...
                         </Badge>
                       ))}
                     </div>
