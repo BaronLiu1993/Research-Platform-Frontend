@@ -92,9 +92,10 @@ export default function FollowUpList({
       <div className="flex gap-4">
         <Dialog>
           <DialogTrigger>
-            <Button className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2">
+            <Button className="text-sm cursor-pointer font-main text-[#f6f6f7] font-medium flex items-center gap-1  bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
+            >
               <Send />
-              Send Follow Up
+              Compose Follow Up
             </Button>
           </DialogTrigger>
           <DialogContent>

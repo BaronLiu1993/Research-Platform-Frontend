@@ -7,21 +7,31 @@ export default function FollowUpButton({
 }) {
   return (
     <>
-      <div className="flex gap-4">
-          <Button
-            onClick={sendFollowUpWithAttachments}
-            className="text-[#448361] bg-[#EDF3EC] rounded-sm cursor-pointer hover:bg-[#D3E6D8]"
-          >
-            <File />
-            <span> Send Email With Attachments</span>
-          </Button>
-          <Button
-            onClick={sendFollowUp}
-            className="text-[#D9730D] bg-[#FAEBDD] rounded-sm cursor-pointer hover:bg-orange-200"
-          >
-            <Send />
-            <span>Send Email</span>
-          </Button>
+      <div className="flex gap-4 font-main">
+      <Button
+          onClick={sendFollowUp}
+          className="text-sm cursor-pointer font-main text-[#f6f6f7] font-medium flex items-center gap-1  bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
+        >
+          <Send />
+          <span>Send Email</span>
+        </Button>
+        <Button
+          onClick={sendFollowUpWithAttachments}
+          className="
+        text-sm cursor-pointer font-main font-medium 
+        flex items-center gap-1 
+        text-[#f6f6f7] 
+        bg-[#e49a1b] 
+        px-3 py-1.5 
+        hover:bg-[#D97706] 
+        transition-colors 
+        rounded-sm
+      "
+        >
+          <File />
+          <span> Send With Attachments</span>
+        </Button>
+        
       </div>
     </>
   );

@@ -107,8 +107,8 @@ export default function ComposeEditor({
 
   const handleSnippetGeneration = async (userId, body, subject) => {
     if (body.trim().length === 0 || subject.trim().length === 0) {
-      handleGenerateDrafts()
-      toast("Empty Draft")
+      handleGenerateDrafts();
+      toast("Empty Draft");
     } else {
       const response = await GenerateSnippet(userId, body, subject);
       setGenerateView(true);
@@ -206,7 +206,7 @@ export default function ComposeEditor({
             onClick={() =>
               handleSnippetGeneration(userId, editor.getHTML(), subject)
             }
-            className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2 text-sm"
+            className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
           >
             <Loader className="h-4 w-4" />
             Generate Snippet

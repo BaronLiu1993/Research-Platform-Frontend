@@ -54,7 +54,6 @@ const generateColumns = (userId) => [
                   </h1>
                   <div className="flex items-center space-x-1.5 text-xs text-[#787774] truncate">
                     <span>{data.department || "N/A Department"}</span>
-
                     {data.school && (
                       <span className="text-[#787774]">@ {data.school}</span>
                     )}

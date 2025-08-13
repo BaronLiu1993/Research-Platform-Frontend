@@ -16,7 +16,10 @@ import { DeleteDrafts } from "@/app/actions/delete/deleteDrafts";
 import { ExecuteMassSendWithAttachments } from "@/app/actions/queue/executeMassSendWithAttachments";
 import { toast } from "sonner";
 
-export default function DraftList({ draftData: initialData, parsedUserProfile }) {
+export default function DraftList({
+  draftData: initialData,
+  parsedUserProfile,
+}) {
   const [draftData, setDraftData] = useState(initialData);
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
@@ -53,7 +56,9 @@ export default function DraftList({ draftData: initialData, parsedUserProfile })
   const handleCheck = (id, name, email) => {
     setSelected((prev) => {
       const exists = prev.some((item) => item.id === id);
-      return exists ? prev.filter((item) => item.id !== id) : [...prev, { id, name, email }];
+      return exists
+        ? prev.filter((item) => item.id !== id)
+        : [...prev, { id, name, email }];
     });
   };
 
@@ -61,7 +66,9 @@ export default function DraftList({ draftData: initialData, parsedUserProfile })
     if (checkAll) {
       setSelected([]);
     } else {
-      setSelected(draftData.map(({ id, name, email }) => ({ id, name, email })));
+      setSelected(
+        draftData.map(({ id, name, email }) => ({ id, name, email }))
+      );
     }
     setCheckAll(!checkAll);
   };
@@ -83,13 +90,19 @@ export default function DraftList({ draftData: initialData, parsedUserProfile })
                 >
                   <Checkbox
                     checked={selected.some((item) => item.id === data.id)}
-                    onCheckedChange={() => handleCheck(data.id, data.name, data.email)}
+                    onCheckedChange={() =>
+                      handleCheck(data.id, data.name, data.email)
+                    }
                     onClick={(e) => e.stopPropagation()}
                   />
 
                   <div className="flex gap-2 items-center">
-                    <span className="text-sm font-semibold text-zinc-800">{data.name}</span>
-                    <span className="text-sm font-light text-zinc-500">{data.email}</span>
+                    <span className="text-sm font-semibold text-zinc-800">
+                      {data.name}
+                    </span>
+                    <span className="text-sm font-light text-zinc-500">
+                      {data.email}
+                    </span>
                     <div className="bg-green-100 flex gap-1 items-center px-2 py-0.5 rounded-xs text-green-700">
                       <MousePointer className="h-3.5 w-3.5" />
                       <span className="text-xs">Editable Draft</span>
@@ -98,7 +111,11 @@ export default function DraftList({ draftData: initialData, parsedUserProfile })
                   <Button
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleDeleteDraft(data.draftId, parsedUserProfile.user_id, data.id);
+                      handleDeleteDraft(
+                        data.draftId,
+                        parsedUserProfile.user_id,
+                        data.id
+                      );
                     }}
                     variant="ghost"
                     size="icon"
@@ -124,14 +141,16 @@ export default function DraftList({ draftData: initialData, parsedUserProfile })
               </Dialog>
             ))
           ) : (
-            <div className="font-sans text-sm p-4 font-light">No Drafts Found</div>
+            <div className="font-sans text-sm p-4 font-light">
+              No Drafts Found
+            </div>
           )}
         </div>
       </div>
 
       <div className="flex gap-4">
         <Button
-          className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2"
+          className="text-sm cursor-pointer font-main text-[#f6f6f7] font-medium flex items-center gap-1  bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
           onClick={handleSubmit}
         >
           <Send className="w-4 h-4" />
@@ -139,11 +158,20 @@ export default function DraftList({ draftData: initialData, parsedUserProfile })
         </Button>
 
         <Button
-          className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2"
+          className="
+          text-sm cursor-pointer font-main font-medium 
+          flex items-center gap-1 
+          text-[#f6f6f7] 
+          bg-[#e49a1b] 
+          px-3 py-1.5 
+          hover:bg-[#D97706] 
+          transition-colors 
+          rounded-sm
+        "
           onClick={handleSubmitWithAttachments}
         >
           <FileSymlink />
-          Send Selected With Attachments
+          Send With Attachments
         </Button>
       </div>
     </div>

@@ -79,7 +79,7 @@ export function DataTable({
     [query]
   );
 
-  console.log(data)
+  console.log(data);
 
   return (
     <div className="rounded-md py-2 w-[55rem]">
@@ -93,12 +93,8 @@ export function DataTable({
                 className="w-[15rem] rounded-xs"
                 placeholder="🔎 Search..."
               />
-              <button
-                type="submit"
-                className="text-sm flex items-center gap-2 font-light text-[#337EA9] bg-[#E7F3F8] p-2 rounded-sm hover:bg-[#D1E9F0] transition-colors"
-              >
-                <Inspect />
-                Search Research Topics
+              <button className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm">
+                Search
               </button>
             </form>
             <DropdownMenu>
@@ -246,13 +242,13 @@ export function DataTable({
 
       <div className="flex justify-end mt-2 gap-4">
         <Link
-          className="text-sm text-[#337EA9] hover:bg-[#D1E9F0] transition-colors bg-[#E7F3F8] p-2 rounded-xs"
+          className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
           href={`?page=${pageNumber - 1}&search=${search}`}
         >
           Previous
         </Link>
         <Link
-          className="text-sm hover:bg-[#D1E9F0] transition-colors text-[#337EA9] bg-[#E7F3F8] p-2 rounded-xs"
+          className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
           href={`?page=${pageNumber + 1}&search=${search}`}
         >
           Next

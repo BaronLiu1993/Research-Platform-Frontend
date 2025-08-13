@@ -23,7 +23,6 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
-  SheetHeader,
   SheetTitle,
   SheetTrigger,
   SheetClose,
@@ -33,8 +32,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogTrigger,
+  DialogHeader,
+  DialogClose,
 } from "@/shadcomponents/ui/composedialog";
-
+import { Label } from "@/shadcomponents/ui/label";
 import { Input } from "@/shadcomponents/ui/input";
 import { Button } from "@/shadcomponents/ui/button";
 import { DialogDescription } from "@radix-ui/react-dialog";
@@ -44,6 +45,7 @@ import {
   BookAIcon,
   Bot,
   Cloud,
+  CloudUpload,
   Download,
   DraftingCompass,
   File,
@@ -54,9 +56,10 @@ import {
   HammerIcon,
   Info,
   Mail,
-  MousePointer,
   Paperclip,
   Pencil,
+  Trash2,
+  X,
 } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import DraftList from "./snippet/draftList";
@@ -64,13 +67,6 @@ import FollowUpList from "./snippet/followUpList";
 
 import { UploadResume } from "@/app/actions/upload/uploadResume";
 import { UploadTranscript } from "@/app/actions/upload/uploadTranscript";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/shadcomponents/ui/accordion";
-import { Label } from "@/shadcomponents/ui/label";
 
 export function SavedDataTable({
   columns,
@@ -89,8 +85,7 @@ export function SavedDataTable({
   const [transcript, setTranscript] = useState(null);
   const [generateView, setGenerateView] = useState(false);
   const [draftsView, setDraftsView] = useState(true);
-  
-
+  console.log(resume);
   const table = useReactTable({
     data,
     columns,
@@ -122,7 +117,7 @@ export function SavedDataTable({
   };
 
   return (
-    <div className="px-4">
+    <div className="px-4 font-main">
       <div className="flex flex-col gap-4 py-4">
         <div>
           <div className="font-semibold flex gap-2">
@@ -148,160 +143,222 @@ export function SavedDataTable({
           </div>
         </div>
         <div className="flex gap-4">
-          <Accordion type="multiple">
-            <AccordionItem value="upload-resume">
-              <AccordionTrigger>
-                {parsedResumeData.success ? (
-                  <div className="bg-[#EDF3EC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#448361]">
-                    <FileCheck2 className="h-4 w-4" />
-                    <span className="text-xs">Resume Uploaded</span>
-                  </div>
-                ) : (
-                  <div className="bg-[#FDEBEC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D44C47]">
-                    <FileX2 className="h-4 w-4" />
-                    <span className="text-xs">Resume Missing</span>
-                  </div>
-                )}
-              </AccordionTrigger>
-              <AccordionContent>
-                {parsedResumeData.success ? (
-                  <div className="flex flex-col gap-6">
-                    <div className="flex flex-col gap-2">
-                      <h1 className="font-bold">
-                        {parsedResumeData.data.name}
-                      </h1>
-                      <div className="flex gap-4">
-                        <a
-                          className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
-                          target="_blank"
-                          href={parsedResumeData.data.webViewLink}
-                        >
-                          <File className="p-1" />
-                          <span>View In Google Drive</span>
-                        </a>
-                        <a
-                          className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
-                          target="_blank"
-                          href={parsedResumeData.data.webContentLink}
-                        >
-                          <Download className="p-1" />
-                          <span>Download File</span>
-                        </a>
-                      </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              {parsedResumeData.success ? (
+                <div className="bg-[#EDF3EC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#448361] cursor-pointer">
+                  <FileCheck2 className="h-4 w-4" />
+                  <span className="text-xs">Resume Uploaded</span>
+                </div>
+              ) : (
+                <div className="bg-[#FDEBEC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D44C47] cursor-pointer">
+                  <FileX2 className="h-4 w-4" />
+                  <span className="text-xs">Resume Missing</span>
+                </div>
+              )}
+            </DialogTrigger>
+            <DialogContent className="max-w-xl p-10">
+              {parsedResumeData.success ? (
+                <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-2">
+                    <h1 className="font-semibold">
+                      {parsedResumeData.data.name}
+                    </h1>
+                    <div className="flex gap-4">
+                      <a
+                        className="text-[#37352F] rounded-sm bg-[#F1F1EF] font-semibold text-xs p-1 gap-1 flex items-center justify-center"
+                        target="_blank"
+                        href={parsedResumeData.data.webViewLink}
+                      >
+                        <File className="p-1" />
+                        <span>View In Google Drive</span>
+                      </a>
+                      <a
+                        className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-1 rounded-sm flex items-center justify-center"
+                        target="_blank"
+                        href={parsedResumeData.data.webContentLink}
+                      >
+                        <Download className="p-1" />
+                        <span>Download File</span>
+                      </a>
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <div className="flex flex-col gap-2">
-                        <Label>Update Resume File</Label>
-                        <Input
-                          onChange={(e) => setResume(e.target.files?.[0])}
-                          type="file"
-                          className="rounded-xs"
-                        />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    {resume ? (
+                      <div className="border-2 border-gray-100 font-main rounded-md p-5 flex gap-2">
+                        <FileCheck2 className="stroke-1 text-gray-500" />
+                        <div className="flex justify-between w-full">
+                          <div>
+                            <h1 className="font-semibold text-sm">
+                              {resume.name.slice(0, 40)}...
+                            </h1>
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold text-xs text-gray-500">
+                                {Math.ceil(resume.size / 1000)} KB
+                              </span>
+                              <div className="bg-gray-300 rounded-full h-1 w-1"></div>
+                              <span className="font-semibold text-xs text-red-500">
+                                Not Uploaded
+                              </span>
+                            </div>
+                          </div>
+                          <button onClick={() => setResume(null)}>
+                            <Trash2 className="text-gray-400 cursor-pointer p-1 rounded-xs stroke-2 h-6 w-6 hover:text-[#D44C47] hover:bg-[#FDEBEC]" />
+                          </button>
+                        </div>
                       </div>
-                      {resume ? (
-                        <Button
-                          onClick={handleUploadResume}
-                          className="text-[#37352F] bg-[#F1F1EF] font-semibold w-fit rounded-xs text-xs"
-                        >
-                          Upload
-                        </Button>
-                      ) : (
-                        <div></div>
+                    ) : (
+                      <label className="border-3 border-dashed gap-4 rounded-lg py-10 px-5 font-main flex flex-col items-center cursor-pointer">
+                        <div className="flex flex-col items-center">
+                          <CloudUpload />
+                          <span className="font-semibold text-md">
+                            Choose a file or drag and drop it here.
+                          </span>
+                          <span className="text-gray-400 text-sm">
+                            JPEG, PNG and PDF are accepted
+                          </span>
+
+                          <Input
+                            onChange={(e) => setResume(e.target.files?.[0])}
+                            type="file"
+                            className="hidden"
+                          />
+                        </div>
+                        <div className="border-1 text-gray-600 font-medium rounded-md text-sm p-1">
+                          Browse Here
+                        </div>
+                      </label>
+                    )}
+
+                    <div className="flex gap-2 py-4">
+                      <DialogClose
+                        className="
+                        text-sm 
+                        font-main font-medium 
+                        flex items-center gap-1 
+                        text-[#f6f6f7] 
+                        bg-[#D44C47] 
+                        px-3 py-1.5 
+                        rounded-sm 
+                        cursor-pointer 
+                        transition-colors 
+                        hover:bg-[#B91C1C]
+                      "
+                      >
+                        Cancel
+                      </DialogClose>
+                      {resume && (
+                        <DialogClose>
+                          <Button
+                            onClick={handleUploadResume}
+                            className="text-sm font-main font-medium flex items-center gap-1 text-[#f6f6f7] bg-[#4DAB9A] px-3 py-1 rounded-sm cursor-pointer transition-colors hover:bg-[#3B8C7E]"
+                          >
+                            Upload
+                          </Button>
+                        </DialogClose>
                       )}
                     </div>
                   </div>
-                ) : (
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Input
+                    onChange={(e) => setResume(e.target.files?.[0])}
+                    type="file"
+                    className="rounded-xs"
+                  />
+                  {resume && (
+                    <Button
+                      onClick={handleUploadResume}
+                      className="text-[#37352F] bg-[#F1F1EF] font-semibold w-fit rounded-xs text-xs"
+                    >
+                      Upload
+                    </Button>
+                  )}
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              {parsedTranscriptData.success ? (
+                <div className="bg-[#EDF3EC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#448361] cursor-pointer">
+                  <FileCheck2 className="h-4 w-4" />
+                  <span className="text-xs">Transcript Uploaded</span>
+                </div>
+              ) : (
+                <div className="bg-[#FDEBEC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D44C47] cursor-pointer">
+                  <FileX2 className="h-4 w-4" />
+                  <span className="text-xs">Transcript Missing</span>
+                </div>
+              )}
+            </DialogTrigger>
+            <DialogContent className="max-w-lg">
+              <DialogHeader>
+                <DialogTitle>Transcript</DialogTitle>
+              </DialogHeader>
+              {parsedTranscriptData.success ? (
+                <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
-                    <Input
-                      onChange={(e) => setResume(e.target.files?.[0])}
-                      type="file"
-                      className="rounded-xs"
-                    />
-                    {resume ? (
-                      <Button
-                        onClick={handleUploadResume}
-                        className="text-[#37352F] bg-[#F1F1EF] font-semibold w-fit rounded-xs text-xs"
+                    <h1 className="font-semibold">
+                      {parsedTranscriptData.data.name}
+                    </h1>
+                    <div className="flex gap-4">
+                      <a
+                        className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
+                        target="_blank"
+                        href={parsedTranscriptData.data.webViewLink}
                       >
-                        Upload
-                      </Button>
-                    ) : (
-                      <div></div>
-                    )}
-                  </div>
-                )}
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="upload-transcripts">
-              <AccordionTrigger>
-                {parsedTranscriptData.success ? (
-                  <div className="bg-[#EDF3EC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#448361]">
-                    <FileCheck2 className="h-4 w-4" />
-                    <span className="text-xs">Transcript Uploaded</span>
-                  </div>
-                ) : (
-                  <div className="bg-[#FDEBEC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D44C47]">
-                    <FileX2 className="h-4 w-4" />
-                    <span className="text-xs">Transcript Missing</span>
-                  </div>
-                )}
-              </AccordionTrigger>
-              <AccordionContent>
-                {parsedTranscriptData.success ? (
-                  <div className="flex flex-col gap-6">
-                    <div className="flex flex-col gap-2">
-                      <h1 className="font-bold">
-                        {parsedTranscriptData.data.name}
-                      </h1>
-                      <div className="flex gap-4">
-                        <a
-                          className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
-                          target="_blank"
-                          href={parsedTranscriptData.data.webViewLink}
-                        >
-                          <File className="p-1" />
-                          <span>View In Google Drive</span>
-                        </a>
-                        <a
-                          className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
-                          target="_blank"
-                          href={parsedTranscriptData.data.webContentLink}
-                        >
-                          <Download className="p-1" />
-                          <span>Download File</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <Label>Update Transcript File</Label>
-                      <Input
-                        onChange={(e) => setResume(e.target.files?.[0])}
-                        type="file"
-                        className="rounded-xs"
-                      />
+                        <File className="p-1" />
+                        <span>View In Google Drive</span>
+                      </a>
+                      <a
+                        className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
+                        target="_blank"
+                        href={parsedTranscriptData.data.webContentLink}
+                      >
+                        <Download className="p-1" />
+                        <span>Download File</span>
+                      </a>
                     </div>
                   </div>
-                ) : (
                   <div className="flex flex-col gap-2">
+                    <Label>Update Transcript File</Label>
                     <Input
                       onChange={(e) => setTranscript(e.target.files?.[0])}
                       type="file"
                       className="rounded-xs"
                     />
-                    {transcript ? (
+                    {transcript && (
                       <Button
                         onClick={handleUploadTranscript}
                         className="text-[#37352F] bg-[#F1F1EF] font-semibold w-fit rounded-xs text-xs"
                       >
                         Upload
                       </Button>
-                    ) : (
-                      <div></div>
                     )}
                   </div>
-                )}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Input
+                    onChange={(e) => setTranscript(e.target.files?.[0])}
+                    type="file"
+                    className="rounded-xs"
+                  />
+                  {transcript && (
+                    <Button
+                      onClick={handleUploadTranscript}
+                      className="text-[#37352F] bg-[#F1F1EF] font-semibold w-fit rounded-xs text-xs"
+                    >
+                      Upload
+                    </Button>
+                  )}
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
       <div>
@@ -331,7 +388,7 @@ export function SavedDataTable({
         />
         <Sheet>
           <SheetTrigger>
-            <Button className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2">
+            <Button className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm">
               <Mail />
               Begin Mail Merge
             </Button>
@@ -348,13 +405,13 @@ export function SavedDataTable({
                   <Dialog>
                     <DialogTrigger>
                       {draftsView && (
-                        <Button
+                        <button
                           onClick={handleGenerateDrafts}
-                          className="rounded-sm cursor-pointer text-[#337EA9] bg-[#E7F3F8] hover:bg-[#d4eaf5] hover:text-[#2c6f95] transition-colors duration-200 font-medium px-4 py-2 flex items-center gap-2"
+                          className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
                         >
                           <DraftingCompass />
                           Generate Drafts
-                        </Button>
+                        </button>
                       )}
                     </DialogTrigger>
                     <DialogContent>
