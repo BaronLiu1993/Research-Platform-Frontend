@@ -5,9 +5,11 @@ import { Save } from "../api/post/save";
 
 import { Button } from "@/shadcomponents/ui/button";
 import { useSavedStore } from "@/app/store/useSavedStore";
-import { Bookmark, BookmarkCheck } from "lucide-react";
+import { Bookmark, BookmarkCheck, SquareArrowOutDownRight, SquareArrowOutUpRight } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useAppliedStore } from "@/app/store/useAppliedStore";
+import Link from "next/link";
 
 export default function SaveButton({
   professor_id,
@@ -23,12 +25,14 @@ export default function SaveButton({
   user_id,
 }) {
   const saved = useSavedStore((state) => state.savedStore);
+  const applied = useAppliedStore((state) => state.appliedStore);
+
   const addSaved = useSavedStore((state) => state.addSavedStore);
   const removeSaved = useSavedStore((state) => state.removeSavedStore);
   const [loading, setLoading] = useState(false);
   const isSaved = saved.includes(professor_id);
-
-console.log(professor_id)
+  const isApplied = applied.includes(professor_id);
+  
   const handleToggle = async () => {
     setLoading(true);
     try {
@@ -69,22 +73,31 @@ console.log(professor_id)
   };
 
   return (
-    <Button
-      className={`cursor-pointer max-h-[1.5rem] rounded-xs mb-2 ${
-        isSaved
-          ? "bg-green-100 text-green-600 hover:bg-green-200 hover:text-green-600"
-          : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:text-neutral-600"
-      }`}
-      size="sm"
-      onClick={handleToggle}
-      disabled={loading}
-    >
-      {isSaved ? (
-        <BookmarkCheck className="w-3 h-3 mr-1" />
+    <>
+      {isApplied ? (
+        <Link className = "bg-orange-100 flex items-center px-3 py-1 text-xs font-medium font-main rounded-xs text-orange-600 hover:bg-orange-200 hover:text-orange-600" href = "/bookmark">
+          <SquareArrowOutUpRight className="w-3 h-3 mr-2"/>
+          <span>Applied</span>
+        </Link>
       ) : (
-        <Bookmark className="w-3 h-3 mr-1" />
+        <Button
+          className={`cursor-pointer max-h-[1.5rem] rounded-xs mb-2 ${
+            isSaved
+              ? "bg-green-100 text-green-600 hover:bg-green-200 hover:text-green-600"
+              : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:text-neutral-600"
+          }`}
+          size="sm"
+          onClick={handleToggle}
+          disabled={loading}
+        >
+          {isSaved ? (
+            <BookmarkCheck className="w-3 h-3 mr-1" />
+          ) : (
+            <Bookmark className="w-3 h-3 mr-1" />
+          )}
+          <span className="text-xs">{isSaved ? "Saved" : "Save"}</span>
+        </Button>
       )}
-      <span className="text-xs">{isSaved ? "Saved" : "Save"}</span>
-    </Button>
+    </>
   );
 }

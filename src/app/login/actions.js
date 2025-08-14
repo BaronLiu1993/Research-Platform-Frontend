@@ -101,7 +101,6 @@ export async function handleLogin(prevState, formData) {
       success: true,
     };
   } catch (error) {
-    console.log(error)
     if (error.message === "NEXT_REDIRECT") throw error;
     if (error.cause && error.cause.code === "ECONNREFUSED") {
       return {

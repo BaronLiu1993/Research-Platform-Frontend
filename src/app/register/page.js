@@ -5,7 +5,6 @@ import { useState } from "react";
 
 //Server Action
 import { handleRegister } from "../api/auth";
-import { createKanban } from "../api/auth";
 
 //Components
 import DropdownMajor from "../components/dropdowns/dropdownmajor";

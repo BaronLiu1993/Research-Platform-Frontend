@@ -5,9 +5,7 @@ export const useAISnippetStore = create(
   persist(
     (set, get) => ({
       selectedAISnippets: [],
-
       setAISnippets: (vars) => set({ selectedAISnippets: vars }),
-
       addAISnippets: (variable) => {
         const current = get().selectedAISnippets;
         if (!current.includes(variable)) {

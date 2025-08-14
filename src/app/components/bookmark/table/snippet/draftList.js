@@ -23,23 +23,41 @@ export default function DraftList({
   const [draftData, setDraftData] = useState(initialData);
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
-
+  console.log(selected);
   const handleSubmit = async () => {
-    await ExecuteMassSend(
-      parsedUserProfile.user_id,
-      `${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`,
-      parsedUserProfile.student_email,
-      selected
-    );
+    if (selected.length === 0) {
+      toast("No Drafts Selected to Send");
+    } else {
+      try {
+        await ExecuteMassSend(
+          parsedUserProfile.user_id,
+          `${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`,
+          parsedUserProfile.student_email,
+          selected
+        );
+        toast("Drafts Sent");
+      } catch {
+        toast("Drafts Failed to Send");
+      }
+    }
   };
 
   const handleSubmitWithAttachments = async () => {
-    await ExecuteMassSendWithAttachments(
-      parsedUserProfile.user_id,
-      `${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`,
-      parsedUserProfile.student_email,
-      selected
-    );
+    if (selected.length === 0) {
+      toast("No Drafts Selected to Send");
+    } else {
+      try {
+        await ExecuteMassSendWithAttachments(
+          parsedUserProfile.user_id,
+          `${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`,
+          parsedUserProfile.student_email,
+          selected
+        );
+        toast("Drafts Sent With Attachments!");
+      } catch {
+        toast("Drafts Failed to Send");
+      }
+    }
   };
 
   const handleDeleteDraft = async (draftId, userId, professorId) => {
@@ -103,7 +121,7 @@ export default function DraftList({
                     <span className="text-sm font-light text-zinc-500">
                       {data.email}
                     </span>
-                    <div className="bg-green-100 flex gap-1 items-center px-2 py-0.5 rounded-xs text-green-700">
+                    <div className="bg-[#448361] flex gap-1 items-center px-2 py-0.5 rounded-xs text-white">
                       <MousePointer className="h-3.5 w-3.5" />
                       <span className="text-xs">Editable Draft</span>
                     </div>
@@ -150,7 +168,7 @@ export default function DraftList({
 
       <div className="flex gap-4">
         <Button
-          className="text-sm cursor-pointer font-main text-[#f6f6f7] font-medium flex items-center gap-1  bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
+          className="text-sm cursor-pointer font-medium text-white bg-[#529CCA] px-3 py-1.5 hover:bg-[#4179B8] transition-colors rounded-xs"
           onClick={handleSubmit}
         >
           <Send className="w-4 h-4" />
@@ -158,16 +176,7 @@ export default function DraftList({
         </Button>
 
         <Button
-          className="
-          text-sm cursor-pointer font-main font-medium 
-          flex items-center gap-1 
-          text-[#f6f6f7] 
-          bg-[#e49a1b] 
-          px-3 py-1.5 
-          hover:bg-[#D97706] 
-          transition-colors 
-          rounded-sm
-        "
+          className="text-sm cursor-pointer font-medium flex items-center gap-1 text-[#f6f6f7] bg-[#C14C8A] px-3 py-1.5 hover:bg-[#A73B75] transition-colors rounded-xs"
           onClick={handleSubmitWithAttachments}
         >
           <FileSymlink />

@@ -104,7 +104,7 @@ export default function FollowUpEditor({
         dynamicFields
       );
       if (draftResponse.success) {
-        const sendResponse = await ExecuteMassSendFollowUpDrafts(
+        await ExecuteMassSendFollowUpDrafts(
           userId,
           fromName,
           fromEmail,

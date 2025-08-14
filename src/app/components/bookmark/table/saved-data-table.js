@@ -67,6 +67,7 @@ import FollowUpList from "./snippet/followUpList";
 
 import { UploadResume } from "@/app/actions/upload/uploadResume";
 import { UploadTranscript } from "@/app/actions/upload/uploadTranscript";
+import { toast } from "sonner";
 
 export function SavedDataTable({
   columns,
@@ -85,7 +86,7 @@ export function SavedDataTable({
   const [transcript, setTranscript] = useState(null);
   const [generateView, setGenerateView] = useState(false);
   const [draftsView, setDraftsView] = useState(true);
-  console.log(resume);
+  const [isOpen, setIsOpen] = useState(false);
   const table = useReactTable({
     data,
     columns,
@@ -109,11 +110,21 @@ export function SavedDataTable({
   };
 
   const handleUploadTranscript = async () => {
-    await UploadTranscript(transcript, userId);
+    try {
+      await UploadTranscript(transcript, userId);
+      toast("Uploaded Transcript");
+    } catch {
+      toast("Failed to Upload");
+    }
   };
 
   const handleUploadResume = async () => {
-    await UploadResume(resume, userId);
+    try {
+      await UploadResume(resume, userId);
+      toast("Uploaded Resume");
+    } catch {
+      toast("Failed to Upload");
+    }
   };
 
   return (
@@ -148,7 +159,9 @@ export function SavedDataTable({
               {parsedResumeData.success ? (
                 <div className="bg-[#EDF3EC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#448361] cursor-pointer">
                   <FileCheck2 className="h-4 w-4" />
-                  <span className="text-xs">Resume Uploaded</span>
+                  <span className="text-xs">
+                    Preview or Modify Uploaded Resume
+                  </span>
                 </div>
               ) : (
                 <div className="bg-[#FDEBEC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D44C47] cursor-pointer">
@@ -157,7 +170,7 @@ export function SavedDataTable({
                 </div>
               )}
             </DialogTrigger>
-            <DialogContent className="max-w-xl p-10">
+            <DialogContent className="max-w-xl p-4">
               {parsedResumeData.success ? (
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
@@ -166,7 +179,7 @@ export function SavedDataTable({
                     </h1>
                     <div className="flex gap-4">
                       <a
-                        className="text-[#37352F] rounded-sm bg-[#F1F1EF] font-semibold text-xs p-1 gap-1 flex items-center justify-center"
+                        className="text-[#37352F] rounded-sm hover:bg-[#f1f1efd4] bg-[#F1F1EF] font-semibold text-xs p-1 gap-1 flex items-center justify-center"
                         target="_blank"
                         href={parsedResumeData.data.webViewLink}
                       >
@@ -174,7 +187,7 @@ export function SavedDataTable({
                         <span>View In Google Drive</span>
                       </a>
                       <a
-                        className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-1 rounded-sm flex items-center justify-center"
+                        className="text-[#37352F] hover:bg-[#f1f1efd4] bg-[#F1F1EF] font-semibold text-xs p-1 gap-1 rounded-sm flex items-center justify-center"
                         target="_blank"
                         href={parsedResumeData.data.webContentLink}
                       >
@@ -231,20 +244,7 @@ export function SavedDataTable({
                     )}
 
                     <div className="flex gap-2 py-4">
-                      <DialogClose
-                        className="
-                        text-sm 
-                        font-main font-medium 
-                        flex items-center gap-1 
-                        text-[#f6f6f7] 
-                        bg-[#D44C47] 
-                        px-3 py-1.5 
-                        rounded-sm 
-                        cursor-pointer 
-                        transition-colors 
-                        hover:bg-[#B91C1C]
-                      "
-                      >
+                      <DialogClose className="text-sm font-main font-medium flex items-center gap-1 text-[#f6f6f7] bg-[#D44C47] px-3 py-1.5 rounded-sm cursor-pointer transition-colors hover:bg-[#B91C1C]">
                         Cancel
                       </DialogClose>
                       {resume && (
@@ -285,7 +285,9 @@ export function SavedDataTable({
               {parsedTranscriptData.success ? (
                 <div className="bg-[#EDF3EC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#448361] cursor-pointer">
                   <FileCheck2 className="h-4 w-4" />
-                  <span className="text-xs">Transcript Uploaded</span>
+                  <span className="text-xs">
+                    Preview or Modify Uploaded Transcript
+                  </span>
                 </div>
               ) : (
                 <div className="bg-[#FDEBEC] flex gap-2 items-center p-1 w-fit rounded-xs text-[#D44C47] cursor-pointer">
@@ -294,10 +296,8 @@ export function SavedDataTable({
                 </div>
               )}
             </DialogTrigger>
-            <DialogContent className="max-w-lg">
-              <DialogHeader>
-                <DialogTitle>Transcript</DialogTitle>
-              </DialogHeader>
+
+            <DialogContent className="max-w-xl p-4">
               {parsedTranscriptData.success ? (
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
@@ -306,7 +306,7 @@ export function SavedDataTable({
                     </h1>
                     <div className="flex gap-4">
                       <a
-                        className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
+                        className="text-[#37352F] rounded-sm hover:bg-[#f1f1efd4] bg-[#F1F1EF] font-semibold text-xs p-1 gap-1 flex items-center justify-center"
                         target="_blank"
                         href={parsedTranscriptData.data.webViewLink}
                       >
@@ -314,7 +314,7 @@ export function SavedDataTable({
                         <span>View In Google Drive</span>
                       </a>
                       <a
-                        className="text-[#37352F] bg-[#F1F1EF] font-semibold text-xs p-1 gap-2 flex items-center justify-center"
+                        className="text-[#37352F] hover:bg-[#f1f1efd4] bg-[#F1F1EF] font-semibold text-xs p-1 gap-1 rounded-sm flex items-center justify-center"
                         target="_blank"
                         href={parsedTranscriptData.data.webContentLink}
                       >
@@ -323,21 +323,70 @@ export function SavedDataTable({
                       </a>
                     </div>
                   </div>
+
                   <div className="flex flex-col gap-2">
-                    <Label>Update Transcript File</Label>
-                    <Input
-                      onChange={(e) => setTranscript(e.target.files?.[0])}
-                      type="file"
-                      className="rounded-xs"
-                    />
-                    {transcript && (
-                      <Button
-                        onClick={handleUploadTranscript}
-                        className="text-[#37352F] bg-[#F1F1EF] font-semibold w-fit rounded-xs text-xs"
-                      >
-                        Upload
-                      </Button>
+                    {transcript ? (
+                      <div className="border-2 border-gray-100 font-main rounded-md p-5 flex gap-2">
+                        <FileCheck2 className="stroke-1 text-gray-500" />
+                        <div className="flex justify-between w-full">
+                          <div>
+                            <h1 className="font-semibold text-sm">
+                              {transcript.name.slice(0, 40)}...
+                            </h1>
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold text-xs text-gray-500">
+                                {Math.ceil(transcript.size / 1000)} KB
+                              </span>
+                              <div className="bg-gray-300 rounded-full h-1 w-1"></div>
+                              <span className="font-semibold text-xs text-red-500">
+                                Not Uploaded
+                              </span>
+                            </div>
+                          </div>
+                          <button onClick={() => setTranscript(null)}>
+                            <Trash2 className="text-gray-400 cursor-pointer p-1 rounded-xs stroke-2 h-6 w-6 hover:text-[#D44C47] hover:bg-[#FDEBEC]" />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <label className="border-3 border-dashed gap-4 rounded-lg py-10 px-5 font-main flex flex-col items-center cursor-pointer">
+                        <div className="flex flex-col items-center">
+                          <CloudUpload />
+                          <span className="font-semibold text-md">
+                            Choose a file or drag and drop it here.
+                          </span>
+                          <span className="text-gray-400 text-sm">
+                            JPEG, PNG and PDF are accepted
+                          </span>
+                          <Input
+                            onChange={(e) => setTranscript(e.target.files?.[0])}
+                            type="file"
+                            className="hidden"
+                          />
+                        </div>
+                        <div className="border-1 text-gray-600 font-medium rounded-md text-sm p-1">
+                          Browse Here
+                        </div>
+                      </label>
                     )}
+
+                    <div className="flex gap-2 py-4">
+                      <DialogClose
+                        className="text-sm font-main font-medium flex items-center gap-1 text-[#f6f6f7] bg-[#D44C47] px-3 py-1.5 rounded-sm cursor-pointer transition-colors hover:bg-[#B91C1C]"
+                      >
+                        Cancel
+                      </DialogClose>
+                      {transcript && (
+                        <DialogClose>
+                          <Button
+                            onClick={handleUploadTranscript}
+                            className="text-sm font-main font-medium flex items-center gap-1 text-[#f6f6f7] bg-[#4DAB9A] px-3 py-1 rounded-sm cursor-pointer transition-colors hover:bg-[#3B8C7E]"
+                          >
+                            Upload
+                          </Button>
+                        </DialogClose>
+                      )}
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -379,16 +428,25 @@ export function SavedDataTable({
       </div>
       <div className="flex items-center py-4 gap-6">
         <Input
-          placeholder="☰ Filter Professors..."
+          placeholder="Find Professors..."
           value={table.getColumn("name")?.getFilterValue() ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm rounded-xs"
         />
-        <Sheet>
-          <SheetTrigger>
-            <Button className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm">
+        <Sheet
+          open={isOpen}
+          onOpenChange={(open) => {
+            if (table.getSelectedRowModel().rows.length === 0) {
+              toast("No Professor Selected");
+            } else {
+              setIsOpen(open);
+            }
+          }}
+        >
+          <SheetTrigger asChild>
+            <Button className="text-sm cursor-pointer font-medium text-white bg-[#529CCA] px-3 py-1.5 hover:bg-[#4179B8] transition-colors rounded-xs">
               <Mail />
               Begin Mail Merge
             </Button>
