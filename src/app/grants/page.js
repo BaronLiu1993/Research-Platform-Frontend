@@ -21,6 +21,7 @@ import {
   MapIcon,
   Banknote,
 } from "lucide-react";
+import GrantClientWrapper from "../components/grant/grantClientWrapper";
 
 export default async function Grants() {
   const cookieStore = await cookies();
@@ -83,7 +84,7 @@ export default async function Grants() {
             </Breadcrumb>
           </header>
           <div>
-            
+            <GrantClientWrapper />
           </div>
         </SidebarInset>
       </SidebarProvider>
