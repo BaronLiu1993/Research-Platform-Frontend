@@ -7,7 +7,6 @@ import React, {
 } from "react";
 
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
-import { useAISnippetStore } from "@/app/store/useAISnippetStore";
 import { Braces } from "lucide-react";
 
 const MentionList = forwardRef((props, ref) => {
@@ -18,18 +17,12 @@ const MentionList = forwardRef((props, ref) => {
     (state) => state.addSelectedVariable
   );
 
-  const addAISnippets = useAISnippetStore((state) => state.addAISnippets);
 
   const selectItem = (index) => {
     const item = props.items[index];
     if (item) {
-      if (item.variable == "{{AIcontext}}") {
-        addAISnippets(item.variable);
-        props.command({ id: item.variable });
-      } else {
-        addSelectedVariable(item.variable);
-        props.command({ id: item.variable });
-      }
+      addSelectedVariable(item.variable);
+      props.command({ id: item.variable });
     }
   };
 

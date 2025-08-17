@@ -35,7 +35,6 @@ import {
   DialogHeader,
   DialogClose,
 } from "@/shadcomponents/ui/composedialog";
-import { Label } from "@/shadcomponents/ui/label";
 import { Input } from "@/shadcomponents/ui/input";
 import { Button } from "@/shadcomponents/ui/button";
 import { DialogDescription } from "@radix-ui/react-dialog";

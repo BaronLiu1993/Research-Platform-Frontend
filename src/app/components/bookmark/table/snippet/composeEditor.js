@@ -10,29 +10,13 @@ import suggestion from "../tiptap/suggestion";
 import StarterKit from "@tiptap/starter-kit";
 import {
   Bold,
-  BookText,
-  CurlyBraces,
   Italic,
   List,
   ListTodo,
   Loader,
-  Paperclip,
-  PencilRuler,
   Strikethrough,
-  Trash2,
-  Wand2,
   X,
 } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shadcomponents/ui/popover";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/shadcomponents/ui/tooltip";
 
 import {
   Dialog,
@@ -43,7 +27,6 @@ import {
 } from "@/shadcomponents/ui/dialog";
 
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
-import { useAISnippetStore } from "@/app/store/useAISnippetStore";
 import { Badge } from "@/shadcomponents/ui/badge";
 import AIcontext from "../tiptap/AIcontext";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
@@ -61,7 +44,6 @@ export default function ComposeEditor({
     (s) => s.setSelectedVariables
   );
 
-  const setAISnippet = useAISnippetStore((s) => s.setAISnippets);
 
   useEffect(() => {
     setSelectedVariables([]);
