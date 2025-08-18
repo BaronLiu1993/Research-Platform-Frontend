@@ -21,7 +21,8 @@ import {
   MapIcon,
   Banknote,
 } from "lucide-react";
-import GrantClientWrapper from "../components/grant/grantClientWrapper";
+import { GrantDataTable } from "../components/grant/grant-data-table";
+import { GrantColumns } from "../components/grant/grantcolumns";
 
 export default async function Grants() {
   const cookieStore = await cookies();
@@ -35,15 +36,15 @@ export default async function Grants() {
       },
     }),
     fetch("http://localhost:8080/grants/get-grants", {
-        method: "GET"
+      method: "GET",
     }),
   ]);
 
   const [parsedUserProfile, parsedGrantsProfile] = await Promise.all([
     await userResponse.json(),
-    await grantsResponse.json()
-  ])
-  console.log(parsedGrantsProfile)
+    await grantsResponse.json(),
+  ]);
+  console.log(parsedGrantsProfile);
   return (
     <>
       <SidebarProvider>
@@ -84,7 +85,7 @@ export default async function Grants() {
             </Breadcrumb>
           </header>
           <div>
-            <GrantClientWrapper />
+            <GrantDataTable columns={GrantColumns} data={parsedGrantsProfile.data} />
           </div>
         </SidebarInset>
       </SidebarProvider>
