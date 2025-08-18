@@ -4,7 +4,6 @@ import { useState } from "react";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -15,27 +14,14 @@ import {
   SidebarRail,
 } from "@/shadcomponents/ui/sidebar";
 
-import { Button } from "@/shadcomponents/ui/button";
-
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/shadcomponents/ui/popover";
-import { Separator } from "@/shadcomponents/ui/separator";
-
-import {
-  ChevronRight,
-  Languages,
-  Settings,
-  Inbox,
-  Send,
-  SquarePen,
   ChevronDown,
+  Library,
+  LayoutDashboard,
+  Microscope,
+  Inbox,
+  Settings,
 } from "lucide-react";
-import { Library } from "lucide-react";
-import { LayoutDashboard } from "lucide-react";
-import { Microscope } from "lucide-react";
 
 const data = {
   navMain: [
@@ -53,34 +39,43 @@ const data = {
         {
           title: "Inbox",
           url: "/inbox/email",
-          icon: <Inbox className="text-red-500 bg-red-100 h-6 w-6 p-0.5 rounded-xs" />,
+          icon: (
+            <Inbox className="text-red-500 bg-red-100 h-6 w-6 p-0.5 rounded-xs" />
+          ),
         },
         {
           title: "Dashboard",
-          url: "/bookmark",
+          type: "expandable", 
           icon: (
-            <LayoutDashboard className="h-6 w-6 bg-blue-100 rounded-xs fill-[#337EA9] text-[#337EA9] p-0.5" />
+            <LayoutDashboard className="h-6 w-6 bg-blue-100 rounded-xs text-[#337EA9] p-0.5" />
           ),
+          options: [
+            { title: "Workspace", url: "/bookmark/workspace" },
+            { title: "Kanban", url: "/bookmark/kanban" },
+          ],
         },
         {
           title: "Research Fund",
           url: "/grants",
-          icon: <Microscope className="text-purple-500 bg-purple-100 h-6 w-6 p-0.5 rounded-xs" />,
+          icon: (
+            <Microscope className="text-purple-500 bg-purple-100 h-6 w-6 p-0.5 rounded-xs" />
+          ),
         },
         {
           title: "Settings",
           url: "/dashboard",
-          icon: <Settings className="text-zinc-500 bg-zinc-100 h-6 w-6 p-0.5 rounded-xs" />,
+          icon: (
+            <Settings className="text-zinc-500 bg-zinc-100 h-6 w-6 p-0.5 rounded-xs" />
+          ),
         },
-        
       ],
     },
   ],
 };
 
 export function AppSidebar({ student_data, ...props }) {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [expanded, setExpanded] = useState(null);
+
   return (
     <Sidebar className="w-[12rem] font-main" {...props}>
       <SidebarHeader className="font-main rounded-sm m-2">
@@ -95,6 +90,7 @@ export function AppSidebar({ student_data, ...props }) {
           </div>
         </div>
       </SidebarHeader>
+
       <SidebarContent>
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
@@ -103,25 +99,66 @@ export function AppSidebar({ student_data, ...props }) {
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {item.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url} className="flex items-center gap-1 font-main">
+                {item.items.map((itm) =>
+                  itm.type === "expandable" ? (
+                    <SidebarMenuItem key={itm.title}>
+                      <SidebarMenuButton
+                        onClick={() =>
+                          setExpanded(expanded === itm.title ? null : itm.title)
+                        }
+                        className="flex items-center gap-1 font-main"
+                      >
                         <span className="text-[#787774] text-[12.5px]">
-                          {item.icon}
+                          {itm.icon}
                         </span>
-                        <span className=" text-[#787774] text-[12.5px] font-[500]">
-                          {item.title}
+                        <span className="text-[#787774] text-[12.5px] font-[500]">
+                          {itm.title}
                         </span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                        <ChevronDown
+                          className={`ml-auto h-3 w-3 text-[#787774] transition-transform ${
+                            expanded === itm.title ? "rotate-180" : ""
+                          }`}
+                        />
+                      </SidebarMenuButton>
+
+                      {expanded === itm.title && (
+                        <div className="m-2 border-gray-200">
+                          {itm.options.map((opt) => (
+                            <a
+                              key={opt.title}
+                              href={opt.url}
+                              className="block text-[#787774] text-[12.5px] font-[500] pl-3 font-main pr-2 py-1 hover:bg-gray-100 rounded-sm transition"
+                            >
+                              {opt.title}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </SidebarMenuItem>
+                  ) : (
+                    <SidebarMenuItem key={itm.title}>
+                      <SidebarMenuButton asChild isActive={itm.isActive}>
+                        <a
+                          href={itm.url}
+                          className="flex items-center gap-1 font-main"
+                        >
+                          <span className="text-[#787774] text-[12.5px]">
+                            {itm.icon}
+                          </span>
+                          <span className="text-[#787774] text-[12.5px] font-[500]">
+                            {itm.title}
+                          </span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  )
+                )}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
       </SidebarContent>
+
       <SidebarRail />
     </Sidebar>
   );
