@@ -68,9 +68,10 @@ export default function InboxClientWrapper({
         <div>
           <div className="w-full border-b-1 my-4">
             <div className="px-4 pt-3 bg-white justify-between shrink-0">
-              <div className="flex items-center gap-2">
-                <Inbox className="h-5 w-5 text-gray-500" />
-                <h1 className="text-xl font-semibold">Email Inbox</h1>
+              <div>
+                <h1 className="text-2xl text-[#787774] font-semibold h-fit">
+                  Email Inbox
+                </h1>
               </div>
               <div className="flex items-center py-2 space-x-2">
                 <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
@@ -117,20 +118,6 @@ export default function InboxClientWrapper({
                           <h1 className="font-light truncate max-w-[40%]">
                             {email.firstMessageData.subject || "No Subject"}
                           </h1>
-                        </div>
-                        <div className="flex items-center gap-2 shrink-0 basis-1/4 justify-end">
-                          <SeenButton seenData={email.seenData} />
-                          <EngagementButton
-                            engagementData={email.engagementData}
-                          />
-                          <span className="text-nowrap text-gray-500 ml-2">
-                            {new Date(
-                              email.firstMessageData.date
-                            ).toLocaleDateString("en-US", {
-                              month: "short",
-                              day: "numeric",
-                            })}
-                          </span>
                         </div>
                       </div>
                     </SheetTrigger>

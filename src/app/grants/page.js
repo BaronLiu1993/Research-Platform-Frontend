@@ -18,11 +18,13 @@ import {
   MoveRight,
   Plus,
   Laptop,
-  MapIcon,
   Banknote,
+  Glasses,
 } from "lucide-react";
+
 import { GrantDataTable } from "../components/grant/grant-data-table";
 import { GrantColumns } from "../components/grant/grantcolumns";
+import { Badge } from "@/shadcomponents/ui/badge";
 
 export default async function Grants() {
   const cookieStore = await cookies();
@@ -44,7 +46,6 @@ export default async function Grants() {
     await userResponse.json(),
     await grantsResponse.json(),
   ]);
-  console.log(parsedGrantsProfile);
   return (
     <>
       <SidebarProvider>
@@ -78,14 +79,37 @@ export default async function Grants() {
                 <BreadcrumbItem>
                   <BreadcrumbPage className="font-main flex items-center hover:underline cursor-pointer gap-2 font-medium text-[#37352F]">
                     <Banknote className="fill-blue-700 text-white" />
-                    Grants
+                    Grants and Scholarships
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <div>
-            <GrantDataTable columns={GrantColumns} data={parsedGrantsProfile.data} />
+          <div className = "py-10 px-10">
+            <div className = "mt-6">
+              <div className="text-2xl text-[#787774] font-semibold h-fit">
+                Grants and Scholarships
+              </div>
+              <div className="flex items-center py-2 space-x-2">
+                <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
+                  <Glasses />
+                  Discover Research Grant Opportunities
+                </Badge>
+                <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
+                <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">
+                  By Jie Xuan Liu
+                </h2>
+              </div>
+              <div>
+                <h2 className=" py-4 text-sm font-light text-[#37352F]">
+                  Discover Different Grants From Different Universities all In One Place!
+                </h2>
+              </div>
+            </div>
+            <GrantDataTable
+              columns={GrantColumns}
+              data={parsedGrantsProfile.data}
+            />
           </div>
         </SidebarInset>
       </SidebarProvider>

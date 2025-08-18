@@ -36,7 +36,7 @@ export const SavedColumns = [
     header: ({ column }) => {
       return (
         <button
-          className="text-sm font-main text-[#787774] flex items-center gap-2"
+          className="text-sm font-main font-light text-[#787774] flex items-center gap-2"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           <LetterText className = "h-4 w-4"/>
@@ -58,7 +58,7 @@ export const SavedColumns = [
     accessorKey: "faculty",
     header: ({ column }) => {
       return (
-        <button className="text-xs font-semibold font-main text-[#787774] flex items-center gap-2">
+        <button className="text-xs font-light font-main text-[#787774] flex items-center gap-2">
           <AtSign className = "h-4 w-4"/>
           Faculty
         </button>
@@ -77,7 +77,7 @@ export const SavedColumns = [
     accessorKey: "department",
     header: ({ column }) => {
       return (
-        <button className="text-xs font-semibold font-main text-[#787774] flex items-center gap-2">   
+        <button className="text-xs font-light  font-main text-[#787774] flex items-center gap-2">   
           <LayoutPanelLeft className = "h-4 w-4"/>
           Department
         </button>

@@ -1,14 +1,13 @@
 "use server";
 
 import { cookies } from "next/headers";
-import Kanban from "../components/bookmark/kanban";
-
+import Workspace from "@/app/components/bookmark/workspace";
 import {
   SidebarProvider,
   SidebarInset,
   SidebarTrigger,
 } from "@/shadcomponents/ui/sidebar";
-import { AppSidebar } from "../components/sidebar";
+import { AppSidebar } from "@/app/components/sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,7 +18,7 @@ import {
 } from "@/shadcomponents/ui/breadcrumb";
 import { Laptop, MapIcon, MoveLeft, MoveRight, Plus } from "lucide-react";
 
-export default async function Bookmark() {
+export default async function Work() {
   const cookieStore = await cookies();
   const raw_user_id = cookieStore.get("user_id");
   const user_id = raw_user_id?.value;
@@ -145,7 +144,7 @@ export default async function Bookmark() {
 
         <div className="flex flex-1 overflow-y-auto font-main">
           <div className="w-full flex p-6 space-x-6">
-            <Kanban
+            <Workspace
               userId={user_id}
               parsedInProgressData={parsedInProgressData}
               parsedCompletedData={parsedCompletedData}

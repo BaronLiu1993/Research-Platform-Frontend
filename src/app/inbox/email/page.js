@@ -58,30 +58,12 @@ async function fetchWithTrace(url, opts = {}) {
 }
 
 export default async function InboxEmail() {
-  console.log("=== InboxEmail server rendering START ===");
   const cookieStore = cookies();
   const userCookie = cookieStore.get("user_id");
   const accessCookie = cookieStore.get("access_token");
 
-  console.log("cookie objects:", { userCookie, accessCookie });
-
   const userIdVal = userCookie?.value ?? null;
   const accessVal = accessCookie?.value ?? null;
-
-  console.log("resolved values:", { userIdVal, accessVal });
-
-  if (!userIdVal) {
-    console.error("❌ No user_id cookie found — aborting server fetches.");
-    // render fallback UI or return early
-    return (
-      <SidebarProvider>
-        <AppSidebar student_data={{ student_email: "" }} />
-        <SidebarInset>
-          <div className="p-6">Could not identify user — please sign in.</div>
-        </SidebarInset>
-      </SidebarProvider>
-    );
-  }
 
   let threadArrayEmailResponse = [];
   try {
@@ -121,12 +103,7 @@ export default async function InboxEmail() {
         const draftData = draftResp.ok ? draftResp.parsed : {};
         const seenData = seenResp.ok ? seenResp.parsed : {};
 
-        console.log(`-> enriched object index ${index}`, {
-          engagementOk: engagementResp.ok,
-          statusOk: statusResp.ok,
-          draftOk: draftResp.ok,
-          seenOk: seenResp.ok,
-        });
+       
 
         return { ...obj, engagementData, statusData, draftData, seenData };
       } catch (err) {
@@ -148,18 +125,13 @@ export default async function InboxEmail() {
     });
 
     if (!resp.ok) {
-      console.warn("auth/get-user-sidebar-info returned non-ok, using fallback profile");
     } else {
       parsedUserProfile = resp.parsed;
     }
   } catch (err) {
-    console.error("❌ Error fetching user profile:", err);
+
   }
 
-  console.log("parsedUserProfile:", parsedUserProfile);
-  console.log(combinedArray)
-  console.log("=== InboxEmail server rendering END ===");
-  console.log(threadArrayEmailResponse)
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile} />

@@ -1,14 +1,13 @@
 "use server";
 
 import { cookies } from "next/headers";
-import Kanban from "../components/bookmark/kanban";
-
+import Kanban from "@/app/components/bookmark/kanban";
 import {
   SidebarProvider,
   SidebarInset,
   SidebarTrigger,
 } from "@/shadcomponents/ui/sidebar";
-import { AppSidebar } from "../components/sidebar";
+import { AppSidebar } from "@/app/components/sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,7 +18,7 @@ import {
 } from "@/shadcomponents/ui/breadcrumb";
 import { Laptop, MapIcon, MoveLeft, MoveRight, Plus } from "lucide-react";
 
-export default async function Bookmark() {
+export default async function Board() {
   const cookieStore = await cookies();
   const raw_user_id = cookieStore.get("user_id");
   const user_id = raw_user_id?.value;

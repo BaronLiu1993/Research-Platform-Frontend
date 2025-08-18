@@ -79,7 +79,6 @@ export function DataTable({
     [query]
   );
 
-  console.log(data);
 
   return (
     <div className="rounded-md py-2 w-[55rem]">

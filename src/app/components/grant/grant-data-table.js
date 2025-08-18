@@ -23,7 +23,6 @@ import {
 export function GrantDataTable({ columns, data }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
-  console.log(data)
   const table = useReactTable({
     data,
     columns,
@@ -40,7 +39,7 @@ export function GrantDataTable({ columns, data }) {
 
   return (
     <>
-      <div className="overflow-hidden rounded-md border">
+      <div className="overflow-hidden rounded-xs border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
