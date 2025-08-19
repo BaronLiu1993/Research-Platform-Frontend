@@ -187,22 +187,6 @@ const generateColumns = (userId) => [
                 </div>
               )}
             </div>
-
-            {/*<div className="space-y-1.5 pt-2 pb-3 px-6">
-              <Label className="font-medium text-gray-600 text-sm ">
-                Description
-              </Label>
-              <div className="rounded-md border border-gray-200 p-3 text-xs text-gray-700 bg-gray-50/70 min-h-[70px] max-h-[150px] overflow-y-auto prose prose-xs prose-slate">
-                {data.bio ? (
-                  <div>{data.bio}</div>
-                ) : (
-                  <span className="text-gray-400 italic">
-                    No bio available.
-                  </span>
-                )}
-              </div>
-            </div>*/}
-
             <DialogFooter className="pt-4 pb-5 px-6 bg-slate-50/50 rounded-b-lg"></DialogFooter>
           </DialogContent>
         </Dialog>

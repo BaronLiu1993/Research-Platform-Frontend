@@ -34,6 +34,7 @@ export default function InboxClientWrapper({
   threadArrayEmailResponse,
   userId,
   emails,
+  access
 }) {
   const [openThreadId, setOpenThreadId] = useState("");
   const [draftExistsMap, setDraftExistsMap] = useState(() => {
@@ -182,6 +183,7 @@ export default function InboxClientWrapper({
                                   engagementData={email.engagementData}
                                   userId={userId}
                                   email={emails}
+                                  access={access}
                                 />
                               </Suspense>
                             )}

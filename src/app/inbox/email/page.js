@@ -22,21 +22,18 @@ import { redirect } from "next/navigation";
 export default async function InboxEmail() {
   try {
     const cookieStore = cookies();
-    const userCookie = cookieStore.get("user_id");
-    const accessCookie = cookieStore.get("access_token");
+    const userId = cookieStore.get("user_id")?.value;
+    const access = cookieStore.get("access_token")?.value;
 
-    if (!userCookie || !accessCookie) {
+    if (!userId || !access) {
       redirect("/login");
     }
-    
-    const userIdVal = userCookie.value;
-    const accessVal = accessCookie.value;
 
     let threadArrayEmailResponse = [];
     try {
       const resp = await fetch(
         `http://localhost:8080/inbox/get-email-chain/${encodeURIComponent(
-          userIdVal
+          userId
         )}`
       );
       if (resp.ok) {
@@ -52,8 +49,13 @@ export default async function InboxEmail() {
         try {
           const draftResp = await fetch(
             `http://localhost:8080/draft/resume-follow-up-draft/${encodeURIComponent(
-              userIdVal
-            )}/${encodeURIComponent(obj.professorId)}`
+              userId
+            )}/${encodeURIComponent(obj.professorId)}`,
+            {
+              headers: {
+                Authorization: `Bearer ${access}`,
+              },
+            }
           );
           const draftData = draftResp.ok ? await draftResp.json() : {};
           return { ...obj, draftData };
@@ -69,13 +71,14 @@ export default async function InboxEmail() {
         "http://localhost:8080/auth/get-user-sidebar-info",
         {
           headers: {
-            Authorization: `Bearer ${accessVal}`,
+            Authorization: `Bearer ${access}`,
             "Content-Type": "application/json",
           },
         }
       );
-      if (authResp.ok) parsedUserProfile = await authResp.json();
-      else redirect("/login");
+      if (authResp.ok) {
+        parsedUserProfile = await authResp.json();
+      } else redirect("/login");
     } catch {
       redirect("/login");
     }
@@ -131,7 +134,8 @@ export default async function InboxEmail() {
           <InboxClientWrapper
             emails={parsedUserProfile.student_email ?? ""}
             threadArrayEmailResponse={combinedArray}
-            userId={userIdVal}
+            userId={userId}
+            access={access}
           />
         </SidebarInset>
       </SidebarProvider>

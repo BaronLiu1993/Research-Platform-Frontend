@@ -62,7 +62,7 @@ export default async function Repository({ searchParams }) {
       }),
     ]);
 
-    if (!tableRes || !profileRes) {
+    if (!tableRes.ok || !profileRes.ok) {
       redirect("/login");
     }
 
