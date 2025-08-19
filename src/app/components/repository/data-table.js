@@ -18,9 +18,7 @@ import {
   CircuitBoard,
   Code,
   Heart,
-  Inspect,
   Microscope,
-  PersonStanding,
   Settings,
 } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
@@ -79,7 +77,8 @@ export function DataTable({
     [query]
   );
 
-
+  //This might not work anymore because i have auth tokens now that wont just call
+  //Note for later to fix the logic and the ux
   return (
     <div className="rounded-md py-2 w-[55rem]">
       <div className="flex flex-col gap-2 pb-2">

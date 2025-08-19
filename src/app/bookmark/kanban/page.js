@@ -23,28 +23,40 @@ import { Laptop, MapIcon, MoveLeft, MoveRight, Plus } from "lucide-react";
 export default async function Board() {
   try {
     const cookieStore = await cookies();
-    const raw_user_id = cookieStore.get("user_id");
-    const user_id = raw_user_id?.value;
-    const access = cookieStore.get("access_token");
+    const userId = cookieStore.get("user_id")?.value;
+    const access = cookieStore.get("access_token")?.value;
 
-    if (!user_id || !access?.value) {
+    if (!userId || !access) {
       return redirect("/login");
     }
 
     const [rawSavedData, rawInProgressData, rawCompletedData, rawUserProfile] =
       await Promise.all([
-        fetch(`http://localhost:8080/saved/kanban/get-saved/${user_id}`),
+        fetch(`http://localhost:8080/saved/kanban/get-saved/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        }),
         fetch(
-          `http://localhost:8080/inprogress/kanban/get-in-progress/${user_id}`
+          `http://localhost:8080/inprogress/kanban/get-in-progress/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${access}`,
+            },
+          }
         ),
         fetch(
-          `http://localhost:8080/completed/kanban/get-completed/${user_id}`
+          `http://localhost:8080/completed/kanban/get-completed/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${access}`,
+            },
+          }
         ),
         fetch("http://localhost:8080/auth/get-user-sidebar-info", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${access.value}`,
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${access}`,
           },
         }),
       ]);
@@ -113,7 +125,7 @@ export default async function Board() {
           <div className="flex flex-1 overflow-y-auto font-main">
             <div className="w-full flex p-6 space-x-6">
               <Kanban
-                userId={user_id}
+                userId={userId}
                 parsedInProgressData={parsedInProgressData}
                 parsedCompletedData={parsedCompletedData}
                 parsedUserProfile={parsedUserProfile}

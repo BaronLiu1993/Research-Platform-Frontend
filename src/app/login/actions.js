@@ -26,9 +26,7 @@ export async function handleLogin(prevState, formData) {
         errorBody = JSON.parse(responseText);
       } catch {}
       return {
-        message:
-          errorBody.message ||
-          `Wrong Email or Password`,
+        message: errorBody.message || `Wrong Email or Password`,
         savedProfessors: [],
         appliedProfessors: [],
         success: false,
@@ -75,17 +73,26 @@ export async function handleLogin(prevState, formData) {
 
     const [savedProfessorResponse, appliedProfessorResponse] =
       await Promise.all([
-        fetch(`http://localhost:8080/saved/repository/get-all-savedId/${userId}`, {
-          method: "GET"
-        }),
+        fetch(
+          `http://localhost:8080/saved/repository/get-all-savedId/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        ),
         fetch(
           `http://localhost:8080/inprogress/repository/get-all-appliedId/${userId}`,
           {
-            method: "GET"
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
           }
         ),
       ]);
-    
+
     const [savedProfessorData, appliedProfessorData] = await Promise.all([
       savedProfessorResponse.json(),
       appliedProfessorResponse.json(),

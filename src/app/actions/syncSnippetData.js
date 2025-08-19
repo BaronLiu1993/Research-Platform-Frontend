@@ -3,7 +3,8 @@
 export const SyncSnippetData = async (
   userId,
   professorIdArray,
-  variableArray
+  variableArray,
+  access
 ) => {
   const response = await fetch(
     `http://localhost:8080/snippets/sync-fetchable-variables/${userId}`,
@@ -11,6 +12,7 @@ export const SyncSnippetData = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${access}`
       },
       body: JSON.stringify({
         professorIdArray,

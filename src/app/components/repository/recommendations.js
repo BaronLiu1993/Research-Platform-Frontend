@@ -16,17 +16,19 @@ import { Tag } from "lucide-react";
 
 export default async function Recommendations() {
   const cookieStore = await cookies();
-  const userIdObj = cookieStore.get("user_id");
-  const userId = userIdObj.value
-  const data = await fetch(`http://localhost:8080/repository/match-professors?userId=${userId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    next: { revalidate: 3600 },
-  });
+  const userId = cookieStore.get("user_id")?.value;
+  const access = cookieStore.get("access_token")?.value;
+  const data = await fetch(
+    `http://localhost:8080/repository/match-professors?userId=${userId}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+      next: { revalidate: 3600 },
+    }
+  );
   const responses = await data.json();
-  console.log(responses)
 
   return (
     <>
@@ -67,7 +69,9 @@ export default async function Recommendations() {
                       <h1 className="text-md font-semibold">
                         <span> {response.school}</span>
                       </h1>
-                      <h2 className="text-[13px] text-neutral-700">{response.faculty}</h2>
+                      <h2 className="text-[13px] text-neutral-700">
+                        {response.faculty}
+                      </h2>
                     </div>
 
                     <div className="flex flex-wrap gap-1">
@@ -82,7 +86,6 @@ export default async function Recommendations() {
                       ))}
                     </div>
                   </div>
-                 
                 </div>
               </CarouselItem>
             ))}

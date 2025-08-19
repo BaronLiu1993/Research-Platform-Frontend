@@ -5,15 +5,18 @@ export const createMassDrafts = async (
   snippetId,
   fromName,
   fromEmail,
-  dynamicFields
+  dynamicFields,
+  access
 ) => {
   try {
-    console.log(dynamicFields);
     const response = await fetch(
       `http://localhost:8080/send/snippet-create-draft`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access}`,
+        },
         body: JSON.stringify({
           userId,
           professorData: dynamicFields.result,
@@ -26,10 +29,12 @@ export const createMassDrafts = async (
       }
     );
 
-    await MassAddApplied(dynamicFields.result)
-    const result = await response.json();
-    return result;
+    await MassAddApplied(dynamicFields.result);
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    }
   } catch {
-    return "Error";
+    return { message: "Internal Server Error" };
   }
 };

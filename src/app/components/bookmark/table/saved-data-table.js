@@ -83,6 +83,7 @@ export function SavedDataTable({
   parsedUserProfile,
   parsedResumeData,
   parsedTranscriptData,
+  access,
 }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -116,7 +117,7 @@ export function SavedDataTable({
 
   const handleUploadTranscript = async () => {
     try {
-      await UploadTranscript(transcript, userId);
+      await UploadTranscript(transcript, userId, access);
       toast("Uploaded Transcript");
     } catch {
       toast("Failed to Upload");
@@ -125,7 +126,7 @@ export function SavedDataTable({
 
   const handleUploadResume = async () => {
     try {
-      await UploadResume(resume, userId);
+      await UploadResume(resume, userId, access);
       toast("Uploaded Resume");
     } catch {
       toast("Failed to Upload");
@@ -493,6 +494,7 @@ export function SavedDataTable({
                           <DialogTitle></DialogTitle>
                           <DialogDescription>
                             <ComposeEditor
+                              access={access}
                               userId={userId}
                               snippetId={snippetId}
                               setSnippetId={setSnippetId}

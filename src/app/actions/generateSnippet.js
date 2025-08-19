@@ -1,23 +1,33 @@
-"use server"
-
-export const GenerateSnippet = async (userId, snippet_html, snippet_subject) => {
-    const response = await fetch(`http://localhost:8080/snippets/insert/${userId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        snippet_html,
-        snippet_subject
-      }),
-    });
-  
-    if (!response.ok) {
-      console.error("Failed to fetch snippet");
-      return;
+export const GenerateSnippet = async (
+  userId,
+  snippet_html,
+  snippet_subject,
+  access
+) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/snippets/insert/${userId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access}`,
+        },
+        body: JSON.stringify({
+          snippet_html,
+          snippet_subject,
+        }),
+      }
+    );
+    if (response.ok) {
+      const snippetId = await response.json()
+      return { success: true, snippetId: snippetId };
+    } else {
+      return {
+        success: false,
+      };
     }
-  
-    const data = await response.json();
-    return data
-  };
-  
+  } catch {
+    return { success: false };
+  }
+};

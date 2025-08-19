@@ -1,6 +1,4 @@
-"use server";
-
-export const SendReply = async (userId, draftId, trackingId) => {
+export const SendReply = async (userId, draftId, trackingId, access) => {
   try {
     if (!userId || !draftId || !trackingId) {
       return;
@@ -11,6 +9,7 @@ export const SendReply = async (userId, draftId, trackingId) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${access}`
         },
       }
     );

@@ -5,14 +5,18 @@ export const createMassFollowUpDrafts = async (
   snippetId,
   fromName,
   fromEmail,
-  dynamicFields
+  dynamicFields,
+  access
 ) => {
   try {
     const response = await fetch(
       `http://localhost:8080/send/snippet-create-followup-draft`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access}`,
+        },
         body: JSON.stringify({
           userId,
           professorData: dynamicFields.result,
@@ -26,13 +30,12 @@ export const createMassFollowUpDrafts = async (
     );
 
     await MassAddApplied(dynamicFields.result);
-    const result = await response.json();
     if (!response.ok) {
       return { success: false, message: "Queue Failed" };
     } else {
       return { success: true, message: "Successfully Queued" };
     }
   } catch {
-    return "Error";
+    return { success: false, message: "Internal Server Error"};
   }
 };

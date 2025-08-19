@@ -47,7 +47,12 @@ export default async function Repository({ searchParams }) {
 
     const [tableRes, profileRes] = await Promise.all([
       fetch(
-        `http://localhost:8080/repository/taishan?page=${pageNumber}&search=${search}`
+        `http://localhost:8080/repository/taishan?page=${pageNumber}&search=${search}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        }
       ),
       fetch("http://localhost:8080/auth/get-user-sidebar-info", {
         headers: {

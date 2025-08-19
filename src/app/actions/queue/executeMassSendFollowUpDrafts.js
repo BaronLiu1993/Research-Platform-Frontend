@@ -11,11 +11,12 @@ export const ExecuteMassSendFollowUpDrafts = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${access}`
       },
       body: JSON.stringify({
         userId,
         userName,
-        userEmail: "jiexuan.liu@mail.utoronto.ca",
+        userEmail,
         professorData,
       }),
     });

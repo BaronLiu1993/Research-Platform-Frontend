@@ -15,12 +15,11 @@ export const ExecuteMassSendWithAttachments = async (
       body: JSON.stringify({
         userId,
         userName,
-        userEmail: "baronliu1993@gmail.com",
+        userEmail,
         professorData,
       }),
     });
     const data = await response.json();
-    console.log(data)
     return data;
   } catch {
     return "Error";

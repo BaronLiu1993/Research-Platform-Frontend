@@ -1,4 +1,4 @@
-export const UploadResume = async (file, userId) => {
+export const UploadResume = async (file, userId, access) => {
   try {
     const formData = new FormData();
     formData.append("file", file);
@@ -6,12 +6,16 @@ export const UploadResume = async (file, userId) => {
       `http://localhost:8080/storage/upload-resume-links/${userId}`,
       {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
         body: formData,
       }
     );
-    const data = await response.json();
-    console.log(data)
-    return data;
+
+    if (response.ok) {
+      return { success: true };
+    }
   } catch {
     return { success: false };
   }

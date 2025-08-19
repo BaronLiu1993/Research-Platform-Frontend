@@ -44,6 +44,7 @@ const statusConfig = {
 
 export default async function Kanban({
   userId,
+  access,
   parsedSavedData,
   parsedInProgressData,
   parsedCompletedData,
@@ -103,6 +104,7 @@ export default async function Kanban({
         </h2>
       </div>
       <SavedDataTable
+        access={access}
         parsedTranscriptData={parsedTranscriptData}
         parsedResumeData={parsedResumeData}
         parsedUserProfile={parsedUserProfile}

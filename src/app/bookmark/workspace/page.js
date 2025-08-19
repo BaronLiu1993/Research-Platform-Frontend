@@ -22,11 +22,10 @@ import { redirect } from "next/navigation";
 export default async function Work() {
   try {
     const cookieStore = await cookies();
-    const raw_user_id = cookieStore.get("user_id");
-    const user_id = raw_user_id?.value;
-    const access = cookieStore.get("access_token");
+    const userId = cookieStore.get("user_id")?.value;
+    const access = cookieStore.get("access_token")?.value;
 
-    if (!user_id || !access?.value) {
+    if (!userId || !access) {
       return redirect("/login");
     }
 
@@ -39,19 +38,46 @@ export default async function Work() {
       rawResumeData,
       rawTranscriptData,
     ] = await Promise.all([
-      fetch(`http://localhost:8080/saved/kanban/get-saved/${user_id}`),
-      fetch(`http://localhost:8080/inprogress/kanban/get-in-progress/${user_id}`),
-      fetch(`http://localhost:8080/inprogress/fetch/draft/${user_id}`),
-      fetch(`http://localhost:8080/completed/kanban/get-completed/${user_id}`),
+      fetch(`http://localhost:8080/saved/kanban/get-saved/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      }),
+      fetch(
+        `http://localhost:8080/inprogress/kanban/get-in-progress/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        }
+      ),
+      fetch(`http://localhost:8080/inprogress/fetch/draft/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      }),
+      fetch(`http://localhost:8080/completed/kanban/get-completed/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      }),
       fetch("http://localhost:8080/auth/get-user-sidebar-info", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${access.value}`,
+          Authorization: `Bearer ${access}`,
           "Content-Type": "application/json",
         },
       }),
-      fetch(`http://localhost:8080/storage/get-resume/${user_id}`),
-      fetch(`http://localhost:8080/storage/get-transcript/${user_id}`),
+      fetch(`http://localhost:8080/storage/get-resume/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      }),
+      fetch(`http://localhost:8080/storage/get-transcript/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      }),
     ]);
 
     if (
@@ -96,7 +122,7 @@ export default async function Work() {
       (parsedDraftData ?? []).map(async (prof) => {
         try {
           const rawDraftResults = await fetch(
-            `http://localhost:8080/draft/resume-draft/${prof.draft_id}/${user_id}`
+            `http://localhost:8080/draft/resume-draft/${prof.draft_id}/${userId}`
           );
           const parsedDraftResults = await rawDraftResults.json();
           if (parsedDraftResults?.draftExists) {
@@ -115,7 +141,6 @@ export default async function Work() {
     );
 
     draftData = draftData.filter(Boolean);
-    
     return (
       <SidebarProvider>
         <AppSidebar student_data={parsedUserProfile} />
@@ -158,7 +183,8 @@ export default async function Work() {
           <div className="flex flex-1 overflow-y-auto font-main">
             <div className="w-full flex p-6 space-x-6">
               <Workspace
-                userId={user_id}
+                userId={userId}
+                access={access}
                 parsedInProgressData={parsedInProgressData}
                 parsedCompletedData={parsedCompletedData}
                 draftData={draftData}

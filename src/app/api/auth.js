@@ -21,7 +21,6 @@ export async function handleRegister(formData) {
 
     return await response.json();
   } catch (error) {
-    console.error("Error during registration:", error);
     throw error;
   }
 }
@@ -47,7 +46,6 @@ export async function verifyOtp(formData) {
 
     return await response.json();
   } catch (error) {
-    console.error("Error verifying code:", error);
     throw error;
   }
 }
@@ -73,7 +71,6 @@ export async function resendCode(formData) {
 
     return await response.json();
   } catch (error) {
-    console.error("Error resending code:", error);
     throw error;
   }
 }

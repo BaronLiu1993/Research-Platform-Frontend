@@ -28,12 +28,12 @@ import { Badge } from "@/shadcomponents/ui/badge";
 
 export default async function Grants() {
   const cookieStore = await cookies();
-  const access = cookieStore.get("access_token");
+  const access = cookieStore.get("access_token")?.value;
   const [userResponse, grantsResponse] = await Promise.all([
     await fetch("http://localhost:8080/auth/get-user-sidebar-info", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${access?.value}`,
+        Authorization: `Bearer ${access}`,
         "Content-Type": "application/json",
       },
     }),

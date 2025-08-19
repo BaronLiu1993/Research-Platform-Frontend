@@ -5,6 +5,7 @@ import "tippy.js/dist/tippy.css";
 import { useEffect, useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 
+
 import Mention from "@tiptap/extension-mention";
 import suggestion from "../tiptap/suggestion";
 import StarterKit from "@tiptap/starter-kit";
@@ -18,14 +19,7 @@ import {
   X,
 } from "lucide-react";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-} from "@/shadcomponents/ui/dialog";
-
+import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
@@ -33,6 +27,7 @@ import { toast } from "sonner";
 
 export default function ComposeEditor({
   userId,
+  access,
   setSnippetId,
   userName,
   userEmail,
@@ -42,7 +37,6 @@ export default function ComposeEditor({
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
   );
-
 
   useEffect(() => {
     setSelectedVariables([]);
@@ -88,9 +82,14 @@ export default function ComposeEditor({
       handleGenerateDrafts();
       toast("Empty Draft");
     } else {
-      const response = await GenerateSnippet(userId, body, subject);
-      setGenerateView(true);
-      setSnippetId(response.snippetId);
+      const response = await GenerateSnippet(userId, body, subject, access);
+      if (response.success) {
+        toast("Generated Snippet Successfully");
+        setGenerateView(response.success);
+        setSnippetId(response.snippetId);
+      } else {
+        toast("Failed to Generate Snippet");
+      }
     }
   };
 
