@@ -15,11 +15,9 @@ import {
   FileCheck2,
   FileMinus2,
   FolderOpen,
-  Inbox,
   Lightbulb,
 } from "lucide-react";
 
-import EngagementButton from "./badges/engagementButton";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import { Badge } from "@/shadcomponents/ui/badge";
 import {
@@ -30,7 +28,6 @@ import {
 import Compose from "./editor/compose";
 import ComposeFollowUp from "./button/compose/composeFollowUp";
 import ContinueFollowUp from "./button/compose/continueFollowUp";
-import SeenButton from "./badges/seenButton";
 const EmailSidebar = lazy(() => import("./side/emailsidebar"));
 
 export default function InboxClientWrapper({
@@ -226,20 +223,14 @@ export default function InboxClientWrapper({
                             {email.firstMessageData.subject || "No Subject"}
                           </h1>
                         </div>
-                        <div className="flex items-center gap-2 shrink-0 basis-1/4 justify-end">
-                          <SeenButton seenData={email.seenData} />
-                          <EngagementButton
-                            engagementData={email.engagementData}
-                          />
-                          <span className="text-nowrap text-gray-500 ml-2">
-                            {new Date(
-                              email.firstMessageData.date
-                            ).toLocaleDateString("en-US", {
-                              month: "short",
-                              day: "numeric",
-                            })}
-                          </span>
-                        </div>
+                        <span className="text-nowrap text-gray-500 ml-2">
+                          {new Date(
+                            email.firstMessageData.date
+                          ).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </span>
                       </div>
                     </SheetTrigger>
                     <SheetContent className="w-[700px] sm:w-[540px] overflow-y-auto">
@@ -302,7 +293,6 @@ export default function InboxClientWrapper({
                                 <EmailSidebar
                                   threadId={email.threadId}
                                   seenData={email.seenData}
-                                  engagementData={email.engagementData}
                                   userId={userId}
                                   email={emails}
                                 />

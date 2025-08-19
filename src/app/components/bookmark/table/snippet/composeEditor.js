@@ -28,7 +28,6 @@ import {
 
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
 import { Badge } from "@/shadcomponents/ui/badge";
-import AIcontext from "../tiptap/AIcontext";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
 import { toast } from "sonner";
 
@@ -47,12 +46,9 @@ export default function ComposeEditor({
 
   useEffect(() => {
     setSelectedVariables([]);
-    setAISnippet([]);
   }, []);
 
   const [subject, setSubject] = useState("");
-  const [AIOpenDialog, setAIOpenDialog] = useState(false);
-
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -100,14 +96,6 @@ export default function ComposeEditor({
 
   return (
     <div>
-      <Dialog open={AIOpenDialog} onOpenChange={setAIOpenDialog}>
-        <DialogContent className="p-0 rounded-xs">
-          <DialogTitle></DialogTitle>
-          <DialogDescription>
-            <AIcontext />
-          </DialogDescription>
-        </DialogContent>
-      </Dialog>
       <div className="text-sm">
         <div className="flex justify-between px-4">
           <Badge className="text-[#9F6B53] bg-[#F4EEEE] rounded-xs">
@@ -188,7 +176,7 @@ export default function ComposeEditor({
             onClick={() =>
               handleSnippetGeneration(userId, editor.getHTML(), subject)
             }
-            className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
+            className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#529CCA] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
           >
             <Loader className="h-4 w-4" />
             Generate Snippet

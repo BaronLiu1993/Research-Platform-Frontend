@@ -47,10 +47,6 @@ export default async function Kanban({
   parsedSavedData,
   parsedInProgressData,
   parsedCompletedData,
-  draftData,
-  parsedUserProfile,
-  parsedResumeData,
-  parsedTranscriptData,
 }) {
   const inProgressResponses = parsedInProgressData || [];
   const inCompleteResponses = parsedSavedData || [];
