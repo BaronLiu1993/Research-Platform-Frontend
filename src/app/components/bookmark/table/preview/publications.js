@@ -9,7 +9,7 @@ export default function Publications({ professorId, onSelectTitle }) {
 
   useEffect(() => {
     const loadPublications = async () => {
-      const response = (await fetchPublications(professorId)) || [];
+      const response = (await fetchPublications(professorId, access)) || [];
       const data = response?.message?.data || [];
       setPublications(data);
     };

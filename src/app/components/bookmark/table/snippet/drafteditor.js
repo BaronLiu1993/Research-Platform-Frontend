@@ -19,6 +19,7 @@ export default function DraftEditor({
   draftId,
   body: initialBody,
   initialSubject,
+  access
 }) {
   const [subject, setSubject] = useState(initialSubject);
   const [body, setBody] = useState(initialBody);
@@ -54,7 +55,7 @@ export default function DraftEditor({
         body,
         subject,
       };
-      const updatedState = await saveDraft(data, draftId, userId);
+      const updatedState = await saveDraft(data, draftId, userId, access);
       setSubject(updatedState.subject);
       setBody(updatedState.body);
       editor?.commands.setContent(updatedState.body);

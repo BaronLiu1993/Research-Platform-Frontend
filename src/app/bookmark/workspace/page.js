@@ -81,13 +81,13 @@ export default async function Work() {
     ]);
 
     if (
-      !rawSavedData ||
-      !rawInProgressData ||
-      !rawDraftData ||
-      !rawCompletedData ||
-      !rawUserProfile ||
-      !rawResumeData ||
-      !rawTranscriptData
+      !rawSavedData.ok ||
+      !rawInProgressData.ok ||
+      !rawDraftData.ok ||
+      !rawCompletedData.ok ||
+      !rawUserProfile.ok ||
+      !rawResumeData.ok ||
+      !rawTranscriptData.ok
     ) {
       return redirect("/login");
     }

@@ -38,6 +38,7 @@ export default function FollowUpEditor({
   fromEmail,
   professorIDArray,
   totalProfessorData,
+  access
 }) {
   const [subject, setSubject] = useState("");
   const closeRef = useRef(null);
@@ -89,26 +90,29 @@ export default function FollowUpEditor({
 
   const handleCreateFollowUpDrafts = async () => {
     try {
-      const response = await GenerateSnippet(userId, editor.getHTML(), subject);
+      const response = await GenerateSnippet(userId, editor.getHTML(), subject, access);
 
       const dynamicFields = await SyncSnippetData(
         userId,
         professorIDArray,
-        selectedVariables
+        selectedVariables,
+        access
       );
       const draftResponse = await createMassFollowUpDrafts(
         userId,
         response.snippetId,
         fromName,
         fromEmail,
-        dynamicFields
+        dynamicFields,
+        access
       );
       if (draftResponse.success) {
         await ExecuteMassSendFollowUpDrafts(
           userId,
           fromName,
           fromEmail,
-          totalProfessorData
+          totalProfessorData,
+          access
         );
         closeRef.current?.click();
         toast("Follow Up Emails Sent!");
@@ -122,7 +126,7 @@ export default function FollowUpEditor({
 
   const handleCreateFollowUpDraftsWithAttachments = async () => {
     try {
-      const response = await GenerateSnippet(userId, editor.getHTML(), subject);
+      const response = await GenerateSnippet(userId, editor.getHTML(), subject, access);
       const dynamicFields = await SyncSnippetData(
         userId,
         professorIDArray,
@@ -134,14 +138,16 @@ export default function FollowUpEditor({
           response.snippetId,
           fromName,
           fromEmail,
-          dynamicFields
+          dynamicFields,
+          access
         );
         if (draftResponse.success) {
           await ExecuteMassFollowUpDraftsWithAttachments(
             userId,
             fromName,
             fromEmail,
-            totalProfessorData
+            totalProfessorData,
+            access
           );
           closeRef.current?.click();
           toast("Follow Up Email With Attachments Sent!");

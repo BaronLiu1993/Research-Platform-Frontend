@@ -19,11 +19,12 @@ import { toast } from "sonner";
 export default function DraftList({
   draftData: initialData,
   parsedUserProfile,
+  access
 }) {
   const [draftData, setDraftData] = useState(initialData);
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
-  console.log(selected);
+
   const handleSubmit = async () => {
     if (selected.length === 0) {
       toast("No Drafts Selected to Send");
@@ -33,7 +34,8 @@ export default function DraftList({
           parsedUserProfile.user_id,
           `${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`,
           parsedUserProfile.student_email,
-          selected
+          selected,
+          access
         );
         toast("Drafts Sent");
       } catch {
@@ -51,7 +53,8 @@ export default function DraftList({
           parsedUserProfile.user_id,
           `${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`,
           parsedUserProfile.student_email,
-          selected
+          selected,
+          access
         );
         toast("Drafts Sent With Attachments!");
       } catch {
@@ -62,7 +65,7 @@ export default function DraftList({
 
   const handleDeleteDraft = async (draftId, userId, professorId) => {
     try {
-      await DeleteDrafts(draftId, userId, professorId);
+      await DeleteDrafts(draftId, userId, professorId, access);
       setDraftData((prev) => prev.filter((d) => d.draftId !== draftId));
       setSelected((prev) => prev.filter((item) => item.id !== professorId));
       toast("Successfully Deleted");

@@ -509,6 +509,7 @@ export function SavedDataTable({
                 </SheetTitle>
                 <SheetDescription>
                   <DataPreview
+                    access={access}
                     userId={userId}
                     rowData={table.getSelectedRowModel().rows}
                     parsedUserProfile={parsedUserProfile}
@@ -596,6 +597,7 @@ export function SavedDataTable({
             </div>
           </div>
           <DraftList
+            access={access}
             draftData={draftData}
             parsedUserProfile={parsedUserProfile}
           />
@@ -623,6 +625,7 @@ export function SavedDataTable({
             </div>
           </div>
           <FollowUpList
+            access={access}
             parsedCompletedData={parsedCompletedData}
             parsedUserProfile={parsedUserProfile}
           />

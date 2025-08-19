@@ -30,6 +30,7 @@ export default function DataPreview({
   parsedUserProfile,
   snippetId,
   generateView,
+  access
 }) {
   const selectedVariables = useSelectedVariablesStore(
     (s) => s.selectedVariables
@@ -71,7 +72,8 @@ export default function DataPreview({
     const response = await SyncSnippetData(
       userId,
       professorIDArray,
-      selectedVariables
+      selectedVariables,
+      access
     );
 
     if (response?.result && Array.isArray(response.result)) {
@@ -100,7 +102,8 @@ export default function DataPreview({
         parsedUserProfile?.student_lastname ?? ""
       }`.trim(),
       parsedUserProfile.student_email,
-      dynamicFields
+      dynamicFields,
+      access
     );
   };
 

@@ -19,11 +19,13 @@ import { toast } from "sonner";
 export default function FollowUpList({
   parsedCompletedData,
   parsedUserProfile,
+  access
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState([]);
   const [totalSelected, setTotalSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
+
   const handleCheck = ({ professor_id, name, email }) => {
     setSelected((prev) =>
       prev.includes(professor_id)
@@ -112,6 +114,7 @@ export default function FollowUpList({
             <DialogTitle></DialogTitle>
             <DialogDescription>
               <FollowUpEditor
+                access={access}
                 userId={parsedUserProfile.user_id}
                 fromName={`${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`}
                 fromEmail={parsedUserProfile.student_email}
