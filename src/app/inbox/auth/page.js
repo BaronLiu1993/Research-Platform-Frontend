@@ -10,14 +10,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/shadcomponents/ui/breadcrumb";
-import {
-  MoveLeft,
-  MoveRight,
-  Plus,
-  Laptop,
-  Paperclip,
-  LockKeyhole,
-} from "lucide-react";
+import { MoveLeft, MoveRight, Plus, Laptop, Paperclip, LockKeyhole } from "lucide-react";
 import { redirect } from "next/navigation";
 
 export default async function InboxAuth() {
@@ -27,20 +20,21 @@ export default async function InboxAuth() {
     if (!userId) {
       redirect("/login");
     }
+
     return (
       <>
-        <Breadcrumb className="font-main font-semibold">
+        <Breadcrumb className="font-main font-semibold flex flex-wrap sm:flex-nowrap h-8 items-center gap-2 px-4 sm:px-6 py-2">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <MoveLeft className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+              <MoveLeft className="w-5 h-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <MoveRight className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+              <MoveRight className="w-5 h-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <Plus className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+              <Plus className="w-5 h-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
             </BreadcrumbItem>
-            <BreadcrumbItem className="hidden md:block">
+            <BreadcrumbItem className="hidden md:flex">
               <BreadcrumbLink
                 href="/"
                 className="flex items-center font-medium text-[#37352F] gap-2"
@@ -60,27 +54,28 @@ export default async function InboxAuth() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <div className="w-full mt-30 flex flex-col space-y-10 justify-center items-center font-main">
-          <div className="flex justify-center items-center flex-col space-y-5">
+
+        <div className="w-full min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-0 space-y-10 font-main">
+          <div className="flex flex-col items-center text-center space-y-5">
             <Paperclip className="h-20 w-20" />
             <div>
-              <h1 className="font-semibold text-2xl">
-                Welcome to Your Mail Inbox
-              </h1>
-              <h2 className="font-semibold text-md">
+              <h1 className="font-semibold text-2xl sm:text-3xl">Welcome to Your Mail Inbox</h1>
+              <h2 className="text-sm sm:text-md">
                 Connect with jiexuan.liu@mail.utoronto.ca
               </h2>
             </div>
           </div>
-          <div className="space-y-5">
+
+          <div className="flex justify-center">
             <InboxLoginButton userId={userId.value} />
           </div>
-          <div>
-            <p className="font-light text-xs w-[30rem] text-center">
-              By clicking "Connect with Google" above, you acknowledge that you
-              have read, understood and agree to the{" "}
-              <span className="font-semibold">Terms and Conditions</span> and
-              Privacy Policy as applicable to your use.
+
+          <div className="max-w-xl text-center px-2 sm:px-0">
+            <p className="font-light text-xs sm:text-sm text-gray-700">
+              By clicking <span className="font-semibold">"Connect with Google"</span> above, you
+              acknowledge that you have read, understood and agree to the{" "}
+              <span className="font-semibold">Terms and Conditions</span> and Privacy Policy as
+              applicable to your use.
             </p>
           </div>
         </div>
