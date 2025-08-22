@@ -1,5 +1,3 @@
-import { Button } from "@/shadcomponents/ui/button";
-
 export default function Test() {
   return (
     <>
