@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 
 export default function InboxLoginButton({ userId }) {
   const router = useRouter();
-  console.log(userId)
   return (
     <>
       <Button
