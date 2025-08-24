@@ -7,28 +7,27 @@ export async function authCallbackMiddleware(req) {
     const code = url.searchParams.get("code");
 
     try {
-      const response = await fetch(
-        "http://localhost:8080/auth/oauth2callback",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code }),
-        }
-      );
+      const response = await fetch("http://localhost:8080/auth/oauth2callback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
 
       const data = await response.json();
 
-      if (data?.access_token && data?.refresh_token) {
-        const redirectUrl = new URL("/account", req.url);
-        const res = NextResponse.redirect(redirectUrl);
+      if (data?.access_token && data?.refresh_token && data?.user_id) {
         const isProd = process.env.NODE_ENV === "production";
+
+        const redirectTo = data.redirectURL || "/";
+
+        const res = NextResponse.redirect(new URL(redirectTo, req.url));
 
         res.cookies.set("access_token", data.access_token, {
           httpOnly: true,
           secure: isProd,
           sameSite: "lax",
           path: "/",
-          maxAge: 60 * 60,
+          maxAge: 60 * 60, // 1h
         });
 
         res.cookies.set("refresh_token", data.refresh_token, {
@@ -36,7 +35,7 @@ export async function authCallbackMiddleware(req) {
           secure: isProd,
           sameSite: "lax",
           path: "/",
-          maxAge: 60 * 60 * 24 * 7,
+          maxAge: 60 * 60 * 24 * 7, 
         });
 
         res.cookies.set("user_id", data.user_id, {
@@ -49,7 +48,9 @@ export async function authCallbackMiddleware(req) {
 
         return res;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("OAuth callback error:", error);
+    }
   }
 
   return NextResponse.next();
