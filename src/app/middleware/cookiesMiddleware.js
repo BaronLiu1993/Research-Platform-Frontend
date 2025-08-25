@@ -27,7 +27,7 @@ export async function authCallbackMiddleware(req) {
           secure: isProd,
           sameSite: "lax",
           path: "/",
-          maxAge: 60 * 60, // 1h
+          maxAge: 60 * 60, 
         });
 
         res.cookies.set("refresh_token", data.refresh_token, {
