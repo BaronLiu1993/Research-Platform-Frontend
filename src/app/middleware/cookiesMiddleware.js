@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 export async function authCallbackMiddleware(req) {
   const url = req.nextUrl;
-
   if (url.pathname === "/account" && url.searchParams.has("code")) {
     const code = url.searchParams.get("code");
 
