@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 
-export async function authCallbackMiddleware(req) {
+export async function LoginMiddleware(req) {
   const url = req.nextUrl;
-  if (url.pathname === "/account" && url.searchParams.has("code")) {
+  if (url.pathname === "/account/login" && url.searchParams.has("code")) {
     const code = url.searchParams.get("code");
-
     try {
       const response = await fetch(
-        "http://localhost:8080/auth/oauth2callback",
+        "http://localhost:8080/auth/oauth2callback/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -15,16 +14,17 @@ export async function authCallbackMiddleware(req) {
         }
       );
 
+      
+
       const data = await response.json();
 
-      if (data?.access_token && data?.refresh_token && data?.user_id) {
+      if (data?.accessToken && data?.refreshToken && data?.user_id) {
         const isProd = process.env.NODE_ENV === "production";
-
         const redirectTo = "/repository";
 
         const res = NextResponse.redirect(new URL(redirectTo, req.url));
 
-        res.cookies.set("access_token", data.access_token, {
+        res.cookies.set("access_token", data.accessToken, {
           httpOnly: true,
           secure: isProd,
           sameSite: "lax",
@@ -32,7 +32,7 @@ export async function authCallbackMiddleware(req) {
           maxAge: 60 * 60,
         });
 
-        res.cookies.set("refresh_token", data.refresh_token, {
+        res.cookies.set("refresh_token", data.refreshToken, {
           httpOnly: true,
           secure: isProd,
           sameSite: "lax",
@@ -49,11 +49,12 @@ export async function authCallbackMiddleware(req) {
         });
 
         return res;
+      } else {
+        return NextResponse.redirect(new URL("/login", req.url));
       }
-    } catch {
+    } catch (err) {
       return NextResponse.redirect(new URL("/login", req.url));
     }
   }
-
   return NextResponse.next();
 }

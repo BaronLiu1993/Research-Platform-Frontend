@@ -1,9 +1,9 @@
-import { Button } from "@/shadcomponents/ui/button";
 
-export default function Login() {
+export default async function SignIn() {
   return (
     <>
       <div className="flex flex-col gap-6 items-center mt-20 h-screen font-main p-6">
+        <div>Hi</div>
         <div className="flex flex-col mt-20">
           <h1 className="tracking-wide font-bold text-2xl">
             Welcome to Research
@@ -16,7 +16,7 @@ export default function Login() {
             className="shadow-sm py-2 text-sm rounded-xs px-16 hover:bg-[#F1F1EF] cursor-pointer bg-[#FFFFFF] border text-[#2F3438]"
             href="http://localhost:8080/auth/signin-with-google"
           >
-            Continue With Google
+            Login With Google
           </a>
         </div>
 
