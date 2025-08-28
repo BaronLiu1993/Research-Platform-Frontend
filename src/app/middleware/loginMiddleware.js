@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function LoginMiddleware(req) {
   const url = req.nextUrl;
+  
   if (!url.searchParams.has("code")) {
     return NextResponse.redirect(new URL("/auth/signin", req.url));
   }
