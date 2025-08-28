@@ -36,7 +36,10 @@ export const config = {
   matcher: [
     "/account/login",
     "/account/register",
-    
+    "/bookmark/kanban",
+    "/bookmark/workspace",
+    "/inbox/email",
     "/repository",
+    "/inbox/auth"
   ],
 };

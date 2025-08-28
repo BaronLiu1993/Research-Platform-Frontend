@@ -3,6 +3,10 @@ import { NextResponse } from "next/server";
 export async function RegisterMiddleware(req) {
   const url = req.nextUrl;
 
+  if (!url.searchParams.has("code")) {
+    return NextResponse.redirect(new URL("/auth/signin", req.url));
+  }
+
   if (url.pathname === "/account/register" && url.searchParams.has("code")) {
     const code = url.searchParams.get("code");
     try {
@@ -47,13 +51,12 @@ export async function RegisterMiddleware(req) {
           maxAge: 60 * 60 * 24 * 7,
         });
 
-
         return res;
       } else {
-        return NextResponse.redirect(new URL("/login", req.url));
+        return NextResponse.redirect(new URL("/auth/signin", req.url));
       }
     } catch (err) {
-      return NextResponse.redirect(new URL("/login", req.url));
+      return NextResponse.redirect(new URL("/auth/signin", req.url));
     }
   }
   return NextResponse.next();

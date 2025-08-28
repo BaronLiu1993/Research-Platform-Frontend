@@ -3,6 +3,7 @@ import { useState } from "react";
 import DropdownYear from "../components/dropdowns/dropdownyear";
 import DropdownMajor from "../components/dropdowns/dropdownmajor";
 import DropdownInterests from "../components/dropdowns/dropdowninterests";
+import { redirect } from "next/navigation";
 
 export default function RegisterClientWrapper({ access }) {
   const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ export default function RegisterClientWrapper({ access }) {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     setError("");
 
     const payload = {
@@ -37,18 +38,20 @@ export default function RegisterClientWrapper({ access }) {
 
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.message || "Registration failed.");
-        return;
+        setError("Registration failed.");
+      } else {
+        redirect("/repository");
       }
-
-   
     } catch {
       setError("Internal Server Error");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-lg flex flex-col gap-6">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-lg flex flex-col gap-6"
+    >
       <DropdownYear
         name="student_year"
         value={formData.student_year}
@@ -86,7 +89,8 @@ export default function RegisterClientWrapper({ access }) {
           }
         />
         <label className="text-sm text-gray-700">
-          I agree to the <span className = "underline">terms</span> and <span className = "underline">privacy policy</span>
+          I agree to the <span className="underline">terms</span> and{" "}
+          <span className="underline">privacy policy</span>
         </label>
       </div>
 

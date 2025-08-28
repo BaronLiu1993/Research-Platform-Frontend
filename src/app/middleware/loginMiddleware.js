@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 
 export async function LoginMiddleware(req) {
   const url = req.nextUrl;
+  if (!url.searchParams.has("code")) {
+    return NextResponse.redirect(new URL("/auth/signin", req.url));
+  }
+
   if (url.pathname === "/account/login" && url.searchParams.has("code")) {
     const code = url.searchParams.get("code");
     try {
@@ -13,8 +17,6 @@ export async function LoginMiddleware(req) {
           body: JSON.stringify({ code }),
         }
       );
-
-      
 
       const data = await response.json();
 
@@ -50,10 +52,10 @@ export async function LoginMiddleware(req) {
 
         return res;
       } else {
-        return NextResponse.redirect(new URL("/login", req.url));
+        return NextResponse.redirect(new URL("/auth/signin", req.url));
       }
     } catch (err) {
-      return NextResponse.redirect(new URL("/login", req.url));
+      return NextResponse.redirect(new URL("/auth/signin", req.url));
     }
   }
   return NextResponse.next();

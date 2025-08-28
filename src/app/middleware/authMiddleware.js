@@ -72,7 +72,6 @@ export async function AuthMiddleware(req) {
     }
 
     console.log("test");
-    // Profile check
     const profileCheck = await fetch(
       "http://localhost:8080/auth/check-profile-completed",
       {
