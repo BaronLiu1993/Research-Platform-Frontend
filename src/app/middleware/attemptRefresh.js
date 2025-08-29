@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 export async function attemptRefresh(refreshToken, url, isProd) {
     if (!refreshToken) return null;
   
@@ -15,7 +17,7 @@ export async function attemptRefresh(refreshToken, url, isProd) {
     const data = await refreshResponse.json();
     const res = NextResponse.next();
   
-    res.cookies.set("access_token", data.access_token, {
+    res.cookies.set("access_token", data.accessToken, {
       httpOnly: true,
       secure: isProd,
       sameSite: "lax",
@@ -23,7 +25,7 @@ export async function attemptRefresh(refreshToken, url, isProd) {
       maxAge: 60 * 60,
     });
   
-    res.cookies.set("refresh_token", data.refresh_token, {
+    res.cookies.set("refresh_token", data.refreshToken, {
       httpOnly: true,
       secure: isProd,
       sameSite: "lax",

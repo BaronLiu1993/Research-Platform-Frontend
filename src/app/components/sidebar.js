@@ -1,9 +1,9 @@
 "use client";
-
 import { useState } from "react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -22,11 +22,15 @@ import {
   Inbox,
   Settings,
 } from "lucide-react";
+import { Button } from "@/shadcomponents/ui/button";
+import { SignOut } from "../actions/signOut.js";
+
+
 
 const data = {
   navMain: [
     {
-      title: "Research Suite",
+      title: "Workflows",
       url: "#",
       items: [
         {
@@ -74,6 +78,9 @@ const data = {
 };
 
 export function AppSidebar({ student_data, ...props }) {
+  const handleSignOut = async () => {
+    await SignOut()
+  }
   const [expanded, setExpanded] = useState(null);
 
   return (
@@ -84,8 +91,8 @@ export function AppSidebar({ student_data, ...props }) {
             <h1 className="text-sm font-medium">
               {student_data.student_name}
             </h1>
-            <p className="text-xs text-[#979A9B]">
-              {student_data.student_email.slice(0, 20)}...
+            <p className="text-xs">
+              {student_data.student_email.slice(0, 25)}...
             </p>
           </div>
         </div>
@@ -94,7 +101,7 @@ export function AppSidebar({ student_data, ...props }) {
       <SidebarContent>
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
-            <SidebarGroupLabel className="text-[11px] text-[#787774]">
+            <SidebarGroupLabel className="text-[12px]">
               {item.title}
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -160,6 +167,11 @@ export function AppSidebar({ student_data, ...props }) {
       </SidebarContent>
 
       <SidebarRail />
+      <SidebarFooter>
+        <Button onClick ={handleSignOut} className="w-fit rounded-md p-2 m-1 cursor-pointer text-sm text-[#FDEBEC] bg-[#D44C47] hover:bg-[#B83F3A]">
+          Sign Out
+        </Button>
+      </SidebarFooter>
     </Sidebar>
   );
 }

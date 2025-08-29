@@ -20,6 +20,21 @@ export async function AuthMiddleware(req) {
     return NextResponse.redirect(new URL("/repository", req.url));
   }
 
+  if ((access || refresh) && pathname.startsWith("/register")) {
+    console.log("[AuthMiddleware] No access token, redirecting from", pathname);
+    return NextResponse.redirect(new URL("/repository", req.url));
+  }
+
+  if ((access || refresh) && pathname.startsWith("/account/register")) {
+    console.log("[AuthMiddleware] No access token, redirecting from", pathname);
+    return NextResponse.redirect(new URL("/repository", req.url));
+  }
+
+  if ((access || refresh) && pathname.startsWith("/account/login")) {
+    console.log("[AuthMiddleware] No access token, redirecting from", pathname);
+    return NextResponse.redirect(new URL("/repository", req.url));
+  }
+
   // Case 1: No tokens at all
   if (!access && !refresh) {
     console.log(
