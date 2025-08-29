@@ -90,7 +90,7 @@ export async function AuthMiddleware(req) {
     );
 
     const profile = await profileCheck.json();
-    console.log("[AuthMiddleware] /check-profile-completed response:", profile);
+    console.log("[AuthMiddleware] /check-profile-completed response:", profile.isComplete);
 
     if (!profile.isComplete) {
       if (req.nextUrl.pathname !== "/register") {

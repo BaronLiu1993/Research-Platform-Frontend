@@ -37,7 +37,6 @@ export default function RegisterClientWrapper({ access }) {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
         setError("Registration failed.");
       } else {
         redirect("/repository");

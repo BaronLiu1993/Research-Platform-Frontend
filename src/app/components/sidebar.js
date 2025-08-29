@@ -82,7 +82,7 @@ export function AppSidebar({ student_data, ...props }) {
         <div className="flex items-center gap-2">
           <div>
             <h1 className="text-sm font-medium">
-              {student_data.student_firstname} {student_data.student_lastname}
+              {student_data.student_name}
             </h1>
             <p className="text-xs text-[#979A9B]">
               {student_data.student_email.slice(0, 20)}...
