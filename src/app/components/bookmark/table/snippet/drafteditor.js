@@ -50,8 +50,8 @@ export default function DraftEditor({
     try {
       const data = {
         fromName,
-        fromEmail: "baronliu1993@gmail.com",
-        to: "jiexuan.liu@mail.utoronto.ca",
+        fromEmail,
+        to,
         body,
         subject,
       };

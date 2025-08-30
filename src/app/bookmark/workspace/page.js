@@ -24,10 +24,6 @@ export default async function Work() {
   const userId = cookieStore.get("user_id")?.value;
   const access = cookieStore.get("access_token")?.value;
 
-  if (!userId || !access) {
-    return redirect("/repository");
-  }
-
   const [
     rawSavedData,
     rawInProgressData,
@@ -104,9 +100,6 @@ export default async function Work() {
     rawTranscriptData.json(),
   ]);
 
-  if (resumeData?.reauthRequired || transcriptData?.reauthRequired) {
-    redirect("/inbox/auth");
-  }
 
   const parsedInProgressData = inProgressJson?.data ?? [];
   const parsedSavedData = savedDataJson?.data ?? [];

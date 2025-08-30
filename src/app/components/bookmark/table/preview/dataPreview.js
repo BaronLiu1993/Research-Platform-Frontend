@@ -32,6 +32,7 @@ export default function DataPreview({
   generateView,
   access
 }) {
+  
   const selectedVariables = useSelectedVariablesStore(
     (s) => s.selectedVariables
   );
@@ -98,9 +99,7 @@ export default function DataPreview({
     await createMassDrafts(
       userId,
       snippetId,
-      `${parsedUserProfile?.student_firstname ?? ""} ${
-        parsedUserProfile?.student_lastname ?? ""
-      }`.trim(),
+      parsedUserProfile.student_name,
       parsedUserProfile.student_email,
       dynamicFields,
       access

@@ -23,7 +23,7 @@ import {
   Settings,
 } from "lucide-react";
 import { Button } from "@/shadcomponents/ui/button";
-import { SignOut } from "../actions/signOut.js";
+import { SignOut } from "../actions/signOut";
 
 
 
