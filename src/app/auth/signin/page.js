@@ -24,10 +24,6 @@ export default async function SignIn() {
   const refresh = await cookieStore.get("refresh_token");
   const userId = await cookieStore.get("user_id");
 
-  if (access && refresh && userId) {
-    redirect("/repository");
-  }
-  
   return (
     <>
       <Breadcrumb className="font-main font-semibold flex flex-wrap sm:flex-nowrap h-8 items-center gap-2 px-4 sm:px-6 py-2">

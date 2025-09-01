@@ -78,6 +78,7 @@ export default function ComposeEditor({
   });
 
   const handleSnippetGeneration = async (userId, body, subject) => {
+    console.log("fired")
     if (body.trim().length === 0 || subject.trim().length === 0) {
       handleGenerateDrafts();
       toast("Empty Draft");

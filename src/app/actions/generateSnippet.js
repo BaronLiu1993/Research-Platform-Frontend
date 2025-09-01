@@ -5,6 +5,7 @@ export const GenerateSnippet = async (
   access
 ) => {
   try {
+    console.log(access)
     const response = await fetch(
       `http://localhost:8080/snippets/insert/${userId}`,
       {

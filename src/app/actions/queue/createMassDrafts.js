@@ -9,13 +9,14 @@ export const createMassDrafts = async (
   access
 ) => {
   try {
+    console.log("fired")
     const response = await fetch(
       `http://localhost:8080/send/snippet-create-draft`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${access}`,
+          "Authorization": `Bearer ${access}`,
         },
         body: JSON.stringify({
           userId,
