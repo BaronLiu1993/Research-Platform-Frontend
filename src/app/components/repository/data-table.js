@@ -1,6 +1,10 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
+
+import { useSavedStore } from "@/app/store/useSavedStore";
+import { useAppliedStore } from "@/app/store/useAppliedStore";
+
 import {
   flexRender,
   getCoreRowModel,
@@ -46,6 +50,9 @@ export function DataTable({
   generateColumns,
   pageNumber,
   search,
+  access,
+  savedProfessors,
+  appliedProfessors,
 }) {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -53,9 +60,10 @@ export function DataTable({
   const [query, setQuery] = useState("");
 
   const columns = useMemo(
-    () => generateColumns(userId),
-    [userId, generateColumns]
+    () => generateColumns(userId, access),
+    [userId, access, generateColumns]
   );
+
   const table = useReactTable({
     data,
     columns,
@@ -69,6 +77,7 @@ export function DataTable({
     manualPagination: true,
     state: { sorting, columnFilters, columnVisibility },
   });
+  
   const handleSearch = useCallback(
     (e) => {
       e.preventDefault();
@@ -76,6 +85,18 @@ export function DataTable({
     },
     [query]
   );
+
+  const setSaved = useSavedStore((state) => state.setSavedStore);
+  const setApplied = useAppliedStore((state) => state.setAppliedStore);
+
+  useEffect(() => {
+    if (savedProfessors) {
+      setSaved(savedProfessors.data);
+    }
+    if (appliedProfessors) {
+      setApplied(appliedProfessors.data);
+    }
+  }, [savedProfessors, appliedProfessors, setSaved, setApplied]);
 
   return (
     <div className="rounded-md py-2 w-[55rem]">

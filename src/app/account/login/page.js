@@ -1,5 +1,4 @@
-export default async function AccountLogin() {
+export default async function AccountLogin({}) {
   return <>
-  
-  </>;
+  </>
 }

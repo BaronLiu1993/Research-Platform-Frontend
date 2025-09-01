@@ -4,6 +4,8 @@ import DropdownYear from "../components/dropdowns/dropdownyear";
 import DropdownMajor from "../components/dropdowns/dropdownmajor";
 import DropdownInterests from "../components/dropdowns/dropdowninterests";
 import { redirect } from "next/navigation";
+import { useSavedStore } from "../store/useSavedStore";
+import { useAppliedStore } from "../store/useAppliedStore";
 
 export default function RegisterClientWrapper({ access }) {
   const [formData, setFormData] = useState({
@@ -14,6 +16,8 @@ export default function RegisterClientWrapper({ access }) {
   });
 
   const [error, setError] = useState("");
+  const resetSavedStore = useSavedStore((state) => state.resetPoints);
+  const resetAppliedStore = useAppliedStore((state) => state.resetPoints);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,6 +43,8 @@ export default function RegisterClientWrapper({ access }) {
       if (!response.ok) {
         setError("Registration failed.");
       } else {
+        resetAppliedStore()
+        resetSavedStore()
         redirect("/repository");
       }
     } catch {

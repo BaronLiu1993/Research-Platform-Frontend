@@ -137,8 +137,12 @@ export function SavedDataTable({
     <div className="px-4 font-main">
       <Tabs defaultValue="file-uploads">
         <TabsList className="my-6 flex gap-4">
-          <TabsTrigger value="file-uploads" className = "rounded-sm">Check File Uploads</TabsTrigger>
-          <TabsTrigger value="saved-professors">Compose Mass Emails</TabsTrigger>
+          <TabsTrigger value="file-uploads" className="rounded-sm">
+            Check File Uploads
+          </TabsTrigger>
+          <TabsTrigger value="saved-professors">
+            Compose Mass Emails
+          </TabsTrigger>
           <TabsTrigger value="reviewed-drafts">Review Mass Drafts</TabsTrigger>
           <TabsTrigger value="follow-ups">Automate Follow Up</TabsTrigger>
         </TabsList>
@@ -277,11 +281,29 @@ export function SavedDataTable({
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2">
-                      <Input
-                        onChange={(e) => setResume(e.target.files?.[0])}
-                        type="file"
-                        className="rounded-xs"
-                      />
+                      <div>
+                        <label className="border-3 border-dashed gap-4 rounded-lg py-10 px-5 font-main flex flex-col items-center cursor-pointer">
+                            <div className="flex flex-col items-center">
+                              <CloudUpload />
+                              <span className="font-semibold text-md">
+                                Choose a file or drag and drop it here.
+                              </span>
+                              <span className="text-gray-400 text-sm">
+                                JPEG, PNG and PDF are accepted
+                              </span>
+
+                              <Input
+                                onChange={(e) => setResume(e.target.files?.[0])}
+                                type="file"
+                                className="hidden"
+                              />
+                            </div>
+                            <div className="border-1 text-gray-600 font-medium rounded-md text-sm p-1">
+                              Browse Here
+                            </div>
+                          </label>
+                      </div>
+
                       {resume && (
                         <Button
                           onClick={handleUploadResume}
@@ -427,7 +449,7 @@ export function SavedDataTable({
           </div>
         </TabsContent>
 
-        <TabsContent value="saved-professors" className = "py-4">
+        <TabsContent value="saved-professors" className="py-4">
           <div>
             <div className="font-semibold flex gap-2">
               <Cloud className="text-[#787774]" />

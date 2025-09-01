@@ -4,7 +4,15 @@ import "tippy.js/dist/tippy.css";
 import { useState, useEffect } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Bold, Italic, List, ListTodo, Loader, Strikethrough, X } from "lucide-react";
+import {
+  Bold,
+  Italic,
+  List,
+  ListTodo,
+  Loader,
+  Strikethrough,
+  X,
+} from "lucide-react";
 import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { saveDraft } from "../../api/drafts/saveDraft";
@@ -19,10 +27,18 @@ export default function DraftEditor({
   draftId,
   body: initialBody,
   initialSubject,
-  access
+  access,
 }) {
   const [subject, setSubject] = useState(initialSubject);
   const [body, setBody] = useState(initialBody);
+
+  useEffect(() => {
+    setSubject(initialSubject);
+    setBody(initialBody);
+    if (editor) {
+      editor.commands.setContent(initialBody);
+    }
+  }, [initialSubject, initialBody, editor]);
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -34,17 +50,9 @@ export default function DraftEditor({
       },
     },
     onUpdate: ({ editor }) => {
-      setBody(editor.getHTML()); 
+      setBody(editor.getHTML());
     },
   });
-
-  useEffect(() => {
-    setSubject(initialSubject);
-    setBody(initialBody);
-    if (editor) {
-      editor.commands.setContent(initialBody);
-    }
-  }, [initialSubject, initialBody, editor]);
 
   const handleUpdateDraft = async () => {
     try {
@@ -69,7 +77,9 @@ export default function DraftEditor({
     <div>
       <div className="text-sm">
         <div className="flex justify-between px-4">
-          <Badge className="text-[#D9730D] bg-[#FAEBDD] rounded-xs">Unsent Draft</Badge>
+          <Badge className="text-[#D9730D] bg-[#FAEBDD] rounded-xs">
+            Unsent Draft
+          </Badge>
           <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] cursor-pointer hover:text-red-500">
             <X className="h-6 w-6 p-1 rounded-xs" />
           </DialogClose>

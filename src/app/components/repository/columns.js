@@ -24,7 +24,7 @@ import {
 import SaveButton from "../bookmark/buttons/saveButton";
 import Link from "next/link";
 
-const generateColumns = (userId) => [
+const generateColumns = (userId, access) => [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -94,6 +94,7 @@ const generateColumns = (userId) => [
                   professor_labs={data.labs}
                   professor_lab_url={data.lab_url}
                   user_id={userId}
+                  access={access}
                 />
               </div>
             </DialogHeader>
@@ -213,6 +214,7 @@ const generateColumns = (userId) => [
             professor_labs={data.labs}
             professor_lab_url={data.lab_url}
             user_id={userId}
+            access={access}
           />
         </div>
       );

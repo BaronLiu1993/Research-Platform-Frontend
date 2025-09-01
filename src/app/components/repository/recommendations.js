@@ -61,6 +61,7 @@ export default async function Recommendations() {
                       professor_labs={response.labs}
                       professor_lab_url={response.lab_url}
                       user_id={userId}
+                      access={access}
                     />
                   </div>
                   <div className="space-y-1.5 flex-grow mb-4">

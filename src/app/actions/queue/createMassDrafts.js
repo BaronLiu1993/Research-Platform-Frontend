@@ -34,6 +34,7 @@ export const createMassDrafts = async (
       const result = await response.json();
       return result;
     }
+
   } catch {
     return { message: "Internal Server Error" };
   }

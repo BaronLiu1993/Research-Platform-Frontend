@@ -12,7 +12,8 @@ export async function Save(
   professor_labs,
   professor_lab_url,
   user_id,
-  comments
+  comments,
+  access
 ) {
   const data = {
     name: professor_name || "",
@@ -27,19 +28,19 @@ export async function Save(
     comments: comments || "",
   };
   try {
+    console.log(access)
     const response = await fetch(
       `http://localhost:8080/saved/kanban/add-saved/${user_id}/${professor_id}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${access}`
         },
         body: JSON.stringify(data),
+
       }
     );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
 
     const result = await response.json();
     return result;

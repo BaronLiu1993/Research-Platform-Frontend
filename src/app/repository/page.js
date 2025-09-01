@@ -38,6 +38,29 @@ export default async function Repository({ searchParams }) {
   const rawSearch = searchParams?.search ?? "";
   const search = encodeURIComponent(rawSearch.trim());
 
+  const [savedProfessorData, appliedProfessorData] = await Promise.all([
+    fetch(`http://localhost:8080/saved/repository/get-all-savedId/${userId}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+    }),
+    fetch(
+      `http://localhost:8080/inprogress/repository/get-all-appliedId/${userId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      }
+    ),
+  ]);
+
+  const [savedProfessorDataJson, appliedProfessorDataJson] = await Promise.all([
+    savedProfessorData.json(),
+    appliedProfessorData.json(),
+  ]);
+
   const [tableRes, profileRes] = await Promise.all([
     fetch(
       `http://localhost:8080/repository/taishan?page=${pageNumber}&search=${search}`,
@@ -149,6 +172,9 @@ export default async function Repository({ searchParams }) {
                 userId={userId}
                 pageNumber={pageNumber}
                 search={search}
+                access={access}
+                savedProfessors={savedProfessorDataJson}
+                appliedProfessors={appliedProfessorDataJson}
               />
             </div>
           </div>

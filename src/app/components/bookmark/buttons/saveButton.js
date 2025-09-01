@@ -23,6 +23,7 @@ export default function SaveButton({
   professor_labs,
   professor_lab_url,
   user_id,
+  access
 }) {
   const saved = useSavedStore((state) => state.savedStore);
   const applied = useAppliedStore((state) => state.appliedStore);
@@ -38,7 +39,7 @@ export default function SaveButton({
     try {
       if (isSaved) {
         removeSaved(professor_id);
-        await RemoveFromSaved(professor_id, user_id);
+        await RemoveFromSaved(professor_id, user_id, access);
         toast.success("Professor removed from saved.");
       } else {
         addSaved(professor_id);
@@ -54,7 +55,8 @@ export default function SaveButton({
           professor_labs,
           professor_lab_url,
           user_id,
-          ""
+          "",
+          access
         );
 
         toast.success("Professor saved.");
@@ -75,7 +77,7 @@ export default function SaveButton({
   return (
     <>
       {isApplied ? (
-        <Link className = "bg-orange-100 flex items-center px-3 py-1 text-xs font-medium font-main rounded-xs text-orange-600 hover:bg-orange-200 hover:text-orange-600" href = "/bookmark">
+        <Link className = "bg-orange-100 flex items-center px-3 py-1 text-xs font-medium font-main rounded-xs text-orange-600 hover:bg-orange-200 hover:text-orange-600" href = "/bookmark/workspace">
           <SquareArrowOutUpRight className="w-3 h-3 mr-2"/>
           <span>Applied</span>
         </Link>

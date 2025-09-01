@@ -38,8 +38,11 @@ export default function FollowUpEditor({
   fromEmail,
   professorIDArray,
   totalProfessorData,
-  access
+  access,
 }) {
+  console.log(fromName);
+  console.log(fromEmail);
+
   const [subject, setSubject] = useState("");
   const closeRef = useRef(null);
 
@@ -72,7 +75,7 @@ export default function FollowUpEditor({
     editorProps: {
       attributes: {
         class:
-        "prose prose-p:my-0 max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[14px]",
+          "prose prose-p:my-0 max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[14px]",
       },
     },
     content: "",
@@ -90,7 +93,12 @@ export default function FollowUpEditor({
 
   const handleCreateFollowUpDrafts = async () => {
     try {
-      const response = await GenerateSnippet(userId, editor.getHTML(), subject, access);
+      const response = await GenerateSnippet(
+        userId,
+        editor.getHTML(),
+        subject,
+        access
+      );
 
       const dynamicFields = await SyncSnippetData(
         userId,
@@ -126,7 +134,12 @@ export default function FollowUpEditor({
 
   const handleCreateFollowUpDraftsWithAttachments = async () => {
     try {
-      const response = await GenerateSnippet(userId, editor.getHTML(), subject, access);
+      const response = await GenerateSnippet(
+        userId,
+        editor.getHTML(),
+        subject,
+        access
+      );
       const dynamicFields = await SyncSnippetData(
         userId,
         professorIDArray,

@@ -19,7 +19,7 @@ import { toast } from "sonner";
 export default function DraftList({
   draftData: initialData,
   parsedUserProfile,
-  access
+  access,
 }) {
   const [draftData, setDraftData] = useState(initialData);
   const [selected, setSelected] = useState([]);
@@ -32,7 +32,7 @@ export default function DraftList({
       try {
         await ExecuteMassSend(
           parsedUserProfile.user_id,
-          `${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`,
+          parsedUserProfile.student_name,
           parsedUserProfile.student_email,
           selected,
           access
@@ -51,7 +51,7 @@ export default function DraftList({
       try {
         await ExecuteMassSendWithAttachments(
           parsedUserProfile.user_id,
-          `${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`,
+          parsedUserProfile.student_name,
           parsedUserProfile.student_email,
           selected,
           access
