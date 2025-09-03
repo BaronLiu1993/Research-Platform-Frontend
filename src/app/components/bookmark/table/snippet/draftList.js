@@ -135,7 +135,8 @@ export default function DraftList({
                       handleDeleteDraft(
                         data.draftId,
                         parsedUserProfile.user_id,
-                        data.id
+                        data.id,
+                        access
                       );
                     }}
                     variant="ghost"
@@ -149,14 +150,13 @@ export default function DraftList({
                 <DialogContent>
                   <DialogTitle></DialogTitle>
                   <DraftEditor
-                    userId={parsedUserProfile.user_id}
-                    professorId={data.id}
-                    fromName={`${parsedUserProfile.student_firstname}${parsedUserProfile.student_lastname}`}
+                    fromName={parsedUserProfile.student_name}
                     fromEmail={parsedUserProfile.student_email}
                     draftId={data.draftId}
                     to={data.email}
                     body={data.body}
                     initialSubject={data.subject}
+                    access={access}
                   />
                 </DialogContent>
               </Dialog>

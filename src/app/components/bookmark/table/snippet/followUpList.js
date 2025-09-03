@@ -116,7 +116,7 @@ export default function FollowUpList({
               <FollowUpEditor
                 access={access}
                 userId={parsedUserProfile.user_id}
-                fromName={`${parsedUserProfile.student_firstname} ${parsedUserProfile.student_lastname}`}
+                fromName={parsedUserProfile.student_name}
                 fromEmail={parsedUserProfile.student_email}
                 professorIDArray={selected}
                 totalProfessorData={totalSelected}

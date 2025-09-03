@@ -22,8 +22,6 @@ export default function DraftEditor({
   fromName,
   fromEmail,
   to,
-  userId,
-  professorId,
   draftId,
   body: initialBody,
   initialSubject,
@@ -61,7 +59,8 @@ export default function DraftEditor({
         body,
         subject,
       };
-      const updatedState = await saveDraft(data, draftId, userId, access);
+      
+      const updatedState = await saveDraft(data, draftId, access);
       setSubject(updatedState.subject);
       setBody(updatedState.body);
       editor?.commands.setContent(updatedState.body);

@@ -39,14 +39,14 @@ export default async function Repository({ searchParams }) {
   const search = encodeURIComponent(rawSearch.trim());
 
   const [savedProfessorData, appliedProfessorData] = await Promise.all([
-    fetch(`http://localhost:8080/saved/repository/get-all-savedId/${userId}`, {
+    fetch(`http://localhost:8080/saved/repository/get-all-savedId`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${access}`,
       },
     }),
     fetch(
-      `http://localhost:8080/inprogress/repository/get-all-appliedId/${userId}`,
+      `http://localhost:8080/inprogress/repository/get-all-appliedId`,
       {
         method: "GET",
         headers: {
@@ -56,10 +56,12 @@ export default async function Repository({ searchParams }) {
     ),
   ]);
 
+
   const [savedProfessorDataJson, appliedProfessorDataJson] = await Promise.all([
     savedProfessorData.json(),
     appliedProfessorData.json(),
   ]);
+
 
   const [tableRes, profileRes] = await Promise.all([
     fetch(

@@ -1,23 +1,24 @@
-export const saveDraft = async (data, draftId, studentId) => {
+export const saveDraft = async (data, draftId, access) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/draft/update-draft/${draftId}/${studentId}`,
+      `http://localhost:8080/draft/update-draft/${draftId}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${access}`,
         },
         body: JSON.stringify({
-          to: "jiexuan.liu@mail.utoronto.ca",
-          fromName: "Jie Xuan Liu",
-          fromEmail: "baronliu1993@gmail.com",
+          to: data.to,
+          fromName: data.fromName,
+          fromEmail: data.fromEmail,
           subject: data.subject,
           body: data.body,
         }),
       }
     );
-    const updatedState = response.json()
-    return updatedState
+    const updatedState = response.json();
+    return updatedState;
   } catch (error) {
     console.log(error);
   }
