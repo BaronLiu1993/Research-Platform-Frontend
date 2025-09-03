@@ -21,6 +21,7 @@ export default function FollowUpList({
   parsedUserProfile,
   access
 }) {
+  console.log(parsedCompletedData)
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState([]);
   const [totalSelected, setTotalSelected] = useState([]);
@@ -74,15 +75,15 @@ export default function FollowUpList({
                   onCheckedChange={() =>
                     handleCheck({
                       professor_id: data.professor_id,
-                      name: data.name,
-                      email: data.email,
+                      name: data.professor_name,
+                      email: data.professor_email,
                     })
                   }
                   onClick={(e) => e.stopPropagation()}
                 />
                 <div className="flex gap-2">
-                  <span className="text-sm font-semibold">{data.name}</span>
-                  <span className="text-sm font-light">{data.email}</span>
+                  <span className="text-sm font-semibold">{data.professor_name}</span>
+                  <span className="text-sm font-light">{data.professor_email}</span>
                 </div>
               </div>
             ))

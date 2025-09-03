@@ -56,7 +56,6 @@ export default async function Repository({ searchParams }) {
     ),
   ]);
 
-
   const [savedProfessorDataJson, appliedProfessorDataJson] = await Promise.all([
     savedProfessorData.json(),
     appliedProfessorData.json(),

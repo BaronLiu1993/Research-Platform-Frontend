@@ -38,17 +38,17 @@ export default async function Work() {
         Authorization: `Bearer ${access}`,
       },
     }),
-    fetch(`http://localhost:8080/inprogress/kanban/get-in-progress/${userId}`, {
+    fetch(`http://localhost:8080/inprogress/kanban/get-in-progress`, {
       headers: {
         Authorization: `Bearer ${access}`,
       },
     }),
-    fetch(`http://localhost:8080/inprogress/fetch/draft/${userId}`, {
+    fetch(`http://localhost:8080/inprogress/fetch/draft`, {
       headers: {
         Authorization: `Bearer ${access}`,
       },
     }),
-    fetch(`http://localhost:8080/completed/kanban/get-completed/${userId}`, {
+    fetch(`http://localhost:8080/completed/workspace/completed-data`, {
       headers: {
         Authorization: `Bearer ${access}`,
       },
