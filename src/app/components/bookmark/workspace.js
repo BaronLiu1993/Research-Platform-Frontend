@@ -42,7 +42,7 @@ const statusConfig = {
   },
 };
 
-export default async function Kanban({
+export default async function Workspace({
   userId,
   access,
   parsedSavedData,
@@ -77,6 +77,8 @@ export default async function Kanban({
       cardComponent: KanbanCardCompleted,
     },
   ];
+  console.log("baron")
+  console.log(draftData)
 
   return (
     <div className="flex flex-col h-fit font-main overflow-hidden">

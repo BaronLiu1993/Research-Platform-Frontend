@@ -72,16 +72,6 @@ export default async function Work() {
     }),
   ]);
 
-  if (
-    !rawSavedData.ok ||
-    !rawInProgressData.ok ||
-    !rawDraftData.ok ||
-    !rawCompletedData.ok ||
-    !rawUserProfile.ok
-  ) {
-    return redirect("/repository");
-  }
-
   const [
     savedDataJson,
     inProgressJson,
@@ -108,12 +98,17 @@ export default async function Work() {
   const parsedUserProfile = userProfileJson ?? {};
   const parsedResumeData = resumeData ?? {};
   const parsedTranscriptData = transcriptData ?? {};
-
+  console.log(parsedDraftData)
   let draftData = await Promise.all(
     (parsedDraftData ?? []).map(async (prof) => {
       try {
         const rawDraftResults = await fetch(
-          `http://localhost:8080/draft/resume-draft/${prof.draft_id}/${userId}`
+          `http://localhost:8080/draft/resume-draft/${prof.draft_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${access}`,
+            },
+          }
         );
         const parsedDraftResults = await rawDraftResults.json();
         if (parsedDraftResults?.draftExists) {
@@ -132,6 +127,8 @@ export default async function Work() {
   );
 
   draftData = draftData.filter(Boolean);
+
+  console.log(draftData);
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile} />
