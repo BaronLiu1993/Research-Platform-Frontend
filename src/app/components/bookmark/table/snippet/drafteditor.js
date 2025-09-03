@@ -31,15 +31,6 @@ export default function DraftEditor({
 }) {
   const [subject, setSubject] = useState(initialSubject);
   const [body, setBody] = useState(initialBody);
-
-  useEffect(() => {
-    setSubject(initialSubject);
-    setBody(initialBody);
-    if (editor) {
-      editor.commands.setContent(initialBody);
-    }
-  }, [initialSubject, initialBody, editor]);
-
   const editor = useEditor({
     extensions: [StarterKit],
     content: body,
@@ -53,6 +44,13 @@ export default function DraftEditor({
       setBody(editor.getHTML());
     },
   });
+  useEffect(() => {
+    setSubject(initialSubject);
+    setBody(initialBody);
+    if (editor) {
+      editor.commands.setContent(initialBody);
+    }
+  }, [initialSubject, initialBody, editor]);
 
   const handleUpdateDraft = async () => {
     try {
