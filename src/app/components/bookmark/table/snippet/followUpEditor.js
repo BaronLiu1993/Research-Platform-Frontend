@@ -7,30 +7,19 @@ import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import Mention from "@tiptap/extension-mention";
 import suggestion from "../tiptap/suggestion";
 import StarterKit from "@tiptap/starter-kit";
-import {
-  ALargeSmall,
-  Bold,
-  IndentDecrease,
-  IndentIncrease,
-  Italic,
-  List,
-  ListTodo,
-  Pencil,
-  Strikethrough,
-  Wand2,
-  X,
-} from "lucide-react";
 import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
+
+import { X } from "lucide-react";
 
 import { Badge } from "@/shadcomponents/ui/badge";
 import { toast } from "sonner";
 import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { GenerateSnippet } from "@/app/actions/generateSnippet";
-import { SyncSnippetData } from "@/app/actions/syncSnippetData";
 import { createMassFollowUpDrafts } from "@/app/actions/queue/createMassFollowUpDrafts";
 import FollowUpButton from "./followUpButton";
 import { ExecuteMassFollowUpDraftsWithAttachments } from "@/app/actions/queue/executeMassSendFollowUpDraftsWithAttachments";
 import { ExecuteMassSendFollowUpDrafts } from "@/app/actions/queue/executeMassSendFollowUpDrafts";
+import { SyncFollowUpSnippetData } from "@/app/actions/syncFollowUpSnippetData";
 
 export default function FollowUpEditor({
   userId,
@@ -40,9 +29,9 @@ export default function FollowUpEditor({
   totalProfessorData,
   access,
 }) {
-  console.log("test")
-  console.log(totalProfessorData)
-  console.log(professorIDArray)
+  console.log("test");
+  console.log(totalProfessorData);
+  console.log(professorIDArray);
 
   const [subject, setSubject] = useState("");
   const closeRef = useRef(null);
@@ -101,7 +90,7 @@ export default function FollowUpEditor({
         access
       );
 
-      const dynamicFields = await SyncSnippetData(
+      const dynamicFields = await SyncFollowUpSnippetData(
         userId,
         totalProfessorData,
         selectedVariables,
@@ -116,6 +105,8 @@ export default function FollowUpEditor({
         totalProfessorData,
         access
       );
+
+      console.log(draftResponse)
 
       if (draftResponse.success) {
         await ExecuteMassSendFollowUpDrafts(
@@ -143,9 +134,9 @@ export default function FollowUpEditor({
         subject,
         access
       );
-      const dynamicFields = await SyncSnippetData(
+      const dynamicFields = await SyncFollowUpSnippetData(
         userId,
-        professorIDArray,
+        totalProfessorData,
         selectedVariables
       );
       if (response.snippetId) {

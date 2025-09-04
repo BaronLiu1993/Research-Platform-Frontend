@@ -9,8 +9,6 @@ export const createMassDrafts = async (
   access
 ) => {
   try {
-    console.log(dynamicFields)
-    console.log("fired");
     const response = await fetch(
       `http://localhost:8080/send/snippet-create-draft`,
       {
