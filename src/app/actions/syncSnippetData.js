@@ -2,7 +2,7 @@
 
 export const SyncSnippetData = async (
   userId,
-  professorIdArray,
+  totalProfessorData,
   variableArray,
   access
 ) => {
@@ -15,7 +15,7 @@ export const SyncSnippetData = async (
         "Authorization": `Bearer ${access}`
       },
       body: JSON.stringify({
-        professorIdArray,
+        totalProfessorData,
         variableArray,
       }),
     }

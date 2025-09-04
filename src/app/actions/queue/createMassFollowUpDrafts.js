@@ -6,6 +6,7 @@ export const createMassFollowUpDrafts = async (
   fromName,
   fromEmail,
   dynamicFields,
+  totalProfessorData,
   access
 ) => {
   try {
@@ -18,7 +19,6 @@ export const createMassFollowUpDrafts = async (
           Authorization: `Bearer ${access}`,
         },
         body: JSON.stringify({
-          userId,
           professorData: dynamicFields.result,
           baseBody: {
             snippetId,
@@ -36,6 +36,6 @@ export const createMassFollowUpDrafts = async (
       return { success: true, message: "Successfully Queued" };
     }
   } catch {
-    return { success: false, message: "Internal Server Error"};
+    return { success: false, message: "Internal Server Error" };
   }
 };

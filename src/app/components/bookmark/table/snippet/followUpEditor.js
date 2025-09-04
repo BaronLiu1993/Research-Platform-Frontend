@@ -42,6 +42,7 @@ export default function FollowUpEditor({
 }) {
   console.log("test")
   console.log(totalProfessorData)
+  console.log(professorIDArray)
 
   const [subject, setSubject] = useState("");
   const closeRef = useRef(null);
@@ -102,7 +103,7 @@ export default function FollowUpEditor({
 
       const dynamicFields = await SyncSnippetData(
         userId,
-        professorIDArray,
+        totalProfessorData,
         selectedVariables,
         access
       );
@@ -112,6 +113,7 @@ export default function FollowUpEditor({
         fromName,
         fromEmail,
         dynamicFields,
+        totalProfessorData,
         access
       );
 
