@@ -40,8 +40,8 @@ export default function FollowUpEditor({
   totalProfessorData,
   access,
 }) {
-  console.log(fromName);
-  console.log(fromEmail);
+  console.log("test")
+  console.log(totalProfessorData)
 
   const [subject, setSubject] = useState("");
   const closeRef = useRef(null);
@@ -114,6 +114,7 @@ export default function FollowUpEditor({
         dynamicFields,
         access
       );
+
       if (draftResponse.success) {
         await ExecuteMassSendFollowUpDrafts(
           userId,
@@ -178,7 +179,7 @@ export default function FollowUpEditor({
       <div className="text-sm">
         <div className="flex justify-between px-4">
           <Badge className="text-[#D9730D] bg-[#FAEBDD] rounded-xs">
-            Unsent Follow Up
+            Follow Up
           </Badge>
           <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] cursor-pointer hover:text-red-500">
             <X className="h-6 w-6 p-1 rounded-xs" />

@@ -19,15 +19,19 @@ import { toast } from "sonner";
 export default function FollowUpList({
   parsedCompletedData,
   parsedUserProfile,
-  access
+  access,
 }) {
-  console.log(parsedCompletedData)
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState([]);
   const [totalSelected, setTotalSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
 
-  const handleCheck = ({ professor_id, name, email }) => {
+  const handleCheck = ({
+    professor_id,
+    professor_name,
+    professor_email,
+    thread_id,
+  }) => {
     setSelected((prev) =>
       prev.includes(professor_id)
         ? prev.filter((id) => id !== professor_id)
@@ -38,7 +42,10 @@ export default function FollowUpList({
       if (exists) {
         return prev.filter((item) => item.professor_id !== professor_id);
       }
-      return [...prev, { professor_id, name, email }];
+      return [
+        ...prev,
+        { professor_id, professor_name, professor_email, thread_id },
+      ];
     });
   };
 
@@ -49,15 +56,20 @@ export default function FollowUpList({
     } else {
       setSelected(parsedCompletedData.map((prof) => prof.professor_id));
       setTotalSelected(
-        parsedCompletedData.map(({ professor_id, name, email }) => ({
-          professor_id,
-          name,
-          email,
-        }))
+        parsedCompletedData.map(
+          ({ professor_id, professor_name, professor_email, thread_id }) => ({
+            professor_id,
+            professor_name,
+            professor_email,
+            thread_id,
+          })
+        )
       );
     }
     setCheckAll(!checkAll);
   };
+
+  console.log(totalSelected);
 
   return (
     <div className="flex flex-col gap-4">
@@ -69,21 +81,29 @@ export default function FollowUpList({
         <div className="border-1">
           {parsedCompletedData.length > 0 ? (
             parsedCompletedData.map((data) => (
-              <div key={data.id} className="flex items-center gap-2 p-2 ">
+              <div
+                key={data.professor_id}
+                className="flex items-center gap-2 p-2 "
+              >
                 <Checkbox
                   checked={selected.includes(data.professor_id)}
                   onCheckedChange={() =>
                     handleCheck({
                       professor_id: data.professor_id,
-                      name: data.professor_name,
-                      email: data.professor_email,
+                      professor_name: data.professor_name,
+                      professor_email: data.professor_email,
+                      thread_id: data.thread_id,
                     })
                   }
                   onClick={(e) => e.stopPropagation()}
                 />
                 <div className="flex gap-2">
-                  <span className="text-sm font-semibold">{data.professor_name}</span>
-                  <span className="text-sm font-light">{data.professor_email}</span>
+                  <span className="text-sm font-semibold">
+                    {data.professor_name}
+                  </span>
+                  <span className="text-sm font-light">
+                    {data.professor_email}
+                  </span>
                 </div>
               </div>
             ))
