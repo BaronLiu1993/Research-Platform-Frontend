@@ -1,7 +1,6 @@
 "use server";
 
 export const SyncSnippetData = async (
-  userId,
   professorIdArray,
   variableArray,
   access

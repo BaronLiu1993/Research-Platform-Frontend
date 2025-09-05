@@ -1,7 +1,6 @@
 "use server";
 
 export const ExecuteMassSendFollowUpDrafts = async (
-  userId,
   userName,
   userEmail,
   professorData,

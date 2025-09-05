@@ -1,5 +1,4 @@
 export const GenerateSnippet = async (
-  userId,
   snippet_html,
   snippet_subject,
   access
@@ -7,7 +6,7 @@ export const GenerateSnippet = async (
   try {
     console.log(access)
     const response = await fetch(
-      `http://localhost:8080/snippets/insert/${userId}`,
+      `http://localhost:8080/snippets/insert`,
       {
         method: "POST",
         headers: {

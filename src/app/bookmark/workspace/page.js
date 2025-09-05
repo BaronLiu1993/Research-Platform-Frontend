@@ -33,7 +33,7 @@ export default async function Work() {
     rawResumeData,
     rawTranscriptData,
   ] = await Promise.all([
-    fetch(`http://localhost:8080/saved/kanban/get-saved/${userId}`, {
+    fetch(`http://localhost:8080/saved/kanban/get-saved`, {
       headers: {
         Authorization: `Bearer ${access}`,
       },
@@ -60,12 +60,12 @@ export default async function Work() {
         "Content-Type": "application/json",
       },
     }),
-    fetch(`http://localhost:8080/storage/get-resume/${userId}`, {
+    fetch(`http://localhost:8080/storage/get-resume`, {
       headers: {
         Authorization: `Bearer ${access}`,
       },
     }),
-    fetch(`http://localhost:8080/storage/get-transcript/${userId}`, {
+    fetch(`http://localhost:8080/storage/get-transcript`, {
       headers: {
         Authorization: `Bearer ${access}`,
       },

@@ -21,6 +21,7 @@ export default function DraftList({
   parsedUserProfile,
   access,
 }) {
+  console.log(parsedUserProfile)
   const [draftData, setDraftData] = useState(initialData);
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);

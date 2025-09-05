@@ -84,25 +84,21 @@ export default function FollowUpEditor({
   const handleCreateFollowUpDrafts = async () => {
     try {
       const response = await GenerateSnippet(
-        userId,
         editor.getHTML(),
         subject,
         access
       );
 
       const dynamicFields = await SyncFollowUpSnippetData(
-        userId,
         totalProfessorData,
         selectedVariables,
         access
       );
       const draftResponse = await createMassFollowUpDrafts(
-        userId,
         response.snippetId,
         fromName,
         fromEmail,
         dynamicFields,
-        totalProfessorData,
         access
       );
 
@@ -110,7 +106,6 @@ export default function FollowUpEditor({
 
       if (draftResponse.success) {
         await ExecuteMassSendFollowUpDrafts(
-          userId,
           fromName,
           fromEmail,
           totalProfessorData,
@@ -129,19 +124,17 @@ export default function FollowUpEditor({
   const handleCreateFollowUpDraftsWithAttachments = async () => {
     try {
       const response = await GenerateSnippet(
-        userId,
         editor.getHTML(),
         subject,
         access
       );
       const dynamicFields = await SyncFollowUpSnippetData(
-        userId,
         totalProfessorData,
-        selectedVariables
+        selectedVariables,
+        access
       );
       if (response.snippetId) {
         const draftResponse = await createMassFollowUpDrafts(
-          userId,
           response.snippetId,
           fromName,
           fromEmail,
@@ -150,7 +143,6 @@ export default function FollowUpEditor({
         );
         if (draftResponse.success) {
           await ExecuteMassFollowUpDraftsWithAttachments(
-            userId,
             fromName,
             fromEmail,
             totalProfessorData,

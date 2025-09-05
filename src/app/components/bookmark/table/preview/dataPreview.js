@@ -32,7 +32,7 @@ export default function DataPreview({
   generateView,
   access
 }) {
-  
+
   const selectedVariables = useSelectedVariablesStore(
     (s) => s.selectedVariables
   );
@@ -71,7 +71,6 @@ export default function DataPreview({
 
   const handleSyncSnippet = async () => {
     const response = await SyncSnippetData(
-      userId,
       professorIDArray,
       selectedVariables,
       access

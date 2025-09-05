@@ -21,6 +21,7 @@ export default function FollowUpList({
   parsedUserProfile,
   access,
 }) {
+  console.log(parsedCompletedData)
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState([]);
   const [totalSelected, setTotalSelected] = useState([]);
@@ -31,6 +32,7 @@ export default function FollowUpList({
     professor_name,
     professor_email,
     thread_id,
+    message_id
   }) => {
     setSelected((prev) =>
       prev.includes(professor_id)
@@ -44,7 +46,7 @@ export default function FollowUpList({
       }
       return [
         ...prev,
-        { professor_id, professor_name, professor_email, thread_id },
+        { professor_id, professor_name, professor_email, thread_id, message_id },
       ];
     });
   };
@@ -57,11 +59,12 @@ export default function FollowUpList({
       setSelected(parsedCompletedData.map((prof) => prof.professor_id));
       setTotalSelected(
         parsedCompletedData.map(
-          ({ professor_id, professor_name, professor_email, thread_id }) => ({
+          ({ professor_id, professor_name, professor_email, thread_id, message_id }) => ({
             professor_id,
             professor_name,
             professor_email,
             thread_id,
+            message_id
           })
         )
       );
@@ -93,6 +96,7 @@ export default function FollowUpList({
                       professor_name: data.professor_name,
                       professor_email: data.professor_email,
                       thread_id: data.thread_id,
+                      message_id: data.message_id
                     })
                   }
                   onClick={(e) => e.stopPropagation()}

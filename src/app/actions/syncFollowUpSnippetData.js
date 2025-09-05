@@ -1,7 +1,6 @@
 "use server";
 
 export const SyncFollowUpSnippetData = async (
-  userId,
   totalProfessorData,
   variableArray,
   access
@@ -16,7 +15,7 @@ export const SyncFollowUpSnippetData = async (
       },
       body: JSON.stringify({
         professorIdArray: totalProfessorData,
-        variableArray, // check if the totalprofessorData is the right stuff and then i will keep going and trying to get the threadIds integrated into it
+        variableArray,
       }),
     }
   );

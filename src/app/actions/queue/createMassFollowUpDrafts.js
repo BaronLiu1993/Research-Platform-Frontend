@@ -1,12 +1,10 @@
 import { MassAddApplied } from "./massAddApplied";
 
 export const createMassFollowUpDrafts = async (
-  userId,
   snippetId,
   fromName,
   fromEmail,
   dynamicFields,
-  totalProfessorData,
   access
 ) => {
   try {
