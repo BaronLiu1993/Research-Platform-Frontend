@@ -18,24 +18,40 @@ export default function EmailSidebar({
   access,
 }) {
   const [threadData, setThreadData] = useState(null);
-
+  console.log(access);
+  console.log(threadId);
   useEffect(() => {
+    console.log("useEffect triggered", { threadId, access });
+    if (!threadId || !access) return;
+
     const fetchResponseThread = async () => {
-      const mailData = await fetch(
-        `http://localhost:8080/inbox/get-full-email-chain/${userId}/${threadId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${access}`,
-          },
+      try {
+        console.log("Fetching thread data...");
+        const mailData = await fetch(
+          `http://localhost:8080/inbox/get-full-email-chain/${threadId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${access}`,
+            },
+          }
+        );
+
+        if (!mailData.ok) {
+          console.error("Fetch failed with status:", mailData.status);
+          return;
         }
-      );
-      const responseData = await mailData.json();
-      setThreadData(responseData);
+
+        const responseData = await mailData.json();
+        console.log("Thread data received:", responseData);
+        setThreadData(responseData);
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
     };
 
-    if (threadId && userId) fetchResponseThread();
-  }, [threadId, userId]);
+    fetchResponseThread();
+  }, [threadId, access]);
 
   return (
     <div className="h-[80vh] bg-white overflow-y-auto">
