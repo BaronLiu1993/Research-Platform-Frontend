@@ -60,21 +60,17 @@ export default async function InboxEmail() {
   );
 
   let parsedUserProfile = {};
-  try {
-    const authResp = await fetch(
-      "http://localhost:8080/auth/get-user-sidebar-info",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
-      }
-    );
-    if (authResp.ok) {
-      parsedUserProfile = await authResp.json();
-    } else redirect("/login");
-  } catch {
-    redirect("/login");
+  const authResp = await fetch(
+    "http://localhost:8080/auth/get-user-sidebar-info",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+    }
+  );
+  if (authResp.ok) {
+    parsedUserProfile = await authResp.json();
   }
 
   return (

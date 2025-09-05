@@ -21,33 +21,20 @@ export default function EmailSidebar({
   console.log(access);
   console.log(threadId);
   useEffect(() => {
-    console.log("useEffect triggered", { threadId, access });
     if (!threadId || !access) return;
 
     const fetchResponseThread = async () => {
-      try {
-        console.log("Fetching thread data...");
-        const mailData = await fetch(
-          `http://localhost:8080/inbox/get-full-email-chain/${threadId}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${access}`,
-            },
-          }
-        );
-
-        if (!mailData.ok) {
-          console.error("Fetch failed with status:", mailData.status);
-          return;
+      const mailData = await fetch(
+        `http://localhost:8080/inbox/get-full-email-chain/${threadId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
         }
-
-        const responseData = await mailData.json();
-        console.log("Thread data received:", responseData);
-        setThreadData(responseData);
-      } catch (err) {
-        console.error("Fetch error:", err);
-      }
+      );
+      const responseData = await mailData.json();
+      setThreadData(responseData);
     };
 
     fetchResponseThread();
