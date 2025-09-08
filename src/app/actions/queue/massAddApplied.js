@@ -12,6 +12,6 @@ export const MassAddApplied = async (dynamicIds) => {
       removeSaved(data.id);
     }
   } catch (err) {
-    console.log(err);
+    throw new Error("Failed")
   }
 };

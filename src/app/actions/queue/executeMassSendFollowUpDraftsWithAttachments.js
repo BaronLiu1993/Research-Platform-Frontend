@@ -24,9 +24,8 @@ export const ExecuteMassFollowUpDraftsWithAttachments = async (
       }
     );
     const data = await response.json();
-    console.log(data);
     return data;
   } catch {
-    return "Error";
+    throw new Error("Failed")
   }
 };

@@ -25,6 +25,6 @@ export const ExecuteMassSendFollowUpDrafts = async (
     const data = await response.json();
     return data;
   } catch {
-    return "Error";
+    throw new Error("Failed")
   }
 };
