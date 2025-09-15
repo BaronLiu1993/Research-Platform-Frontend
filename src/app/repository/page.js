@@ -140,29 +140,7 @@ export default async function Repository({ searchParams }) {
                   </h2>
                 </div>
 
-                <div className="space-y-1 pt-6 pb-3">
-                  <p className="text-[#37352F] text-[13px] w-[55rem] font-light">
-                    Based on your research interests, we’ve curated a set of{" "}
-                    <span className="font-bold text-blue-700 font-mono">
-                      personalized suggestions
-                    </span>{" "}
-                    that align closely with your current research interests.
-                    Your{" "}
-                    <span className="text-blue-700 font-bold font-mono">
-                      research interests
-                    </span>{" "}
-                    are converted into vector representations, which are then
-                    matched against each professor’s own{" "}
-                    <span className="text-blue-700 font-bold font-mono">
-                      research interests
-                    </span>{" "}
-                    using{" "}
-                    <span className="underline text-blue-700 font-mono cursor-pointer">
-                      cosine similarity scoring
-                    </span>{" "}
-                    [1].
-                  </p>
-                </div>
+                
               </div>
               <Recommendations />
             </div>

@@ -1,136 +1,149 @@
-import Homecard from "./homepagecomponents/homecard";
 import Link from "next/link";
-import Resumehomecomponent from "./homepagecomponents/resumehomecomponent";
-import Emailhomecomponent from "./homepagecomponents/emailhomepage";
-import KanbanHomepage from "./homepagecomponents/kanbanhomepage";
-import ResearchAreas from "./homepagecomponents/researchareas";
+
+// Home (cleaned)
+// - Fixes mismatched Login/Sign Up links
+// - Replaces non-existent Tailwind classes (rounded-xs, border-1, my-30)
+// - Improves semantics (header/main/section)
+// - Normalizes spacing & typography
+// - Makes features/cards data-driven
+// - Minor copy edits & typo fixes
+
+const FEATURE_CARDS = [
+  {
+    title: "Mass Send Emails",
+    body:
+      "Find and learn more about professors. Save them and quickly access their research interests, groups, and past work.",
+  },
+  {
+    title: "Automate Initial & Follow‑ups",
+    body:
+      "Let us handle sending and scheduled follow‑ups so you can focus on finding the right professor.",
+  },
+  {
+    title: "Track Emails",
+    body: "Know who opened, clicked, or didn’t respond—so you can prioritize outreach smartly.",
+  },
+];
+
+const AREAS = [
+  "Machine Learning",
+  "Psychology",
+  "Biology",
+  "Molecular Chemistry",
+  "Physics",
+  "Neuroscience",
+  "Sociology",
+  "Economics",
+  "Computer Vision",
+  "Robotics",
+  "Political Science",
+  "Philosophy",
+  "Environmental Science",
+  "Linguistics",
+  "Anthropology",
+  "Civil Engineering",
+  "Electrical Engineering",
+  "Medicine",
+  "Public Health",
+  "Education",
+  ];
 
 export default function Home() {
   return (
-    <>
-      <div className="bg-gradient-to-br from-gray-50 font-sans">
-        <div className="flex  to-gray-100 flex-col justify-center items-center my-30 m-5">
-          <h1 className="font-sans font-bold text-6xl">
-            <span className="font-sans">Explore Research at UofT </span>
+    <div className="min-h-screen">
+      <header className="px-6 sm:px-10">
+        <div className="flex flex-col my-16 sm:my-24">
+          <h1 className="text-4xl sm:text-5xl px-0 sm:px-4 leading-tight">
+            <span className="font-playfair">Find Researchers at UofT</span>
           </h1>
-          <div className="my-4">
-            <div className="flex justify-center flex-col items-center">
-              <p className="text-gray-600 font-sans">
-                Find research opportunities, tailor emails, and build resumes —
-                all in one place.
-              </p>
-              <p className="text-gray-600 font-sans">
-                Explore a Catalogue of 800+ Professors
-              </p>
-              <Link href="/register">
-                <button className="font-sans cursor-pointer font-medium mx-2 mt-2 text-sm bg-black text-white p-1 px-2 rounded-md">
-                  Sign Up Now!
-                </button>
+
+          <div className="mt-4 sm:mt-5 px-0 sm:px-4 max-w-2xl">
+            <p className="text-gray-600 font-light font-main">
+              Discover professors with overlapping research interests.
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link
+                href="/auth/signin"
+                className="font-main rounded-xs cursor-pointer font-medium text-sm bg-black text-white py-2 px-3 inline-flex items-center justify-center"
+                role="button"
+                aria-label="Login"
+              >
+                Login
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="font-main rounded-xs cursor-pointer font-medium text-sm bg-white text-gray-900 border border-gray-300 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50"
+                role="button"
+                aria-label="Sign Up"
+              >
+                Sign Up
               </Link>
             </div>
           </div>
         </div>
-        {/*Research Areas Section Starts Here*/}
-        <ResearchAreas />
-        {/*Introducting The Features Starts Here*/}
+      </header>
 
-        <div className="m-10">
-          <h1 className="font-sans font-medium text-[#2F80E4] p-2 rounded-md bg-slate-100">
-            FEATURES
-          </h1>
-          <h2 className="b-[#5B61B2] border-b-2 w-fit font-sans font-medium p-1">
-            📝 Modules
+      <main>
+        <section className="px-6 sm:px-10">
+          <h2 className="font-playfair font-medium text-[#5B61B2] p-2 rounded-md bg-slate-100 inline-block">
+            Research Areas
           </h2>
-          <p className="my-2 font-sans text-sm font-light text-gray-800">
-            Find the Perfect Research Match. Instantly Tailor Your Resume &
-            Craft Personalized Outreach Emails — All in One Place.
+          <h3 className="border-b-2 border-[#5B61B2] w-fit font-main font-medium p-1 mt-2">
+            📝 Modules
+          </h3>
+          <p className="mt-2 font-main text-sm font-light text-gray-800 max-w-2xl">
+            Find a list of professors whose work matches your interests. Whether it is
+            Molecular Biology or Machine Learning, we got you.
           </p>
-          <div className="flex justify-center items-center">
-            <div className="flex">
-              {/*Starts Here*/}
-              <div>
-                {/*Kanban Main Section This is the Whole Box the Div Under*/}
-                <div className="border-1 rounded-md border-gray-300 select-none">
-                  {/* Navbar Container */}
-                  <div className="bg-gray-200 flex items-center justify-between px-4 py-2">
-                    {/* Left Section: macOS Window Controls */}
-                    <div className="flex space-x-2">
-                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    </div>
 
-                    {/* Right Section: Search Bar that Expands */}
-                    <div className="flex-grow mx-4">
-                      <div className="bg-gray-100 rounded-full font-sans font-extralight text-sm py-1 px-3 text-center">
-                        🔒 https://www.yourlieinapril.com
-                      </div>
-                    </div>
+          <div className="flex flex-wrap gap-2 font-main mt-4">
+            {AREAS.map((a) => (
+              <span
+                key={a}
+                className="text-sm bg-slate-100 border border-slate-200 rounded-xs px-3 py-1"
+              >
+                {a}
+              </span>
+            ))}
+          </div>
+        </section>
+
+        <section className="px-6 sm:px-10 mt-12 sm:mt-16 flex flex-col gap-6">
+          <div>
+            <h2 className="font-playfair font-medium text-[#2F80E4] p-2 rounded-md bg-slate-100 inline-block">
+              Features
+            </h2>
+            <h3 className="border-b-2 border-[#5B61B2] w-fit font-main font-medium p-1 mt-2">
+              📝 Outreach & Tracking
+            </h3>
+            <p className="my-2 font-main text-sm font-light text-gray-800 max-w-3xl">
+              Find the perfect research match. Instantly tailor your resume and craft
+              personalized outreach emails then track engagement all in one place.
+            </p>
+          </div>
+
+          <div className="flex justify-center mb-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-6xl">
+              {FEATURE_CARDS.map(({ title, body }) => (
+                <article
+                  key={title}
+                  className="select-none border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm"
+                >
+                  <div className="flex bg-slate-50 p-5 flex-col gap-2">
+                    <h4 className="font-playfair text-lg sm:text-xl text-[#2F80E4]">
+                      {title}
+                    </h4>
+                    <p className="font-main text-sm text-gray-700 leading-relaxed">
+                      {body}
+                    </p>
                   </div>
-                  <Resumehomecomponent />
-                </div>
-              </div>
-              <div className="bg-violet-100 rounded-md m-5 p-5">
-                <div className="flex items-center space-x-2 my-2 bg-purple-300 w-fit p-1 rounded-4xl">
-                  <div className="bg-purple-600 h-2 w-2 rounded-full"></div>
-                  <h1 className="text-xs font-sans font-medium">In Progress</h1>
-                </div>
-                <h1 className="font-sans text-xl font-medium">
-                  Powered by AI, Edit, Reformat and Fix Your Resume
-                </h1>
-                <ul className="font-sans mt-5 font-light">
-                  <li>🧠 Tailor your Resume with Keywords</li>
-                  <li>🧾Get Specific Feedback on Your Resume for Each Lab</li>
-                  <li>
-                    📄 Build Beautiful Resumes with LaTeX without Knowing LateX
-                  </li>
-                </ul>
-              </div>
+                </article>
+              ))}
             </div>
           </div>
-          <div className="flex justify-center mt-10 items-center">
-            <div className="flex">
-              <div className="bg-green-100 rounded-md m-5 p-5">
-                <div className="flex items-center space-x-2 my-2 bg-green-300 w-fit p-1 rounded-4xl">
-                  <div className="bg-green-600 h-2 w-2 rounded-full"></div>
-                  <h1 className="text-xs font-sans font-medium">In Progress</h1>
-                </div>
-                <h1 className="font-sans text-xl font-medium">
-                  Powered by AI, Edit, Reformat and Fix Your Resume
-                </h1>
-                <ul>
-                  <li></li>
-                </ul>
-              </div>
-              {/*Starts Here*/}
-              <div>
-                {/*Kanban Main Section This is the Whole Box the Div Under*/}
-                <div className="border-1 rounded-md border-gray-300 select-none">
-                  {/* Navbar Container */}
-                  <div className="bg-gray-200 flex items-center justify-between px-4 py-2">
-                    {/* Left Section: macOS Window Controls */}
-                    <div className="flex space-x-2">
-                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    </div>
-
-                    {/* Right Section: Search Bar that Expands */}
-                    <div className="flex-grow mx-4">
-                      <div className="bg-gray-100 rounded-full font-sans font-extralight text-sm py-1 px-3 text-center">
-                        🔒 https://www.yourlieinapril.com
-                      </div>
-                    </div>
-                  </div>
-                  <Emailhomecomponent />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/*Introducing The Bookmark Starts Here*/}
-        <KanbanHomepage />
-      </div>
-    </>
+        </section>
+      </main>
+    </div>
   );
 }

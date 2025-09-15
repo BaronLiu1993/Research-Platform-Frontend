@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Inter, Noto_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Noto_Sans, Playfair_Display } from "next/font/google";
 import { Toaster } from "@/shadcomponents/ui/sonner";
 import "./globals.css";
 
@@ -9,6 +9,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
@@ -27,7 +32,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${noto.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${noto.variable} ${playfair.variable} antialiased`}
       >
         <main>{children}</main>
         <Toaster />
