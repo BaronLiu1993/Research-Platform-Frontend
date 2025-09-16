@@ -11,9 +11,10 @@ import {
   Tag,
   Car,
   PersonStanding,
+  Mail,
+  Copy,
 } from "lucide-react";
 import Link from "next/link";
-
 
 import {
   Sheet,
@@ -21,6 +22,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
+  SheetFooter,
+  SheetClose,
 } from "@/shadcomponents/ui/sheet";
 import { Button } from "@/shadcomponents/ui/button";
 
@@ -38,196 +41,232 @@ export default function KanbanCardInProgress({
   date,
   user_id,
 }) {
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const interests = Array.isArray(research_interests)
+    ? research_interests
+    : research_interests
+    ? [research_interests]
+    : [];
+  const shownInterests = interests.slice(0, 6);
+  const extraInterests = Math.max(0, interests.length - shownInterests.length);
+  const prettyDate = date ? new Date(date).toLocaleString() : null;
+
+  const copyEmail = async () => {
+    if (!email) return;
+    try {
+      await navigator.clipboard.writeText(email);
+    } catch (e) {
+      console.error("Copy failed", e);
+    }
+  };
+
   return (
-    <div className="rounded-xs border border-gray-200 bg-white w-full p-4 font-main shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
-      <div className="flex items-center space-x-2 mb-2">
-        <Car className="h-4 w-4 text-yellow-300" />
-        <h2 className="font-medium text-sm text-black leading-tight break-words">
+    <div className="rounded-xl border border-gray-200 bg-white w-full p-4 font-sans shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out">
+      <div className="flex items-center gap-2 mb-2">
+        <Car className="h-4 w-4 text-amber-500" />
+        <h2
+          className="font-medium text-sm text-gray-900 leading-tight truncate"
+          title={title}
+        >
           {title || "Untitled Application"}
         </h2>
       </div>
 
       {(school || faculty) && (
-        <div className="text-xs text-[#979A9B] mb-2 space-y-0.5">
-          {school && <p>{school}</p>}
+        <div className="text-xs text-gray-600 mb-2 space-y-0.5">
+          {school && (
+            <p className="truncate" title={school}>
+              {school}
+            </p>
+          )}
+          {faculty && (
+            <p className="truncate" title={faculty}>
+              {faculty}
+            </p>
+          )}
         </div>
       )}
 
-      {research_interests && (
-        <div className="flex flex-wrap items-center gap-1 mb-4 ">
-          {research_interests?.[0] ? (
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
-              <Tag className="h-3 w-3 mr-1" />
-              {`${research_interests[0].slice(0, 15)}...`}
+      {interests.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1.5 mb-3">
+          {shownInterests.map((interest, i) => (
+            <span
+              key={`${interest}-${i}`}
+              className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200"
+              title={interest}
+            >
+              <Tag className="h-3 w-3 mr-1" /> {interest}
             </span>
-          ) : null}
-          {research_interests.length > 1 && (
-            <span className="text-xs mr-1 text-gray-500 underline">
-              +{research_interests.length - 1} more
+          ))}
+          {extraInterests > 0 && (
+            <span className="text-[11px] text-gray-500">
+              +{extraInterests} more
             </span>
           )}
         </div>
       )}
 
       <div className="flex gap-2">
-        <Link
-          href={{
-            pathname: `/resume/${title}`,
-            query: {
-              research_interests: research_interests,
-              professor_email: email,
-              professor_name: title,
-            },
-          }}
-        >
-          <Button className="bg-white shadow-none hover:bg-gray-100 w-[1rem] rounded-xs inline-flex items-center cursor-pointer h-[1.5rem] text-xs font-medium">
-            <Paperclip className="h-3 w-3 text-black" />
-          </Button>
-        </Link>
-
         <Button
-          onClick={() => setIsSheetOpen(true)}
-          className="bg-white shadow-none hover:bg-gray-100 w-[1rem] rounded-xs inline-flex items-center cursor-pointer h-[1.5rem] text-xs font-medium"
+          onClick={() => setOpen(true)}
+          className="h-7 px-2 text-xs font-medium bg-white text-gray-800 border hover:bg-gray-50 rounded-md inline-flex items-center gap-1"
+          variant="outline"
         >
-          <NotebookPen className="h-3 w-3 text-black" />
+          <NotebookPen className="h-3.5 w-3.5" /> Details
         </Button>
       </div>
 
-      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        <SheetContent className="w-full font-main sm:w-[500px] p-6 border-l border-[] shadow-lg">
-          <SheetHeader className="mb-6">
-            <SheetTitle className="text-2xl font-semibold text-gray-800">
-              Application Details
-            </SheetTitle>
-            <SheetDescription className="text-gray-500 text-sm">
-              Review the Data Used To Contexualise and Personalise Your
-              Application
-            </SheetDescription>
-          </SheetHeader>
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent
+          side="right"
+          className="w-full sm:w-[560px] p-0 border-l bg-white"
+        >
+          {/* Accent header (in-progress = amber) */}
+          <div className="bg-gradient-to-r from-amber-50 to-white border-b">
+            <div className="px-6 py-4">
+              <SheetHeader className="space-y-1">
+                <SheetTitle className="text-xl font-semibold text-gray-900 truncate">
+                  {title || "Application Details"}
+                </SheetTitle>
+                <SheetDescription className="text-gray-600 text-sm">
+                  Review what we're using while your outreach is in progress.
+                </SheetDescription>
+              </SheetHeader>
+            </div>
+          </div>
 
-          <div className="space-y-4 text-gray-700">
-            <div className="flex items-center">
-              <div>
-                <div className="flex underline">
-                  <StickyNote className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0 " />
-                  <p className="font-medium text-sm text-gray-600">Name</p>
+          {/* Body */}
+          <div className="px-6 py-5 max-h-[75vh] overflow-y-auto space-y-6">
+            {/* Quick facts */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="rounded-lg border border-slate-200 p-3">
+                <div className="flex items-center text-xs text-gray-500 mb-1">
+                  <StickyNote className="h-4 w-4 mr-2" /> Name
                 </div>
-                <div className="pl-6">
-                  <p className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 whitespace-nowrap">
-                    <PersonStanding className = "h-4 w-4"/>
-                    {title || "N/A"}
+                <div
+                  className="text-sm font-medium text-gray-900 truncate flex items-center gap-1"
+                  title={title}
+                >
+                  <PersonStanding className="h-4 w-4 text-gray-700" />
+                  {title || "N/A"}
+                </div>
+              </div>
+              {prettyDate && (
+                <div className="rounded-lg border border-slate-200 p-3">
+                  <div className="flex items-center text-xs text-gray-500 mb-1">
+                    <Calendar className="h-4 w-4 mr-2" /> Date Added
+                  </div>
+                  <div className="text-sm font-medium text-gray-900">
+                    {prettyDate}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Academic */}
+            <div className="rounded-lg border border-slate-200 p-4">
+              <div className="flex items-center text-sm font-semibold text-gray-800 mb-3">
+                <Briefcase className="h-4 w-4 mr-2 text-gray-600" /> Academic
+                Affiliations
+              </div>
+              <div className="space-y-1 text-sm text-gray-800">
+                {school && (
+                  <p className="truncate" title={school}>
+                    {school}
                   </p>
-                </div>
+                )}
+                {faculty && (
+                  <p className="truncate" title={faculty}>
+                    {faculty}
+                  </p>
+                )}
+                {department && (
+                  <p className="truncate" title={department}>
+                    {department}
+                  </p>
+                )}
+                {labs && (
+                  <p className="truncate" title={labs}>
+                    {labs}
+                  </p>
+                )}
+                {lab_url && (
+                  <Link
+                    href={lab_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center text-blue-600 text-xs mt-1 underline break-all"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5 mr-1" /> Visit lab
+                    website
+                  </Link>
+                )}
               </div>
             </div>
 
-            <div className="flex items-center">
-              <div className="space-y-1">
-                {" "}
-                <div className="flex items-center mb-1">
-                  {" "}
-                  <Briefcase className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
-                  <p className="font-medium text-sm text-gray-600 underline">
-                    Academic Affiliations
-                  </p>
+            {/* Interests */}
+            {interests.length > 0 && (
+              <div className="rounded-lg border border-slate-200 p-4">
+                <div className="flex items-center text-sm font-semibold text-gray-800 mb-3">
+                  <Tag className="h-4 w-4 mr-2 text-gray-600" /> Research
+                  Interests
                 </div>
-                <div className="pl-6 text-gray-800">
-                  {" "}
-                  {school && <p className="text-xs">{school}</p>}
-                  {faculty && <p className="text-xs">{faculty}</p>}
-                  {department && <p className="text-xs">{department}</p>}
-                  {lab_url && (
-                    <Link
-                      href={lab_url}
-                      target="_blank"
-                      className="text-xs text-blue-500 underline flex justify-center items-center gap-1"
-                    >
-                      <ExternalLink className="h-3 w-3" />
-                      {labs}
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center">
-                <Calendar className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
-                <div>
-                  <p className="font-medium text-sm text-gray-600 underline">
-                    Date Added
-                  </p>
-                  <p className="text-xs">{new Date(date).toLocaleString()}</p>
-                </div>
-              </div>
-            </div>
-            
-
-            {research_interests && research_interests.length > 0 && (
-              <div>
-                <div className="flex items-center mb-1">
-                  <Tag className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
-                  <p className="font-medium text-sm text-gray-600 underline">
-                    Research Interests
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2 pl-6">
-                  {" "}
-                  {research_interests.map((interest, index) => (
+                <div className="flex flex-wrap gap-1.5">
+                  {interests.map((interest, i) => (
                     <span
-                      key={index}
-                      className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 whitespace-nowrap border-1 border-blue-500"
+                      key={`${interest}-${i}`}
+                      className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200"
+                      title={interest}
                     >
-                      {interest.trim()}
+                      {interest}
                     </span>
                   ))}
                 </div>
               </div>
             )}
 
-            {url && (
-              <div className="flex items-center">
-                <div>
-                  <p className="font-medium text-sm text-gray-600 underline flex">
-                    <ExternalLink className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
-                    Profile Link
-                  </p>
-                  <Link
-                    href={url}
-                    target="_blank"
-                    className="text-blue-600 text-xs cursor-pointer mt-1 ml-6 hover:underline flex items-center"
-                  >
-                    View Professor Profile
-                  </Link>
+            {/* Links */}
+            {(url || email) && (
+              <div className="rounded-lg border border-slate-200 p-4">
+                <div className="flex items-center text-sm font-semibold text-gray-800 mb-3">
+                  <ExternalLink className="h-4 w-4 mr-2 text-gray-600" /> Links
                 </div>
-              </div>
-            )}
-
-            {email && (
-              <div className="flex items-center">
-                <div>
-                  <p className="font-medium text-sm text-gray-600 underline flex">
-                    <ExternalLink className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
-                    Professor Email
-                  </p>
-                  <div className="text-blue-600 text-xs cursor-pointer mt-1 ml-6 hover:underline flex items-center">
-                    {email}
-                  </div>
+                <div className="flex flex-wrap gap-2 items-center">
+                  {url && (
+                    <Link
+                      href={url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-2 py-1 rounded-md"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5 mr-1" /> Open Profile
+                    </Link>
+                  )}
+                  {email && (
+                    <button
+                      onClick={copyEmail}
+                      className="inline-flex items-center text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2 py-1 rounded-md"
+                    >
+                      <Mail className="h-3.5 w-3.5 mr-1" /> {email}
+                      <Copy className="h-3.5 w-3.5 ml-1" />
+                    </button>
+                  )}
                 </div>
               </div>
             )}
           </div>
 
-          <div className="mt-8 flex justify-end gap-3">
-            <Button
-              variant="outline"
-              className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
-              onClick={() => setIsSheetOpen(false)}
-            >
-              Close
-            </Button>
-          </div>
+          <SheetFooter className="px-6 py-4 border-t bg-white">
+            <SheetClose asChild>
+              <Button
+                variant="outline"
+                className="px-3 py-1.5 text-sm bg-gray-50 text-gray-700 hover:bg-gray-100"
+              >
+                Close
+              </Button>
+            </SheetClose>
+          </SheetFooter>
         </SheetContent>
       </Sheet>
     </div>
