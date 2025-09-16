@@ -79,23 +79,6 @@ export default async function Workspace({
   ];
   return (
     <div className="flex flex-col h-fit font-main overflow-hidden">
-      <div className="border-b border-gray-200">
-        <div className="px-4 pt-3 bg-white justify-between shrink-0">
-          <h1 className="text-2xl text-[#787774] font-semibold h-fit">
-            Workspace
-          </h1>
-          <div className="flex items-center py-2 space-x-2">
-            <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
-              <Leaf />
-              Consistency
-            </Badge>
-            <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
-            <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">
-              By Jie Xuan Liu
-            </h2>
-          </div>
-        </div>
-      </div>
       <SavedDataTable
         access={access}
         parsedTranscriptData={parsedTranscriptData}

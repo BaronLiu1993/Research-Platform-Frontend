@@ -98,7 +98,6 @@ export default function DropdownInterests({ value, onChange, name, id }) {
 
   return (
     <div className="w-full">
-      <label className="font-sans text-xs font-semibold" htmlFor={id}>Research Interests</label>
       <Select
         closeMenuOnSelect={false}
         components={animatedComponents}
