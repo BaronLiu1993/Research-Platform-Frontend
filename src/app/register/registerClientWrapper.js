@@ -173,7 +173,7 @@ export default function RegisterClientWrapper({ access }) {
               }
               className="mt-0.5 h-4 w-4 rounded border-gray-300 text-[#529CCA] focus:ring-[#529CCA]"
             />
-            <label htmlFor="terms" className="text-sm text-gray-700">
+            <label htmlFor="terms" className="text-sm font-light text-gray-700">
               I agree to the{" "}
               <a
                 className="underline hover:opacity-80"
@@ -202,7 +202,6 @@ export default function RegisterClientWrapper({ access }) {
             </label>
           </div>
 
-          {/* Submit error */}
           {submitError && (
             <div
               role="alert"
@@ -214,7 +213,6 @@ export default function RegisterClientWrapper({ access }) {
           )}
         </div>
 
-        {/* Footer */}
         <div className="px-6 py-4 border-t bg-white flex items-center justify-between">
           <div className="hidden sm:flex items-center gap-2 text-xs text-gray-500">
             <ShieldCheck className="h-4 w-4" />
