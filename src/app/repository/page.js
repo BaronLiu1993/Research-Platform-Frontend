@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 import {
   Breadcrumb,
@@ -34,85 +35,84 @@ export default async function Repository({ searchParams }) {
   const cookieStore = cookies();
   const access = cookieStore.get("access_token")?.value;
   const userId = cookieStore.get("user_id")?.value;
-  const pageNumber = Number(searchParams?.page) || 1;
-  const rawSearch = searchParams?.search ?? "";
-  const search = encodeURIComponent(rawSearch.trim());
 
+  const pageNumber = Number(searchParams?.page ?? 1) || 1;
+  const rawSearch = (searchParams?.search ?? "").trim();
+  const search = encodeURIComponent(rawSearch);
+
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
+
+  // Fetch saved/applied IDs in parallel
   const [savedProfessorData, appliedProfessorData] = await Promise.all([
-    fetch(`http://localhost:8080/saved/repository/get-all-savedId`, {
+    fetch(`${API_BASE}/saved/repository/get-all-savedId`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${access}`,
-      },
+      headers: access ? { Authorization: `Bearer ${access}` } : {},
+      next: { revalidate: 600 },
     }),
-    fetch(
-      `http://localhost:8080/inprogress/repository/get-all-appliedId`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
-      }
-    ),
+    fetch(`${API_BASE}/inprogress/repository/get-all-appliedId`, {
+      method: "GET",
+      headers: access ? { Authorization: `Bearer ${access}` } : {},
+      next: { revalidate: 600 },
+    }),
   ]);
 
   const [savedProfessorDataJson, appliedProfessorDataJson] = await Promise.all([
-    savedProfessorData.json(),
-    appliedProfessorData.json(),
+    savedProfessorData.ok ? savedProfessorData.json() : Promise.resolve({ data: [] }),
+    appliedProfessorData.ok ? appliedProfessorData.json() : Promise.resolve({ data: [] }),
   ]);
 
-
+  // Table + profile in parallel
   const [tableRes, profileRes] = await Promise.all([
-    fetch(
-      `http://localhost:8080/repository/taishan?page=${pageNumber}&search=${search}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
-      }
-    ),
-    fetch("http://localhost:8080/auth/get-user-sidebar-info", {
-      headers: {
-        Authorization: `Bearer ${access}`,
-        "Content-Type": "application/json",
-      },
+    fetch(`${API_BASE}/repository/taishan?page=${pageNumber}&search=${search}`, {
+      headers: access ? { Authorization: `Bearer ${access}` } : {},
+      next: { revalidate: 300 },
+    }),
+    fetch(`${API_BASE}/auth/get-user-sidebar-info`, {
+      headers: access ? { Authorization: `Bearer ${access}`, "Content-Type": "application/json" } : {},
+      next: { revalidate: 300 },
     }),
   ]);
 
-  const { tableData, tableCount } = await tableRes.json();
-  const parsedUserProfile = await profileRes.json();
+  const { tableData = [], tableCount = 0 } = tableRes.ok ? await tableRes.json() : { tableData: [], tableCount: 0 };
+  const parsedUserProfile = profileRes.ok ? await profileRes.json() : {};
+
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile} />
       <SidebarInset>
-        <header className="flex h-8 shrink-0 items-center gap-2 px-6">
+        {/* Header / Breadcrumbs */}
+        <header className="flex h-10 shrink-0 items-center gap-2 px-4 sm:px-6 border-b bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50">
           <SidebarTrigger className="cursor-pointer" />
           <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
               <BreadcrumbItem>
-                <MoveLeft className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+                <button aria-label="Back" className="p-1 rounded-md hover:bg-gray-100">
+                  <MoveLeft className="w-5 h-5 text-[#787774]" />
+                </button>
               </BreadcrumbItem>
               <BreadcrumbItem>
-                <MoveRight className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+                <button aria-label="Forward" className="p-1 rounded-md hover:bg-gray-100">
+                  <MoveRight className="w-5 h-5 text-[#787774]" />
+                </button>
               </BreadcrumbItem>
               <BreadcrumbItem>
-                <Plus className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
+                <button aria-label="New" className="p-1 rounded-md hover:bg-gray-100">
+                  <Plus className="w-5 h-5 text-[#787774]" />
+                </button>
               </BreadcrumbItem>
+
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink
-                  href="/"
-                  className="flex items-center font-medium text-[#37352F] gap-2"
-                >
-                  <Laptop className="rounded-xs text-white fill-blue-700 h-5 w-5" />
-                  Home
+                <BreadcrumbLink asChild>
+                  <Link href="/" className="flex items-center font-medium text-[#37352F] gap-2">
+                    <Laptop className="h-5 w-5 text-blue-700" />
+                    Home
+                  </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator>
-                <div className="text-gray-300">/</div>
-              </BreadcrumbSeparator>
+              <BreadcrumbSeparator>/</BreadcrumbSeparator>
               <BreadcrumbItem>
                 <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
-                  <MapIcon className="fill-blue-700 text-white" />
+                  <MapIcon className="h-5 w-5 text-blue-700" />
                   Professors
                 </BreadcrumbPage>
               </BreadcrumbItem>
@@ -120,41 +120,43 @@ export default async function Repository({ searchParams }) {
           </Breadcrumb>
         </header>
 
-        <div className="flex-1 overflow-y-auto font-main px-6">
-          <div className="flex flex-col">
-            <div className="my-10 space-y-2">
-              <div className="rounded-xs mt-2">
-                <div className="flex gap-2 pt-6">
-                  <h1 className="text-2xl text-[#787774] font-semibold h-fit">
-                    Curated Professors
-                  </h1>
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto font-main">
+          <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6">
+            {/* Title + meta */}
+            <div className="my-8 sm:my-10 space-y-2">
+              <div className="mt-2">
+                <div className="flex items-center justify-between gap-2 pt-2">
+                  <h1 className="text-xl sm:text-2xl text-[#37352F] font-semibold">Curated Professors</h1>
                 </div>
-                <div className="flex items-center py-2 space-x-2">
-                  <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
-                    <Database />
+                <div className="flex items-center py-2 gap-2">
+                  <Badge variant="secondary" className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]">
+                    <Database className="w-3.5 h-3.5 mr-1" />
                     Recommended Professors
                   </Badge>
-                  <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
-                  <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">
-                    By Jie Xuan Liu
-                  </h2>
+                  <span className="rounded-full h-1 w-1 bg-[#37352F]" />
+                  <span className="text-[11px] font-medium text-[#37352F]">By Jie Xuan Liu</span>
                 </div>
-
-                
               </div>
+
               <Recommendations />
             </div>
-            <div className="mt-4">
+
+            {/* Data table */}
+            <div className="mb-8">
               <DataTable
                 generateColumns={generateColumns}
                 data={tableData}
                 userId={userId}
                 pageNumber={pageNumber}
-                search={search}
+                search={rawSearch}
                 access={access}
                 savedProfessors={savedProfessorDataJson}
                 appliedProfessors={appliedProfessorDataJson}
               />
+              {typeof tableCount === "number" && (
+                <p className="text-xs text-gray-500 mt-2">{tableCount} results</p>
+              )}
             </div>
           </div>
         </div>

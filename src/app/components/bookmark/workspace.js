@@ -77,9 +77,6 @@ export default async function Workspace({
       cardComponent: KanbanCardCompleted,
     },
   ];
-  console.log("baron")
-  console.log(draftData)
-
   return (
     <div className="flex flex-col h-fit font-main overflow-hidden">
       <div className="border-b border-gray-200">
@@ -98,12 +95,6 @@ export default async function Workspace({
             </h2>
           </div>
         </div>
-        <h2 className="px-4 py-3 text-sm font-light text-[#37352F]">
-          Forget the chaos of your research job hunt. With a Kanban board, you
-          can discover, track, and land the perfect research role, faster than
-          ever. This visual, intuitive tool transforms your search into a
-          streamlined process,
-        </h2>
       </div>
       <SavedDataTable
         access={access}
