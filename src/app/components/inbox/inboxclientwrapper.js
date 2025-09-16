@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, Suspense, lazy, useEffect } from "react";
-
 import {
   Sheet,
   SheetContent,
@@ -10,21 +9,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/shadcomponents/ui/sheet";
-
-import {
-  FileCheck2,
-  FileMinus2,
-  FolderOpen,
-  Lightbulb,
-} from "lucide-react";
-
-import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import { Badge } from "@/shadcomponents/ui/badge";
+import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
 } from "@/shadcomponents/ui/composedialog";
+import { FileCheck2, FileMinus2, FolderOpen, Lightbulb } from "lucide-react";
+
 import Compose from "./editor/compose";
 import ComposeFollowUp from "./button/compose/composeFollowUp";
 import ContinueFollowUp from "./button/compose/continueFollowUp";
@@ -32,148 +25,142 @@ const EmailSidebar = lazy(() => import("./side/emailsidebar"));
 
 export default function InboxClientWrapper({
   threadArrayEmailResponse,
+  threadArrayNoResponse = [],
   userId,
   emails,
-  access
+  access,
 }) {
-  const [openThreadId, setOpenThreadId] = useState("");
-  const [draftExistsMap, setDraftExistsMap] = useState(() => {
-    const map = {};
-    threadArrayEmailResponse.forEach((email) => {
-      map[email.threadId] = email.draftData.draftExists;
-    });
-    return map;
-  });
+  const [openThreadId, setOpenThreadId] = useState(null);
+  const [draftExistsMap, setDraftExistsMap] = useState({});
 
   useEffect(() => {
     const map = {};
-    threadArrayEmailResponse.forEach((email) => {
-      map[email.threadId] = email.draftData.draftExists;
+    (threadArrayEmailResponse || []).forEach((email) => {
+      map[email.threadId] = Boolean(email?.draftData?.draftExists);
     });
     setDraftExistsMap(map);
   }, [threadArrayEmailResponse]);
 
   function handleCreateReply(threadId) {
-    setDraftExistsMap((prev) => ({
-      ...prev,
-      [threadId]: true,
-    }));
+    setDraftExistsMap((prev) => ({ ...prev, [threadId]: true }));
   }
 
   return (
-    <>
-      <div className="font-main p-6 w-full">
-        <div>
-          <div className="w-full border-b-1 my-4">
-            <div className="px-4 pt-3 bg-white justify-between shrink-0">
-              <div>
-                <h1 className="text-2xl text-[#787774] font-semibold h-fit">
-                  Email Inbox
-                </h1>
-              </div>
-              <div className="flex items-center py-2 space-x-2">
-                <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-xs text-[10px]">
-                  <Lightbulb />
-                  Email
-                </Badge>
-                <div className="rounded-full h-1 w-1 bg-[#37352F]"></div>
-                <h2 className="text-xs font-semibold text-[10px] text-[#37352F]">
-                  By Jie Xuan Liu
-                </h2>
-              </div>
-            </div>
-            <h2 className="px-4 py-3 text-sm font-light text-[#37352F]">
-              Track email engagement metrics, including when recipients open
-              your emails and access attached files, so you can monitor
-              communication effectiveness and follow up accordingly.
-            </h2>
+    <div className="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6 font-main">
+      <div className="rounded-xl bg-white overflow-hidden">
+        <div className="px-4 sm:px-6 pt-5 pb-2">
+          <div className="flex gap-2 flex-col">
+            <h1 className="text-2xl font-playfair text-black">
+              Student Inbox 
+            </h1>
+            <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px] inline-flex items-center gap-1">
+              <Lightbulb className="w-3.5 h-3.5" />
+              Email
+            </Badge>
           </div>
-          <div className="flex flex-col gap-4">
-            <div className="w-full cursor-pointer flex flex-col gap-2">
-              <Badge className="bg-green-700 p-1 text-xs items-center font-main rounded-xs text-white flex gap-2 w-fit">
-                <FileCheck2 className="h-6 w-6" />
-                Response
-              </Badge>
-              {threadArrayEmailResponse.length > 0 ? (
-                threadArrayEmailResponse?.map((email) => (
-                  <Sheet
-                    onOpenChange={(open) => {
-                      if (open) setOpenThreadId(email.threadId);
-                      else setOpenThreadId(null);
-                    }}
-                    key={email.threadId}
-                  >
-                    <SheetTrigger asChild>
-                      <div className="w-full flex justify-between items-center p-2 hover:bg-gray-100 rounded-xs font-main text-[12.5px] space-x-4">
-                        <div className="flex">
-                          <div className="text-left">
-                            <h1 className="font-semibold truncate">
-                              {email.thread_title}
-                            </h1>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 overflow-hidden basis-1/2">
-                          <h1 className="font-light truncate max-w-[40%]">
-                            {email.firstMessageData.subject || "No Subject"}
-                          </h1>
-                        </div>
-                      </div>
-                    </SheetTrigger>
-                    <SheetContent className="w-[700px] sm:w-[540px] overflow-y-auto">
-                      <SheetHeader>
-                        <div className="flex justify-between">
-                          <FolderOpen className="text-blue-700 h-6.5 w-6.5 p-1 rounded-xs cursor-pointer hover:bg-[#F1F1EF]" />
+        </div>
 
-                          <div className="flex space-x-2 h-6.5">
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <div>
-                                  {draftExistsMap[email.threadId] ? (
-                                    <ContinueFollowUp />
-                                  ) : (
-                                    <ComposeFollowUp
-                                      threadId={email.threadId}
-                                      userId={userId}
-                                      professorId={email.professorId}
-                                      userEmail={email.userEmail}
-                                      professorEmail={email.professorEmail}
-                                      userName={email.userName}
-                                      onCreateReply={() =>
-                                        handleCreateReply(email.threadId)
-                                      }
-                                    />
-                                  )}
-                                </div>
-                              </DialogTrigger>
-                              <DialogContent>
-                                <Compose
-                                  draftData={email.draftData}
-                                  userId={userId}
-                                  professorId={email.professorId}
-                                  threadId={email.threadId}
-                                  fromName={email.userName}
-                                  fromEmail={email.userEmail}
-                                  to={email.professorEmail}
-                                />
-                              </DialogContent>
-                            </Dialog>
-                          </div>
-                        </div>
+        <div className="p-4 sm:p-6 space-y-8">
+          <section className="space-y-3 border-1 p-4 rounded-md">
+            <span className="inline-flex items-center gap-2 px-2 py-1 rounded-md text-white bg-green-700 text-xs w-fit">
+              <FileCheck2 className="h-4 w-4" />
+              Response
+            </span>
 
-                        <SheetTitle></SheetTitle>
-                        <SheetDescription>
-                          <div className="w-full p-4 font-main">
-                            <div className="px-4 space-x-2">
-                              <div className="px-8 space-y-4"></div>
+            <div className="rounded-lg overflow-hidden">
+              {threadArrayEmailResponse?.length > 0 ? (
+                <ul className="max-h-[60vh] overflow-y-auto divide-y">
+                  {threadArrayEmailResponse.map((email) => (
+                    <li key={email.threadId}>
+                      <Sheet
+                        onOpenChange={(open) =>
+                          setOpenThreadId(open ? email.threadId : null)
+                        }
+                      >
+                        <SheetTrigger asChild>
+                          <button
+                            className="w-full text-left flex items-center justify-between gap-3 px-3 sm:px-4 py-2.5 hover:bg-slate-50 transition-colors"
+                            title={email.thread_title}
+                          >
+                            <div className="min-w-0 flex-1">
+                              <div className="font-semibold text-[13px] truncate">
+                                {email.thread_title}
+                              </div>
+                              <div className="text-[12.5px] text-slate-600 truncate">
+                                {email?.firstMessageData?.subject ||
+                                  "No Subject"}
+                              </div>
                             </div>
-                            {openThreadId === email.threadId && (
+                            {email?.firstMessageData?.date && (
+                              <span className="text-xs text-gray-500 shrink-0">
+                                {new Date(
+                                  email.firstMessageData.date
+                                ).toLocaleDateString("en-US", {
+                                  month: "short",
+                                  day: "numeric",
+                                })}
+                              </span>
+                            )}
+                          </button>
+                        </SheetTrigger>
+
+                        <SheetContent className="w-[760px] sm:w-[560px] p-0 overflow-y-auto">
+                          <div className="px-5 py-3 border-b bg-gradient-to-r from-blue-50 to-white">
+                            <div className="flex items-center justify-between">
+                              <FolderOpen className="text-blue-700 h-6 w-6 p-1 rounded-md cursor-pointer hover:bg-[#F1F1EF]" />
+                              <div className="flex items-center gap-2">
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <div>
+                                      {draftExistsMap[email.threadId] ? (
+                                        <ContinueFollowUp />
+                                      ) : (
+                                        <ComposeFollowUp
+                                          threadId={email.threadId}
+                                          userId={userId}
+                                          professorId={email.professorId}
+                                          userEmail={email.userEmail}
+                                          professorEmail={email.professorEmail}
+                                          userName={email.userName}
+                                          onCreateReply={() =>
+                                            handleCreateReply(email.threadId)
+                                          }
+                                        />
+                                      )}
+                                    </div>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-2xl p-0 rounded-xl overflow-hidden">
+                                    <div className="px-5 py-3 border-b bg-gradient-to-r from-blue-50 to-white">
+                                      <h3 className="text-base font-semibold text-slate-800">
+                                        Compose Reply
+                                      </h3>
+                                    </div>
+                                    <div className="p-5">
+                                      <Compose
+                                        draftData={email?.draftData}
+                                        userId={userId}
+                                        professorId={email.professorId}
+                                        threadId={email.threadId}
+                                        fromName={email.userName}
+                                        fromEmail={email.userEmail}
+                                        to={email.professorEmail}
+                                      />
+                                    </div>
+                                  </DialogContent>
+                                </Dialog>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="p-4 sm:p-5">
+                            {openThreadId === email.threadId ? (
                               <Suspense
                                 fallback={
-                                  <div className="space-y-4">
+                                  <div className="space-y-3">
                                     <p className="text-sm text-gray-500">
-                                      Loading...
+                                      Loading…
                                     </p>
-                                    <Skeleton className="h-[40rem] w-full rounded-md animate-pulse bg-gray-200" />
+                                    <Skeleton className="h-[40rem] w-full rounded-md bg-gray-200" />
                                   </div>
                                 }
                               >
@@ -186,109 +173,123 @@ export default function InboxClientWrapper({
                                   access={access}
                                 />
                               </Suspense>
-                            )}
+                            ) : null}
                           </div>
-                        </SheetDescription>
-                      </SheetHeader>
-                    </SheetContent>
-                  </Sheet>
-                ))
+                        </SheetContent>
+                      </Sheet>
+                    </li>
+                  ))}
+                </ul>
               ) : (
-                <div className="font-light text-sm p-4">No Emails Found</div>
+                <div className="p-6 text-center text-sm text-slate-600">
+                  No Emails Found
+                </div>
               )}
             </div>
-            <div className="w-full cursor-pointer flex flex-col gap-2">
-              <Badge className="bg-orange-700 p-1 text-xs items-center font-main rounded-xs text-white flex gap-2 w-fit">
-                <FileMinus2 className="h-6 w-6" />
-                No Response
-              </Badge>
-              {!threadArrayEmailResponse.length > 0 ? (
-                threadArrayEmailResponse?.map((email) => (
-                  <Sheet
-                    onOpenChange={(open) => {
-                      if (open) setOpenThreadId(email.threadId);
-                      else setOpenThreadId(null);
-                    }}
-                    key={email.threadId}
-                  >
-                    <SheetTrigger asChild>
-                      <div className="w-full flex justify-between items-center p-2 hover:bg-gray-100 rounded-xs font-main text-[12.5px] space-x-4">
-                        <div className="flex">
-                          <div className="text-left">
-                            <h1 className="font-semibold truncate">
-                              {email.thread_title}
-                            </h1>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 overflow-hidden basis-1/2">
-                          <h1 className="font-light truncate max-w-[40%]">
-                            {email.firstMessageData.subject || "No Subject"}
-                          </h1>
-                        </div>
-                        <span className="text-nowrap text-gray-500 ml-2">
-                          {new Date(
-                            email.firstMessageData.date
-                          ).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </span>
-                      </div>
-                    </SheetTrigger>
-                    <SheetContent className="w-[700px] sm:w-[540px] overflow-y-auto">
-                      <SheetHeader>
-                        <div className="flex justify-between">
-                          <FolderOpen className="text-blue-700 h-6.5 w-6.5 p-1 rounded-xs cursor-pointer hover:bg-[#F1F1EF]" />
+          </section>
 
-                          <div className="flex space-x-2 h-6.5">
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <div>
-                                  {draftExistsMap[email.threadId] ? (
-                                    <ContinueFollowUp />
-                                  ) : (
-                                    <ComposeFollowUp
-                                      threadId={email.threadId}
-                                      userId={userId}
-                                      professorId={email.professorId}
-                                      userEmail={email.userEmail}
-                                      professorEmail={email.professorEmail}
-                                      userName={email.userName}
-                                      onCreateReply={() =>
-                                        handleCreateReply(email.threadId)
-                                      }
-                                    />
-                                  )}
-                                </div>
-                              </DialogTrigger>
-                              <DialogContent>
-                                <Compose
-                                  draftData={email.draftData}
-                                  userId={userId}
-                                  professorId={email.professorId}
-                                  threadId={email.threadId}
-                                  fromName={email.userName}
-                                  fromEmail={email.userEmail}
-                                  to={email.professorEmail}
-                                />
-                              </DialogContent>
-                            </Dialog>
-                          </div>
-                        </div>
-                        <SheetTitle></SheetTitle>
-                        <SheetDescription>
-                          <div className="w-full p-4 font-main">
-                            <div className="px-4 space-x-2">
-                              <div className="px-8 space-y-4"></div>
+          <section className="space-y-3 border-1 p-4 rounded-md">
+            <span className="inline-flex items-center gap-2 px-2 py-1 rounded-md text-white bg-orange-700 text-xs w-fit">
+              <FileMinus2 className="h-4 w-4" />
+              No Response
+            </span>
+
+            <div className="rounded-lg overflow-hidden">
+              {threadArrayNoResponse?.length > 0 ? (
+                <ul className="max-h-[60vh] overflow-y-auto divide-y">
+                  {threadArrayNoResponse.map((email) => (
+                    <li key={email.threadId}>
+                      <Sheet
+                        onOpenChange={(open) =>
+                          setOpenThreadId(open ? email.threadId : null)
+                        }
+                      >
+                        <SheetTrigger asChild>
+                          <button
+                            className="w-full text-left flex items-center justify-between gap-3 px-3 sm:px-4 py-2.5 hover:bg-slate-50 transition-colors"
+                            title={email.thread_title}
+                          >
+                            <div className="min-w-0 flex-1">
+                              <div className="font-semibold text-[13px] truncate">
+                                {email.thread_title}
+                              </div>
+                              <div className="text-[12.5px] text-slate-600 truncate">
+                                {email?.firstMessageData?.subject ||
+                                  "No Subject"}
+                              </div>
                             </div>
-                            {openThreadId === email.threadId && (
+                            {email?.firstMessageData?.date && (
+                              <span className="text-xs text-gray-500 shrink-0">
+                                {new Date(
+                                  email.firstMessageData.date
+                                ).toLocaleDateString("en-US", {
+                                  month: "short",
+                                  day: "numeric",
+                                })}
+                              </span>
+                            )}
+                          </button>
+                        </SheetTrigger>
+
+                        <SheetContent className="w-[760px] sm:w-[560px] p-0 overflow-y-auto">
+                          {/* Sheet header */}
+                          <div className="px-5 py-3 border-b bg-gradient-to-r from-blue-50 to-white">
+                            <div className="flex items-center justify-between">
+                              <FolderOpen className="text-blue-700 h-6 w-6 p-1 rounded-md cursor-pointer hover:bg-[#F1F1EF]" />
+                              <div className="flex items-center gap-2">
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <div>
+                                      {draftExistsMap[email.threadId] ? (
+                                        <ContinueFollowUp />
+                                      ) : (
+                                        <ComposeFollowUp
+                                          threadId={email.threadId}
+                                          userId={userId}
+                                          professorId={email.professorId}
+                                          userEmail={email.userEmail}
+                                          professorEmail={email.professorEmail}
+                                          userName={email.userName}
+                                          onCreateReply={() =>
+                                            handleCreateReply(email.threadId)
+                                          }
+                                        />
+                                      )}
+                                    </div>
+                                  </DialogTrigger>
+                                  <DialogContent className="max-w-2xl p-0 rounded-xl overflow-hidden">
+                                    <div className="px-5 py-3 border-b bg-gradient-to-r from-blue-50 to-white">
+                                      <h3 className="text-base font-semibold text-slate-800">
+                                        Compose Reply
+                                      </h3>
+                                    </div>
+                                    <div className="p-5">
+                                      <Compose
+                                        draftData={email?.draftData}
+                                        userId={userId}
+                                        professorId={email.professorId}
+                                        threadId={email.threadId}
+                                        fromName={email.userName}
+                                        fromEmail={email.userEmail}
+                                        to={email.professorEmail}
+                                      />
+                                    </div>
+                                  </DialogContent>
+                                </Dialog>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Sheet body */}
+                          <div className="p-4 sm:p-5">
+                            {openThreadId === email.threadId ? (
                               <Suspense
                                 fallback={
-                                  <div className="space-y-4">
+                                  <div className="space-y-3">
                                     <p className="text-sm text-gray-500">
-                                      Loading...
+                                      Loading…
                                     </p>
-                                    <Skeleton className="h-[40rem] w-full rounded-md animate-pulse bg-gray-200" />
+                                    <Skeleton className="h-[40rem] w-full rounded-md bg-gray-200" />
                                   </div>
                                 }
                               >
@@ -297,22 +298,25 @@ export default function InboxClientWrapper({
                                   seenData={email.seenData}
                                   userId={userId}
                                   email={emails}
+                                  access={access}
                                 />
                               </Suspense>
-                            )}
+                            ) : null}
                           </div>
-                        </SheetDescription>
-                      </SheetHeader>
-                    </SheetContent>
-                  </Sheet>
-                ))
+                        </SheetContent>
+                      </Sheet>
+                    </li>
+                  ))}
+                </ul>
               ) : (
-                <div className="font-light text-sm p-4">No Emails Found</div>
+                <div className="p-6 text-center text-sm text-slate-600">
+                  No Emails Found
+                </div>
               )}
             </div>
-          </div>
+          </section>
         </div>
       </div>
-    </>
+    </div>
   );
 }

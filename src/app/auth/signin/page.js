@@ -62,9 +62,9 @@ export default async function SignIn() {
 
         <div className="max-w-xl text-center px-2 sm:px-0">
           <p className="font-light text-xs sm:text-sm text-gray-700">
-            By clicking{" "}
+            By clicking
             <span className="font-semibold">"Connect with Google"</span> above,
-            you acknowledge that you have read, understood and agree to the{" "}
+            you acknowledge that you have read, understood and agree to the
             <span className="font-semibold">Terms and Conditions</span> and
             Privacy Policy as applicable to your use.
           </p>

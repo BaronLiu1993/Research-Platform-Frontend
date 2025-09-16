@@ -21,7 +21,7 @@ export default function DraftList({
   parsedUserProfile,
   access,
 }) {
-  console.log(parsedUserProfile)
+  console.log(parsedUserProfile);
   const [draftData, setDraftData] = useState(initialData);
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
@@ -96,96 +96,111 @@ export default function DraftList({
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div>
-        <div className="flex items-center gap-2 p-2 border-1">
-          <Checkbox checked={checkAll} onCheckedChange={handleCheckAll} />
-          <span className="text-sm font-semibold">Select All</span>
-        </div>
-        <div className="border-1">
-          {draftData.length > 0 ? (
-            draftData.map((data) => (
-              <Dialog key={data.id}>
-                <DialogTrigger
-                  className="p-2 cursor-pointer border-b w-full flex items-center justify-between gap-2 
-                             hover:bg-zinc-50 transition-colors duration-150"
-                >
-                  <Checkbox
-                    checked={selected.some((item) => item.id === data.id)}
-                    onCheckedChange={() =>
-                      handleCheck(data.id, data.name, data.email)
-                    }
-                    onClick={(e) => e.stopPropagation()}
-                  />
+    <div className="w-full max-w-screen-2xl mx-auto">
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+          <div className="flex items-center gap-2 px-3 py-2 bg-slate-50/80 backdrop-blur supports-[backdrop-filter]:bg-slate-50/60 border-b">
+            <Checkbox checked={checkAll} onCheckedChange={handleCheckAll} />
+            <span className="text-sm font-semibold text-slate-800">
+              Select all
+            </span>
+            <span className="text-xs text-slate-500">
+              ({selected.length}/{draftData.length})
+            </span>
+          </div>
 
-                  <div className="flex gap-2 items-center">
-                    <span className="text-sm font-semibold text-zinc-800">
-                      {data.name}
-                    </span>
-                    <span className="text-sm font-light text-zinc-500">
-                      {data.email}
-                    </span>
-                    <div className="bg-[#448361] flex gap-1 items-center px-2 py-0.5 rounded-xs text-white">
-                      <MousePointer className="h-3.5 w-3.5" />
-                      <span className="text-xs">Editable Draft</span>
+          <div className="max-h-[60vh] overflow-y-auto divide-y">
+            {draftData.length > 0 ? (
+              draftData.map((data) => (
+                <Dialog key={data.id}>
+                  <DialogTrigger className="px-3 py-2 cursor-pointer w-full flex items-center gap-3 hover:bg-slate-50 transition-colors">
+                    <Checkbox
+                      checked={selected.some((item) => item.id === data.id)}
+                      onCheckedChange={() =>
+                        handleCheck(data.id, data.name, data.email)
+                      }
+                      onClick={(e) => e.stopPropagation()}
+                    />
+
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-sm font-semibold text-zinc-800 truncate">
+                        {data.name}
+                      </span>
+                      <span className="text-sm font-light text-zinc-500 truncate">
+                        {data.email}
+                      </span>
+
+                      <span className="ml-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-white bg-[#448361]">
+                        <MousePointer className="h-3.5 w-3.5" />
+                        <span className="text-[11px]">Editable Draft</span>
+                      </span>
                     </div>
-                  </div>
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteDraft(
-                        data.draftId,
-                        parsedUserProfile.user_id,
-                        data.id,
-                        access
-                      );
-                    }}
-                    variant="ghost"
-                    size="icon"
-                    className="ml-auto h-6 w-6 p-1 text-zinc-500 hover:bg-red-50 hover:text-red-500 rounded-xs transition-colors duration-150 cursor-pointer"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </DialogTrigger>
 
-                <DialogContent>
-                  <DialogTitle></DialogTitle>
-                  <DraftEditor
-                    fromName={parsedUserProfile.student_name}
-                    fromEmail={parsedUserProfile.student_email}
-                    draftId={data.draftId}
-                    to={data.email}
-                    body={data.body}
-                    initialSubject={data.subject}
-                    access={access}
-                  />
-                </DialogContent>
-              </Dialog>
-            ))
-          ) : (
-            <div className="font-sans text-sm p-4 font-light">
-              No Drafts Found
-            </div>
-          )}
+                    <div className="flex-1" />
+
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteDraft(
+                          data.draftId,
+                          parsedUserProfile.user_id,
+                          data.id,
+                          access
+                        );
+                      }}
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 p-1 text-zinc-500 hover:bg-red-50 hover:text-red-500 rounded-md transition-colors"
+                      aria-label="Delete draft"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </DialogTrigger>
+
+                  <DialogContent>
+                    <DialogTitle></DialogTitle>
+
+                    <div className="p-1">
+                      <DraftEditor
+                        fromName={parsedUserProfile.student_name}
+                        fromEmail={parsedUserProfile.student_email}
+                        draftId={data.draftId}
+                        to={data.email}
+                        body={data.body}
+                        initialSubject={data.subject}
+                        access={access}
+                      />
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              ))
+            ) : (
+              <div className="py-6 px-4">
+                <div className="mx-auto w-full">
+                  <p className="text-sm text-slate-600">No drafts found.</p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
 
-      <div className="flex gap-4">
-        <Button
-          className="text-sm cursor-pointer font-medium text-white bg-[#529CCA] px-3 py-1.5 hover:bg-[#4179B8] transition-colors rounded-xs"
-          onClick={handleSubmit}
-        >
-          <Send className="w-4 h-4" />
-          Send Selected
-        </Button>
+        <div className="flex gap-3">
+          <Button
+            className="inline-flex items-center gap-2 text-sm font-medium text-white bg-[#529CCA] hover:bg-[#4179B8] px-3 py-1.5 rounded-md transition-colors"
+            onClick={handleSubmit}
+          >
+            <Send className="w-4 h-4" />
+            Send Selected
+          </Button>
 
-        <Button
-          className="text-sm cursor-pointer font-medium flex items-center gap-1 text-[#f6f6f7] bg-[#C14C8A] px-3 py-1.5 hover:bg-[#A73B75] transition-colors rounded-xs"
-          onClick={handleSubmitWithAttachments}
-        >
-          <FileSymlink />
-          Send With Attachments
-        </Button>
+          <Button
+            className="inline-flex items-center gap-2 text-sm font-medium text-white bg-[#C14C8A] hover:bg-[#A73B75] px-3 py-1.5 rounded-md transition-colors"
+            onClick={handleSubmitWithAttachments}
+          >
+            <FileSymlink className="w-4 h-4" />
+            Send With Attachments
+          </Button>
+        </div>
       </div>
     </div>
   );

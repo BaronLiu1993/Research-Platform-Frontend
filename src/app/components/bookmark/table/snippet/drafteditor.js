@@ -59,7 +59,7 @@ export default function DraftEditor({
         body,
         subject,
       };
-      
+
       const updatedState = await saveDraft(data, draftId, access);
       setSubject(updatedState.subject);
       setBody(updatedState.body);
@@ -145,8 +145,9 @@ export default function DraftEditor({
         </BubbleMenu>
       )}
 
-      <EditorContent editor={editor} />
-
+      <div className = "px-2">
+        <EditorContent editor={editor} />
+      </div>
       <div className="font-main p-4 flex items-center">
         <DialogClose>
           <button

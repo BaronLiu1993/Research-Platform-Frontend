@@ -1,24 +1,30 @@
 "use client";
 
-import { AtSign, Clipboard, LayoutPanelLeft, LetterText, MoreHorizontal } from "lucide-react";
+import {
+  AtSign,
+  Clipboard,
+  LayoutPanelLeft,
+  LetterText,
+  MoreHorizontal,
+} from "lucide-react";
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
 
 export const SavedColumns = [
   {
     id: "select",
     header: ({ table }) => (
-      <div className = "flex items-center gap-2 font-semibold">
-        
+      <div className="flex items-center gap-2 font-semibold">
         <Checkbox
-        checked={table.getIsAllPageRowsSelected()}
-        indeterminate={
-          table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected()
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className = ""
-      />
-      Select All
+          checked={table.getIsAllPageRowsSelected()}
+          indeterminate={
+            table.getIsSomePageRowsSelected() &&
+            !table.getIsAllPageRowsSelected()
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className=""
+        />
+        Select All
       </div>
     ),
     cell: ({ row }) => (
@@ -36,10 +42,10 @@ export const SavedColumns = [
     header: ({ column }) => {
       return (
         <button
-          className="text-sm font-main font-light text-[#787774] flex items-center gap-2"
+          className="text-xs font-light font-main text-[#787774] flex items-center gap-2"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          <LetterText className = "h-4 w-4"/>
+          <LetterText className="h-4 w-4" />
           Name
         </button>
       );
@@ -59,7 +65,7 @@ export const SavedColumns = [
     header: ({ column }) => {
       return (
         <button className="text-xs font-light font-main text-[#787774] flex items-center gap-2">
-          <AtSign className = "h-4 w-4"/>
+          <AtSign className="h-4 w-4" />
           Faculty
         </button>
       );
@@ -77,8 +83,8 @@ export const SavedColumns = [
     accessorKey: "department",
     header: ({ column }) => {
       return (
-        <button className="text-xs font-light  font-main text-[#787774] flex items-center gap-2">   
-          <LayoutPanelLeft className = "h-4 w-4"/>
+        <button className="text-xs font-light font-main text-[#787774] flex items-center gap-2">
+          <LayoutPanelLeft className="h-4 w-4" />
           Department
         </button>
       );

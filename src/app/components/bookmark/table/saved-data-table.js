@@ -292,7 +292,7 @@ export function SavedDataTable({
           </div>
 
           <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-            <Table className="text-sm min-w-full">
+            <Table className="text-sm w-full">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
@@ -340,7 +340,7 @@ export function SavedDataTable({
                   <TableRow>
                     <TableCell
                       colSpan={columns.length}
-                      className="h-24 text-center text-xs"
+                      className="h-24 text-center text-xs font-main font-light"
                     >
                       No results.
                     </TableCell>
@@ -353,9 +353,9 @@ export function SavedDataTable({
 
         <TabsContent value="reviewed-drafts">
           <div className="py-4">
-            <div className="font-semibold flex items-center gap-2">
-              <Paperclip className="text-[#787774] w-4 h-4" />
-              Reviewed Drafts
+            <div className="font-semibold flex items-center gap-2 font-playfair text-2xl">
+              <Paperclip className="text-[#787774] w-6 h-6 stroke-1" />
+              Review Drafts
             </div>
             <div className="flex items-center py-2 gap-2">
               <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]">
@@ -383,8 +383,8 @@ export function SavedDataTable({
 
         <TabsContent value="follow-ups">
           <div className="py-4">
-            <div className="font-semibold flex items-center gap-2">
-              <Bot className="text-[#787774] w-4 h-4" />
+            <div className="font-semibold flex items-center gap-2 font-playfair text-2xl">
+              <Bot className="text-[#787774] w-6 h-6 stroke-1" />
               Automate Follow Up
             </div>
             <div className="flex items-center py-2 gap-2">

@@ -81,15 +81,6 @@ export default async function InboxEmail() {
           <SidebarTrigger className="cursor-pointer" />
           <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <MoveLeft className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <MoveRight className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <Plus className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
-              </BreadcrumbItem>
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink
                   href="/"
