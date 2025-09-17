@@ -99,7 +99,7 @@ export default function ComposeEditor({
       <div className="text-sm">
         <div className="flex justify-between px-4">
           <Badge className="text-[#9F6B53] bg-[#F4EEEE] rounded-xs">
-            Template Builder
+            Drafting Messages...
           </Badge>
           <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500">
             <button className="cursor-pointer" onClick={handleGenerateDrafts}>
@@ -112,7 +112,6 @@ export default function ComposeEditor({
             <h1 className="text-black">{userName}</h1>
             <h2 className="text-[#787774]">{userEmail}</h2>
           </div>
-          <input className="px-4 py-1 w-full" placeholder="Add Recipient" />
           <input
             onChange={(e) => setSubject(e.target.value)}
             className="px-4 py-1 w-full"
