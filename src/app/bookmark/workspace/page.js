@@ -127,8 +127,6 @@ export default async function Work() {
   );
 
   draftData = draftData.filter(Boolean);
-
-  console.log(draftData);
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile} />
@@ -137,19 +135,10 @@ export default async function Work() {
           <SidebarTrigger className="cursor-pointer" />
           <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <MoveLeft className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <MoveRight className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <Plus className="w-5 text-[#787774] cursor-pointer rounded-xs hover:bg-gray-100 p-0.5" />
-              </BreadcrumbItem>
               <BreadcrumbItem className="hidden md:block hover:underline cursor-pointer">
                 <BreadcrumbLink
                   href="/"
-                  className="flex items-center font-medium text-[#37352F] gap-2"
+                  className="font-main flex items-center gap-2 font-light text-[#37352F]"
                 >
                   <Laptop className="rounded-xs text-white fill-blue-700 h-5 w-5" />
                   Home
@@ -159,7 +148,7 @@ export default async function Work() {
                 <div className="text-gray-300">/</div>
               </BreadcrumbSeparator>
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-main flex items-center hover:underline cursor-pointer gap-2 font-medium text-[#37352F]">
+                <BreadcrumbPage className="font-main flex items-center gap-2 font-light text-[#37352F]">
                   <MapIcon className="fill-blue-700 text-white" />
                   Application Tracker
                 </BreadcrumbPage>

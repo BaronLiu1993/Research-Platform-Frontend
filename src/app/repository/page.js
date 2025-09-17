@@ -42,7 +42,6 @@ export default async function Repository({ searchParams }) {
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 
-  // Fetch saved/applied IDs in parallel
   const [savedProfessorData, appliedProfessorData] = await Promise.all([
     fetch(`${API_BASE}/saved/repository/get-all-savedId`, {
       method: "GET",
@@ -80,30 +79,13 @@ export default async function Repository({ searchParams }) {
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile} />
       <SidebarInset>
-        {/* Header / Breadcrumbs */}
-        <header className="flex h-10 shrink-0 items-center gap-2 px-4 sm:px-6 border-b bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50">
+        <header className="flex h-10 shrink-0 items-center gap-2 px-4 sm:px-6 bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50">
           <SidebarTrigger className="cursor-pointer" />
           <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <button aria-label="Back" className="p-1 rounded-md hover:bg-gray-100">
-                  <MoveLeft className="w-5 h-5 text-[#787774]" />
-                </button>
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <button aria-label="Forward" className="p-1 rounded-md hover:bg-gray-100">
-                  <MoveRight className="w-5 h-5 text-[#787774]" />
-                </button>
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <button aria-label="New" className="p-1 rounded-md hover:bg-gray-100">
-                  <Plus className="w-5 h-5 text-[#787774]" />
-                </button>
-              </BreadcrumbItem>
-
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink asChild>
-                  <Link href="/" className="flex items-center font-medium text-[#37352F] gap-2">
+                  <Link href="/" className="font-main flex items-center gap-2 font-light text-[#37352F]">
                     <Laptop className="h-5 w-5 text-blue-700" />
                     Home
                   </Link>
@@ -111,7 +93,7 @@ export default async function Repository({ searchParams }) {
               </BreadcrumbItem>
               <BreadcrumbSeparator>/</BreadcrumbSeparator>
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
+                <BreadcrumbPage className="font-main flex items-center gap-2 font-light text-[#37352F]">
                   <MapIcon className="h-5 w-5 text-blue-700" />
                   Professors
                 </BreadcrumbPage>
@@ -120,10 +102,8 @@ export default async function Repository({ searchParams }) {
           </Breadcrumb>
         </header>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto font-main">
           <div className="w-full max-w-screen-xl mx-auto px-4 sm:px-6">
-            {/* Title + meta */}
             <div className="my-8 sm:my-10 space-y-2">
               <div className="mt-2">
                 <div className="flex items-center justify-between gap-2 pt-2">
