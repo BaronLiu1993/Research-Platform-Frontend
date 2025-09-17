@@ -1,9 +1,9 @@
-export const UploadTranscript = async (file, userId, access) => {
+export const UploadTranscript = async ({file, access}) => {
   try {
     const formData = new FormData();
     formData.append("file", file);
     const response = await fetch(
-      `http://localhost:8080/storage/upload-transcript-links/${userId}`,
+      `http://localhost:8080/storage/upload-transcript-links`,
       {
         method: "POST",
         headers: {

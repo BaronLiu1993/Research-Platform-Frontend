@@ -1,9 +1,9 @@
-export const UploadResume = async (file, userId, access) => {
+export const UploadResume = async ({file, access}) => {
   try {
     const formData = new FormData();
     formData.append("file", file);
     const response = await fetch(
-      `http://localhost:8080/storage/upload-resume-links/${userId}`,
+      `http://localhost:8080/storage/upload-resume-links`,
       {
         method: "POST",
         headers: {

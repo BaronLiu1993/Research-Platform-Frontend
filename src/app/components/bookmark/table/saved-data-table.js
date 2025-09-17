@@ -109,7 +109,7 @@ export function SavedDataTable({
 
   const handleUploadTranscript = async () => {
     try {
-      await UploadTranscript(transcript, userId, access);
+      await UploadTranscript({ file: transcript, access });
       toast.success("Uploaded transcript");
       setTranscript(null);
     } catch {
@@ -119,7 +119,7 @@ export function SavedDataTable({
 
   const handleUploadResume = async () => {
     try {
-      await UploadResume(resume, userId, access);
+      await UploadResume({ file: resume, access });
       toast.success("Uploaded resume");
       setResume(null);
     } catch {
@@ -129,11 +129,27 @@ export function SavedDataTable({
 
   return (
     <div className="px-4 font-main w-full max-w-screen-xl mx-auto">
-      <Tabs defaultValue="file-uploads">
+      <div className = "flex gap-4">
+        <FileUploadDialog
+          id="resume"
+          title="Resume"
+          parsedData={parsedResumeData}
+          file={resume}
+          setFile={setResume}
+          onUpload={handleUploadResume}
+        />
+
+        <FileUploadDialog
+          id="transcript"
+          title="Transcript"
+          parsedData={parsedTranscriptData}
+          file={transcript}
+          setFile={setTranscript}
+          onUpload={handleUploadTranscript}
+        />
+      </div>
+      <Tabs defaultValue="saved-professors">
         <TabsList className="my-6 grid text-black grid-cols-2 sm:inline-flex gap-2 sm:gap-4 rounded-md">
-          <TabsTrigger value="file-uploads" className="rounded-md">
-            Check File Uploads
-          </TabsTrigger>
           <TabsTrigger value="saved-professors" className="rounded-md">
             Compose Mass Emails
           </TabsTrigger>
@@ -145,50 +161,6 @@ export function SavedDataTable({
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="file-uploads">
-          <div className="flex flex-col gap-4 py-4">
-            <div>
-              <div className="font-semibold flex items-center gap-2 font-playfair text-2xl">
-                <BookAIcon className="w-6 h-6 stroke-1" />
-                Automate File Uploading
-              </div>
-              <div className="flex items-center py-2 gap-2">
-                <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]">
-                  <File className="w-3.5 h-3.5 mr-1" /> Upload Email Attachments
-                </Badge>
-                <span className="rounded-full h-1 w-1 bg-[#37352F]" />
-                <span className="text-[11px] font-medium text-[#37352F]">
-                  By Jie Xuan Liu
-                </span>
-              </div>
-              <div className="bg-[#FAEBDD] flex items-center gap-2 p-2 w-fit rounded-md text-[#D9730D]">
-                <Info className="h-4 w-4" />
-                <span className="text-xs">
-                  All your uploaded files are saved to your Google Drive.
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <FileUploadDialog
-              id="resume"
-              title="Resume"
-              parsedData={parsedResumeData}
-              file={resume}
-              setFile={setResume}
-              onUpload={handleUploadResume}
-            />
-
-            <FileUploadDialog
-              id="transcript"
-              title="Transcript"
-              parsedData={parsedTranscriptData}
-              file={transcript}
-              setFile={setTranscript}
-              onUpload={handleUploadTranscript}
-            />
-          </div>
-        </TabsContent>
 
         <TabsContent value="saved-professors" className="py-4">
           <div>
@@ -207,7 +179,7 @@ export function SavedDataTable({
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center py-4 gap-3">
+          <div className="flex items-center py-4 gap-3 ">
             <Input
               placeholder="Find professors..."
               value={table.getColumn("name")?.getFilterValue() ?? ""}

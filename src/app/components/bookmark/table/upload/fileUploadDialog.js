@@ -17,6 +17,7 @@ import {
   FileCheck2,
   FileX2,
   Trash2,
+  File,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -58,14 +59,13 @@ export function FileUploadDialog({
         </button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-xl p-0 rounded-xl overflow-hidden">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-50 to-white border-b">
+      <DialogContent className="max-w-xl p-0 rounded-xl font-main overflow-hidden">
+        <div className = "border-b">
           <div className="px-6 py-4">
             <DialogHeader>
-              <DialogTitle className="text-lg">{title}</DialogTitle>
-              <DialogDescription className="text-sm text-gray-600">
-                Preview the file on Drive or upload a new version.
+              <DialogTitle className="text-lg font-playfair">Upload Files</DialogTitle>
+              <DialogDescription className="text-xs">
+                Select and upload the files of your choice
               </DialogDescription>
             </DialogHeader>
           </div>
@@ -73,7 +73,7 @@ export function FileUploadDialog({
 
         <div className="px-6 py-5 space-y-5 max-h-[70vh] overflow-y-auto">
           {present && (
-            <div className="rounded-lg border border-slate-200 p-3">
+            <div className="rounded-lg border border-slate-500 p-3">
               <div className="flex items-center justify-between gap-3">
                 <div className="min-w-0">
                   <h3
@@ -108,15 +108,15 @@ export function FileUploadDialog({
             </div>
           )}
 
-          <div className="rounded-lg border-2 border-dashed border-slate-300 p-5 text-center">
+          <div className="rounded-lg font-main text-center">
             {!file ? (
-              <label htmlFor={`file-input-${id}`} className="cursor-pointer inline-flex flex-col items-center gap-1">
-                <CloudUpload className="w-6 h-6" />
-                <span className="font-medium text-sm">Choose a file or drag and drop</span>
-                <span className="text-gray-400 text-xs">PDF, PNG, JPG</span>
+              <label htmlFor={`file-input-${id}`} className="cursor-pointer p-20 inline-flex flex-col items-center gap-1">
+                <CloudUpload className="w-8 h-8 stroke-1" />
+                <span className="font-medium text-lg">Choose a file or drag and drop</span>
+                <span className="text-gray-600 text-xs">Supports PDF, PNG, JPG</span>
               </label>
             ) : (
-              <div className="flex items-center justify-between gap-3 text-left">
+              <div className="flex items-center justify-between gap-3 text-left border-1 p-5 rounded-md">
                 <div className="min-w-0">
                   <h4 className="font-semibold text-sm truncate" title={file.name}>{file.name}</h4>
                   <div className="flex items-center gap-2 text-xs text-gray-600">
@@ -127,10 +127,10 @@ export function FileUploadDialog({
                 </div>
                 <button
                   onClick={() => setFile(null)}
-                  className="p-1 rounded-md hover:bg-[#FDEBEC]"
+                  className="p-1 rounded-md hover:bg-[#FDEBEC] cursor-pointer"
                   aria-label={`Remove ${title} file`}
                 >
-                  <Trash2 className="text-gray-500 w-5 h-5" />
+                  <Trash2 className="text-gray-600 w-5 h-5" />
                 </button>
               </div>
             )}
@@ -144,8 +144,7 @@ export function FileUploadDialog({
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="px-6 py-4 border-t bg-white flex justify-end gap-2">
+        <div className="px-6 py-4 bg-white flex justify-end gap-2">
           <DialogClose className="text-sm font-medium inline-flex items-center gap-1 text-white bg-[#D44C47] px-3 py-1.5 rounded-md hover:bg-[#B91C1C]">
             Close
           </DialogClose>
