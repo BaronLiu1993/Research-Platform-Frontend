@@ -128,9 +128,7 @@ export default function KanbanCardInComplete({
             </div>
           </div>
 
-          {/* Body */}
           <div className="px-6 py-5 max-h-[75vh] overflow-y-auto space-y-6">
-            {/* Quick facts */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="rounded-lg border border-slate-200 p-3">
                 <div className="flex items-center text-xs text-gray-500 mb-1">

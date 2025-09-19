@@ -102,8 +102,6 @@ export default function FollowUpEditor({
         access
       );
 
-      console.log(draftResponse)
-
       if (draftResponse.success) {
         await ExecuteMassSendFollowUpDrafts(
           fromName,
@@ -128,11 +126,14 @@ export default function FollowUpEditor({
         subject,
         access
       );
+
+      console.log(response)
       const dynamicFields = await SyncFollowUpSnippetData(
         totalProfessorData,
         selectedVariables,
         access
       );
+      console.log(dynamicFields)
       if (response.snippetId) {
         const draftResponse = await createMassFollowUpDrafts(
           response.snippetId,
@@ -141,13 +142,15 @@ export default function FollowUpEditor({
           dynamicFields,
           access
         );
+        console.log(draftResponse)
         if (draftResponse.success) {
-          await ExecuteMassFollowUpDraftsWithAttachments(
+          const sendResponse = await ExecuteMassFollowUpDraftsWithAttachments(
             fromName,
             fromEmail,
             totalProfessorData,
             access
           );
+          console.log(sendResponse)
           closeRef.current?.click();
           toast("Follow Up Email With Attachments Sent!");
         } else {

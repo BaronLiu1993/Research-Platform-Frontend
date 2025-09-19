@@ -7,14 +7,17 @@ export const useSavedStore = create(
       savedStore: [],
       setSavedStore: (professors) => set({ savedStore: professors }),
       addSavedStore: (point) =>
-        
         set((state) => ({
           savedStore: [...state.savedStore, point],
         })),
-      removeSavedStore: (point) =>
-        set((state) => ({
-          savedStore: state.savedStore.filter((p) => p !== point),
-        })),
+      removeSavedStore: (id) =>
+        set((state) => {
+          console.log("Before:", state.savedStore);
+          console.log("Removing:", id);
+          const next = state.savedStore.filter((p) => p !== id);
+          console.log("After:", next);
+          return { savedStore: next };
+        }),
       resetPoints: () => set({ savedStore: [] }),
     }),
     {

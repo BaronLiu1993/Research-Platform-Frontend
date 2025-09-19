@@ -9,6 +9,7 @@ import {
   useReactTable,
   getSortedRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -34,22 +35,15 @@ import {
   DialogContent,
   DialogTrigger,
   DialogHeader,
-  DialogClose,
 } from "@/shadcomponents/ui/composedialog";
 import { Input } from "@/shadcomponents/ui/input";
 import { Button } from "@/shadcomponents/ui/button";
 import ComposeEditor from "./snippet/composeEditor";
 import DataPreview from "./preview/dataPreview";
 import {
-  BookAIcon,
   Bot,
   Cloud,
-  CloudUpload,
-  Download,
   DraftingCompass,
-  File,
-  FileCheck2,
-  FileX2,
   FolderOpen,
   Hammer,
   HammerIcon,
@@ -57,7 +51,6 @@ import {
   Mail,
   Paperclip,
   Pencil,
-  Trash2,
 } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import DraftList from "./snippet/draftList";
@@ -92,7 +85,7 @@ export function SavedDataTable({
   const [generateView, setGenerateView] = useState(false);
   const [draftsView, setDraftsView] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-
+  
   const table = useReactTable({
     data,
     columns,
@@ -102,6 +95,7 @@ export function SavedDataTable({
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     enableRowSelection: true,
   });
 
@@ -129,7 +123,7 @@ export function SavedDataTable({
 
   return (
     <div className="px-4 font-main w-full max-w-screen-xl mx-auto">
-      <div className = "flex gap-4">
+      <div className="flex gap-4">
         <FileUploadDialog
           id="resume"
           title="Resume"
@@ -160,7 +154,6 @@ export function SavedDataTable({
             Automate Follow Up
           </TabsTrigger>
         </TabsList>
-
 
         <TabsContent value="saved-professors" className="py-4">
           <div>
@@ -320,6 +313,24 @@ export function SavedDataTable({
                 )}
               </TableBody>
             </Table>
+          </div>
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
           </div>
         </TabsContent>
 

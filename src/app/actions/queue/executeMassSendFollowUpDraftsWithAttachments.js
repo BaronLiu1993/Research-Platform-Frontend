@@ -16,7 +16,6 @@ export const ExecuteMassFollowUpDraftsWithAttachments = async (
           Authorization: `Bearer ${access}`,
         },
         body: JSON.stringify({
-          userId,
           userName,
           userEmail,
           professorData,

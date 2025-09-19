@@ -30,7 +30,7 @@ export async function Save(
   try {
     console.log(access)
     const response = await fetch(
-      `http://localhost:8080/saved/kanban/add-saved/${user_id}/${professor_id}`,
+      `http://localhost:8080/saved/kanban/add-saved/${professor_id}`,
       {
         method: "POST",
         headers: {

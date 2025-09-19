@@ -87,9 +87,7 @@ export default function FollowUpList({
   return (
     <div className="w-full max-w-screen-2xl mx-auto">
       <div className="flex flex-col gap-4">
-        {/* Card */}
         <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-          {/* Sticky select-all header */}
           <div className="flex items-center gap-2 px-3 py-2 bg-slate-50/80 backdrop-blur supports-[backdrop-filter]:bg-slate-50/60 border-b">
             <Checkbox checked={checkAll} onCheckedChange={handleCheckAll} />
             <span className="text-sm font-semibold text-slate-800">
