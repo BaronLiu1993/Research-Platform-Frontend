@@ -28,16 +28,19 @@ export default async function Board() {
   const [rawSavedData, rawInProgressData, rawCompletedData, rawUserProfile] =
     await Promise.all([
       fetch(`http://localhost:8080/saved/kanban/get-saved`, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${access}`,
         },
       }),
       fetch(`http://localhost:8080/inprogress/kanban/get-in-progress`, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${access}`,
         },
       }),
       fetch(`http://localhost:8080/completed/kanban/get-completed`, {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${access}`,
         },
