@@ -8,13 +8,23 @@ export default function ComposeFollowUp({
   threadId,
   professorId,
   professorName,
+  fromName,
+  fromEmail,
   professorEmail,
   onCreateReply,
-  access
+  access,
 }) {
-  console.log(professorEmail)
+  console.log(professorEmail);
   const handleCreateFollowUp = async () => {
-    await CreateReply({professorName, professorEmail, professorId, threadId, access});
+    await CreateReply({
+      professorName,
+      professorEmail,
+      fromName,
+      fromEmail,
+      professorId,
+      threadId,
+      access,
+    });
     onCreateReply?.();
   };
 
@@ -24,7 +34,7 @@ export default function ComposeFollowUp({
         onClick={handleCreateFollowUp}
         className="flex items-center gap-2 rounded-xs bg-black text-white py-2 px-4 hover:shadow-lg"
       >
-        <Reply className="w-4 h-4" /> 
+        <Reply className="w-4 h-4" />
         <span className="text-sm font-medium">Reply</span>
       </Button>
     </>

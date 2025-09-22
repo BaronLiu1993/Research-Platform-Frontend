@@ -113,7 +113,8 @@ export default async function InboxEmail() {
         </header>
 
         <InboxClientWrapper
-          emails={parsedUserProfile.student_email ?? ""}
+          userEmail={parsedUserProfile.student_email ?? ""}
+          userName={parsedUserProfile.student_name ?? ""}
           threadArrayEmailResponse={combinedArray}
           userId={userId}
           access={access}

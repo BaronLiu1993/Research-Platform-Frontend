@@ -20,14 +20,17 @@ export default function InboxClientWrapper({
   threadArrayEmailResponse,
   threadArrayNoResponse = [],
   userId,
-  emails,
+  userEmail,
+  userName,
   access,
 }) {
   console.log(threadArrayEmailResponse);
   const [openThreadId, setOpenThreadId] = useState(null);
   const [draftExistsMap, setDraftExistsMap] = useState({});
-  console.log(emails);
+  console.log(userEmail);
+  console.log(userName);
 
+  // Map to track which threads have drafts
   useEffect(() => {
     const map = {};
     (threadArrayEmailResponse || []).forEach((email) => {
@@ -36,6 +39,7 @@ export default function InboxClientWrapper({
     setDraftExistsMap(map);
   }, [threadArrayEmailResponse]);
 
+  // Handle the creation of a reply
   function handleCreateReply(threadId) {
     setDraftExistsMap((prev) => ({ ...prev, [threadId]: true }));
   }
@@ -54,6 +58,7 @@ export default function InboxClientWrapper({
         </div>
 
         <div className="p-4 sm:p-6 space-y-8">
+          {/* Response Thread Section */}
           <section className="space-y-3 border-1 p-4 rounded-md">
             <span className="inline-flex items-center gap-2 px-2 py-1 rounded-md text-white bg-green-700 text-xs w-fit">
               <FileCheck2 className="h-4 w-4" />
@@ -109,10 +114,11 @@ export default function InboxClientWrapper({
                                       ) : (
                                         <ComposeFollowUp
                                           threadId={email.threadId}
-                                          userId={userId}
                                           professorId={email.professorId}
                                           professorEmail={email.professorEmail}
-                                          professorName={email.professorName}
+                                          professorName={"placeholder"}
+                                          fromEmail={userEmail}
+                                          fromName={userName}
                                           onCreateReply={() =>
                                             handleCreateReply(email.threadId)
                                           }
@@ -156,7 +162,7 @@ export default function InboxClientWrapper({
                                   seenData={email.seenData}
                                   engagementData={email.engagementData}
                                   userId={userId}
-                                  email={emails}
+                                  email={userEmail}
                                   access={access}
                                 />
                               </Suspense>
@@ -175,6 +181,7 @@ export default function InboxClientWrapper({
             </div>
           </section>
 
+          {/* No Response Thread Section */}
           <section className="space-y-3 border-1 p-4 rounded-md">
             <span className="inline-flex items-center gap-2 px-2 py-1 rounded-md text-white bg-orange-700 text-xs w-fit">
               <FileMinus2 className="h-4 w-4" />
@@ -266,7 +273,6 @@ export default function InboxClientWrapper({
                             </div>
                           </div>
 
-                          {/* Sheet body */}
                           <div className="p-4 sm:p-5">
                             {openThreadId === email.threadId ? (
                               <Suspense
@@ -283,7 +289,7 @@ export default function InboxClientWrapper({
                                   threadId={email.threadId}
                                   seenData={email.seenData}
                                   userId={userId}
-                                  email={emails}
+                                  email={userEmail}
                                   access={access}
                                 />
                               </Suspense>
