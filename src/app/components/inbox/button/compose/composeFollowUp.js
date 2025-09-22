@@ -6,15 +6,15 @@ import { Reply } from "lucide-react";
 
 export default function ComposeFollowUp({
   threadId,
-  userId,
   professorId,
   userEmail,
   userName,
   professorEmail,
-  onCreateReply
+  onCreateReply,
+  access
 }) {
   const data = {
-    fromEmail: "baronliu1993@gmail.com",
+    fromEmail: userEmail,
     fromName: userName,
     to: professorEmail,
     subject: "",
@@ -22,19 +22,18 @@ export default function ComposeFollowUp({
   };
 
   const handleCreateFollowUp = async () => {
-    await CreateReply(data, userId, professorId, threadId)
+    await CreateReply(data, professorId, threadId, access);
     onCreateReply?.();
   };
-  
 
   return (
     <>
       <Button
         onClick={handleCreateFollowUp}
-        className="rounded-sm bg-[#FAEBDD] text-[#CB912F] cursor-pointer hover:bg-[#F5D7B5]"
+        className="flex items-center gap-2 rounded-xs bg-black text-white py-2 px-4 hover:shadow-lg"
       >
-        <Reply />
-        Reply
+        <Reply className="w-4 h-4" /> 
+        <span className="text-sm font-medium">Reply</span>
       </Button>
     </>
   );

@@ -1,21 +1,22 @@
 "use server";
 
-export async function SaveReply(data, userId, professorId, threadId, access) {
+export async function SaveReply(data, professorId, threadId, access) {
+  console.log(threadId, professorId)
   try {
     const response = await fetch(
-      `http://localhost:8080/draft/update-follow-up-draft/${userId}/${professorId}/${threadId}`,
+      `http://localhost:8080/draft/update-follow-up-draft/${professorId}/${threadId}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${access}`
+          Authorization: `Bearer ${access}`,
         },
         body: JSON.stringify(data),
       }
     );
+
     
-    return { status: "ok" };
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 }

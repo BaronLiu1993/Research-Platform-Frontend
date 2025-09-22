@@ -9,7 +9,7 @@ export default function Message({ data }) {
           <Separator />
         </div>
         <div className="flex items-center justify-between px-6">
-          <span className="text-xs font-semibold text-black">{`From ${data.from.address}`}</span>
+          <span className="text-xs font-semibold text-black">{`From ${data.from.address} <${data.from.name} >`}</span>
           <div className="flex items-center gap-5">
             <span className="text-xs text-light">
               {new Date(data.date).toLocaleString("en-US", {

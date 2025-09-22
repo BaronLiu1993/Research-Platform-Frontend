@@ -1,15 +1,12 @@
-export const SendReply = async (userId, draftId, trackingId, access) => {
+export const SendReply = async (draftId, trackingId, access) => {
   try {
-    if (!userId || !draftId || !trackingId) {
-      return;
-    }
     const response = await fetch(
-      `http://localhost:8080/draft/send-follow-up/${userId}/${draftId}/${trackingId}`,
+      `http://localhost:8080/draft/send-follow-up/${draftId}/${trackingId}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${access}`
+          Authorization: `Bearer ${access}`,
         },
       }
     );

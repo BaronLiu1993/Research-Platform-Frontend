@@ -12,10 +12,8 @@ import {
   Loader,
   Send,
   Strikethrough,
-  Wand2,
   X,
 } from "lucide-react";
-
 
 import {
   Tooltip,
@@ -27,7 +25,6 @@ import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { SendReply } from "@/app/actions/reply/sendReply";
 import DeleteFollowUp from "../../button/compose/deleteFollowUp";
 import { toast } from "sonner";
-import { Dialog } from "@/shadcomponents/ui/composedialog";
 
 export default function ComposeEditor({
   draftData,
@@ -37,19 +34,20 @@ export default function ComposeEditor({
   fromName,
   fromEmail,
   to,
+  access,
 }) {
   const [subject, setSubject] = useState("");
   const handleSendFollowUp = async () => {
     try {
       const data = {
         fromName,
-        fromEmail: "baronliu1993@gmail.com",
+        fromEmail,
         to,
         body: editor?.getHTML(),
         subject,
       };
-      await SaveReply(data, userId, professorId, threadId);
-      await SendReply(userId, draftData.draft_id, draftData.tracking_id);
+      await SaveReply(data, professorId, threadId, access);
+      await SendReply(draftData.draft_id, draftData.tracking_id);
       toast("Reply Sent!");
     } catch {
       toast("Failed to Send!");
@@ -60,12 +58,13 @@ export default function ComposeEditor({
     try {
       const data = {
         fromName,
-        fromEmail: "baronliu1993@gmail.com",
+        fromEmail,
         to,
         body: editor?.getHTML(),
         subject,
       };
-      await SaveReply(data, userId, professorId, threadId);
+
+      await SaveReply(data, professorId, threadId, access);
       toast("Saved Successfully");
     } catch {
       toast("Failed To Save");
@@ -160,7 +159,7 @@ export default function ComposeEditor({
           </div>
           <input
             onChange={(e) => setSubject(e.target.value)}
-            defaultValue={draftData.subject || ""} 
+            defaultValue={draftData.subject || ""}
             className="px-4 py-1 w-full"
             placeholder="Subject"
             variant="ghost"
@@ -172,7 +171,7 @@ export default function ComposeEditor({
         <div className="flex gap-4">
           <DialogClose asChild>
             <button
-              onClick={() => handleSaveDraft()}
+              onClick={handleSaveDraft}
               className="rounded-sm flex items-center gap-2 p-2 text-sm text-[#337EA9] font-semibold bg-[#E7F3F8] cursor-pointer hover:bg-[#D0E7F0]"
             >
               <Loader />
@@ -181,7 +180,7 @@ export default function ComposeEditor({
           </DialogClose>
           <DialogClose asChild>
             <button
-              onClick={() => handleSendFollowUp()}
+              onClick={handleSendFollowUp}
               className="rounded-sm bg-[#EDF3EC] flex items-center gap-2 p-2 font-semibold text-sm text-[#448361] cursor-pointer hover:bg-[#D6E6D4]"
             >
               <Send />

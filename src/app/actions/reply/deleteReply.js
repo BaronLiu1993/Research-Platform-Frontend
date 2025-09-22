@@ -1,7 +1,7 @@
-export const DeleteReply = async (userId, draftId, access) => {
+export const DeleteReply = async (draftId, access) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/draft/delete-follow-up-draft/${userId}/${draftId}`,
+      `http://localhost:8080/draft/delete-follow-up-draft/${draftId}`,
       {
         method: "DELETE",
         headers: {

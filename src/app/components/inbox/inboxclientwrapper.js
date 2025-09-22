@@ -1,19 +1,13 @@
 "use client";
 
 import { useState, Suspense, lazy, useEffect } from "react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/shadcomponents/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/shadcomponents/ui/sheet";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
 } from "@/shadcomponents/ui/composedialog";
 import { FileCheck2, FileMinus2, FolderOpen, Lightbulb } from "lucide-react";
@@ -30,9 +24,10 @@ export default function InboxClientWrapper({
   emails,
   access,
 }) {
+  console.log(threadArrayEmailResponse);
   const [openThreadId, setOpenThreadId] = useState(null);
   const [draftExistsMap, setDraftExistsMap] = useState({});
-
+  console.log(emails);
   useEffect(() => {
     const map = {};
     (threadArrayEmailResponse || []).forEach((email) => {
@@ -50,9 +45,7 @@ export default function InboxClientWrapper({
       <div className="rounded-xl bg-white overflow-hidden">
         <div className="px-4 sm:px-6 pt-5 pb-2">
           <div className="flex gap-2 flex-col">
-            <h1 className="text-2xl font-playfair text-black">
-              Student Inbox 
-            </h1>
+            <h1 className="text-2xl font-playfair text-black">Student Inbox</h1>
             <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px] inline-flex items-center gap-1">
               <Lightbulb className="w-3.5 h-3.5" />
               Email
@@ -105,9 +98,8 @@ export default function InboxClientWrapper({
                         </SheetTrigger>
 
                         <SheetContent className="w-[760px] sm:w-[560px] p-0 overflow-y-auto">
-                          <div className="px-5 py-3 border-b bg-gradient-to-r from-blue-50 to-white">
+                          <div className="px-5 py-3 to-white">
                             <div className="flex items-center justify-between">
-                              <FolderOpen className="text-blue-700 h-6 w-6 p-1 rounded-md cursor-pointer hover:bg-[#F1F1EF]" />
                               <div className="flex items-center gap-2">
                                 <Dialog>
                                   <DialogTrigger asChild>
@@ -125,16 +117,12 @@ export default function InboxClientWrapper({
                                           onCreateReply={() =>
                                             handleCreateReply(email.threadId)
                                           }
+                                          access={access}
                                         />
                                       )}
                                     </div>
                                   </DialogTrigger>
-                                  <DialogContent className="max-w-2xl p-0 rounded-xl overflow-hidden">
-                                    <div className="px-5 py-3 border-b bg-gradient-to-r from-blue-50 to-white">
-                                      <h3 className="text-base font-semibold text-slate-800">
-                                        Compose Reply
-                                      </h3>
-                                    </div>
+                                  <DialogContent className=" rounded-xl overflow-hidden">
                                     <div className="p-5">
                                       <Compose
                                         draftData={email?.draftData}
