@@ -7,22 +7,14 @@ import { Reply } from "lucide-react";
 export default function ComposeFollowUp({
   threadId,
   professorId,
-  userEmail,
-  userName,
+  professorName,
   professorEmail,
   onCreateReply,
   access
 }) {
-  const data = {
-    fromEmail: userEmail,
-    fromName: userName,
-    to: professorEmail,
-    subject: "",
-    message: "",
-  };
-
+  console.log(professorEmail)
   const handleCreateFollowUp = async () => {
-    await CreateReply(data, professorId, threadId, access);
+    await CreateReply({professorName, professorEmail, professorId, threadId, access});
     onCreateReply?.();
   };
 

@@ -7,7 +7,6 @@ import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import {
   Dialog,
   DialogContent,
-  DialogTitle,
   DialogTrigger,
 } from "@/shadcomponents/ui/composedialog";
 import { FileCheck2, FileMinus2, FolderOpen, Lightbulb } from "lucide-react";
@@ -28,6 +27,7 @@ export default function InboxClientWrapper({
   const [openThreadId, setOpenThreadId] = useState(null);
   const [draftExistsMap, setDraftExistsMap] = useState({});
   console.log(emails);
+
   useEffect(() => {
     const map = {};
     (threadArrayEmailResponse || []).forEach((email) => {
@@ -111,9 +111,8 @@ export default function InboxClientWrapper({
                                           threadId={email.threadId}
                                           userId={userId}
                                           professorId={email.professorId}
-                                          userEmail={email.userEmail}
                                           professorEmail={email.professorEmail}
-                                          userName={email.userName}
+                                          professorName={email.professorName}
                                           onCreateReply={() =>
                                             handleCreateReply(email.threadId)
                                           }
@@ -220,7 +219,6 @@ export default function InboxClientWrapper({
                         </SheetTrigger>
 
                         <SheetContent className="w-[760px] sm:w-[560px] p-0 overflow-y-auto">
-                          {/* Sheet header */}
                           <div className="px-5 py-3 border-b bg-gradient-to-r from-blue-50 to-white">
                             <div className="flex items-center justify-between">
                               <FolderOpen className="text-blue-700 h-6 w-6 p-1 rounded-md cursor-pointer hover:bg-[#F1F1EF]" />

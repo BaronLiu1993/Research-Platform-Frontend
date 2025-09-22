@@ -18,13 +18,9 @@ export default function EmailSidebar({
 }) {
   const [threadData, setThreadData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  console.log(email);
-  console.log(seenData);
-  console.log(engagementData);
-  console.log(threadData);
   useEffect(() => {
     const fetchResponseThread = async () => {
-      setIsLoading(true); // Start loading
+      setIsLoading(true); 
 
       const mailData = await fetch(
         `http://localhost:8080/inbox/get-full-email-chain/${threadId}`,

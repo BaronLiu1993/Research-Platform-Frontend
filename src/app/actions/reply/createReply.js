@@ -1,9 +1,12 @@
-export const CreateReply = async (
-  data,
+"use server"
+
+export const CreateReply = async ({
+  professorName,
+  professorEmail,
   professorId,
   threadId,
   access
-) => {
+}) => {
   try {
     const response = await fetch(
       `http://localhost:8080/draft/create-follow-up-draft/${professorId}/${threadId}`,
@@ -13,14 +16,15 @@ export const CreateReply = async (
           "Content-Type": "application/json",
           Authorization: `Bearer ${access}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          professorName,
+          professorEmail,
+        }),
       }
     );
 
     if (response.ok) {
-
+      
     }
-  } catch {
-
-  }
+  } catch {}
 };

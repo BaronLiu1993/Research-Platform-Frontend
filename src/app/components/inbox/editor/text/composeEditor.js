@@ -37,6 +37,7 @@ export default function ComposeEditor({
   access,
 }) {
   const [subject, setSubject] = useState("");
+  
   const handleSendFollowUp = async () => {
     try {
       const data = {
