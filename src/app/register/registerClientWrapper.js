@@ -11,11 +11,9 @@ import { useSavedStore } from "../store/useSavedStore";
 import { useAppliedStore } from "../store/useAppliedStore";
 
 import {
-  Info,
   ShieldCheck,
   AlertCircle,
   Loader2,
-  GraduationCap,
 } from "lucide-react";
 
 export default function RegisterClientWrapper({ access }) {
@@ -64,8 +62,7 @@ export default function RegisterClientWrapper({ access }) {
 
     try {
       setSubmitting(true);
-      const base = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
-      const res = await fetch(`${base}/auth/register`, {
+      const res = await fetch(`http://localhost:8080/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,7 +1,6 @@
 "use server";
 
-export async function SaveReply(data, professorId, threadId, access) {
-  console.log(threadId, professorId)
+export async function SaveReply({data, professorId, threadId, access}) {
   try {
     const response = await fetch(
       `http://localhost:8080/draft/update-follow-up-draft/${professorId}/${threadId}`,

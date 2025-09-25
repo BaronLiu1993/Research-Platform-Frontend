@@ -1,10 +1,10 @@
 "use server";
 
-export const SyncFollowUpSnippetData = async (
+export const SyncFollowUpSnippetData = async ({
   totalProfessorData,
   variableArray,
-  access
-) => {
+  access,
+}) => {
   const response = await fetch(
     `http://localhost:8080/snippets/sync-fetchable-variables/follow-up`,
     {

@@ -31,13 +31,12 @@ export default function DraftList({
       toast("No Drafts Selected to Send");
     } else {
       try {
-        await ExecuteMassSend(
-          parsedUserProfile.user_id,
-          parsedUserProfile.student_name,
-          parsedUserProfile.student_email,
-          selected,
-          access
-        );
+        await ExecuteMassSend({
+          userName: parsedUserProfile.student_name,
+          userEmail: parsedUserProfile.student_email,
+          professorData: selected,
+          access,
+        });
         toast("Drafts Sent");
       } catch {
         toast("Drafts Failed to Send");
@@ -50,13 +49,12 @@ export default function DraftList({
       toast("No Drafts Selected to Send");
     } else {
       try {
-        await ExecuteMassSendWithAttachments(
-          parsedUserProfile.user_id,
-          parsedUserProfile.student_name,
-          parsedUserProfile.student_email,
-          selected,
-          access
-        );
+        await ExecuteMassSendWithAttachments({
+          userName: parsedUserProfile.student_name,
+          userEmail: parsedUserProfile.student_email,
+          professorData: selected,
+          access,
+        });
         toast("Drafts Sent With Attachments!");
       } catch {
         toast("Drafts Failed to Send");

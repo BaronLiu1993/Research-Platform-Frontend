@@ -1,4 +1,4 @@
-export const DeleteReply = async (draftId, access) => {
+export const DeleteReply = async ({ draftId, access }) => {
   try {
     const response = await fetch(
       `http://localhost:8080/draft/delete-follow-up-draft/${draftId}`,

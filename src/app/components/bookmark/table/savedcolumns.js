@@ -13,7 +13,7 @@ export const SavedColumns = [
   {
     id: "select",
     header: ({ table }) => (
-      <div className="flex items-center gap-2 font-semibold">
+      <div className="flex items-center gap-2 font-semibold p-1">
         <Checkbox
           checked={table.getIsAllPageRowsSelected()}
           indeterminate={
@@ -24,7 +24,7 @@ export const SavedColumns = [
           aria-label="Select all"
           className=""
         />
-        Select All
+        <div className = "text-[13px] font-main">Select All</div>
       </div>
     ),
     cell: ({ row }) => (

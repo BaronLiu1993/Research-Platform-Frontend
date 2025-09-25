@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 export const SignOut = async () => {
   const cookieStore = cookies();
-  const refresh = cookieStore.get("refresh_token");
+  const refresh = cookieStore.get("refresh_token")?.value;
 
   try {
     const signOutStatus = await fetch("http://localhost:8080/auth/sign-out", {
@@ -14,7 +14,7 @@ export const SignOut = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        refreshToken: refresh?.value,
+        refreshToken: refresh,
       }),
     });
 
@@ -25,7 +25,7 @@ export const SignOut = async () => {
     if (!signOutStatus.ok) {
       redirect("/repository");
     } else {
-      redirect("/account/login"); 
+      redirect("/account/login");
     }
   } catch {
     cookieStore.delete("access_token");

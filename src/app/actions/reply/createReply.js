@@ -10,7 +10,6 @@ export const CreateReply = async ({
   access,
 }) => {
   try {
-    console.log(access);
     const response = await fetch(
       `http://localhost:8080/draft/create-follow-up-draft/${professorId}/${threadId}`,
       {

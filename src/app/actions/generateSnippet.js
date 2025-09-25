@@ -1,26 +1,22 @@
-export const GenerateSnippet = async (
+export const GenerateSnippet = async ({
   snippet_html,
   snippet_subject,
-  access
-) => {
+  access,
+}) => {
   try {
-    console.log(access)
-    const response = await fetch(
-      `http://localhost:8080/snippets/insert`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${access}`,
-        },
-        body: JSON.stringify({
-          snippet_html,
-          snippet_subject,
-        }),
-      }
-    );
+    const response = await fetch(`http://localhost:8080/snippets/insert`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access}`,
+      },
+      body: JSON.stringify({
+        snippet_html,
+        snippet_subject,
+      }),
+    });
     if (response.ok) {
-      const snippetId = await response.json()
+      const snippetId = await response.json();
       return { success: true, snippetId: snippetId };
     } else {
       return {

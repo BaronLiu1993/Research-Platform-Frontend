@@ -20,6 +20,7 @@ export async function middleware(req) {
     if (loginResult?.headers.get("location")) {
       return loginResult;
     }
+    
     return NextResponse.next(); 
   }
 

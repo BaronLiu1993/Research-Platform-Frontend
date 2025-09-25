@@ -1,7 +1,6 @@
 "use server";
 
 export const ExecuteMassSendWithAttachments = async (
-  userId,
   userName,
   userEmail,
   professorData,
@@ -17,7 +16,6 @@ export const ExecuteMassSendWithAttachments = async (
           Authorization: `Bearer ${access}`,
         },
         body: JSON.stringify({
-          userId,
           userName,
           userEmail,
           professorData,

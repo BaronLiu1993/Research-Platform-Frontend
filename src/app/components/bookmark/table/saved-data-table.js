@@ -25,9 +25,7 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
-  SheetTitle,
   SheetTrigger,
-  SheetClose,
 } from "@/shadcomponents/ui/composedSheet";
 import {
   Dialog,
@@ -85,7 +83,7 @@ export function SavedDataTable({
   const [generateView, setGenerateView] = useState(false);
   const [draftsView, setDraftsView] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const table = useReactTable({
     data,
     columns,
@@ -198,66 +196,53 @@ export function SavedDataTable({
                 </Button>
               </SheetTrigger>
 
-              <SheetContent className="rounded-xl max-w-[680px]">
-                <SheetTitle className="p-2">
-                  <div className="flex justify-between items-center p-1">
-                    <SheetClose asChild>
-                      <button
-                        className="p-1.5 rounded-md hover:bg-[#F1F1EF]"
-                        aria-label="Close"
-                      >
-                        <FolderOpen className="text-blue-700 w-6 h-6" />
-                      </button>
-                    </SheetClose>
-
-                    <div className="flex gap-2">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          {draftsView && (
-                            <Button
-                              onClick={handleGenerateDrafts}
-                              className="text-sm font-medium inline-flex items-center gap-1 text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] rounded-md"
-                            >
-                              <DraftingCompass className="w-4 h-4" /> Generate
-                              Drafts
-                            </Button>
-                          )}
-                        </DialogTrigger>
-                        <DialogContent className="max-w-2xl">
-                          <DialogHeader>
-                            <DialogTitle className="sr-only">
-                              Compose drafts
-                            </DialogTitle>
-                          </DialogHeader>
-                          <ComposeEditor
-                            access={access}
-                            userId={userId}
-                            snippetId={snippetId}
-                            setSnippetId={setSnippetId}
-                            handleGenerateDrafts={handleGenerateDrafts}
-                            setGenerateView={setGenerateView}
-                          />
-                        </DialogContent>
-                      </Dialog>
-                    </div>
-                  </div>
-                </SheetTitle>
-                <SheetDescription>
+              <SheetContent className="rounded-none max-w-[800px] flex flex-col justify-between">
+                <SheetDescription className="py-10">
                   <DataPreview
                     access={access}
-                    userId={userId}
                     rowData={table.getSelectedRowModel().rows}
                     parsedUserProfile={parsedUserProfile}
                     snippetId={snippetId}
                     generateView={generateView}
                   />
                 </SheetDescription>
+                <div className="flex items-center justify-end p-4">
+                  <div className="flex gap-2">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        {draftsView && (
+                          <Button
+                            onClick={handleGenerateDrafts}
+                            className="text-sm font-main inline-flex items-center gap-1 bg-[#529CCA] px-3 py-1.5 hover:bg-[#4179B8] rounded-md"
+                          >
+                            <DraftingCompass className="w-4 h-4" /> Begin Drafts
+                          </Button>
+                        )}
+                      </DialogTrigger>
+                      <DialogContent className="max-w-xl">
+                        <DialogHeader>
+                          <DialogTitle className="sr-only">
+                            Compose drafts
+                          </DialogTitle>
+                        </DialogHeader>
+                        <ComposeEditor
+                          access={access}
+                          userId={userId}
+                          snippetId={snippetId}
+                          setSnippetId={setSnippetId}
+                          handleGenerateDrafts={handleGenerateDrafts}
+                          setGenerateView={setGenerateView}
+                        />
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                </div>
               </SheetContent>
             </Sheet>
           </div>
 
-          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-            <Table className="text-sm w-full">
+          <div className="overflow-x-auto rounded-lg border shadow-sm border-slate-200 bg-white">
+            <Table className="text-sm w-[50rem] shadow-sm border-slate-200">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
@@ -305,9 +290,15 @@ export function SavedDataTable({
                   <TableRow>
                     <TableCell
                       colSpan={columns.length}
-                      className="h-24 text-center text-xs font-main font-light"
+                      className="h-24 text-sm font-main p-4"
                     >
-                      No results.
+                      <div className="py-6 px-4">
+                        <div className="mx-auto w-full">
+                          <p className="text-sm text-slate-600">
+                            No drafts found.
+                          </p>
+                        </div>
+                      </div>
                     </TableCell>
                   </TableRow>
                 )}

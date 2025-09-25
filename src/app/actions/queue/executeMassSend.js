@@ -1,20 +1,19 @@
 "use server";
 
-export const ExecuteMassSend = async (
-  userId,
+export const ExecuteMassSend = async ({
   userName,
   userEmail,
   professorData,
   access,
-) => {
-  console.log(userName)
-  console.log(userEmail)
+}) => {
+  console.log(userName);
+  console.log(userEmail);
   try {
     const response = await fetch("http://localhost:8080/send/mass-send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${access}`
+        Authorization: `Bearer ${access}`,
       },
       body: JSON.stringify({
         userName,

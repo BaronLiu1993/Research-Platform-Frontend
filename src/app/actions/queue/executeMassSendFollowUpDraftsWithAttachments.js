@@ -1,11 +1,11 @@
 "use server";
 
-export const ExecuteMassFollowUpDraftsWithAttachments = async (
+export const ExecuteMassFollowUpDraftsWithAttachments = async ({
   userName,
   userEmail,
   professorData,
-  access
-) => {
+  access,
+}) => {
   try {
     const response = await fetch(
       "http://localhost:8080/send/mass-send-followup-with-attachments",
@@ -25,6 +25,6 @@ export const ExecuteMassFollowUpDraftsWithAttachments = async (
     const data = await response.json();
     return data;
   } catch {
-    throw new Error("Failed")
+    throw new Error("Failed");
   }
 };

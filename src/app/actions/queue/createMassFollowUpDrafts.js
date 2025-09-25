@@ -1,12 +1,12 @@
 import { MassAddApplied } from "./massAddApplied";
 
-export const createMassFollowUpDrafts = async (
+export const createMassFollowUpDrafts = async ({
   snippetId,
   fromName,
   fromEmail,
   dynamicFields,
-  access
-) => {
+  access,
+}) => {
   try {
     const response = await fetch(
       `http://localhost:8080/send/snippet-create-followup-draft`,

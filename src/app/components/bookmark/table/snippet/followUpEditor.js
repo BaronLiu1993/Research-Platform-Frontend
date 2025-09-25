@@ -83,11 +83,7 @@ export default function FollowUpEditor({
 
   const handleCreateFollowUpDrafts = async () => {
     try {
-      const response = await GenerateSnippet(
-        editor.getHTML(),
-        subject,
-        access
-      );
+      const response = await GenerateSnippet(editor.getHTML(), subject, access);
 
       const dynamicFields = await SyncFollowUpSnippetData(
         totalProfessorData,
@@ -121,36 +117,33 @@ export default function FollowUpEditor({
 
   const handleCreateFollowUpDraftsWithAttachments = async () => {
     try {
-      const response = await GenerateSnippet(
-        editor.getHTML(),
-        subject,
-        access
-      );
+      const response = await GenerateSnippet({
+        snippet_html: editor.getHTML(),
+        snippet_subject: subject,
+        access,
+      });
 
-      console.log(response)
-      const dynamicFields = await SyncFollowUpSnippetData(
+      const dynamicFields = await SyncFollowUpSnippetData({
         totalProfessorData,
-        selectedVariables,
-        access
-      );
-      console.log(dynamicFields)
+        variableArray: selectedVariables,
+        access,
+      });
       if (response.snippetId) {
-        const draftResponse = await createMassFollowUpDrafts(
-          response.snippetId,
+        const draftResponse = await createMassFollowUpDrafts({
+          snippetId: response.snippetId,
           fromName,
           fromEmail,
           dynamicFields,
-          access
-        );
-        console.log(draftResponse)
+          access,
+        });
         if (draftResponse.success) {
-          const sendResponse = await ExecuteMassFollowUpDraftsWithAttachments(
+          const sendResponse = await ExecuteMassFollowUpDraftsWithAttachments({
             fromName,
             fromEmail,
-            totalProfessorData,
-            access
-          );
-          console.log(sendResponse)
+            professorData: totalProfessorData,
+            access,
+          });
+          console.log(sendResponse);
           closeRef.current?.click();
           toast("Follow Up Email With Attachments Sent!");
         } else {

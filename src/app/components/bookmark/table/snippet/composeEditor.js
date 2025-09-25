@@ -5,7 +5,6 @@ import "tippy.js/dist/tippy.css";
 import { useEffect, useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 
-
 import Mention from "@tiptap/extension-mention";
 import suggestion from "../tiptap/suggestion";
 import StarterKit from "@tiptap/starter-kit";
@@ -26,7 +25,6 @@ import { GenerateSnippet } from "@/app/actions/generateSnippet";
 import { toast } from "sonner";
 
 export default function ComposeEditor({
-  userId,
   access,
   setSnippetId,
   userName,
@@ -77,15 +75,13 @@ export default function ComposeEditor({
     },
   });
 
-  const handleSnippetGeneration = async (userId, body, subject) => {
-    console.log("fired")
+  const handleSnippetGeneration = async (body, subject) => {
     if (body.trim().length === 0 || subject.trim().length === 0) {
       handleGenerateDrafts();
       toast("Empty Draft");
     } else {
       const response = await GenerateSnippet(body, subject, access);
       if (response.success) {
-        toast("Generated Snippet Successfully");
         setGenerateView(response.success);
         setSnippetId(response.snippetId);
       } else {
@@ -97,11 +93,11 @@ export default function ComposeEditor({
   return (
     <div>
       <div className="text-sm">
-        <div className="flex justify-between px-4">
+        <div className="flex justify-between mx-4">
           <Badge className="text-[#9F6B53] bg-[#F4EEEE] rounded-xs">
-            Drafting Messages...
+            Draft Messages
           </Badge>
-          <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500">
+          <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2">
             <button className="cursor-pointer" onClick={handleGenerateDrafts}>
               <X className="h-6 w-6 p-1 rounded-xs" />
             </button>
@@ -172,9 +168,7 @@ export default function ComposeEditor({
       <div className="font-main p-4 flex justify-between items-center">
         <DialogClose>
           <button
-            onClick={() =>
-              handleSnippetGeneration(userId, editor.getHTML(), subject)
-            }
+            onClick={() => handleSnippetGeneration(editor.getHTML(), subject)}
             className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#529CCA] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
           >
             <Loader className="h-4 w-4" />
