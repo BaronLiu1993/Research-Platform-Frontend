@@ -42,7 +42,6 @@ import {
   Bot,
   Cloud,
   DraftingCompass,
-  FolderOpen,
   Hammer,
   HammerIcon,
   Info,
@@ -66,15 +65,17 @@ import { toast } from "sonner";
 
 export function SavedDataTable({
   columns,
-  data,
+  data: initialSavedData,
   userId,
-  draftData,
+  initialDraftData,
   parsedCompletedData,
   parsedUserProfile,
   parsedResumeData,
   parsedTranscriptData,
   access,
 }) {
+  const [draftData, setDraftData] = useState(initialDraftData);
+  const [savedData, setSavedData] = useState(initialSavedData);
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [snippetId, setSnippetId] = useState("");
@@ -85,7 +86,7 @@ export function SavedDataTable({
   const [isOpen, setIsOpen] = useState(false);
 
   const table = useReactTable({
-    data,
+    data: savedData,
     columns,
     state: { sorting, columnFilters },
     onSortingChange: setSorting,
@@ -204,6 +205,12 @@ export function SavedDataTable({
                     parsedUserProfile={parsedUserProfile}
                     snippetId={snippetId}
                     generateView={generateView}
+                    onDraftsFinalised={(professorIds) => {
+                      setSavedData((prev) =>
+                        prev.filter((row) => !professorIds.includes(row.id))
+                      );
+                      toast.success("Removed professors from Saved");
+                    }}
                   />
                 </SheetDescription>
                 <div className="flex items-center justify-end p-4">
@@ -241,7 +248,7 @@ export function SavedDataTable({
             </Sheet>
           </div>
 
-          <div className="overflow-x-auto rounded-lg border shadow-sm border-slate-200 bg-white">
+          <div className="overflow-x-auto rounded-xs border shadow-sm border-slate-200 bg-white">
             <Table className="text-sm w-[50rem] shadow-sm border-slate-200">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -352,6 +359,7 @@ export function SavedDataTable({
             access={access}
             draftData={draftData}
             parsedUserProfile={parsedUserProfile}
+            setDraftData={setDraftData}
           />
         </TabsContent>
 

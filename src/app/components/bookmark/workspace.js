@@ -48,7 +48,7 @@ export default async function Workspace({
   parsedSavedData,
   parsedInProgressData,
   parsedCompletedData,
-  draftData,
+  initialDraftData,
   parsedUserProfile,
   parsedResumeData,
   parsedTranscriptData,
@@ -86,7 +86,7 @@ export default async function Workspace({
         parsedUserProfile={parsedUserProfile}
         data={columnsData[0].data}
         columns={SavedColumns}
-        draftData={draftData}
+        initialDraftData={initialDraftData}
         parsedCompletedData={parsedCompletedData}
         userId={userId}
         parsedInProgressData={parsedInProgressData}

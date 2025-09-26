@@ -17,58 +17,87 @@ import { ExecuteMassSendWithAttachments } from "@/app/actions/queue/executeMassS
 import { toast } from "sonner";
 
 export default function DraftList({
-  draftData: initialData,
+  draftData,
+  setDraftData, // 🔑 parent setter passed in
   parsedUserProfile,
   access,
 }) {
-  console.log(parsedUserProfile);
-  const [draftData, setDraftData] = useState(initialData);
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
+
+  // 🔹 Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const draftsPerPage = 10;
+  const indexOfLastDraft = currentPage * draftsPerPage;
+  const indexOfFirstDraft = indexOfLastDraft - draftsPerPage;
+  const currentDrafts = draftData.slice(indexOfFirstDraft, indexOfLastDraft);
+  const totalPages = Math.ceil(draftData.length / draftsPerPage);
 
   const handleSubmit = async () => {
     if (selected.length === 0) {
       toast("No Drafts Selected to Send");
-    } else {
-      try {
-        await ExecuteMassSend({
-          userName: parsedUserProfile.student_name,
-          userEmail: parsedUserProfile.student_email,
-          professorData: selected,
-          access,
-        });
-        toast("Drafts Sent");
-      } catch {
-        toast("Drafts Failed to Send");
-      }
+      return;
+    }
+
+    const prevDrafts = [...draftData];
+
+    setDraftData((prev) =>
+      prev.filter((d) => !selected.some((sel) => sel.id === d.id))
+    );
+    setSelected([]);
+
+    try {
+      await ExecuteMassSend({
+        userName: parsedUserProfile.student_name,
+        userEmail: parsedUserProfile.student_email,
+        professorData: selected,
+        access,
+      });
+      toast("Drafts Sent");
+    } catch {
+      setDraftData(prevDrafts); 
+      toast("Drafts Failed to Send");
     }
   };
 
   const handleSubmitWithAttachments = async () => {
     if (selected.length === 0) {
       toast("No Drafts Selected to Send");
-    } else {
-      try {
-        await ExecuteMassSendWithAttachments({
-          userName: parsedUserProfile.student_name,
-          userEmail: parsedUserProfile.student_email,
-          professorData: selected,
-          access,
-        });
-        toast("Drafts Sent With Attachments!");
-      } catch {
-        toast("Drafts Failed to Send");
-      }
+      return;
+    }
+
+    const prevDrafts = [...draftData];
+
+    setDraftData((prev) =>
+      prev.filter((d) => !selected.some((sel) => sel.id === d.id))
+    );
+    setSelected([]);
+
+    try {
+      await ExecuteMassSendWithAttachments({
+        userName: parsedUserProfile.student_name,
+        userEmail: parsedUserProfile.student_email,
+        professorData: selected,
+        access,
+      });
+      toast("Drafts Sent With Attachments!");
+    } catch {
+      setDraftData(prevDrafts);
+      toast("Drafts Failed to Send");
     }
   };
 
   const handleDeleteDraft = async (draftId, userId, professorId) => {
+    const prevDrafts = [...draftData];
+
+    setDraftData((prev) => prev.filter((d) => d.draftId !== draftId));
+    setSelected((prev) => prev.filter((item) => item.id !== professorId));
+
     try {
       await DeleteDrafts(draftId, userId, professorId, access);
-      setDraftData((prev) => prev.filter((d) => d.draftId !== draftId));
-      setSelected((prev) => prev.filter((item) => item.id !== professorId));
       toast("Successfully Deleted");
     } catch {
+      setDraftData(prevDrafts); 
       toast("Failed to Delete");
     }
   };
@@ -83,40 +112,38 @@ export default function DraftList({
   };
 
   const handleCheckAll = () => {
-    if (checkAll) {
+    if (selected.length === draftData.length) {
       setSelected([]);
+      setCheckAll(false);
     } else {
-      setSelected(
-        draftData.map(({ id, name, email }) => ({ id, name, email }))
-      );
+      setSelected(draftData.map(({ id, name, email }) => ({ id, name, email })));
+      setCheckAll(true);
     }
-    setCheckAll(!checkAll);
   };
 
   return (
-    <div className="w-full max-w-screen-2xl mx-auto">
+    <div className="w-[50rem] max-w-screen-2xl mx-auto">
       <div className="flex flex-col gap-4">
-        <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-          <div className="flex items-center gap-2 px-3 py-2 bg-slate-50/80 backdrop-blur supports-[backdrop-filter]:bg-slate-50/60 border-b">
-            <Checkbox checked={checkAll} onCheckedChange={handleCheckAll} />
-            <span className="text-sm font-semibold text-slate-800">
-              Select all
-            </span>
+        <div className="rounded-xs border border-slate-200 bg-white shadow-sm overflow-hidden">
+          <div className="flex items-center gap-2 px-3 py-2 bg-slate-50/80 border-b">
+            <Checkbox
+              checked={selected.length === draftData.length && draftData.length > 0}
+              onCheckedChange={handleCheckAll}
+            />
+            <span className="text-sm font-semibold text-slate-800">Select all</span>
             <span className="text-xs text-slate-500">
               ({selected.length}/{draftData.length})
             </span>
           </div>
 
-          <div className="max-h-[60vh] overflow-y-auto divide-y">
-            {draftData.length > 0 ? (
-              draftData.map((data) => (
+          <div className="max-h-full overflow-y-auto divide-y">
+            {currentDrafts.length > 0 ? (
+              currentDrafts.map((data) => (
                 <Dialog key={data.id}>
                   <DialogTrigger className="px-3 py-2 cursor-pointer w-full flex items-center gap-3 hover:bg-slate-50 transition-colors">
                     <Checkbox
                       checked={selected.some((item) => item.id === data.id)}
-                      onCheckedChange={() =>
-                        handleCheck(data.id, data.name, data.email)
-                      }
+                      onCheckedChange={() => handleCheck(data.id, data.name, data.email)}
                       onClick={(e) => e.stopPropagation()}
                     />
 
@@ -148,7 +175,7 @@ export default function DraftList({
                       }}
                       variant="ghost"
                       size="icon"
-                      className="h-7 w-7 p-1 text-zinc-500 hover:bg-red-50 hover:text-red-500 rounded-md transition-colors"
+                      className="h-7 w-7 p-1 text-zinc-500 hover:bg-red-50 hover:text-red-500 rounded-md"
                       aria-label="Delete draft"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -157,7 +184,6 @@ export default function DraftList({
 
                   <DialogContent>
                     <DialogTitle></DialogTitle>
-
                     <div className="p-1">
                       <DraftEditor
                         fromName={parsedUserProfile.student_name}
@@ -174,17 +200,42 @@ export default function DraftList({
               ))
             ) : (
               <div className="py-6 px-4">
-                <div className="mx-auto w-full">
-                  <p className="text-sm text-slate-600">No drafts found.</p>
-                </div>
+                <p className="text-sm text-slate-600">No drafts found.</p>
               </div>
             )}
           </div>
+
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 py-3 border-t">
+              <Button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => p - 1)}
+                variant="outline"
+                size="sm"
+              >
+                Prev
+              </Button>
+
+              <span className="text-sm text-slate-600">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              <Button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => p + 1)}
+                variant="outline"
+                size="sm"
+              >
+                Next
+              </Button>
+            </div>
+          )}
         </div>
 
+        {/* Actions */}
         <div className="flex gap-3">
           <Button
-            className="inline-flex items-center gap-2 text-sm font-medium text-white bg-[#529CCA] hover:bg-[#4179B8] px-3 py-1.5 rounded-md transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-white bg-[#529CCA] hover:bg-[#4179B8] px-3 py-1.5 rounded-md"
             onClick={handleSubmit}
           >
             <Send className="w-4 h-4" />
@@ -192,7 +243,7 @@ export default function DraftList({
           </Button>
 
           <Button
-            className="inline-flex items-center gap-2 text-sm font-medium text-white bg-[#C14C8A] hover:bg-[#A73B75] px-3 py-1.5 rounded-md transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-white bg-[#C14C8A] hover:bg-[#A73B75] px-3 py-1.5 rounded-md"
             onClick={handleSubmitWithAttachments}
           >
             <FileSymlink className="w-4 h-4" />

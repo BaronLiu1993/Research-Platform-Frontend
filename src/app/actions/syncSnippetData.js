@@ -1,10 +1,10 @@
 "use server";
 
-export const SyncSnippetData = async (
+export const SyncSnippetData = async ({
   professorIdArray,
   variableArray,
-  access
-) => {
+  access,
+}) => {
   try {
     const response = await fetch(
       `http://localhost:8080/snippets/sync-fetchable-variables`,
@@ -21,13 +21,9 @@ export const SyncSnippetData = async (
       }
     );
 
-    if (!response.ok) {
-      return;
-    }
-
     const data = await response.json();
     return data;
-  } catch {
-    throw new Error("Failed")
+  } catch (err) {
+    throw new Error("Failed");
   }
 };

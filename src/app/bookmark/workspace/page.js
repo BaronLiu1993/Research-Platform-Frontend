@@ -90,7 +90,6 @@ export default async function Work() {
     rawTranscriptData.json(),
   ]);
 
-
   const parsedInProgressData = inProgressJson?.data ?? [];
   const parsedSavedData = savedDataJson?.data ?? [];
   const parsedDraftData = draftJson?.data ?? [];
@@ -98,7 +97,6 @@ export default async function Work() {
   const parsedUserProfile = userProfileJson ?? {};
   const parsedResumeData = resumeData ?? {};
   const parsedTranscriptData = transcriptData ?? {};
-  console.log(parsedDraftData)
   let draftData = await Promise.all(
     (parsedDraftData ?? []).map(async (prof) => {
       try {
@@ -164,7 +162,7 @@ export default async function Work() {
               access={access}
               parsedInProgressData={parsedInProgressData}
               parsedCompletedData={parsedCompletedData}
-              draftData={draftData}
+              initialDraftData={draftData}
               parsedUserProfile={parsedUserProfile}
               parsedSavedData={parsedSavedData}
               parsedResumeData={parsedResumeData}

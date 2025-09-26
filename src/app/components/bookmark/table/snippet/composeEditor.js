@@ -80,10 +80,15 @@ export default function ComposeEditor({
       handleGenerateDrafts();
       toast("Empty Draft");
     } else {
-      const response = await GenerateSnippet(body, subject, access);
+      const response = await GenerateSnippet({
+        snippet_html: body,
+        snippet_subject: subject,
+        access,
+      });
       if (response.success) {
         setGenerateView(response.success);
         setSnippetId(response.snippetId);
+        toast("Generated Snippet");
       } else {
         toast("Failed to Generate Snippet");
       }

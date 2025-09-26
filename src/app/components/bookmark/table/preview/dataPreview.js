@@ -32,6 +32,7 @@ export default function DataPreview({
   snippetId,
   generateView,
   access,
+  onDraftsFinalised,
 }) {
   const selectedVariables = useSelectedVariablesStore(
     (s) => s.selectedVariables
@@ -42,7 +43,7 @@ export default function DataPreview({
   const [selectedPublications, setSelectedPublications] = useState({});
   const [activeProfessorId, setActiveProfessorId] = useState(null);
 
-  const professorIDArray = rowData.map((data) => data.original.professor_id);
+  const professorIdArray = rowData.map((data) => data.original.professor_id);
 
   const handleSelectTitle = (professorId, title) => {
     setSelectedPublications((prev) => ({
@@ -70,11 +71,11 @@ export default function DataPreview({
   };
 
   const handleSyncSnippet = async () => {
-    const response = await SyncSnippetData(
-      professorIDArray,
-      selectedVariables,
-      access
-    );
+    const response = await SyncSnippetData({
+      professorIdArray,
+      variableArray: selectedVariables,
+      access,
+    });
 
     if (response?.result && Array.isArray(response.result)) {
       const initialPublications = {};
@@ -90,18 +91,23 @@ export default function DataPreview({
       setSelectedPublications(initialPublications);
     }
 
-    if (response?.status === "synced") setSynced(true);
+    if (response?.status === "synced") {
+      setSynced(true);
+    }
     setSyncedData(response);
   };
 
   const handleDraftGeneration = async (dynamicFields) => {
-    await createMassDrafts({
-      snippetId,
-      fromName: parsedUserProfile.student_name,
-      fromEmail: parsedUserProfile.student_email,
-      dynamicFields,
-      access,
-    });
+    onDraftsFinalised?.(rowData.map((r) => r.original.professor_id));
+    try {
+      const response = await createMassDrafts({
+        snippetId,
+        fromName: parsedUserProfile.student_name,
+        fromEmail: parsedUserProfile.student_email,
+        dynamicFields,
+        access,
+      });
+    } catch {}
   };
 
   return (

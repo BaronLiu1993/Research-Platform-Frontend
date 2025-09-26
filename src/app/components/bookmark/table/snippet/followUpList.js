@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogTrigger,
-  DialogDescription,
 } from "@/shadcomponents/ui/composedialog";
 
 import { Button } from "@/shadcomponents/ui/button";
@@ -21,7 +20,6 @@ export default function FollowUpList({
   parsedUserProfile,
   access,
 }) {
-  console.log(parsedCompletedData);
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState([]);
   const [totalSelected, setTotalSelected] = useState([]);
@@ -85,9 +83,9 @@ export default function FollowUpList({
   };
 
   return (
-    <div className="w-full max-w-screen-2xl mx-auto">
+    <div className="w-[50rem] max-w-screen-2xl mx-auto">
       <div className="flex flex-col gap-4">
-        <div className="rounded-md border border-slate-200 bg-white shadow-sm overflow-hidden">
+        <div className="rounded-xs border border-slate-200 bg-white shadow-sm overflow-hidden">
           <div className="flex items-center gap-2 px-3 py-2 bg-slate-50/80 backdrop-blur supports-[backdrop-filter]:bg-slate-50/60 border-b">
             <Checkbox checked={checkAll} onCheckedChange={handleCheckAll} />
             <span className="text-sm font-semibold text-slate-800">
