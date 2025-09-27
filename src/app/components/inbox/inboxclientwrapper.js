@@ -24,7 +24,6 @@ export default function InboxClientWrapper({
   userName,
   access,
 }) {
-  console.log(threadArrayEmailResponse);
   const [openThreadId, setOpenThreadId] = useState(null);
   const [draftExistsMap, setDraftExistsMap] = useState({});
   
@@ -146,9 +145,6 @@ export default function InboxClientWrapper({
                               <Suspense
                                 fallback={
                                   <div className="space-y-3">
-                                    <p className="text-sm text-gray-500">
-                                      Loading…
-                                    </p>
                                     <Skeleton className="h-[40rem] w-full rounded-md bg-gray-200" />
                                   </div>
                                 }

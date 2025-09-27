@@ -3,7 +3,7 @@
 import "tippy.js/dist/tippy.css";
 
 import { useState, useEffect, useRef } from "react";
-import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
+import { useEditor, EditorContent } from "@tiptap/react";
 import Mention from "@tiptap/extension-mention";
 import suggestion from "../tiptap/suggestion";
 import StarterKit from "@tiptap/starter-kit";
@@ -20,20 +20,21 @@ import FollowUpButton from "./followUpButton";
 import { ExecuteMassFollowUpDraftsWithAttachments } from "@/app/actions/queue/executeMassSendFollowUpDraftsWithAttachments";
 import { ExecuteMassSendFollowUpDrafts } from "@/app/actions/queue/executeMassSendFollowUpDrafts";
 import { SyncFollowUpSnippetData } from "@/app/actions/syncFollowUpSnippetData";
+import Paragraph from "@tiptap/extension-paragraph";
+import HardBreak from "@tiptap/extension-hard-break";
+import { mergeAttributes } from "@tiptap/react";
 
 export default function FollowUpEditor({
-  userId,
   fromName,
   fromEmail,
   professorIDArray,
   totalProfessorData,
   access,
 }) {
-  console.log("test");
-  console.log(totalProfessorData);
-  console.log(professorIDArray);
-
   const [subject, setSubject] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabledAttachments, setIsDisabledAttachments] = useState(false);
+
   const closeRef = useRef(null);
 
   const setSelectedVariables = useSelectedVariablesStore(
@@ -47,13 +48,29 @@ export default function FollowUpEditor({
     setSelectedVariables([]);
   }, []);
 
+  const CustomParagraph = Paragraph.extend({
+    renderHTML({ HTMLAttributes }) {
+      return [
+        "p",
+        mergeAttributes(HTMLAttributes, {
+          style: "margin:0; white-space:pre-wrap; word-break:break-word;",
+        }),
+        0,
+      ];
+    },
+  });
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        paragraph: false,
+      }),
+      HardBreak.configure({
+        keepMarks: false,
+      }),
+      CustomParagraph,
       Mention.configure({
         HTMLAttributes: {
-          class:
-            "prose bg-[#F6F3F9] text-[#9065B0] font-mono text-[14px] rounded-md",
+          class: "bg-[#F6F3F9] text-[#9065B0] font-mono text-[14px] rounded-md",
         },
         suggestion: {
           ...suggestion,
@@ -64,8 +81,13 @@ export default function FollowUpEditor({
     ],
     editorProps: {
       attributes: {
-        class:
-          "prose prose-p:my-0 max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[14px]",
+        style: `
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.4;
+        white-space: pre-wrap;
+        word-break: break-word;
+      `,
       },
     },
     content: "",
@@ -82,29 +104,37 @@ export default function FollowUpEditor({
   });
 
   const handleCreateFollowUpDrafts = async () => {
+    if (isDisabled) {
+      return;
+    }
+    setIsDisabled(true);
     try {
-      const response = await GenerateSnippet(editor.getHTML(), subject, access);
+      const response = await GenerateSnippet({
+        snippet_html: editor.getHTML(),
+        snippet_subject: subject,
+        access,
+      });
 
-      const dynamicFields = await SyncFollowUpSnippetData(
+      const dynamicFields = await SyncFollowUpSnippetData({
         totalProfessorData,
-        selectedVariables,
-        access
-      );
-      const draftResponse = await createMassFollowUpDrafts(
-        response.snippetId,
+        variableArray: selectedVariables,
+        access,
+      });
+      const draftResponse = await createMassFollowUpDrafts({
+        snippetId: response.snippetId,
         fromName,
         fromEmail,
         dynamicFields,
-        access
-      );
+        access,
+      });
 
       if (draftResponse.success) {
-        await ExecuteMassSendFollowUpDrafts(
-          fromName,
-          fromEmail,
-          totalProfessorData,
-          access
-        );
+        await ExecuteMassSendFollowUpDrafts({
+          userName: fromName,
+          userEmail: fromEmail,
+          professorData: totalProfessorData,
+          access,
+        });
         closeRef.current?.click();
         toast("Follow Up Emails Sent!");
       } else {
@@ -116,6 +146,11 @@ export default function FollowUpEditor({
   };
 
   const handleCreateFollowUpDraftsWithAttachments = async () => {
+    if (isDisabledAttachments) {
+      return;
+    }
+
+    setIsDisabledAttachments(true);
     try {
       const response = await GenerateSnippet({
         snippet_html: editor.getHTML(),
@@ -137,13 +172,12 @@ export default function FollowUpEditor({
           access,
         });
         if (draftResponse.success) {
-          const sendResponse = await ExecuteMassFollowUpDraftsWithAttachments({
-            fromName,
-            fromEmail,
+          await ExecuteMassFollowUpDraftsWithAttachments({
+            userName: fromName,
+            userEmail: fromEmail,
             professorData: totalProfessorData,
             access,
           });
-          console.log(sendResponse);
           closeRef.current?.click();
           toast("Follow Up Email With Attachments Sent!");
         } else {
@@ -183,6 +217,8 @@ export default function FollowUpEditor({
       <div className="font-main p-4 flex items-center">
         <FollowUpButton
           sendFollowUp={handleCreateFollowUpDrafts}
+          isDisabled={isDisabled}
+          isDisabledAttachments={isDisabledAttachments}
           sendFollowUpWithAttachments={
             handleCreateFollowUpDraftsWithAttachments
           }

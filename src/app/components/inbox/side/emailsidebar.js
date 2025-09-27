@@ -8,19 +8,14 @@ import {
 } from "@/shadcomponents/ui/accordion";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Eye, EyeClosed } from "lucide-react";
+import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
-export default function EmailSidebar({
-  threadId,
-  email,
-  engagementData = {},
-  seenData = {},
-  access,
-}) {
+export default function EmailSidebar({ threadId, email, access }) {
   const [threadData, setThreadData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchResponseThread = async () => {
-      setIsLoading(true); 
+      setIsLoading(true);
 
       const mailData = await fetch(
         `http://localhost:8080/inbox/get-full-email-chain/${threadId}`,
@@ -50,8 +45,20 @@ export default function EmailSidebar({
 
   if (isLoading) {
     return (
-      <div className="h-[80vh] bg-white overflow-y-auto">
-        <div className="p-4">Loading...</div>
+      <div className="h-[80vh] bg-white overflow-y-auto p-4 animate-pulse">
+        <div className="space-y-4">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="space-y-2">
+              <Skeleton className="h-5 w-48" />
+              <div className="flex gap-2">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-28" />
+                <Skeleton className="h-4 w-16" />
+              </div>
+              <Skeleton className="h-16 w-full" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -140,10 +147,7 @@ export default function EmailSidebar({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <Message
-                    data={message}
-                    email={email}
-                  />
+                  <Message data={message} email={email} />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
