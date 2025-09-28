@@ -15,26 +15,33 @@ import {
   SidebarTrigger,
 } from "@/shadcomponents/ui/sidebar";
 import { AppSidebar } from "@/app/components/sidebar";
-import { MoveLeft, MoveRight, Plus, Laptop, MapIcon, Mail } from "lucide-react";
+import { Laptop, MapIcon, Mail } from "lucide-react";
 import InboxClientWrapper from "@/app/components/inbox/inboxclientwrapper";
-import { redirect } from "next/navigation";
 
-export default async function InboxEmail() {
+export default async function InboxEmail({ searchParams }) {
   const cookieStore = cookies();
-  const userId = cookieStore.get("user_id")?.value;
-  const access = cookieStore.get("access_token")?.value;
+  const userId = cookieStore.get("user_id")?.value || "";
+  const access = cookieStore.get("access_token")?.value || "";
+
+  const page = Math.max(1, parseInt(searchParams?.page ?? "1", 10) || 1);
 
   let threadArrayEmailResponse = [];
-
-  const resp = await fetch(`http://localhost:8080/inbox/get-email-chain`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${access}`,
-    },
-  });
-  if (resp.ok) {
-    const parsedEmailResponse = await resp.json();
-    threadArrayEmailResponse = parsedEmailResponse?.threadArray ?? [];
+  try {
+    const resp = await fetch(
+      `http://localhost:8080/inbox/get-email-chain?page=${page}`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${access}` },
+        next: { revalidate: 300, tags: [`inbox:${userId}:page:${page}`] },
+        cache: "force-cache",
+      }
+    );
+    if (resp.ok) {
+      const parsed = await resp.json();
+      threadArrayEmailResponse = parsed?.threadArray ?? [];
+    }
+  } catch (e) {
+    // silently fall back to empty
   }
 
   const combinedArray = await Promise.all(
@@ -46,9 +53,12 @@ export default async function InboxEmail() {
           )}`,
           {
             method: "GET",
-            headers: {
-              Authorization: `Bearer ${access}`,
+            headers: { Authorization: `Bearer ${access}` },
+            next: {
+              revalidate: 600,
+              tags: [`draft:${userId}:${obj.professorId}`],
             },
+            cache: "force-cache",
           }
         );
         const draftData = draftResp.ok ? await draftResp.json() : {};
@@ -60,18 +70,18 @@ export default async function InboxEmail() {
   );
 
   let parsedUserProfile = {};
-  const authResp = await fetch(
-    "http://localhost:8080/auth/get-user-sidebar-info",
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${access}`,
-      },
-    }
-  );
-  if (authResp.ok) {
-    parsedUserProfile = await authResp.json();
-  }
+  try {
+    const authResp = await fetch(
+      "http://localhost:8080/auth/get-user-sidebar-info",
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${access}` },
+        next: { revalidate: 600, tags: [`user:${userId}:sidebar`] },
+        cache: "force-cache",
+      }
+    );
+    if (authResp.ok) parsedUserProfile = await authResp.json();
+  } catch {}
 
   return (
     <SidebarProvider>
