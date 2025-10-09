@@ -6,11 +6,7 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from "@/shadcomponents/ui/breadcrumb";
-import {
-  Laptop,
-  LockKeyhole,
-  Plane,
-} from "lucide-react";
+import { Laptop, LockKeyhole, Plane } from "lucide-react";
 
 export default async function SignUp() {
   return (
@@ -20,7 +16,7 @@ export default async function SignUp() {
           <BreadcrumbItem className="hidden md:flex">
             <BreadcrumbLink
               href="/"
-              className="flex items-center font-medium text-[#37352F] gap-2 hover:underline"
+              className="flex items-center font-light text-[#37352F] gap-2 hover:underline"
             >
               <Laptop className="rounded-xs text-white fill-blue-700 h-5 w-5" />
               Home
@@ -30,7 +26,7 @@ export default async function SignUp() {
             <div className="text-gray-300">/</div>
           </BreadcrumbSeparator>
           <BreadcrumbItem>
-            <BreadcrumbPage className="font-main flex items-center gap-2 font-medium hover:underline cursor-pointer text-[#37352F]">
+            <BreadcrumbPage className="font-main flex items-center gap-2 font-light text-[#37352F] hover:underline cursor-pointer">
               <LockKeyhole className="text-blue-700 h-4 w-4" />
               Sign Up
             </BreadcrumbPage>
@@ -41,7 +37,7 @@ export default async function SignUp() {
       <div className="w-full min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-0 space-y-10 font-main">
         <div className="flex flex-col items-center text-center space-y-5">
           <Plane className="h-20 w-20 stroke-1" />
-          <div className = "flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
             <h1 className="font-playfair text-2xl sm:text-3xl">
               {"Let's Get You Started!"}
             </h1>

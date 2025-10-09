@@ -26,9 +26,6 @@ import {
   Database,
   Laptop,
   MapIcon,
-  MoveLeft,
-  MoveRight,
-  Plus,
 } from "lucide-react";
 
 export default async function Repository({ searchParams }) {
@@ -56,23 +53,38 @@ export default async function Repository({ searchParams }) {
   ]);
 
   const [savedProfessorDataJson, appliedProfessorDataJson] = await Promise.all([
-    savedProfessorData.ok ? savedProfessorData.json() : Promise.resolve({ data: [] }),
-    appliedProfessorData.ok ? appliedProfessorData.json() : Promise.resolve({ data: [] }),
+    savedProfessorData.ok
+      ? savedProfessorData.json()
+      : Promise.resolve({ data: [] }),
+    appliedProfessorData.ok
+      ? appliedProfessorData.json()
+      : Promise.resolve({ data: [] }),
   ]);
 
-  // Table + profile in parallel
   const [tableRes, profileRes] = await Promise.all([
-    fetch(`${API_BASE}/repository/taishan?page=${pageNumber}&search=${search}`, {
-      headers: access ? { Authorization: `Bearer ${access}` } : {},
-      next: { revalidate: 300 },
-    }),
+    fetch(
+      `${API_BASE}/repository/taishan?page=${pageNumber}&search=${search}`,
+      {
+        headers: access ? { Authorization: `Bearer ${access}` } : {},
+        next: { revalidate: 300 },
+        cache: "force-cache",
+      }
+    ),
     fetch(`${API_BASE}/auth/get-user-sidebar-info`, {
-      headers: access ? { Authorization: `Bearer ${access}`, "Content-Type": "application/json" } : {},
+      headers: access
+        ? {
+            Authorization: `Bearer ${access}`,
+            "Content-Type": "application/json",
+          }
+        : {},
       next: { revalidate: 300 },
+      cache: "force-cache",
     }),
   ]);
 
-  const { tableData = [], tableCount = 0 } = tableRes.ok ? await tableRes.json() : { tableData: [], tableCount: 0 };
+  const { tableData = [], tableCount = 0 } = tableRes.ok
+    ? await tableRes.json()
+    : { tableData: [], tableCount: 0 };
   const parsedUserProfile = profileRes.ok ? await profileRes.json() : {};
 
   return (
@@ -85,7 +97,10 @@ export default async function Repository({ searchParams }) {
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink asChild>
-                  <Link href="/" className="font-main flex items-center gap-2 font-light text-[#37352F]">
+                  <Link
+                    href="/"
+                    className="font-main flex items-center gap-2 font-light text-[#37352F]"
+                  >
                     <Laptop className="h-5 w-5 text-blue-700" />
                     Home
                   </Link>
@@ -107,15 +122,22 @@ export default async function Repository({ searchParams }) {
             <div className="my-8 sm:my-10 space-y-2">
               <div className="mt-2">
                 <div className="flex items-center justify-between gap-2 pt-2">
-                  <h1 className="text-xl sm:text-2xl text-[#37352F] font-semibold">Curated Professors</h1>
+                  <h1 className="text-xl sm:text-2xl text-[#37352F] font-semibold">
+                    Curated Professors
+                  </h1>
                 </div>
                 <div className="flex items-center py-2 gap-2">
-                  <Badge variant="secondary" className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]">
+                  <Badge
+                    variant="secondary"
+                    className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]"
+                  >
                     <Database className="w-3.5 h-3.5 mr-1" />
                     Recommended Professors
                   </Badge>
                   <span className="rounded-full h-1 w-1 bg-[#37352F]" />
-                  <span className="text-[11px] font-medium text-[#37352F]">By Jie Xuan Liu</span>
+                  <span className="text-[11px] font-medium text-[#37352F]">
+                    By Jie Xuan Liu
+                  </span>
                 </div>
               </div>
 
@@ -135,7 +157,9 @@ export default async function Repository({ searchParams }) {
                 appliedProfessors={appliedProfessorDataJson}
               />
               {typeof tableCount === "number" && (
-                <p className="text-xs text-gray-500 mt-2">{tableCount} results</p>
+                <p className="text-xs text-gray-500 mt-2">
+                  {tableCount} results
+                </p>
               )}
             </div>
           </div>
