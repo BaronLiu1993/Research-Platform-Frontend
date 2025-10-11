@@ -13,7 +13,6 @@ export const UploadTranscript = async ({file, access}) => {
       }
     );
     if (response.ok) {
-      console.log("okay")
       return { success: true };
     }
   } catch {

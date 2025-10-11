@@ -1,27 +1,23 @@
+import { Lightbulb, Mail, Search } from "lucide-react";
 import Link from "next/link";
-
-// Home (cleaned)
-// - Fixes mismatched Login/Sign Up links
-// - Replaces non-existent Tailwind classes (rounded-xs, border-1, my-30)
-// - Improves semantics (header/main/section)
-// - Normalizes spacing & typography
-// - Makes features/cards data-driven
-// - Minor copy edits & typo fixes
 
 const FEATURE_CARDS = [
   {
     title: "Mass Send Emails",
     body:
       "Find and learn more about professors. Save them and quickly access their research interests, groups, and past work.",
+    icon: <Mail className = "stroke-1"/>
   },
   {
-    title: "Automate Initial & Follow‑ups",
+    title: "Automate Initial and Follow Up Emails",
     body:
-      "Let us handle sending and scheduled follow‑ups so you can focus on finding the right professor.",
+      "Let us handle sending and scheduled follow Ups so you can focus on finding the right professor.",
+    icon: <Lightbulb className = "stroke-1" />
   },
   {
     title: "Track Emails",
-    body: "Know who opened, clicked, or didn’t respond—so you can prioritize outreach smartly.",
+    body: "Know who opened, clicked, or did not respond, so you can prioritize outreach smartly.",
+    icon: <Search className = "stroke-1"/>
   },
 ];
 
@@ -50,10 +46,10 @@ const AREAS = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      <header className="px-6 sm:px-10">
+    <div className="">
+      <header className="px-6 sm:px-10 min-h-screen flex  justify-center items-center">
         <div className="flex flex-col my-16 sm:my-24">
-          <h1 className="text-4xl sm:text-5xl px-0 sm:px-4 leading-tight">
+          <h1 className="text-4xl sm:text-7xl px-0 sm:px-4 leading-tight">
             <span className="font-playfair">Find Researchers at UofT</span>
           </h1>
 
@@ -92,9 +88,8 @@ export default function Home() {
           <h3 className="border-b-2 border-[#5B61B2] w-fit font-main font-medium p-1 mt-2">
             📝 Modules
           </h3>
-          <p className="mt-2 font-main text-sm font-light text-gray-800 max-w-2xl">
-            Find a list of professors whose work matches your interests. Whether it is
-            Molecular Biology or Machine Learning, we got you.
+          <p className="mt-2 font-main text-sm font-light text-gray-800">
+            Find a list of professors whose work matches your interests. Whether it is Molecular Biology or Machine Learning, we got you.
           </p>
 
           <div className="flex flex-wrap gap-2 font-main mt-4">
@@ -117,7 +112,7 @@ export default function Home() {
             <h3 className="border-b-2 border-[#5B61B2] w-fit font-main font-medium p-1 mt-2">
               📝 Outreach & Tracking
             </h3>
-            <p className="my-2 font-main text-sm font-light text-gray-800 max-w-3xl">
+            <p className="my-2 font-main text-sm font-light text-gray-800">
               Find the perfect research match. Instantly tailor your resume and craft
               personalized outreach emails then track engagement all in one place.
             </p>
@@ -125,12 +120,13 @@ export default function Home() {
 
           <div className="flex justify-center mb-20">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-6xl">
-              {FEATURE_CARDS.map(({ title, body }) => (
+              {FEATURE_CARDS.map(({ title, body, icon }) => (
                 <article
                   key={title}
-                  className="select-none border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm"
+                  className="select-none border border-gray-200 rounded-xs overflow-hidden bg-white shadow-sm"
                 >
                   <div className="flex bg-slate-50 p-5 flex-col gap-2">
+                    {icon}
                     <h4 className="font-playfair text-lg sm:text-xl text-[#2F80E4]">
                       {title}
                     </h4>

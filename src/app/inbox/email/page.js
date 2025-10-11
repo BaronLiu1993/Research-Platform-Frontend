@@ -41,7 +41,7 @@ export default async function InboxEmail({ searchParams }) {
       threadArrayEmailResponse = parsed?.threadArray ?? [];
     }
   } catch (e) {
-    // silently fall back to empty
+
   }
 
   const combinedArray = await Promise.all(
@@ -94,7 +94,7 @@ export default async function InboxEmail({ searchParams }) {
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink
                   href="/"
-                  className="flex items-center font-medium text-[#37352F] gap-2"
+                  className="flex items-center font-light text-[#37352F] gap-2"
                 >
                   <Laptop className="rounded-xs text-white fill-blue-700 h-5 w-5" />
                   Home
@@ -104,19 +104,19 @@ export default async function InboxEmail({ searchParams }) {
                 <div className="text-gray-300">/</div>
               </BreadcrumbSeparator>
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
+                <BreadcrumbLink href="/repository" className="font-main flex items-center gap-2 font-light text-[#37352F]">
                   <MapIcon className="fill-blue-700 text-white" />
                   Professors
-                </BreadcrumbPage>
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator>
                 <div className="text-gray-300">/</div>
               </BreadcrumbSeparator>
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-main flex items-center gap-2 font-medium text-[#37352F]">
+                <BreadcrumbLink href="/inbox/email" className="font-main flex font-link items-center gap-2 font-medium text-[#37352F]">
                   <Mail className="fill-blue-700 text-white" />
                   Inbox
-                </BreadcrumbPage>
+                </BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

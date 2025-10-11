@@ -97,13 +97,13 @@ export default function EmailSidebar({ threadId, email, access }) {
                       <div className="space-x-2 flex items-center gap-2">
                         {!message?.labels?.includes("DRAFT") && (
                           <>
-                            {message.to.address != "baronliu1993@gmail.com" && (
+                            {message.to.address != email && (
                               <Badge className="bg-green-500 text-[10px] rounded-xs underline-none">
                                 RECEIVED
                               </Badge>
                             )}
 
-                            {message.to.address != "baronliu1993@gmail.com" && (
+                            {message.to.address != email && (
                               <div className="flex gap-2 underline-none">
                                 <div>
                                   {message.seenData.opened_email ? (

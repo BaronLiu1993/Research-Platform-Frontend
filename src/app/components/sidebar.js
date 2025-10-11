@@ -48,28 +48,10 @@ const data = {
           ),
         },
         {
-          title: "Dashboard",
-          type: "expandable", 
+          title: "Workspace",
+          url: "/workspace", 
           icon: (
             <LayoutDashboard className="h-6 w-6 bg-blue-100 rounded-xs text-[#337EA9] p-0.5" />
-          ),
-          options: [
-            { title: "Workspace", url: "/bookmark/workspace" },
-            { title: "Kanban", url: "/bookmark/kanban" },
-          ],
-        },
-        {
-          title: "Research Fund",
-          url: "/grants",
-          icon: (
-            <Microscope className="text-purple-500 bg-purple-100 h-6 w-6 p-0.5 rounded-xs" />
-          ),
-        },
-        {
-          title: "Settings",
-          url: "/dashboard",
-          icon: (
-            <Settings className="text-zinc-500 bg-zinc-100 h-6 w-6 p-0.5 rounded-xs" />
           ),
         },
       ],
@@ -168,7 +150,7 @@ export function AppSidebar({ student_data, ...props }) {
 
       <SidebarRail />
       <SidebarFooter>
-        <Button onClick ={handleSignOut} className="w-fit rounded-md p-2 m-1 cursor-pointer text-sm text-[#FDEBEC] bg-[#D44C47] hover:bg-[#B83F3A]">
+        <Button onClick ={handleSignOut} className="w-fit rounded-xs p-2 m-1 cursor-pointer text-xs text-[#FDEBEC] bg-[#D44C47] hover:bg-[#B83F3A]">
           Sign Out
         </Button>
       </SidebarFooter>

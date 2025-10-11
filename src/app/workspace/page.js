@@ -162,7 +162,7 @@ export default async function Work() {
               access={access}
               parsedInProgressData={parsedInProgressData}
               parsedCompletedData={parsedCompletedData}
-              initialDraftData={draftData}
+              initialDsraftData={draftData}
               parsedUserProfile={parsedUserProfile}
               parsedSavedData={parsedSavedData}
               parsedResumeData={parsedResumeData}
