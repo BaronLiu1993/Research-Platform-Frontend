@@ -17,15 +17,6 @@ export default {
   items: ({ query }) => {
     return [
       {
-        title: "Publications",
-        description: "Query Relevant Publications Variable",
-        icon: (
-          <BookText className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#9F6B53]" />
-        ),
-        searchTerms: ["unordered", "point"],
-        variable: "{{publications}}",
-      },
-      {
         title: "Labs",
         description: "Get The Lab Associated With the Professor",
         icon: (
@@ -35,7 +26,7 @@ export default {
         variable: "{{labs}}",
       },
       {
-        title: "Research Interests",
+        title: "Last Name",
         description: "Query Relevant Publications Variable",
         icon: (
           <Lightbulb className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#CB912F]" />
@@ -44,7 +35,7 @@ export default {
         variable: "{{researchInterests}}",
       },
       {
-        title: "Personal Portfolio",
+        title: "First Name",
         description: "Insert AI Generated Portfolio",
         icon: (
           <Atom className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#337EA9]" />
@@ -53,8 +44,8 @@ export default {
         variable: "{{Portfolio}}",
       },
       {
-        title: "Professor School",
-        description: "Professor School",
+        title: "Professor Institution",
+        description: "Where They Work",
         icon: (
           <School2 className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#37352F]" />
         ),
@@ -69,15 +60,6 @@ export default {
         ),
         searchTerms: ["ordered", "point", "numbers"],
         variable: "{{professorSchool}}",
-      },
-      {
-        title: "Resume Point",
-        description: "Pick a Resume Point to Incorporate",
-        icon: (
-          <Newspaper className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#C14C8A]" />
-        ),
-        searchTerms: ["ordered", "point", "numbers"],
-        variable: "{{resumePoint}}",
       },
       {
         title: "Department",

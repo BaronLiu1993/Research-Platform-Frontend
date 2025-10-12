@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useMemo, useState } from "react";
 
 import { FileUploadDialog } from "./upload/fileUploadDialog";
 
@@ -27,6 +28,7 @@ import {
   SheetDescription,
   SheetTrigger,
 } from "@/shadcomponents/ui/composedSheet";
+
 import {
   Dialog,
   DialogTitle,
@@ -34,15 +36,16 @@ import {
   DialogTrigger,
   DialogHeader,
 } from "@/shadcomponents/ui/composedialog";
+
 import { Input } from "@/shadcomponents/ui/input";
 import { Button } from "@/shadcomponents/ui/button";
 import ComposeEditor from "./snippet/composeEditor";
 import DataPreview from "./preview/dataPreview";
+
 import {
   Bot,
   Cloud,
   DraftingCompass,
-  Hammer,
   HammerIcon,
   Info,
   Mail,
@@ -52,6 +55,7 @@ import {
 import { Badge } from "@/shadcomponents/ui/badge";
 import DraftList from "./snippet/draftList";
 import FollowUpList from "./snippet/followUpList";
+
 import {
   Tabs,
   TabsContent,
@@ -74,8 +78,15 @@ export function SavedDataTable({
   parsedTranscriptData,
   access,
 }) {
-  const [draftData, setDraftData] = useState(initialDraftData);
-  const [savedData, setSavedData] = useState(initialSavedData);
+  const initialRows = useMemo(
+    () => (Array.isArray(initialSavedData) ? initialSavedData : []),
+    [initialSavedData]
+  );
+  const [draftData, setDraftData] = useState(
+    Array.isArray(initialDraftData) ? initialDraftData : []
+  );
+  const [savedData, setSavedData] = useState(initialRows);
+
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [snippetId, setSnippetId] = useState("");
@@ -87,7 +98,7 @@ export function SavedDataTable({
 
   const table = useReactTable({
     data: savedData,
-    columns,
+    columns: Array.isArray(columns) ? columns : [],
     state: { sorting, columnFilters },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -101,6 +112,7 @@ export function SavedDataTable({
   const handleGenerateDrafts = async () => setDraftsView((v) => !v);
 
   const handleUploadTranscript = async () => {
+    if (!transcript) return toast.error("Select a transcript first");
     try {
       await UploadTranscript({ file: transcript, access });
       toast.success("Uploaded transcript");
@@ -111,6 +123,7 @@ export function SavedDataTable({
   };
 
   const handleUploadResume = async () => {
+    if (!resume) return toast.error("Select a resume first");
     try {
       await UploadResume({ file: resume, access });
       toast.success("Uploaded resume");
@@ -121,8 +134,8 @@ export function SavedDataTable({
   };
 
   return (
-    <div className="px-4 font-main w-full max-w-screen-xl mx-auto">
-      <div className="flex gap-4">
+    <div className="px-4 font-main w-full max-w-screen-2xl mx-auto">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
         <FileUploadDialog
           id="resume"
           title="Resume"
@@ -141,8 +154,10 @@ export function SavedDataTable({
           onUpload={handleUploadTranscript}
         />
       </div>
-      <Tabs defaultValue="saved-professors">
-        <TabsList className="my-6 grid text-black grid-cols-2 sm:inline-flex gap-2 sm:gap-4 rounded-md">
+
+      {/* Tabs */}
+      <Tabs defaultValue="saved-professors" className="w-full">
+        <TabsList className="my-6 flex flex-wrap gap-2 rounded-md">
           <TabsTrigger value="saved-professors" className="rounded-md">
             Compose Mass Emails
           </TabsTrigger>
@@ -154,31 +169,28 @@ export function SavedDataTable({
           </TabsTrigger>
         </TabsList>
 
+        {/* SAVED */}
         <TabsContent value="saved-professors" className="py-4">
-          <div>
+          <div className="mb-2">
             <div className="font-semibold flex items-center gap-2 font-playfair text-2xl">
-              <Cloud className=" w-6 h-6 stroke-1" />
+              <Cloud className="w-6 h-6 stroke-1" />
               Saved Professors
             </div>
             <div className="flex items-center py-2 gap-2">
               <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]">
-                <Hammer className="w-3.5 h-3.5 mr-1" /> Generate Drafts
+                <HammerIcon className="w-3.5 h-3.5 mr-1" /> Generate Drafts
               </Badge>
-              <span className="rounded-full h-1 w-1 bg-[#37352F]" />
-              <span className="text-[11px] font-medium text-[#37352F]">
-                By Jie Xuan Liu
-              </span>
             </div>
           </div>
 
-          <div className="flex items-center py-4 gap-3 ">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center py-4 gap-3">
             <Input
               placeholder="Find professors..."
               value={table.getColumn("name")?.getFilterValue() ?? ""}
               onChange={(e) =>
                 table.getColumn("name")?.setFilterValue(e.target.value)
               }
-              className="max-w-sm"
+              className="max-w-full sm:max-w-sm"
             />
 
             <Sheet
@@ -192,13 +204,13 @@ export function SavedDataTable({
               }}
             >
               <SheetTrigger asChild>
-                <Button className="text-sm font-medium inline-flex items-center gap-1 text-white bg-[#529CCA] px-3 py-1.5 hover:bg-[#4179B8] rounded-md">
+                <Button className="text-sm font-medium inline-flex items-center gap-1 text-white bg-[#529CCA] px-3 py-2 hover:bg-[#4179B8] rounded-md">
                   <Mail className="w-4 h-4" /> Begin Mail Merge
                 </Button>
               </SheetTrigger>
 
-              <SheetContent className="rounded-none max-w-[800px] flex flex-col justify-between">
-                <SheetDescription className="py-10">
+              <SheetContent className="rounded-none w-full sm:max-w-[420px] md:max-w-[500px] flex flex-col justify-between">
+                <SheetDescription className="py-6 sm:py-10 overflow-y-auto">
                   <DataPreview
                     access={access}
                     rowData={table.getSelectedRowModel().rows}
@@ -206,8 +218,9 @@ export function SavedDataTable({
                     snippetId={snippetId}
                     generateView={generateView}
                     onDraftsFinalised={(professorIds) => {
+                      const ids = Array.isArray(professorIds) ? professorIds : [];
                       setSavedData((prev) =>
-                        prev.filter((row) => !professorIds.includes(row.id))
+                        prev.filter((row) => !ids.includes(row.id))
                       );
                       toast.success("Removed professors from Saved");
                     }}
@@ -220,13 +233,13 @@ export function SavedDataTable({
                         {draftsView && (
                           <Button
                             onClick={handleGenerateDrafts}
-                            className="text-sm font-main inline-flex items-center gap-1 bg-[#529CCA] px-3 py-1.5 hover:bg-[#4179B8] rounded-md"
+                            className="text-sm font-main inline-flex items-center gap-1 bg-[#529CCA] px-3 py-2 hover:bg-[#4179B8] rounded-md"
                           >
                             <DraftingCompass className="w-4 h-4" /> Begin Drafts
                           </Button>
                         )}
                       </DialogTrigger>
-                      <DialogContent className="max-w-xl">
+                      <DialogContent className="w-full max-w-xl">
                         <DialogHeader>
                           <DialogTitle className="sr-only">
                             Compose drafts
@@ -248,8 +261,9 @@ export function SavedDataTable({
             </Sheet>
           </div>
 
+          {/* Table container: scrollable on small screens */}
           <div className="overflow-x-auto rounded-xs border shadow-sm border-slate-200 bg-white">
-            <Table className="text-sm w-[50rem] shadow-sm border-slate-200">
+            <Table className="text-sm min-w-[48rem]">
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
@@ -269,6 +283,7 @@ export function SavedDataTable({
                   </TableRow>
                 ))}
               </TableHeader>
+
               <TableBody>
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
@@ -279,15 +294,9 @@ export function SavedDataTable({
                       className="cursor-pointer"
                     >
                       {row.getVisibleCells().map((cell) => (
-                        <TableCell
-                          key={cell.id}
-                          className="px-3 py-2 align-middle"
-                        >
+                        <TableCell key={cell.id} className="px-3 py-2 align-middle">
                           <div className="min-w-0 max-w-[28rem] truncate">
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
                           </div>
                         </TableCell>
                       ))}
@@ -295,16 +304,9 @@ export function SavedDataTable({
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-sm font-main p-4"
-                    >
+                    <TableCell colSpan={(columns || []).length} className="h-24 p-4">
                       <div className="py-6 px-4">
-                        <div className="mx-auto w-full">
-                          <p className="text-sm text-slate-600">
-                            No drafts found.
-                          </p>
-                        </div>
+                        <p className="text-sm text-slate-600">No drafts found.</p>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -312,7 +314,9 @@ export function SavedDataTable({
               </TableBody>
             </Table>
           </div>
-          <div className="flex items-center justify-end space-x-2 py-4">
+
+          {/* Pagination */}
+          <div className="flex flex-wrap items-center justify-end gap-2 py-4">
             <Button
               variant="outline"
               size="sm"
@@ -332,6 +336,7 @@ export function SavedDataTable({
           </div>
         </TabsContent>
 
+        {/* REVIEWED DRAFTS */}
         <TabsContent value="reviewed-drafts">
           <div className="py-4">
             <div className="font-semibold flex items-center gap-2 font-playfair text-2xl">
@@ -342,10 +347,6 @@ export function SavedDataTable({
               <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]">
                 <Pencil className="w-3.5 h-3.5 mr-1" /> Edit Drafts
               </Badge>
-              <span className="rounded-full h-1 w-1 bg-[#37352F]" />
-              <span className="text-[11px] font-medium text-[#37352F]">
-                By Jie Xuan Liu
-              </span>
             </div>
             <div className="bg-[#FAEBDD] flex items-center gap-2 p-2 w-fit rounded-md text-[#D9730D]">
               <Info className="h-4 w-4" />
@@ -363,6 +364,7 @@ export function SavedDataTable({
           />
         </TabsContent>
 
+        {/* FOLLOW UPS */}
         <TabsContent value="follow-ups">
           <div className="py-4">
             <div className="font-semibold flex items-center gap-2 font-playfair text-2xl">
@@ -373,10 +375,6 @@ export function SavedDataTable({
               <Badge className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]">
                 <HammerIcon className="w-3.5 h-3.5 mr-1" /> Generate Follow Up
               </Badge>
-              <span className="rounded-full h-1 w-1 bg-[#37352F]" />
-              <span className="text-[11px] font-medium text-[#37352F]">
-                By Jie Xuan Liu
-              </span>
             </div>
             <div className="bg-[#FAEBDD] flex items-center gap-2 p-2 w-fit rounded-md text-[#D9730D]">
               <Info className="h-4 w-4" />

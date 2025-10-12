@@ -67,23 +67,6 @@ const MentionList = forwardRef((props, ref) => {
 
   return (
     <div className="rounded-sm border py-3 px-1 bg-white w-[360px]">
-      <h1 className="text-xs font-semibold text-[#787774] px-3">
-        Create New Variables
-      </h1>
-
-      <div className="flex flex-col pr-1">
-        <button className="flex font-main gap-2 items-center p-2 rounded-xs hover:cursor-pointer hover:bg-gray-100">
-          <div>
-            <Braces className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#37352F]" />
-          </div>
-          <div className="flex flex-col justify-start items-start">
-            <span className="text-[12px] text-[#37352F]">Generate Section with AI</span>
-            <span className="text-[12px] font-light text-[#787774]">
-              Build Section with AI
-            </span>
-          </div>
-        </button>
-      </div>
 
       <div
         ref={scrollContainerRef}
@@ -92,7 +75,7 @@ const MentionList = forwardRef((props, ref) => {
         {props.items.length ? (
           <>
             <h1 className="text-xs font-semibold text-[#787774] px-3 pt-2">
-              Prebuilt Variables
+              Email Snippet Variables
             </h1>
 
             {props.items.map((item, index) => (

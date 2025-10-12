@@ -18,14 +18,14 @@ import { toast } from "sonner";
 
 export default function DraftList({
   draftData,
-  setDraftData, // 🔑 parent setter passed in
+  setDraftData, 
   parsedUserProfile,
   access,
 }) {
   const [selected, setSelected] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
+  console.log(draftData)
 
-  // 🔹 Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const draftsPerPage = 10;
   const indexOfLastDraft = currentPage * draftsPerPage;

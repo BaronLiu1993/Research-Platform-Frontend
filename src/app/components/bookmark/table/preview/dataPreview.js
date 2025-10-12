@@ -24,8 +24,6 @@ import { createMassDrafts } from "@/app/actions/queue/createMassDrafts";
 import { FolderSync, Hammer } from "lucide-react";
 import { SheetClose } from "@/shadcomponents/ui/composedSheet";
 
-const Publications = lazy(() => import("./publications"));
-
 export default function DataPreview({
   rowData,
   parsedUserProfile,
@@ -40,7 +38,6 @@ export default function DataPreview({
 
   const [synced, setSynced] = useState(false);
   const [syncedData, setSyncedData] = useState(null);
-  const [selectedPublications, setSelectedPublications] = useState({});
   const [activeProfessorId, setActiveProfessorId] = useState(null);
 
   const professorIdArray = rowData.map((data) => data.original.professor_id);
@@ -121,12 +118,10 @@ export default function DataPreview({
                 : "text-[#D44C47] bg-[#FDEBEC]"
             }`}
           >
-            {synced ? "Synced Variables" : "No Synced Variables"}
+            {synced ? "Synced Draft Variables" : "No Synced Draft Variables"}
           </Badge>
         </div>
-        <div className="font-medium text-xs text-muted-foreground">
-          Get a dedicated view of the variables for each professor.
-        </div>
+     
       </div>
       <div className="flex items-center">
         {rowData.length > 0 ? (

@@ -34,7 +34,6 @@ export default function SaveButton({
   const isSaved = saved.includes(professor_id);
   const isApplied = applied.includes(professor_id);
   
-  console.log(saved)
   const handleToggle = async () => {
     setLoading(true);
     try {

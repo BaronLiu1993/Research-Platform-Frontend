@@ -97,6 +97,7 @@ export default async function Work() {
   const parsedUserProfile = userProfileJson ?? {};
   const parsedResumeData = resumeData ?? {};
   const parsedTranscriptData = transcriptData ?? {};
+  
   let draftData = await Promise.all(
     (parsedDraftData ?? []).map(async (prof) => {
       try {
@@ -125,11 +126,12 @@ export default async function Work() {
   );
 
   draftData = draftData.filter(Boolean);
+
   return (
     <SidebarProvider>
       <AppSidebar student_data={parsedUserProfile} />
       <SidebarInset>
-        <header className="flex h-8 shrink-0 items-center gap-2 px-6">
+        <header className="flex h-8 mt-1 shrink-0 items-center gap-2 px-6">
           <SidebarTrigger className="cursor-pointer" />
           <Breadcrumb className="font-main font-semibold">
             <BreadcrumbList>
@@ -162,7 +164,7 @@ export default async function Work() {
               access={access}
               parsedInProgressData={parsedInProgressData}
               parsedCompletedData={parsedCompletedData}
-              initialDsraftData={draftData}
+              initialDraftData={draftData}
               parsedUserProfile={parsedUserProfile}
               parsedSavedData={parsedSavedData}
               parsedResumeData={parsedResumeData}

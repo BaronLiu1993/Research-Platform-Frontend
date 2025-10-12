@@ -4,7 +4,6 @@ import { Button } from "@/shadcomponents/ui/button";
 import { removeFromApply } from "./removeFromApply";
 import { Trash2 } from "lucide-react"; 
 
-//Remove the application
 export default function DeleteInProgressButton({ professor_id, user_id}) { 
   async function handleDeleteApplication(user_id, professor_id) {
     try {
