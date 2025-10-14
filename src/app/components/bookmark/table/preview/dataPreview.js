@@ -68,31 +68,20 @@ export default function DataPreview({
   };
 
   const handleSyncSnippet = async () => {
+
+  
     const response = await SyncSnippetData({
       professorIdArray,
       variableArray: selectedVariables,
       access,
     });
-
-    if (response?.result && Array.isArray(response.result)) {
-      const initialPublications = {};
-      for (const prof of response.result) {
-        if (
-          prof.dynamicFields &&
-          typeof prof.dynamicFields === "object" &&
-          "publications" in prof.dynamicFields
-        ) {
-          initialPublications[prof.id] = prof.dynamicFields.publications;
-        }
-      }
-      setSelectedPublications(initialPublications);
-    }
-
+  
     if (response?.status === "synced") {
       setSynced(true);
     }
     setSyncedData(response);
   };
+  
 
   const handleDraftGeneration = async (dynamicFields) => {
     onDraftsFinalised?.(rowData.map((r) => r.original.professor_id));
