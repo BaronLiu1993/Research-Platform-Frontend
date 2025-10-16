@@ -12,14 +12,11 @@ import {
 } from "@/shadcomponents/ui/dialog";
 import { Label } from "@/shadcomponents/ui/label";
 import { ArrowUpDown, University, BrainCircuit, Microscope, PersonStandingIcon } from "lucide-react";
-import SaveButton from "../bookmark/buttons/saveButton";
 import Link from "next/link";
 
 const InterestPills = ({ items = [] }) => {
   if (!items.length) return null;
-  const MAX = 6;
-  const shown = items.slice(0, MAX);
-  const extra = items.length - shown.length;
+  const shown = items
   return (
     <div className="mt-2 flex flex-wrap gap-1.5 pl-[calc(28px_+_0.75rem)]">
       {shown.map((interest, i) => (
@@ -32,16 +29,12 @@ const InterestPills = ({ items = [] }) => {
           <span className="truncate max-w-[9rem] inline-block align-middle">{interest}</span>
         </Badge>
       ))}
-      {extra > 0 && (
-        <Badge variant="secondary" className="text-[11px] bg-slate-100 text-gray-600 border-slate-200 px-2 py-0.5">
-          +{extra} more
-        </Badge>
-      )}
+      
     </div>
   );
 };
 
-const generateColumns = (userId, access) => [
+const generateColumns = () => [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -82,22 +75,7 @@ const generateColumns = (userId, access) => [
               <DialogTitle className="text-lg font-semibold text-gray-900 truncate">
                 {data.name || "Professor"}
               </DialogTitle>
-              <div className="flex space-x-3 pt-2">
-                <SaveButton
-                  professor_id={data.id || data.professor_id}
-                  professor_email={data.email}
-                  professor_name={data.name}
-                  professor_url={data.url}
-                  professor_research_interests={data.research_interests}
-                  professor_school={data.school}
-                  professor_faculty={data.faculty}
-                  professor_department={data.department}
-                  professor_labs={data.labs}
-                  professor_lab_url={data.lab_url}
-                  user_id={userId}
-                  access={access}
-                />
-              </div>
+              
             </DialogHeader>
 
             <div className="grid gap-3 py-4 px-6 text-sm overflow-y-auto">
@@ -140,7 +118,7 @@ const generateColumns = (userId, access) => [
                 <Label className="text-right font-medium text-gray-500 pt-1">Interests</Label>
                 <div className="flex flex-wrap gap-1.5">
                   {(data.research_interests || []).length ? (
-                    (data.research_interests || []).slice(0, 20).map((interest, i) => (
+                    (data.research_interests || []).slice(0, 40).map((interest, i) => (
                       <Badge
                         key={`${interest}-${i}`}
                         variant="secondary"
@@ -187,20 +165,7 @@ const generateColumns = (userId, access) => [
       const data = row.original || {};
       return (
         <div className="flex justify-end items-center h-full pr-1">
-          <SaveButton
-            professor_id={data.id || data.professor_id}
-            professor_name={data.name}
-            professor_url={data.url}
-            professor_email={data.email}
-            professor_research_interests={data.research_interests}
-            professor_school={data.school}
-            professor_faculty={data.faculty}
-            professor_department={data.department}
-            professor_labs={data.labs}
-            professor_lab_url={data.lab_url}
-            user_id={userId}
-            access={access}
-          />
+          
         </div>
       );
     },

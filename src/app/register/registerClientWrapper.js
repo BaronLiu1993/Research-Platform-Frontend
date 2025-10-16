@@ -7,9 +7,6 @@ import DropdownYear from "../components/dropdowns/dropdownyear";
 import DropdownMajor from "../components/dropdowns/dropdownmajor";
 import DropdownInterests from "../components/dropdowns/dropdowninterests";
 
-import { useSavedStore } from "../store/useSavedStore";
-import { useAppliedStore } from "../store/useAppliedStore";
-
 import {
   ShieldCheck,
   AlertCircle,
@@ -29,10 +26,6 @@ export default function RegisterClientWrapper({ access }) {
   const [submitError, setSubmitError] = useState("");
   const [attempted, setAttempted] = useState(false);
 
-  const resetSavedStore = useSavedStore((s) => s.resetPoints);
-  const resetAppliedStore = useAppliedStore((s) => s.resetPoints);
-
-  // Simple client-side validation
   const errors = useMemo(() => {
     const e = {};
     if (!formData.student_year) e.student_year = "Select your year.";
@@ -144,7 +137,7 @@ export default function RegisterClientWrapper({ access }) {
 
           <FieldGroup
             label="Research interests"
-            hint="Choose a few topics so we can find better matches."
+            hint="Choose atleast 3 topics so we can find better matches."
             error={attempted ? errors.student_interests : undefined}
           >
             <DropdownInterests
@@ -211,10 +204,7 @@ export default function RegisterClientWrapper({ access }) {
         </div>
 
         <div className="px-6 py-4 border-t bg-white flex items-center justify-between">
-          <div className="hidden sm:flex items-center gap-2 text-xs text-gray-500">
-            <ShieldCheck className="h-4 w-4" />
-            Your info helps us personalize matches and emails.
-          </div>
+          
 
           <button
             type="submit"

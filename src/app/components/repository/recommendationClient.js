@@ -3,13 +3,12 @@
 import { useMemo } from "react";
 import { useSidebar } from "@/shadcomponents/ui/sidebar";
 import { CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/shadcomponents/ui/carousel";
-import SaveButton from "../bookmark/buttons/saveButton";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Tag } from "lucide-react";
 
 function InterestBadges({ interests }) {
   if (!Array.isArray(interests) || interests.length === 0) return null;
-  const MAX = 6;
+  const MAX = 20;
   const shown = interests.slice(0, MAX);
   const remaining = Math.max(0, interests.length - shown.length);
   return (
@@ -47,12 +46,10 @@ export default function RecommendationsClient({
     ? "basis-full sm:basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
     : "basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5";
 
-  const loop = useMemo(() => matches.length > 5, [matches.length]);
-
   if (!matches?.length) {
     return (
       <div className="p-6 text-sm text-neutral-600 bg-slate-50 border border-slate-200 rounded-lg">
-        No recommendations yet. Try updating your interests to see matched professors.
+        No recommendations yet...
       </div>
     );
   }
@@ -66,22 +63,7 @@ export default function RecommendationsClient({
             className={`pl-3 md:pl-4 ${itemBasisClass}`}
           >
             <article className="rounded-xl p-4 bg-white hover:shadow-sm transition-shadow duration-200 flex flex-col h-full border border-gray-200 min-w-0">
-              <div className="flex justify-end -mt-1 -mr-1">
-                <SaveButton
-                  professor_id={response.professor_id}
-                  professor_name={response.name}
-                  professor_url={response.url}
-                  professor_research_interests={response.research_interests}
-                  professor_school={response.school}
-                  professor_faculty={response.faculty}
-                  professor_department={response.department}
-                  professor_email={response.email}
-                  professor_labs={response.labs}
-                  professor_lab_url={response.lab_url}
-                  user_id={userId}
-                  access={access}
-                />
-              </div>
+              
 
               <div className="space-y-1.5 flex-grow mb-2 min-w-0">
                 <div className="min-w-0">

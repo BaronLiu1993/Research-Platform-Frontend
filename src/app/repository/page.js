@@ -34,28 +34,6 @@ export default async function Repository({ searchParams }) {
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 
-  const [savedProfessorData, appliedProfessorData] = await Promise.all([
-    fetch(`${API_BASE}/saved/repository/get-all-savedId`, {
-      method: "GET",
-      headers: access ? { Authorization: `Bearer ${access}` } : {},
-      next: { revalidate: 600 },
-    }),
-    fetch(`${API_BASE}/inprogress/repository/get-all-appliedId`, {
-      method: "GET",
-      headers: access ? { Authorization: `Bearer ${access}` } : {},
-      next: { revalidate: 600 },
-    }),
-  ]);
-
-  const [savedProfessorDataJson, appliedProfessorDataJson] = await Promise.all([
-    savedProfessorData.ok
-      ? savedProfessorData.json()
-      : Promise.resolve({ data: [] }),
-    appliedProfessorData.ok
-      ? appliedProfessorData.json()
-      : Promise.resolve({ data: [] }),
-  ]);
-
   const [tableRes, profileRes] = await Promise.all([
     fetch(`${API_BASE}/repository/taishan?page=${pageNumber}&search=${search}`, {
       headers: access ? { Authorization: `Bearer ${access}` } : {},
@@ -143,8 +121,6 @@ export default async function Repository({ searchParams }) {
                   pageNumber={pageNumber}
                   search={rawSearch}
                   access={access}
-                  savedProfessors={savedProfessorDataJson}
-                  appliedProfessors={appliedProfessorDataJson}
                 />
                 {typeof tableCount === "number" && (
                   <p className="text-xs text-gray-500 mt-2">{tableCount} results</p>

@@ -1,23 +1,19 @@
+"use client";
+
 import { Lightbulb, Mail, Search } from "lucide-react";
 import Link from "next/link";
+import { motion } from "motion/react";
 
 const FEATURE_CARDS = [
   {
-    title: "Mass Send Emails",
-    body:
-      "Find and learn more about professors. Save them and quickly access their research interests, groups, and past work.",
-    icon: <Mail className = "stroke-1"/>
+    title: "Discover New Professors",
+    body: "Find and learn more about professors. Save them and quickly access their research interests, groups, and past work.",
+    icon: <Mail className="stroke-1" />,
   },
   {
     title: "Automate Initial and Follow Up Emails",
-    body:
-      "Let us handle sending and scheduled follow Ups so you can focus on finding the right professor.",
-    icon: <Lightbulb className = "stroke-1" />
-  },
-  {
-    title: "Track Emails",
-    body: "Know who opened, clicked, or did not respond, so you can prioritize outreach smartly.",
-    icon: <Search className = "stroke-1"/>
+    body: "Let us handle sending and scheduled follow Ups so you can focus on finding the right professor.",
+    icon: <Lightbulb className="stroke-1" />,
   },
 ];
 
@@ -42,101 +38,79 @@ const AREAS = [
   "Medicine",
   "Public Health",
   "Education",
-  ];
+];
 
 export default function Home() {
   return (
-    <div className="">
-      <header className="px-6 sm:px-10 min-h-screen flex  justify-center items-center">
-        <div className="flex flex-col my-16 sm:my-24">
-          <h1 className="text-4xl sm:text-7xl px-0 sm:px-4 leading-tight">
-            <span className="font-playfair">Find Researchers at UofT</span>
+    <div className="relative flex flex-col">
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `
+        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)
+      `,
+          backgroundSize: "24px 24px",
+          maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, black 70%, transparent 100%)",
+        }}
+      />
+      <header className="relative px-6 sm:px-10 mb-10 min-h-screen flex z-10 justify-center items-center">
+        <div className="relative flex flex-col my-16 sm:my-24 max-w-3xl">
+          <h1 className="text-2xl sm:text-5xl leading-tight">
+            <span className="font-main z-10">
+              Find Your Dream Research Internship!
+            </span>
           </h1>
-
-          <div className="mt-4 sm:mt-5 px-0 sm:px-4 max-w-2xl">
-            <p className="text-gray-600 font-light font-main">
+          <div className="mt-4 sm:mt-5 max-w-2xl">
+            <p className="text-gray-800 text-lg font-main">
               Discover professors with overlapping research interests.
             </p>
 
             <div className="mt-4 flex flex-wrap gap-3">
-              <Link
-                href="/auth/signin"
-                className="font-main rounded-xs cursor-pointer font-medium text-sm bg-black text-white py-2 px-3 inline-flex items-center justify-center"
-                role="button"
-                aria-label="Login"
-              >
-                Login
-              </Link>
-              <Link
-                href="/auth/signup"
-                className="font-main rounded-xs cursor-pointer font-medium text-sm bg-white text-gray-900 border border-gray-300 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50"
+              <motion.button
+                className="font-main rounded-xs cursor-pointer font-medium text-lg bg-black text-white border border-gray-300 py-2 px-3 inline-flex items-center justify-center"
                 role="button"
                 aria-label="Sign Up"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                Sign Up
-              </Link>
+                <Link href="/auth/signin">Login</Link>
+              </motion.button>
+              <motion.button
+                className="font-main rounded-xs cursor-pointer font-medium text-lg bg-white text-gray-900 border border-gray-300 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50"
+                role="button"
+                aria-label="Sign Up"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link href="/auth/signup">Sign Up</Link>
+              </motion.button>
             </div>
           </div>
         </div>
       </header>
-
-      <main>
+      <main className="relative z-10 bg-white my-20">
         <section className="px-6 sm:px-10">
-          <h2 className="font-playfair font-medium text-[#5B61B2] p-2 rounded-md bg-slate-100 inline-block">
-            Research Areas
+          <h2 className="font-main font-medium mt-10 text-lg text-[#5B61B2] p-2 rounded-md bg-slate-100 inline-block">
+            📝 Research Areas
           </h2>
-          <h3 className="border-b-2 border-[#5B61B2] w-fit font-main font-medium p-1 mt-2">
-            📝 Modules
-          </h3>
-          <p className="mt-2 font-main text-sm font-light text-gray-800">
-            Find a list of professors whose work matches your interests. Whether it is Molecular Biology or Machine Learning, we got you.
+
+          <p className="font-main text-medium mt-6 font-light text-gray-800">
+            Find a list of professors whose work matches your interests. Whether
+            it is Molecular Biology or Machine Learning, we got you.
           </p>
 
           <div className="flex flex-wrap gap-2 font-main mt-4">
             {AREAS.map((a) => (
               <span
                 key={a}
-                className="text-sm bg-slate-100 border border-slate-200 rounded-xs px-3 py-1"
+                className="text-medium bg-slate-100 border border-slate-200 rounded-xs px-3 py-1"
               >
                 {a}
               </span>
             ))}
-          </div>
-        </section>
-
-        <section className="px-6 sm:px-10 mt-12 sm:mt-16 flex flex-col gap-6">
-          <div>
-            <h2 className="font-playfair font-medium text-[#2F80E4] p-2 rounded-md bg-slate-100 inline-block">
-              Features
-            </h2>
-            <h3 className="border-b-2 border-[#5B61B2] w-fit font-main font-medium p-1 mt-2">
-              📝 Outreach & Tracking
-            </h3>
-            <p className="my-2 font-main text-sm font-light text-gray-800">
-              Find the perfect research match. Instantly tailor your resume and craft
-              personalized outreach emails then track engagement all in one place.
-            </p>
-          </div>
-
-          <div className="flex justify-center mb-20">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-6xl">
-              {FEATURE_CARDS.map(({ title, body, icon }) => (
-                <article
-                  key={title}
-                  className="select-none border border-gray-200 rounded-xs overflow-hidden bg-white shadow-sm"
-                >
-                  <div className="flex bg-slate-50 p-5 flex-col gap-2">
-                    {icon}
-                    <h4 className="font-playfair text-lg sm:text-xl text-[#2F80E4]">
-                      {title}
-                    </h4>
-                    <p className="font-main text-sm text-gray-700 leading-relaxed">
-                      {body}
-                    </p>
-                  </div>
-                </article>
-              ))}
-            </div>
           </div>
         </section>
       </main>

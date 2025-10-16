@@ -1,11 +1,7 @@
-// DataTable.jsx
 "use client";
 
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
-import { useSavedStore } from "@/app/store/useSavedStore";
-import { useAppliedStore } from "@/app/store/useAppliedStore";
 
 import {
   flexRender,
@@ -52,8 +48,6 @@ export function DataTable({
   pageNumber = 1,
   search = "",
   access,
-  savedProfessors,
-  appliedProfessors,
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -93,20 +87,12 @@ export function DataTable({
     [params, query, router]
   );
 
-  const setSaved = useSavedStore((state) => state.setSavedStore);
-  const setApplied = useAppliedStore((state) => state.setAppliedStore);
-
-  useEffect(() => {
-    if (savedProfessors?.data) setSaved(savedProfessors.data);
-    if (appliedProfessors?.data) setApplied(appliedProfessors.data);
-  }, [savedProfessors, appliedProfessors, setSaved, setApplied]);
 
   const prevPage = Math.max(1, Number(pageNumber) - 1);
   const nextPage = Number(pageNumber) + 1;
 
   return (
     <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6">
-      {/* Controls */}
       <div className="rounded-lg py-2">
         <div className="flex flex-col gap-3 md:gap-2 pb-2">
           <div className="flex flex-wrap items-center gap-2 md:gap-3">
@@ -125,7 +111,6 @@ export function DataTable({
               </button>
             </form>
 
-            {/* Institution filter */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
@@ -152,7 +137,6 @@ export function DataTable({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Faculty filter */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
@@ -209,7 +193,6 @@ export function DataTable({
         </div>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
         <Table className="text-sm min-w-full">
           <TableHeader>
