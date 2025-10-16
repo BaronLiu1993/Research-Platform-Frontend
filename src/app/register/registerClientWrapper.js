@@ -7,11 +7,7 @@ import DropdownYear from "../components/dropdowns/dropdownyear";
 import DropdownMajor from "../components/dropdowns/dropdownmajor";
 import DropdownInterests from "../components/dropdowns/dropdowninterests";
 
-import {
-  ShieldCheck,
-  AlertCircle,
-  Loader2,
-} from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 
 export default function RegisterClientWrapper({ access }) {
   const router = useRouter();
@@ -22,6 +18,7 @@ export default function RegisterClientWrapper({ access }) {
     student_interests: [],
     student_acceptedterms: false,
   });
+
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [attempted, setAttempted] = useState(false);
@@ -74,12 +71,11 @@ export default function RegisterClientWrapper({ access }) {
         return;
       }
 
-      resetAppliedStore();
-      resetSavedStore();
+    
+      setSubmitting(true);
       router.push("/repository");
     } catch {
       setSubmitError("Internal server error. Please try again.");
-    } finally {
       setSubmitting(false);
     }
   };
@@ -93,10 +89,8 @@ export default function RegisterClientWrapper({ access }) {
       <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
         <div className="">
           <div className="px-6 py-5 flex items-center gap-3">
-            <div className = "flex flex-col gap-2">
-              <h1 className="font-playfair font-semibold text-3xl">
-                Welcome!
-              </h1>
+            <div className="flex flex-col gap-2">
+              <h1 className="font-playfair font-semibold text-3xl">Welcome!</h1>
 
               <p className="text-sm text-gray-600">
                 We will tailor professor recommendations and outreach to your
@@ -107,8 +101,6 @@ export default function RegisterClientWrapper({ access }) {
         </div>
 
         <div className="px-6 py-2 space-y-5">
-          
-
           <FieldGroup
             label="Year of study"
             error={attempted ? errors.student_year : undefined}
@@ -204,8 +196,6 @@ export default function RegisterClientWrapper({ access }) {
         </div>
 
         <div className="px-6 py-4 border-t bg-white flex items-center justify-between">
-          
-
           <button
             type="submit"
             disabled={!isValid || submitting}

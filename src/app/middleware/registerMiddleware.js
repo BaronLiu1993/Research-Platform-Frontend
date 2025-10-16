@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 
 export async function RegisterMiddleware(req) {
-  const url = req.nextUrl;
+  const url = req instanceof Request ? new URL(req.url) : req.nextUrl;
+  const path = url.pathname;
 
   if (!url.searchParams.has("code")) {
-    return NextResponse.redirect(new URL("/auth/signin", req.url));
+    return NextResponse.redirect(new URL("/auth/signin", url));
   }
 
-  if (url.pathname === "/account/register" && url.searchParams.has("code")) {
-    const code = url.searchParams.get("code");
+  if (path === "/account/register") {
+    const code = url.searchParams.get("code") || "";
+
     try {
       const response = await fetch(
         "http://localhost:8080/auth/oauth2callback/register",
@@ -20,13 +22,12 @@ export async function RegisterMiddleware(req) {
       );
 
       const data = await response.json();
+      console.log(data)
 
       if (data?.accessToken && data?.refreshToken && data?.user_id) {
         const isProd = process.env.NODE_ENV === "production";
-        const redirectTo = "/register";
-
-        const res = NextResponse.redirect(new URL(redirectTo, req.url));
-
+        const redirectTo = "/repository";
+        const res = NextResponse.redirect(new URL(redirectTo, url));
         res.cookies.set("access_token", data.accessToken, {
           httpOnly: true,
           secure: isProd,
@@ -40,7 +41,7 @@ export async function RegisterMiddleware(req) {
           secure: isProd,
           sameSite: "lax",
           path: "/",
-          maxAge: 60 * 60 * 24 * 7,
+          maxAge: 60 * 60 * 24 * 7, 
         });
 
         res.cookies.set("user_id", data.user_id, {
@@ -52,12 +53,13 @@ export async function RegisterMiddleware(req) {
         });
 
         return res;
-      } else {
-        return NextResponse.redirect(new URL("/auth/signup", req.url));
       }
+
+      return NextResponse.redirect(new URL("/auth/signup", url));
     } catch (err) {
-      return NextResponse.redirect(new URL("/auth/signup", req.url));
+      return NextResponse.redirect(new URL("/auth/signup", url));
     }
   }
+
   return NextResponse.next();
 }

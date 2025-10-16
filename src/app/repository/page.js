@@ -25,11 +25,11 @@ import { Badge } from "@/shadcomponents/ui/badge";
 import { Database, Laptop, MapIcon } from "lucide-react";
 
 export default async function Repository({ searchParams }) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const access = cookieStore.get("access_token")?.value;
   const userId = cookieStore.get("user_id")?.value;
-  const pageNumber = Number(searchParams?.page ?? 1) || 1;
-  const rawSearch = (searchParams?.search ?? "").trim();
+  const pageNumber = Number(await searchParams?.page ?? 1) || 1;
+  const rawSearch = (await searchParams?.search ?? "").trim() || "";
   const search = encodeURIComponent(rawSearch);
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
@@ -73,7 +73,7 @@ export default async function Repository({ searchParams }) {
                   <BreadcrumbLink asChild>
                     <Link
                       href="/"
-                      className="font-main text-sm flex items-center gap-2 font-light text-[#37352F]"
+                      className="font-main text-sm flex items-center hover:underline gap-2 font-light text-[#37352F]"
                     >
                       <Laptop className="h-5 w-5 text-blue-700" />
                       Home
@@ -82,7 +82,7 @@ export default async function Repository({ searchParams }) {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>/</BreadcrumbSeparator>
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="font-main flex items-center gap-2 font-light text-[#37352F]">
+                  <BreadcrumbPage className="font-main flex cursor-pointer items-center hover:underline gap-2 font-light text-[#37352F]">
                     <MapIcon className="h-5 w-5 text-blue-700" />
                     Professors
                   </BreadcrumbPage>

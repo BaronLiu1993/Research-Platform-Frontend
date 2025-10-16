@@ -1,6 +1,6 @@
 "use client";
 
-import { Lightbulb, Mail, Search } from "lucide-react";
+import { Lightbulb, LogIn, Mail, Pencil, Search } from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
 
@@ -56,39 +56,66 @@ export default function Home() {
             "linear-gradient(to bottom, black 70%, transparent 100%)",
         }}
       />
-      <header className="relative px-6 sm:px-10 mb-10 min-h-screen flex z-10 justify-center items-center">
-        <div className="relative flex flex-col my-16 sm:my-24 max-w-3xl">
-          <h1 className="text-2xl sm:text-5xl leading-tight">
-            <span className="font-main z-10">
-              Find Your Dream Research Internship!
+      <header className="relative px-6 sm:px-10 min-h-screen flex z-10 justify-center items-center">
+        <div className="relative flex flex-col items-center my-16 sm:my-24 max-w-3xl">
+          <h1 className="text-5xl sm:text-6xl leading-tight text-center">
+            <span className="font-playfair z-10 block">
+              <motion.span
+                className="inline-block"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                Find Your Dream
+              </motion.span>
+              <br />
+              <motion.span
+                className="inline-block text-sky-500"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+              >
+                Research Internship
+              </motion.span>
             </span>
           </h1>
-          <div className="mt-4 sm:mt-5 max-w-2xl">
-            <p className="text-gray-800 text-lg font-main">
+          <motion.div
+            className="mt-4 sm:mt-8 max-w-2xl flex flex-col items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
+          >
+            <p className="text-gray-800 text-lg font-light font-main">
               Discover professors with overlapping research interests.
             </p>
 
             <div className="mt-4 flex flex-wrap gap-3">
               <motion.button
-                className="font-main rounded-xs cursor-pointer font-medium text-lg bg-black text-white border border-gray-300 py-2 px-3 inline-flex items-center justify-center"
+                className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-black text-white border border-gray-300 py-2 px-3 inline-flex items-center justify-center"
                 role="button"
-                aria-label="Sign Up"
+                aria-label="Login"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
+                <LogIn className="stroke-1 h-5 w-5" />
                 <Link href="/auth/signin">Login</Link>
               </motion.button>
               <motion.button
-                className="font-main rounded-xs cursor-pointer font-medium text-lg bg-white text-gray-900 border border-gray-300 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50"
+                className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-white text-gray-900 border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)]"
                 role="button"
                 aria-label="Sign Up"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
+                <Pencil className="stroke-1 h-5 w-5" />
                 <Link href="/auth/signup">Sign Up</Link>
               </motion.button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </header>
       <main className="relative z-10 bg-white my-20">
@@ -97,23 +124,38 @@ export default function Home() {
             📝 Research Areas
           </h2>
 
-          <p className="font-main text-medium mt-6 font-light text-gray-800">
-            Find a list of professors whose work matches your interests. Whether
-            it is Molecular Biology or Machine Learning, we got you.
+          <p className="font-main text-medium mt-6 text-gray-800">
+          We recommend faculty aligned with your topics, methods, and goals.
+          Browse a curated directory of 1,000+ professors to discover more.
           </p>
 
           <div className="flex flex-wrap gap-2 font-main mt-4">
-            {AREAS.map((a) => (
-              <span
-                key={a}
-                className="text-medium bg-slate-100 border border-slate-200 rounded-xs px-3 py-1"
-              >
-                {a}
-              </span>
-            ))}
+            <div className="flex flex-wrap gap-3">
+              {AREAS.map((area, idx) => (
+                <motion.span
+                  key={area}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.02 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="font-main text-sm sm:text-base bg-white border-2 border-gray-300 rounded-lg px-4 py-2 shadow-sm hover:shadow-md hover:border-[#5B61B2] transition-all cursor-pointer"
+                >
+                  {area}
+                </motion.span>
+              ))}
+            </div>
           </div>
         </section>
       </main>
+      <div className="font-main bg-white font-light px-4 border-t-1">
+        <div className="py-4">
+          <div className="text-sm flex flex-col">
+            <span>Made By Jie Xuan Liu</span>
+            <span>Industrial Engineering @ UofT</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
