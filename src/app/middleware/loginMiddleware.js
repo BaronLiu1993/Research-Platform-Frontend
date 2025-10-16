@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function LoginMiddleware(req) {
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const url = req.nextUrl;
   
   if (!url.searchParams.has("code")) {
@@ -11,7 +12,7 @@ export async function LoginMiddleware(req) {
     const code = url.searchParams.get("code");
     try {
       const response = await fetch(
-        "http://localhost:8080/auth/oauth2callback/login",
+        `${API_BASE}/auth/oauth2callback/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

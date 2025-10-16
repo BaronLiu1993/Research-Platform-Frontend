@@ -5,6 +5,7 @@ import { Carousel } from "@/shadcomponents/ui/carousel";
 import RecommendationsClient from "./recommendationClient";
 
 export default async function Recommendations() {
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const cookieStore = await cookies();
   const userId = cookieStore.get("user_id")?.value;
   const access = cookieStore.get("access_token")?.value;
@@ -12,7 +13,7 @@ export default async function Recommendations() {
   let responses = { matches: [] };
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080"}/repository/match-professors?userId=${encodeURIComponent(
+      `${API_BASE}/repository/match-professors?userId=${encodeURIComponent(
         userId ?? ""
       )}`,
       {
@@ -24,11 +25,9 @@ export default async function Recommendations() {
     );
     if (res.ok) {
       responses = await res.json();
-    } else {
-      console.error("Failed to fetch matches:", res.status, res.statusText);
-    }
+    } 
   } catch (e) {
-    console.error("Error fetching matches", e);
+
   }
 
   const matches = Array.isArray(responses?.matches) ? responses.matches : [];
@@ -40,7 +39,11 @@ export default async function Recommendations() {
           opts={{ align: "start", loop: matches.length > 5, slidesToScroll: 1 }}
           className="font-main relative"
         >
-          <RecommendationsClient matches={matches} userId={userId} access={access} />
+          <RecommendationsClient
+            matches={matches}
+            userId={userId}
+            access={access}
+          />
         </Carousel>
       </div>
     </div>

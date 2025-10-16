@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 export default async function SignIn() {
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   return (
     <>
       <Breadcrumb className="font-main font-semibold flex flex-wrap sm:flex-nowrap h-8 items-center gap-2 px-4 sm:px-6 py-2">
@@ -54,7 +55,7 @@ export default async function SignIn() {
         <div>
           <a
             className="shadow-sm py-2 text-sm rounded-xs px-16 hover:bg-[#F1F1EF] cursor-pointer bg-[#FFFFFF] border text-[#2F3438]"
-            href="http://localhost:8080/auth/signin-with-google"
+            href={`${API_BASE}/auth/signin-with-google`}
           >
             Login With Google
           </a>

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { attemptRefresh } from "./attemptRefresh";
 
 export async function AuthMiddleware(req) {
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const access = req.cookies.get("access_token")?.value;
   const refresh = req.cookies.get("refresh_token")?.value;
   const isProd = process.env.NODE_ENV === "production";
@@ -40,7 +41,7 @@ export async function AuthMiddleware(req) {
   try {
 
     const response = await fetch(
-      "http://localhost:8080/auth/is-authenticated",
+      `${API_BASE}/auth/is-authenticated`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${access}` },
@@ -63,7 +64,7 @@ export async function AuthMiddleware(req) {
  
     
     const profileCheck = await fetch(
-      "http://localhost:8080/auth/check-profile-completed",
+      `${API_BASE}/auth/check-profile-completed`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${access}` },
