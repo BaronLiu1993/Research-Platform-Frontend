@@ -8,31 +8,25 @@ export async function AuthMiddleware(req) {
   const { pathname } = req.nextUrl;
 
   if ((access || refresh) && pathname.startsWith("/auth/signin")) {
-    console.log("[AuthMiddleware] No access token, redirecting from", pathname);
     return NextResponse.redirect(new URL("/repository", req.url));
   }
 
   if ((access || refresh) && pathname.startsWith("/auth/signup")) {
-    console.log("[AuthMiddleware] No access token, redirecting from", pathname);
     return NextResponse.redirect(new URL("/repository", req.url));
   }
 
   if ((access || refresh) && pathname.startsWith("/account/register")) {
-    console.log("[AuthMiddleware] No access token, redirecting from", pathname);
     return NextResponse.redirect(new URL("/repository", req.url));
   }
 
   if ((access || refresh) && pathname.startsWith("/account/login")) {
-    console.log("[AuthMiddleware] No access token, redirecting from", pathname);
     return NextResponse.redirect(new URL("/repository", req.url));
   }
 
-  // Case 1: No tokens at all
   if (!access && !refresh) {
     return NextResponse.redirect(new URL("/auth/signin", req.url));
   }
 
-  // Case 2: No access token but we have a refresh token
   if (!access && refresh) {
     const refreshed = await attemptRefresh(refresh, req.url, isProd);
 
@@ -43,7 +37,6 @@ export async function AuthMiddleware(req) {
     return refreshed;
   }
 
-  // Case 3: Have an access token
   try {
 
     const response = await fetch(

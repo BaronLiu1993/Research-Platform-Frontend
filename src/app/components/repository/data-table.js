@@ -18,7 +18,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shadcomponents/ui/dropdown-menu";
-import { Badge } from "@/shadcomponents/ui/badge";
 import { Input } from "@/shadcomponents/ui/input";
 import {
   Table,
@@ -113,7 +112,7 @@ export function DataTable({
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
+                <button type="button" className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
                   Institution <ChevronDown className="w-3 h-3 ml-1" />
                 </button>
               </DropdownMenuTrigger>
@@ -130,16 +129,16 @@ export function DataTable({
                   <span className="rounded-full bg-[#D44C47] h-2 w-2 mr-2" />
                   McMaster University
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs font-normal text-[#CB912F]">
+                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
                   <span className="rounded-full bg-[#CB912F] h-2 w-2 mr-2" />
-                  Queen's University
+                  {"Queen's University"}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
+                <button type="button" className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
                   Faculty <ChevronDown className="w-3 h-3 ml-1" />
                 </button>
               </DropdownMenuTrigger>
@@ -159,10 +158,9 @@ export function DataTable({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Department filter */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
+                <button type="button" className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
                   Department <ChevronDown className="w-3 h-3 ml-1" />
                 </button>
               </DropdownMenuTrigger>

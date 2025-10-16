@@ -22,7 +22,6 @@ export async function RegisterMiddleware(req) {
       );
 
       const data = await response.json();
-      console.log(data)
 
       if (data?.accessToken && data?.refreshToken && data?.user_id) {
         const isProd = process.env.NODE_ENV === "production";
