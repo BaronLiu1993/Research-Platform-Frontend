@@ -11,12 +11,20 @@ import {
   DialogTrigger,
 } from "@/shadcomponents/ui/dialog";
 import { Label } from "@/shadcomponents/ui/label";
-import { ArrowUpDown, University, BrainCircuit, Microscope, PersonStandingIcon } from "lucide-react";
+import {
+  ArrowUpDown,
+  University,
+  BrainCircuit,
+  Microscope,
+  PersonStandingIcon,
+  Link2,
+  SchoolIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 const InterestPills = ({ items = [] }) => {
   if (!items.length) return null;
-  const shown = items
+  const shown = items;
   return (
     <div className="mt-2 flex flex-wrap gap-1.5 pl-[calc(28px_+_0.75rem)]">
       {shown.map((interest, i) => (
@@ -26,10 +34,11 @@ const InterestPills = ({ items = [] }) => {
           className="text-xs font-semibold bg-gray-50 text-gray-600 border-slate-200 px-1.5 py-0.5"
           title={interest}
         >
-          <span className="truncate max-w-[9rem] inline-block align-middle">{interest}</span>
+          <span className="truncate max-w-[9rem] inline-block align-middle">
+            {interest}
+          </span>
         </Badge>
       ))}
-      
     </div>
   );
 };
@@ -62,7 +71,9 @@ const generateColumns = () => [
                   </h1>
                   <div className="flex items-center space-x-1.5 text-xs text-[#787774] truncate">
                     <span>{data.department || "N/A Department"}</span>
-                    {data.school && <span className="text-[#787774]">@ {data.school}</span>}
+                    {data.school && (
+                      <span className="text-[#787774]">@ {data.school}</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -73,14 +84,43 @@ const generateColumns = () => [
           <DialogContent className="sm:max-w-[640px] font-sans bg-white shadow-xl rounded-lg max-h-[85vh] overflow-hidden">
             <DialogHeader className="pb-3 pt-5 px-6">
               <DialogTitle className="text-lg font-semibold text-gray-900 truncate">
-                {data.name || "Professor"}
+                <div>{data.name || "Professor"}</div>
+                <div className="flex gap-2 mt-2">
+                  <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+                    {data.url ? (
+                      <Link
+                        href={data.url}
+                        target="_blank"
+                        className="bg-sky-50 text-sky-700 rounded-md font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-center text-left whitespace-normal"
+                      >
+                        <Link2 className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
+                        Profile
+                      </Link>
+                    ) : (
+                      <span className="text-gray-400">No URL</span>
+                    )}
+                  </div>
+                  {data.lab_url && (
+                    <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+                      <Link
+                        href={data.lab_url}
+                        target="_blank"
+                        className="bg-green-50 text-green-700 rounded-md font-medium text-xs py-1 px-2 border border-green-200/50 flex items-center text-left whitespace-normal"
+                      >
+                        <SchoolIcon className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
+                        Visit Lab
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </DialogTitle>
-              
             </DialogHeader>
 
             <div className="grid gap-3 py-4 px-6 text-sm overflow-y-auto">
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1">School</Label>
+                <Label className="text-right font-medium text-gray-500 pt-1">
+                  School
+                </Label>
                 <Badge className="bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
                   <University className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
                   <span className="break-words">{data.school || "—"}</span>
@@ -88,7 +128,9 @@ const generateColumns = () => [
               </div>
 
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1">Department</Label>
+                <Label className="text-right font-medium text-gray-500 pt-1">
+                  Department
+                </Label>
                 <Badge className="bg-purple-50 text-purple-700 font-medium text-xs py-1 px-2 border border-purple-200/50 flex items-start text-left whitespace-normal">
                   <BrainCircuit className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
                   <span className="break-words">{data.department || "—"}</span>
@@ -96,7 +138,9 @@ const generateColumns = () => [
               </div>
 
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1">Faculty</Label>
+                <Label className="text-right font-medium text-gray-500 pt-1">
+                  Faculty
+                </Label>
                 <Badge className="bg-green-50 text-green-700 font-medium text-xs py-1 px-2 border border-green-200/50 flex items-start text-left whitespace-normal">
                   <Microscope className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
                   <span className="break-words">{data.faculty || "—"}</span>
@@ -104,30 +148,25 @@ const generateColumns = () => [
               </div>
 
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1">Profile</Label>
-                {data.url ? (
-                  <Link href={data.url} target="_blank" className="text-blue-600 underline break-all">
-                    {data.url}
-                  </Link>
-                ) : (
-                  <span className="text-gray-400">No URL</span>
-                )}
-              </div>
-
-              <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1">Interests</Label>
+                <Label className="text-right font-medium text-gray-500 pt-1">
+                  Interests
+                </Label>
                 <div className="flex flex-wrap gap-1.5">
                   {(data.research_interests || []).length ? (
-                    (data.research_interests || []).slice(0, 40).map((interest, i) => (
-                      <Badge
-                        key={`${interest}-${i}`}
-                        variant="secondary"
-                        className="text-xs bg-gray-50 text-gray-700 border-gray-200/80 px-2 py-0.5"
-                        title={interest}
-                      >
-                        <span className="truncate max-w-[10rem] inline-block align-middle">{interest}</span>
-                      </Badge>
-                    ))
+                    (data.research_interests || [])
+                      .slice(0, 40)
+                      .map((interest, i) => (
+                        <Badge
+                          key={`${interest}-${i}`}
+                          variant="secondary"
+                          className="text-xs bg-gray-50 text-gray-700 border-gray-200/80 px-2 py-0.5"
+                          title={interest}
+                        >
+                          <span className="truncate max-w-[10rem] inline-block align-middle">
+                            {interest}
+                          </span>
+                        </Badge>
+                      ))
                   ) : (
                     <p className="text-gray-400 text-xs">—</p>
                   )}
@@ -135,21 +174,15 @@ const generateColumns = () => [
               </div>
 
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                <Label className="text-right font-medium text-gray-500 pt-1">Lab Affiliation</Label>
+                <Label className="text-right font-medium text-gray-500 pt-1">
+                  Lab Affiliation
+                </Label>
                 <Badge className="bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
-                  <University className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
-                  <span className="break-words">{data.labs || "No Lab Affiliation"}</span>
+                  <span className="break-words">
+                    {data.labs || "No Lab Affiliation"}
+                  </span>
                 </Badge>
               </div>
-
-              {data.lab_url && (
-                <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
-                  <Label className="text-right font-medium text-gray-500 pt-1">Visit Lab</Label>
-                  <Link href={data.lab_url} target="_blank" className="text-blue-600 underline break-all">
-                    Lab Website
-                  </Link>
-                </div>
-              )}
             </div>
             <DialogFooter className="pt-4 pb-5 px-6 bg-slate-50/50 rounded-b-lg" />
           </DialogContent>
@@ -163,11 +196,7 @@ const generateColumns = () => [
     header: () => <div />,
     cell: ({ row }) => {
       const data = row.original || {};
-      return (
-        <div className="flex justify-end items-center h-full pr-1">
-          
-        </div>
-      );
+      return <div className="flex justify-end items-center h-full pr-1"></div>;
     },
     size: 90,
     enableSorting: false,

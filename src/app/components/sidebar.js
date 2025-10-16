@@ -3,7 +3,6 @@ import { useState } from "react";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -14,18 +13,7 @@ import {
   SidebarRail,
 } from "@/shadcomponents/ui/sidebar";
 
-import {
-  ChevronDown,
-  Library,
-  LayoutDashboard,
-  Microscope,
-  Inbox,
-  Settings,
-} from "lucide-react";
-import { Button } from "@/shadcomponents/ui/button";
-import { SignOut } from "../actions/signOut";
-
-
+import { ChevronDown, Library, LayoutDashboard, Inbox } from "lucide-react";
 
 const data = {
   navMain: [
@@ -40,16 +28,22 @@ const data = {
             <Library className="h-6 w-6 bg-orange-100 rounded-xs text-orange-500 p-0.5" />
           ),
         },
+      ],
+    },
+    {
+      title: "Coming Soon...",
+      url: "#",
+      items: [
         {
           title: "Inbox",
-          url: "/inbox/email",
+          url: "/repository",
           icon: (
             <Inbox className="text-red-500 bg-red-100 h-6 w-6 p-0.5 rounded-xs" />
           ),
         },
         {
           title: "Workspace",
-          url: "/workspace", 
+          url: "/repository",
           icon: (
             <LayoutDashboard className="h-6 w-6 bg-blue-100 rounded-xs text-[#337EA9] p-0.5" />
           ),
@@ -60,9 +54,6 @@ const data = {
 };
 
 export function AppSidebar({ student_data, ...props }) {
-  const handleSignOut = async () => {
-    await SignOut()
-  }
   const [expanded, setExpanded] = useState(null);
 
   return (
@@ -70,9 +61,7 @@ export function AppSidebar({ student_data, ...props }) {
       <SidebarHeader className="font-main rounded-sm m-2">
         <div className="flex items-center gap-2">
           <div>
-            <h1 className="text-sm font-medium">
-              {student_data.student_name}
-            </h1>
+            <h1 className="text-sm font-medium">{student_data.student_name}</h1>
             <p className="text-xs">
               {student_data.student_email.slice(0, 25)}...
             </p>
@@ -149,11 +138,6 @@ export function AppSidebar({ student_data, ...props }) {
       </SidebarContent>
 
       <SidebarRail />
-      <SidebarFooter>
-        <Button onClick ={handleSignOut} className="w-fit rounded-xs p-2 m-1 cursor-pointer text-xs text-[#FDEBEC] bg-[#D44C47] hover:bg-[#B83F3A]">
-          Sign Out
-        </Button>
-      </SidebarFooter>
     </Sidebar>
   );
 }

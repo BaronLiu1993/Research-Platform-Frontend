@@ -241,7 +241,6 @@ export function DataTable({
         </Table>
       </div>
 
-      {/* Pager */}
       <div className="flex justify-end mt-3 gap-3">
         <Link
           className={`text-sm font-medium text-white px-3 py-1.5 rounded-md transition-colors ${
