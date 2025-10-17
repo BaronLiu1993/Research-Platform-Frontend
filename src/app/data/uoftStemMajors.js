@@ -10,6 +10,11 @@ export const uoftStemMajors = [
     color: "#000000",
   },
   {
+    value: "Engineering Science",
+    label: "Engineering Science",
+    color: "#000000",
+  },
+  {
     value: "Mechanical Engineering",
     label: "Mechanical Engineering",
     color: "#000000",

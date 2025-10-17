@@ -11,6 +11,7 @@ import { AlertCircle, Loader2 } from "lucide-react";
 
 export default function RegisterClientWrapper({ access }) {
   const router = useRouter();
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 
   const [formData, setFormData] = useState({
     student_major: "",
@@ -51,8 +52,6 @@ export default function RegisterClientWrapper({ access }) {
     };
 
     try {
-      setSubmitting(true);
-      const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
       const res = await fetch(`${API_BASE}/auth/register`, {
         method: "POST",
         headers: {
@@ -72,10 +71,9 @@ export default function RegisterClientWrapper({ access }) {
         return;
       }
 
-    
       setSubmitting(true);
       router.push("/repository");
-    } catch {
+    } catch (e) {
       setSubmitError("Internal server error. Please try again.");
       setSubmitting(false);
     }
