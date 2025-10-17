@@ -56,13 +56,8 @@ export async function AuthMiddleware(req) {
       if (!refreshed) {
         return NextResponse.redirect(new URL("/auth/signin", req.url));
       }
-
-
       return refreshed;
     }
-
- 
-    
     const profileCheck = await fetch(
       `${API_BASE}/auth/check-profile-completed`,
       {

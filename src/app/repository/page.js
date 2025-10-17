@@ -1,5 +1,3 @@
-"use server";
-
 import { cookies } from "next/headers";
 import Link from "next/link";
 
@@ -24,45 +22,66 @@ import Recommendations from "../components/repository/recommendations";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Database, Laptop, MapIcon } from "lucide-react";
 
+
 export default async function Repository({ searchParams }) {
-  const cookieStore = await cookies();
+  // cookies() is sync in server components
+  const cookieStore = cookies();
   const access = cookieStore.get("access_token")?.value;
   const userId = cookieStore.get("user_id")?.value;
-  const pageNumber = Number(await searchParams?.page ?? 1) || 1;
-  const rawSearch = (await searchParams?.search ?? "").trim() || "";
-  const search = encodeURIComponent(rawSearch);
+
+  const pageNumber = Number(searchParams?.page ?? 1) || 1;
+  const rawSearch =
+    (typeof searchParams?.search === "string" ? searchParams.search : "").trim();
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 
-  const [tableRes, profileRes] = await Promise.all([
-    fetch(`${API_BASE}/repository/taishan?page=${pageNumber}&search=${search}`, {
-      headers: access ? { Authorization: `Bearer ${access}` } : {},
-      next: { revalidate: 300 },
-      cache: "force-cache",
-    }),
-    fetch(`${API_BASE}/auth/get-user-sidebar-info`, {
-      headers: access
-        ? {
-            Authorization: `Bearer ${access}`,
-            "Content-Type": "application/json",
-          }
-        : {},
-      next: { revalidate: 300 },
-      cache: "force-cache",
-    }),
-  ]);
+  const qs = new URLSearchParams({
+    page: String(pageNumber),
+    search: rawSearch,
+  }).toString();
 
-  const { tableData = [], tableCount = 0 } = tableRes.ok
-    ? await tableRes.json()
-    : { tableData: [], tableCount: 0 };
-  const parsedUserProfile = profileRes.ok ? await profileRes.json() : {};
+  const tableFetchOpts = {
+    headers: access ? { Authorization: `Bearer ${access}` } : {},
+    ...(access
+      ? { cache: "no-store" }
+      : { next: { revalidate: 300 }, cache: "force-cache" }),
+  };
+
+  const profileFetchOpts = {
+    headers: access
+      ? { Authorization: `Bearer ${access}`, "Content-Type": "application/json" }
+      : {},
+    cache: "no-store",
+  };
+
+  let tableData = [];
+  let tableCount = 0;
+  let parsedUserProfile = {};
+
+  try {
+    const [tableRes, profileRes] = await Promise.all([
+      fetch(`${API_BASE}/repository/taishan?${qs}`, tableFetchOpts),
+      fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
+    ]);
+
+    if (tableRes.ok) {
+      const json = await tableRes.json();
+      tableData = json?.tableData ?? [];
+      tableCount = Number(json?.tableCount ?? 0);
+    }
+
+    if (profileRes.ok) {
+      parsedUserProfile = await profileRes.json();
+    }
+  } catch {
+
+    // log with your telemetry, but keep UI resilient
+  }
 
   return (
     <div className="w-full overflow-hidden">
       <SidebarProvider>
-        <AppSidebar
-          student_data={parsedUserProfile}
-        />
+        <AppSidebar student_data={parsedUserProfile} />
 
         <SidebarInset className="flex flex-col min-h-0 overflow-hidden">
           <header className="sticky top-0 z-10 flex h-10 shrink-0 items-center gap-2 px-4 sm:px-6 bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50">
@@ -113,6 +132,7 @@ export default async function Repository({ searchParams }) {
 
                 <Recommendations />
               </div>
+
               <div className="mb-8 overflow-x-auto">
                 <DataTable
                   generateColumns={generateColumns}
@@ -122,7 +142,7 @@ export default async function Repository({ searchParams }) {
                   search={rawSearch}
                   access={access}
                 />
-                {typeof tableCount === "number" && (
+                {Number.isFinite(tableCount) && (
                   <p className="text-xs text-gray-500 mt-2">{tableCount} results</p>
                 )}
               </div>

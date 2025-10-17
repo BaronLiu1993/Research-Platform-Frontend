@@ -62,9 +62,7 @@ export function AppSidebar({ student_data, ...props }) {
         <div className="flex items-center gap-2">
           <div>
             <h1 className="text-sm font-medium">{student_data.student_name}</h1>
-            <p className="text-xs">
-              {student_data.student_email.slice(0, 25)}...
-            </p>
+            <p className="text-xs">{student_data.student_email.slice(0, 25)}</p>
           </div>
         </div>
       </SidebarHeader>
@@ -98,20 +96,6 @@ export function AppSidebar({ student_data, ...props }) {
                           }`}
                         />
                       </SidebarMenuButton>
-
-                      {expanded === itm.title && (
-                        <div className="m-2 border-gray-200">
-                          {itm.options.map((opt) => (
-                            <a
-                              key={opt.title}
-                              href={opt.url}
-                              className="block text-[#787774] text-[12.5px] font-[500] pl-3 font-main pr-2 py-1 hover:bg-gray-100 rounded-sm transition"
-                            >
-                              {opt.title}
-                            </a>
-                          ))}
-                        </div>
-                      )}
                     </SidebarMenuItem>
                   ) : (
                     <SidebarMenuItem key={itm.title}>
@@ -136,7 +120,6 @@ export function AppSidebar({ student_data, ...props }) {
           </SidebarGroup>
         ))}
       </SidebarContent>
-
       <SidebarRail />
     </Sidebar>
   );
