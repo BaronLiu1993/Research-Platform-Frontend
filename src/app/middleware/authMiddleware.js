@@ -8,19 +8,7 @@ export async function AuthMiddleware(req) {
   const isProd = process.env.NODE_ENV === "production";
   const { pathname } = req.nextUrl;
 
-  if ((access || refresh) && pathname.startsWith("/auth/signin")) {
-    return NextResponse.redirect(new URL("/repository", req.url));
-  }
-
-  if ((access || refresh) && pathname.startsWith("/auth/signup")) {
-    return NextResponse.redirect(new URL("/repository", req.url));
-  }
-
-  if ((access || refresh) && pathname.startsWith("/account/register")) {
-    return NextResponse.redirect(new URL("/repository", req.url));
-  }
-
-  if ((access || refresh) && pathname.startsWith("/account/login")) {
+  if ((access || refresh) && (pathname.startsWith("/auth/signin") || pathname.startsWith("/auth/signup") || pathname.startsWith("/account/register") || pathname.startsWith("/account/login"))) {
     return NextResponse.redirect(new URL("/repository", req.url));
   }
 
@@ -30,11 +18,9 @@ export async function AuthMiddleware(req) {
 
   if (!access && refresh) {
     const refreshed = await attemptRefresh(refresh, req.url, isProd);
-
     if (!refreshed) {
       return NextResponse.redirect(new URL("/auth/signin", req.url));
     }
-
     return refreshed;
   }
 
@@ -43,27 +29,25 @@ export async function AuthMiddleware(req) {
       method: "GET",
       headers: { Authorization: `Bearer ${access}` },
     });
-
     const successStatus = await response.json();
 
+    // If authentication fails, try refreshing the access token
     if (!successStatus.success) {
       const refreshed = await attemptRefresh(refresh, req.url, isProd);
-
       if (!refreshed) {
         return NextResponse.redirect(new URL("/auth/signin", req.url));
       }
       return refreshed;
     }
-    const profileCheck = await fetch(
-      `${API_BASE}/auth/check-profile-completed`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${access}` },
-      }
-    );
 
+    // Check if the user's profile is completed
+    const profileCheck = await fetch(`${API_BASE}/auth/check-profile-completed`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${access}` },
+    });
     const profile = await profileCheck.json();
 
+    // If profile is incomplete, redirect to the register page
     if (!profile.isComplete) {
       if (req.nextUrl.pathname !== "/register") {
         return NextResponse.redirect(new URL("/register", req.url));
