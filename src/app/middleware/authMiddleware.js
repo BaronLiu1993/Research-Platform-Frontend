@@ -39,14 +39,10 @@ export async function AuthMiddleware(req) {
   }
 
   try {
-
-    const response = await fetch(
-      `${API_BASE}/auth/is-authenticated`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${access}` },
-      }
-    );
+    const response = await fetch(`${API_BASE}/auth/is-authenticated`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${access}` },
+    });
 
     const successStatus = await response.json();
 
@@ -65,15 +61,15 @@ export async function AuthMiddleware(req) {
         headers: { Authorization: `Bearer ${access}` },
       }
     );
-    
+
     const profile = await profileCheck.json();
-   
-    
 
     if (!profile.isComplete) {
       if (req.nextUrl.pathname !== "/register") {
         return NextResponse.redirect(new URL("/register", req.url));
       }
+    } else {
+      return NextResponse.redirect(new URL("/repository", req.url));
     }
 
     return NextResponse.next();

@@ -8,6 +8,7 @@ import DropdownMajor from "../components/dropdowns/dropdownmajor";
 import DropdownInterests from "../components/dropdowns/dropdowninterests";
 
 import { AlertCircle, Loader2 } from "lucide-react";
+import { SegmentPrefixRSCPathnameNormalizer } from "next/dist/server/normalizers/request/segment-prefix-rsc";
 
 export default function RegisterClientWrapper({ access }) {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function RegisterClientWrapper({ access }) {
 
   const handleAddInterests = (val) => {
     if (val.length > 3) {
+      
       setSubmitError("Maximum Research Interests Reached!");
       return;
     }
