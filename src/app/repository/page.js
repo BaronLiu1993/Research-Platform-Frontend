@@ -1,13 +1,27 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/shadcomponents/ui/breadcrumb";
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/shadcomponents/ui/sidebar";
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/shadcomponents/ui/breadcrumb";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/shadcomponents/ui/sidebar";
+
 import { AppSidebar } from "../components/sidebar";
 import generateColumns from "../components/repository/columns";
 import { DataTable } from "../components/repository/data-table";
 import Recommendations from "../components/repository/recommendations";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Database, Laptop, MapIcon } from "lucide-react";
+
 
 export default async function Repository({ searchParams }) {
   const cookieStore = cookies();
@@ -19,6 +33,7 @@ export default async function Repository({ searchParams }) {
     (typeof searchParams?.search === "string" ? searchParams.search : "").trim();
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
+
   const qs = new URLSearchParams({
     page: String(pageNumber),
     search: rawSearch,
@@ -42,7 +57,6 @@ export default async function Repository({ searchParams }) {
   let tableCount = 0;
   let parsedUserProfile = {};
 
-  // Fetch data server-side
   try {
     const [tableRes, profileRes] = await Promise.all([
       fetch(`${API_BASE}/repository/taishan?${qs}`, tableFetchOpts),
@@ -59,8 +73,8 @@ export default async function Repository({ searchParams }) {
       parsedUserProfile = await profileRes.json();
     }
   } catch {
-    // Handle error and log telemetry if needed
-  }
+      //log with telemetry
+    }
 
   return (
     <div className="w-full overflow-hidden">
@@ -125,7 +139,6 @@ export default async function Repository({ searchParams }) {
                   pageNumber={pageNumber}
                   search={rawSearch}
                   access={access}
-                  isLoading={tableData.length === 0} 
                 />
                 {Number.isFinite(tableCount) && (
                   <p className="text-xs text-gray-500 mt-2">{tableCount} results</p>

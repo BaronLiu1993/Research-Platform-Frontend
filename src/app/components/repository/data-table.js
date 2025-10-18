@@ -49,7 +49,6 @@ export function DataTable({
   pageNumber = 1,
   search = "",
   access,
-  isLoading,
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -57,6 +56,7 @@ export function DataTable({
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState(search ?? "");
 
   const columns = useMemo(
@@ -81,6 +81,7 @@ export function DataTable({
   const handleSearch = useCallback(
     (e) => {
       e.preventDefault();
+      setIsLoading(true);
       const next = new URLSearchParams(params?.toString());
       next.set("page", "1");
       next.set("search", query.trim());
@@ -104,38 +105,25 @@ export function DataTable({
                 className="w-[14rem] md:w-[18rem]"
                 placeholder="🔎 Search..."
               />
-              <button
-                type="submit"
-                className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
-                disabled={isLoading}
-              >
-                {isLoading ? (
+              {isLoading ? (
+                <button
+                  type="submit"
+                  className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
+                >
+                  Search
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
+                >
                   <svg
-                    className="mr-3 size-5 animate-spin"
+                    class="mr-3 size-5 animate-spin"
                     viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="#ffffff"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    ></circle>
-                    <path
-                      fill="none"
-                      stroke="#ffffff"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      d="M4 12a8 8 0 0 1 8-8"
-                    ></path>
-                  </svg>
-                ) : (
-                  "Search"
-                )}
-              </button>
+                  ></svg>
+                  Processing...
+                </button>
+              )}
             </form>
 
             <DropdownMenu>
@@ -265,21 +253,7 @@ export function DataTable({
             ))}
           </TableHeader>
           <TableBody>
-            {isLoading ? (
-              Array(5)
-                .fill()
-                .map((_, idx) => (
-                  <TableRow key={idx}>
-                    {columns.map((col, i) => (
-                      <TableCell key={i} className="px-2 py-2 align-middle">
-                        <div className="min-w-0 max-w-[28rem]">
-                          <div className="bg-gray-200 h-6 w-full rounded animate-pulse"></div>
-                        </div>
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-            ) : table.getRowModel().rows.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
