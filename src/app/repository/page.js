@@ -73,6 +73,7 @@ export default async function Repository({ searchParams }) {
       parsedUserProfile = await profileRes.json();
     }
   } catch {
+
       //log with telemetry
     }
 

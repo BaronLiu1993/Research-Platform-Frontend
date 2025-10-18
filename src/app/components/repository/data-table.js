@@ -56,7 +56,6 @@ export function DataTable({
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState(search ?? "");
 
   const columns = useMemo(
@@ -81,7 +80,6 @@ export function DataTable({
   const handleSearch = useCallback(
     (e) => {
       e.preventDefault();
-      setIsLoading(true);
       const next = new URLSearchParams(params?.toString());
       next.set("page", "1");
       next.set("search", query.trim());
@@ -105,25 +103,13 @@ export function DataTable({
                 className="w-[14rem] md:w-[18rem]"
                 placeholder="🔎 Search..."
               />
-              {isLoading ? (
-                <button
-                  type="submit"
-                  className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
-                >
-                  Search
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
-                >
-                  <svg
-                    class="mr-3 size-5 animate-spin"
-                    viewBox="0 0 24 24"
-                  ></svg>
-                  Processing...
-                </button>
-              )}
+              <button
+                type="submit"
+                className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
+              >
+                <svg class="mr-3 size-5 animate-spin" viewBox="0 0 24 24"></svg>
+                Processing...
+              </button>
             </form>
 
             <DropdownMenu>
