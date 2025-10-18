@@ -44,7 +44,7 @@ export default async function SignIn() {
           <Paperclip className="h-20 w-20" />
           <div className="flex flex-col gap-2">
             <h1 className="font-playfair text-2xl sm:text-3xl">
-              Welcome to Your Mail Inbox
+              Great to See You Again!
             </h1>
             <h2 className="text-sm sm:text-md">
               Connect with Google To Get Started!
@@ -59,16 +59,6 @@ export default async function SignIn() {
           >
             Login With Google
           </a>
-        </div>
-
-        <div className="max-w-xl text-center px-2 sm:px-0">
-          <p className="font-light text-xs sm:text-sm text-gray-700">
-            By clicking
-            <span className="font-semibold">Connect with Google</span> above,
-            you acknowledge that you have read, understood and agree to the
-            <span className="font-semibold">Terms and Conditions</span> and
-            Privacy Policy as applicable to your use.
-          </p>
         </div>
       </div>
     </>

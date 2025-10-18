@@ -49,6 +49,7 @@ export function DataTable({
   pageNumber = 1,
   search = "",
   access,
+  isLoading,
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -88,7 +89,6 @@ export function DataTable({
     [params, query, router]
   );
 
-
   const prevPage = Math.max(1, Number(pageNumber) - 1);
   const nextPage = Number(pageNumber) + 1;
 
@@ -107,14 +107,43 @@ export function DataTable({
               <button
                 type="submit"
                 className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
+                disabled={isLoading}
               >
-                Search
+                {isLoading ? (
+                  <svg
+                    className="mr-3 size-5 animate-spin"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="#ffffff"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    ></circle>
+                    <path
+                      fill="none"
+                      stroke="#ffffff"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      d="M4 12a8 8 0 0 1 8-8"
+                    ></path>
+                  </svg>
+                ) : (
+                  "Search"
+                )}
               </button>
             </form>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button type="button" className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
+                <button
+                  type="button"
+                  className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs"
+                >
                   Institution <ChevronDown className="w-3 h-3 ml-1" />
                 </button>
               </DropdownMenuTrigger>
@@ -140,7 +169,10 @@ export function DataTable({
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button type="button" className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
+                <button
+                  type="button"
+                  className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs"
+                >
                   Faculty <ChevronDown className="w-3 h-3 ml-1" />
                 </button>
               </DropdownMenuTrigger>
@@ -162,7 +194,10 @@ export function DataTable({
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button type="button" className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs">
+                <button
+                  type="button"
+                  className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs"
+                >
                   Department <ChevronDown className="w-3 h-3 ml-1" />
                 </button>
               </DropdownMenuTrigger>
@@ -204,13 +239,25 @@ export function DataTable({
                   return (
                     <TableHead
                       key={header.id}
-                      onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
+                      onClick={
+                        canSort
+                          ? header.column.getToggleSortingHandler()
+                          : undefined
+                      }
                       className={
-                        "text-xs whitespace-nowrap " + (canSort ? "cursor-pointer select-none" : "")
+                        "text-xs whitespace-nowrap " +
+                        (canSort ? "cursor-pointer select-none" : "")
                       }
                     >
-                      {flexRender(header.column.columnDef.header, header.getContext())}
-                      {sortDir === "asc" ? " 🔼" : sortDir === "desc" ? " 🔽" : ""}
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {sortDir === "asc"
+                        ? " 🔼"
+                        : sortDir === "desc"
+                          ? " 🔽"
+                          : ""}
                     </TableHead>
                   );
                 })}
@@ -218,13 +265,30 @@ export function DataTable({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.length ? (
+            {isLoading ? (
+              Array(5)
+                .fill()
+                .map((_, idx) => (
+                  <TableRow key={idx}>
+                    {columns.map((col, i) => (
+                      <TableCell key={i} className="px-2 py-2 align-middle">
+                        <div className="min-w-0 max-w-[28rem]">
+                          <div className="bg-gray-200 h-6 w-full rounded animate-pulse"></div>
+                        </div>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+            ) : table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-2 py-2 align-middle">
                       <div className="min-w-0 max-w-[28rem] truncate">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
                       </div>
                     </TableCell>
                   ))}
@@ -232,7 +296,10 @@ export function DataTable({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="text-center text-xs py-6">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center text-xs py-6"
+                >
                   No results.
                 </TableCell>
               </TableRow>
@@ -263,5 +330,3 @@ export function DataTable({
     </div>
   );
 }
-
-

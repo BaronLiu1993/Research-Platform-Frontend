@@ -29,9 +29,9 @@ const AREAS = [
 
 export default function Home() {
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col bg-gray-50">
       <div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 bg-zinc-100"
         style={{
           backgroundImage: `
             linear-gradient(to right, #e5e7eb 1px, transparent 1px),
@@ -44,7 +44,7 @@ export default function Home() {
         }}
       />
 
-      <header className="relative z-10 flex min-h-screen items-center">
+      <header className="relative z-10 flex flex-col min-h-screen items-center py-10">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-5xl sm:text-6xl leading-tight">
@@ -59,7 +59,7 @@ export default function Home() {
                 </motion.span>
                 <br />
                 <motion.span
-                  className="inline-block text-sky-500"
+                  className="inline-block text-sky-700"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
@@ -109,11 +109,9 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
-      </header>
 
-      <main className="relative z-10 bg-white py-16">
-        <section className="mx-auto w-full max-w-7xl px-6 sm:px-10">
-          <h2 className="font-main font-medium text-lg text-[#5B61B2] p-2 rounded-md bg-slate-100 inline-block">
+        <section className="mx-auto w-full max-w-7xl px-6 sm:px-10 mt-10">
+          <h2 className="font-main shadow-md font-medium text-lg text-[#5B61B2] p-2 rounded-md bg-slate-100 inline-block">
             📝 Research Areas
           </h2>
 
@@ -140,15 +138,15 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </main>
+      </header>
 
-      <footer className="bg-white font-light border-t">
+    
+
+      <footer className="bg-white font-light border-t mt-12 py-4">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
-          <div className="py-4">
-            <div className="text-sm flex flex-col">
-              <span>Made By Jie Xuan Liu</span>
-              <span>Industrial Engineering @ UofT</span>
-            </div>
+          <div className="text-sm flex flex-col items-center">
+            <span>Made By Jie Xuan Liu</span>
+            <span>UofT Engineer</span>
           </div>
         </div>
       </footer>
