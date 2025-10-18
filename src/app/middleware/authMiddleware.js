@@ -50,7 +50,11 @@ export async function AuthMiddleware(req) {
       if (req.nextUrl.pathname !== "/register") {
         return NextResponse.redirect(new URL("/register", req.url));
       }
-    } 
+    } else {
+      if (pathname.startsWith("/register")) {
+        return NextResponse.redirect(new URL("/repository", req.url));
+      }
+    }
 
     return NextResponse.next();
   } catch (err) {
