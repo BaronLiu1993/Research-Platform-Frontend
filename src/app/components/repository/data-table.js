@@ -107,8 +107,7 @@ export function DataTable({
                 type="submit"
                 className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
               >
-                <svg class="mr-3 size-5 animate-spin" viewBox="0 0 24 24"></svg>
-                Processing...
+                Search
               </button>
             </form>
 

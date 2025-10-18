@@ -31,7 +31,6 @@ export async function AuthMiddleware(req) {
     });
     const successStatus = await response.json();
 
-    // If authentication fails, try refreshing the access token
     if (!successStatus.success) {
       const refreshed = await attemptRefresh(refresh, req.url, isProd);
       if (!refreshed) {
@@ -40,7 +39,6 @@ export async function AuthMiddleware(req) {
       return refreshed;
     }
 
-    // Check if the user's profile is completed
     const profileCheck = await fetch(`${API_BASE}/auth/check-profile-completed`, {
       method: "GET",
       headers: { Authorization: `Bearer ${access}` },
@@ -52,9 +50,7 @@ export async function AuthMiddleware(req) {
       if (req.nextUrl.pathname !== "/register") {
         return NextResponse.redirect(new URL("/register", req.url));
       }
-    } else {
-      return NextResponse.redirect(new URL("/repository", req.url));
-    }
+    } 
 
     return NextResponse.next();
   } catch (err) {
