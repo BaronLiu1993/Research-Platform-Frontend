@@ -24,6 +24,15 @@ export default function RegisterClientWrapper({ access }) {
   const [submitError, setSubmitError] = useState("");
   const [attempted, setAttempted] = useState(false);
 
+  const handleAddInterests = (val) => {
+    if (val.length > 3) {
+      setSubmitError("Maximum Research Interests Reached!");
+      return;
+    }
+    setSubmitError("");
+    setFormData((p) => ({ ...p, student_interests: val }));
+  };
+
   const errors = useMemo(() => {
     const e = {};
     if (!formData.student_year) e.student_year = "Select your year.";
@@ -134,9 +143,7 @@ export default function RegisterClientWrapper({ access }) {
             <DropdownInterests
               name="student_interests"
               value={formData.student_interests}
-              onChange={(val) =>
-                setFormData((p) => ({ ...p, student_interests: val }))
-              }
+              onChange={(val) => handleAddInterests(val)}
             />
           </FieldGroup>
 

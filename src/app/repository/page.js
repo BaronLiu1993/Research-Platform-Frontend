@@ -24,7 +24,6 @@ import { Database, Laptop, MapIcon } from "lucide-react";
 
 
 export default async function Repository({ searchParams }) {
-  // cookies() is sync in server components
   const cookieStore = cookies();
   const access = cookieStore.get("access_token")?.value;
   const userId = cookieStore.get("user_id")?.value;
@@ -75,8 +74,8 @@ export default async function Repository({ searchParams }) {
     }
   } catch {
 
-    // log with your telemetry, but keep UI resilient
-  }
+      //log with telemetry
+    }
 
   return (
     <div className="w-full overflow-hidden">
