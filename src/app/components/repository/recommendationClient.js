@@ -14,7 +14,6 @@ import {
   DialogContent,
   DialogTrigger,
   DialogHeader,
-  DialogFooter,
   DialogTitle,
 } from "@/shadcomponents/ui/dialog";
 import { Label } from "@/shadcomponents/ui/label";
@@ -57,7 +56,7 @@ function InterestBadges({ interests }) {
   );
 }
 
-export default function RecommendationsClient({ matches }) {
+export default function RecommendationsClient({ matches, userId, access }) {
   const { open } = useSidebar();
   const itemBasisClass = open
     ? "basis-full sm:basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
@@ -80,6 +79,9 @@ export default function RecommendationsClient({ matches }) {
               <DialogTrigger asChild>
                 <button className="w-full text-left h-full">
                   <article className="rounded-xl p-4 bg-white hover:shadow-sm transition-shadow duration-200 flex flex-col border border-gray-200 min-w-0 h-[200px]">
+                    <div className="flex justify-end -mt-1 -mr-1">
+                      <SaveButton professorData={response} access={access}/>
+                    </div>
                     <div className="space-y-1.5 min-w-0">
                       <div className="min-w-0">
                         <h2

@@ -45,7 +45,6 @@ export async function AuthMiddleware(req) {
     });
     const profile = await profileCheck.json();
 
-    // If profile is incomplete, redirect to the register page
     if (!profile.isComplete) {
       if (req.nextUrl.pathname !== "/register") {
         return NextResponse.redirect(new URL("/register", req.url));

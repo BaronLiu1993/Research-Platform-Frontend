@@ -1,5 +1,7 @@
 "use client";
 
+import { useSavedStore } from "@/app/store/useSavedStore";
+
 import { useState, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -44,14 +46,20 @@ import {
 
 export function DataTable({
   data = [],
-  userId,
   generateColumns,
   pageNumber = 1,
   search = "",
   access,
+  savedProfessors
 }) {
   const router = useRouter();
   const params = useSearchParams();
+
+  const setSaved = useSavedStore((state) => state.setSavedStore);
+
+  useEffect(() => {
+    if (savedProfessors?.data) setSaved(savedProfessors.data);
+  }, [savedProfessors, setSaved]);
 
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -59,8 +67,8 @@ export function DataTable({
   const [query, setQuery] = useState(search ?? "");
 
   const columns = useMemo(
-    () => generateColumns(userId, access),
-    [userId, access, generateColumns]
+    () => generateColumns(access),
+    [access, generateColumns]
   );
 
   const table = useReactTable({

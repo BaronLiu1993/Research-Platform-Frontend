@@ -22,15 +22,15 @@ import Recommendations from "../components/repository/recommendations";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { Database, Laptop, MapIcon } from "lucide-react";
 
-
 export default async function Repository({ searchParams }) {
   const cookieStore = cookies();
   const access = cookieStore.get("access_token")?.value;
   const userId = cookieStore.get("user_id")?.value;
 
   const pageNumber = Number(searchParams?.page ?? 1) || 1;
-  const rawSearch =
-    (typeof searchParams?.search === "string" ? searchParams.search : "").trim();
+  const rawSearch = (
+    typeof searchParams?.search === "string" ? searchParams.search : ""
+  ).trim();
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 
@@ -48,19 +48,30 @@ export default async function Repository({ searchParams }) {
 
   const profileFetchOpts = {
     headers: access
-      ? { Authorization: `Bearer ${access}`, "Content-Type": "application/json" }
+      ? {
+          Authorization: `Bearer ${access}`,
+          "Content-Type": "application/json",
+        }
       : {},
     cache: "no-store",
   };
 
+  const savedFetchOpts = {
+    method: "GET",
+    headers: access ? { Authorization: `Bearer ${access}` } : {},
+    next: { revalidate: 600 },
+  };
+
   let tableData = [];
+  let savedIds = [];
   let tableCount = 0;
   let parsedUserProfile = {};
 
   try {
-    const [tableRes, profileRes] = await Promise.all([
+    const [tableRes, profileRes, savedRes] = await Promise.all([
       fetch(`${API_BASE}/repository/taishan?${qs}`, tableFetchOpts),
       fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
+      fetch(`${API_BASE}/saved/repository/get-all-savedId`, savedFetchOpts),
     ]);
 
     if (tableRes.ok) {
@@ -72,10 +83,13 @@ export default async function Repository({ searchParams }) {
     if (profileRes.ok) {
       parsedUserProfile = await profileRes.json();
     }
-  } catch {
 
-      //log with telemetry
+    if (savedRes.ok) {
+      savedIds = await savedRes.json();
     }
+  } catch {
+    //log with telemetry
+  }
 
   return (
     <div className="w-full overflow-hidden">
@@ -136,13 +150,15 @@ export default async function Repository({ searchParams }) {
                 <DataTable
                   generateColumns={generateColumns}
                   data={tableData}
-                  userId={userId}
                   pageNumber={pageNumber}
                   search={rawSearch}
                   access={access}
+                  savedProfessors={savedIds}
                 />
                 {Number.isFinite(tableCount) && (
-                  <p className="text-xs text-gray-500 mt-2">{tableCount} results</p>
+                  <p className="text-xs text-gray-500 mt-2">
+                    {tableCount} results
+                  </p>
                 )}
               </div>
             </div>

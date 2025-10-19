@@ -21,6 +21,7 @@ import {
   SchoolIcon,
 } from "lucide-react";
 import Link from "next/link";
+import SaveButton from "./buttons/saveButton";
 
 const InterestPills = ({ items = [] }) => {
   if (!items.length) return null;
@@ -43,7 +44,7 @@ const InterestPills = ({ items = [] }) => {
   );
 };
 
-const generateColumns = () => [
+const generateColumns = (access) => [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -184,7 +185,10 @@ const generateColumns = () => [
                 </Badge>
               </div>
             </div>
-            <DialogFooter className="pt-4 pb-5 px-6 bg-slate-50/50 rounded-b-lg" />
+            <DialogFooter className="pt-4 pb-5 px-6 bg-slate-50/50 rounded-b-lg">
+              <SaveButton professorData={data} access={access} 
+              />
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       );
@@ -196,7 +200,11 @@ const generateColumns = () => [
     header: () => <div />,
     cell: ({ row }) => {
       const data = row.original || {};
-      return <div className="flex justify-end items-center h-full pr-1"></div>;
+      return (
+        <div className="flex justify-end items-center h-full pr-1">
+          <SaveButton professorData={data} access={access} />
+        </div>
+      );
     },
     size: 90,
     enableSorting: false,

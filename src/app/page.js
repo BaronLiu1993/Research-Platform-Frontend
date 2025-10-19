@@ -29,26 +29,21 @@ const AREAS = [
 
 export default function Home() {
   return (
-    <div className="relative flex min-h-screen flex-col bg-gray-50">
-      <div
-        className="absolute inset-0 z-0 bg-zinc-100"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-            linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)
-          `,
-          backgroundSize: "24px 24px",
-          maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
-          WebkitMaskImage:
-            "linear-gradient(to bottom, black 70%, transparent 100%)",
-        }}
-      />
-
-      <header className="relative z-10 flex flex-col min-h-screen items-center py-10">
+    <div className="relative flex flex-col bg-gray-50">
+      <header className="relative z-10 flex flex-col min-h-screen items-center justify-center py-10">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-5xl sm:text-6xl leading-tight">
-              <span className="font-playfair z-10 block">
+              <motion.span
+                  className="inline-block font-main text-lg"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
+                  Anji
+                </motion.span>
+              <span className="font-main z-10 block">
+
                 <motion.span
                   className="inline-block"
                   initial={{ opacity: 0, y: 30 }}
@@ -59,7 +54,7 @@ export default function Home() {
                 </motion.span>
                 <br />
                 <motion.span
-                  className="inline-block text-sky-700"
+                  className="inline-block text-sky-700 font-main"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
@@ -109,38 +104,36 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
-
-        <section className="mx-auto w-full max-w-7xl px-6 sm:px-10 mt-10">
-          <h2 className="font-main shadow-md font-medium text-lg text-[#5B61B2] p-2 rounded-md bg-slate-100 inline-block">
-            📝 Research Areas
-          </h2>
-
-          <p className="font-main text-medium mt-6 text-gray-800">
-            We recommend faculty aligned with your topics, methods, and goals.
-            Browse a curated directory of 1,000+ professors to discover more.
-          </p>
-
-          <div className="mt-6 font-main">
-            <div className="flex flex-wrap gap-3">
-              {AREAS.map((area, idx) => (
-                <motion.span
-                  key={area}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.02 }}
-                  whileHover={{ scale: 1.05 }}
-                  className="text-sm sm:text-base bg-white border-2 border-gray-300 rounded-lg px-4 py-2 shadow-sm hover:shadow-md hover:border-[#5B61B2] transition-all cursor-pointer"
-                >
-                  {area}
-                </motion.span>
-              ))}
-            </div>
-          </div>
-        </section>
       </header>
 
-    
+      <section className="mx-auto w-full max-w-7xl px-6 sm:px-10 mt-10">
+        <h2 className="font-main shadow-md font-medium text-lg text-[#5B61B2] p-2 rounded-md bg-slate-100 inline-block">
+          📝 Research Areas
+        </h2>
+
+        <p className="font-main text-medium mt-6 text-gray-800">
+          We recommend faculty aligned with your topics, methods, and goals.
+          Browse a curated directory of 1,000+ professors to discover more.
+        </p>
+
+        <div className="mt-6 font-main">
+          <div className="flex flex-wrap gap-3">
+            {AREAS.map((area, idx) => (
+              <motion.span
+                key={area}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.02 }}
+                whileHover={{ scale: 1.05 }}
+                className="text-sm sm:text-base bg-white border-2 border-gray-300 rounded-lg px-4 py-2 shadow-sm hover:shadow-md hover:border-[#5B61B2] transition-all cursor-pointer"
+              >
+                {area}
+              </motion.span>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <footer className="bg-white font-light border-t mt-12 py-4">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
