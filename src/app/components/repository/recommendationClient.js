@@ -1,6 +1,7 @@
 "use client";
 
 import { useSidebar } from "@/shadcomponents/ui/sidebar";
+import SaveButton from "./buttons/saveButton";
 import {
   CarouselContent,
   CarouselItem,

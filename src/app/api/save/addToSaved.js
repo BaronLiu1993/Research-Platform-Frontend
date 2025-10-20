@@ -13,9 +13,10 @@ export async function AddToSaved({ professorData, access }) {
     labs: professorData.professor_labs || "",
     lab_url: professorData.professor_lab_url || "",
   };
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   try {
     const response = await fetch(
-      `http://localhost:8080/saved/kanban/add-saved/${professor_id}`,
+      `${API_BASE}/${professor_id}`,
       {
         method: "POST",
         headers: {
