@@ -1,8 +1,18 @@
 "use client";
 
-import { LogIn, Pencil } from "lucide-react";
+import {
+  Bike,
+  Calendar,
+  CheckSquare,
+  Coffee,
+  FileText,
+  LogIn,
+  Pencil,
+  Smile,
+} from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
+import FloatingSticker from "./components/sticker/sticker";
 
 const AREAS = [
   "Machine Learning",
@@ -27,25 +37,74 @@ const AREAS = [
   "Education",
 ];
 
+const stickers = [
+  {
+    icon: <Smile className = "h-10 w-10 stroke-1"/>,
+    color: "bg-blue-50 text-blue-600",
+    edgeColor: "text-blue-600",
+    delay: 0,
+    position: { top: "15%", left: "8%" },
+  },
+  {
+    icon: <Smile className = "h-10 w-10 stroke-1"/>,
+    color: "bg-red-50 text-red-600",
+    edgeColor: "text-red-600",
+    delay: 2,
+    position: { top: "55%", left: "5%" },
+  },
+  {
+    icon: <FileText className = "h-10 w-10 stroke-1"/>,
+    color: "bg-cyan-50 text-cyan-600",
+    edgeColor: "text-cyan-600",
+    delay: 3,
+    position: { bottom: "10%", left: "19%" },
+  },
+  {
+    icon: <CheckSquare className = "h-10 w-10 stroke-1"/>,
+    color: "bg-purple-50 text-purple-600",
+    edgeColor: "text-purple-600",
+    delay: 1.5,
+    position: { top: "20%", right: "12%" },
+  },
+  {
+    icon: <Coffee className = "h-10 w-10 stroke-1"/>,
+    color: "bg-orange-50 text-orange-600",
+    edgeColor: "text-orange-600",
+    delay: 2.5,
+    position: { top: "50%", right: "8%" },
+  },
+  {
+    icon: <Bike className = "h-10 w-10 stroke-1"/>,
+    color: "bg-teal-50 text-teal-600",
+    edgeColor: "text-teal-600",
+    delay: 0.5,
+    position: { top: "12%", right: "25%" },
+  },
+];
+
 export default function Home() {
   return (
     <div className="relative flex flex-col bg-gray-50">
       <header className="relative z-10 flex flex-col min-h-screen items-center justify-center py-10">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-5xl sm:text-6xl leading-tight">
+            <div>
+            {stickers.map((sticker, index) => (
+              <FloatingSticker className = "w-[10rem] h-[10rem]" key={index} {...sticker} />
+            ))}
+            </div>
+            <h1 className="text-5xl sm:text-6xl font-playfair leading-tight">
               <motion.span
-                  className="inline-block font-main text-lg"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                >
-                  Anji
-                </motion.span>
+                className="inline-block font-main text-lg"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                Discover Anji
+              </motion.span>
               <span className="font-main z-10 block">
-
                 <motion.span
-                  className="inline-block"
+                  className="inline-block font-playfair font-medium"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
@@ -54,7 +113,7 @@ export default function Home() {
                 </motion.span>
                 <br />
                 <motion.span
-                  className="inline-block text-sky-700 font-main"
+                  className="inline-block text-sky-700 font-playfair font-medium"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
@@ -137,9 +196,8 @@ export default function Home() {
 
       <footer className="bg-white font-light border-t mt-12 py-4">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
-          <div className="text-sm flex flex-col items-center">
+          <div className="text-sm flex flex-col ">
             <span>Made By Jie Xuan Liu</span>
-            <span>UofT Engineer</span>
           </div>
         </div>
       </footer>

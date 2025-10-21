@@ -16,6 +16,7 @@ export async function RemoveFromSaved({ professor_id, access }) {
       return result;
     }
   } catch (error) {
+    //Add telemetry here
     throw new Error();
   }
 }
