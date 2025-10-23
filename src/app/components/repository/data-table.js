@@ -2,7 +2,7 @@
 
 import { useSavedStore } from "@/app/store/useSavedStore";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import {

@@ -1,44 +1,58 @@
 "use client";
 
+import { useState } from "react";
+
 import { useSavedStore } from "@/app/store/useSavedStore";
 import { RemoveFromSaved } from "@/app/api/save/removeFromSaved";
 import { AddToSaved } from "@/app/api/save/addToSaved";
 
 import { Button } from "@/shadcomponents/ui/button";
 import { Bookmark, BookmarkCheck } from "lucide-react";
-import { useState } from "react";
 import { toast } from "sonner";
 
-export default function SaveButton({ professorData, access}) {
-  const saved = useSavedStore((state) => state.savedStore);
+export default function SaveButton({
+  professorData,
+  access,
+  isRecommendations = false,
+}) {
+  let id = 0;
+  if (isRecommendations) {
+    id = professorData.professor_id;
+  } else {
+    id = professorData.id;
+  }
 
+  const saved = useSavedStore((state) => state.savedStore);
   const addSaved = useSavedStore((state) => state.addSavedStore);
   const removeSaved = useSavedStore((state) => state.removeSavedStore);
   const [loading, setLoading] = useState(false);
-  const isSaved = saved.includes(professor_id);
+  const isSaved = saved.includes(id);
 
-  const handleToggle = async () => {
+  const handleToggle = async (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     setLoading(true);
     try {
       if (isSaved) {
-        removeSaved(professorData.professor_id);
+        removeSaved(id);
         await RemoveFromSaved({
-          professor_id: professorData.professor_id,
+          id,
           access,
         });
-        toast.success("Professor removed from saved.");
+        toast.success("Professor Removed.");
       } else {
-        addSaved(professor_id);
-        await AddToSaved({ professorData, access });
-
-        toast.success("Professor saved.");
+        addSaved(id);
+        await AddToSaved({ id, professorData, access });
+        toast.success("Professor Saved.");
       }
     } catch (error) {
       if (isSaved) {
-        addSaved(professorData.professor_id);
+        console.log(error);
+        addSaved(id);
         toast.error("Failed to remove professor.");
       } else {
-        removeSaved(professorData.professor_id);
+        console.log(error);
+        removeSaved(id);
         toast.error("Failed to save professor.");
       }
     } finally {

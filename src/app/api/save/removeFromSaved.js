@@ -1,9 +1,9 @@
 "use server";
 
-export async function RemoveFromSaved({ professor_id, access }) {
+export async function RemoveFromSaved({ id, access }) {
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   try {
-    const response = await fetch(`${API_BASE}/${professor_id}`, {
+    const response = await fetch(`${API_BASE}/saved/kanban/remove-saved/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -17,6 +17,6 @@ export async function RemoveFromSaved({ professor_id, access }) {
     }
   } catch (error) {
     //Add telemetry here
-    throw new Error();
+    console.log(error)
   }
 }

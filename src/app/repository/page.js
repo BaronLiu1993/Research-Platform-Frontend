@@ -59,7 +59,6 @@ export default async function Repository({ searchParams }) {
   const savedFetchOpts = {
     method: "GET",
     headers: access ? { Authorization: `Bearer ${access}` } : {},
-    next: { revalidate: 600 },
   };
 
   let tableData = [];

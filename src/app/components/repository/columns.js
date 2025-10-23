@@ -19,6 +19,7 @@ import {
   PersonStandingIcon,
   Link2,
   SchoolIcon,
+  Mail,
 } from "lucide-react";
 import Link from "next/link";
 import SaveButton from "./buttons/saveButton";
@@ -118,6 +119,15 @@ const generateColumns = (access) => [
             </DialogHeader>
 
             <div className="grid gap-3 py-4 px-6 text-sm overflow-y-auto">
+            <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+                <Label className="text-right font-medium text-gray-500 pt-1">
+                  Email
+                </Label>
+                <Badge className="bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
+                  <Mail className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
+                  <span className="break-words">{data.email || "—"}</span>
+                </Badge>
+              </div>
               <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
                 <Label className="text-right font-medium text-gray-500 pt-1">
                   School
