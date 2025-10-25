@@ -26,7 +26,6 @@ import {
   TableRow,
   TableHead,
 } from "@/shadcomponents/ui/table";
-import Link from "next/link";
 
 export function DataTable({
   data = [],
@@ -38,9 +37,8 @@ export function DataTable({
 }) {
   const router = useRouter();
   const params = useSearchParams();
-
   const setSaved = useSavedStore((state) => state.setSavedStore);
-
+  
   useEffect(() => {
     setIsSearchLoading(false);
     setIsNavigationLoading(false);

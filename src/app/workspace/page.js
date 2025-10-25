@@ -1,6 +1,9 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
 
+import { WorkspaceTable } from "../components/workspace/workspace-table";
+import generateColumns from "../components/workspace/columns";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,15 +19,15 @@ import {
 } from "@/shadcomponents/ui/sidebar";
 
 import { AppSidebar } from "../components/sidebar";
-import { Laptop, MapIcon } from "lucide-react";
+import { Laptop, MapIcon, Workflow } from "lucide-react";
+import { Badge } from "@/shadcomponents/ui/badge";
 
-export default async function Workspace() {
+export default async function Workspace({ searchParams }) {
   const cookieStore = cookies();
   const access = cookieStore.get("access_token")?.value;
-  const userId = cookieStore.get("user_id")?.value;
+  const pageNumber = Number(searchParams?.page ?? 1) || 1;
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
-
   const profileFetchOpts = {
     headers: access
       ? {
@@ -41,13 +44,13 @@ export default async function Workspace() {
     next: { revalidate: 600 },
   };
 
-  let savedIds = [];
+  let savedData = [];
   let parsedUserProfile = {};
 
   try {
     const [profileRes, savedRes] = await Promise.all([
       fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
-      fetch(`${API_BASE}/saved/repository/get-saved`, savedFetchOpts),
+      fetch(`${API_BASE}/saved/kanban/get-saved`, savedFetchOpts),
     ]);
 
     if (profileRes.ok) {
@@ -55,11 +58,14 @@ export default async function Workspace() {
     }
 
     if (savedRes.ok) {
-      savedIds = await savedRes.json();
+      savedData = await savedRes.json();
     }
   } catch {
     //log with telemetry
   }
+
+  console.log(parsedUserProfile);
+  console.log(savedData);
 
   return (
     <div className="w-full overflow-hidden">
@@ -91,6 +97,37 @@ export default async function Workspace() {
               </BreadcrumbList>
             </Breadcrumb>
           </header>
+          <div className="flex-1 overflow-y-auto overflow-x-hidden font-main">
+            <div className="w-full max-w-screen-xl px-4 sm:px-6">
+              <div className="my-8 sm:my-10 space-y-2">
+                <div className="mt-2 mx-6">
+                  <div className="flex items-center justify-between gap-2 pt-2">
+                    <h1 className="text-xl sm:text-2xl text-[#37352F] font-semibold">
+                      Workspace
+                    </h1>
+                  </div>
+                  <div className="flex items-center py-2 gap-2">
+                    <Badge
+                      variant="secondary"
+                      className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]"
+                    >
+                      <Workflow className="w-3.5 h-3.5 mr-1" />
+                      Track Professor Outreach!
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-8 overflow-x-auto">
+                <WorkspaceTable
+                  generateColumns={generateColumns}
+                  data={savedData.data}
+                  pageNumber={pageNumber}
+                  access={access}
+                />
+              </div>
+            </div>
+          </div>
         </SidebarInset>
       </SidebarProvider>
     </div>

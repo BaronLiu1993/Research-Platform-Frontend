@@ -23,10 +23,8 @@ import { Badge } from "@/shadcomponents/ui/badge";
 import { Database, Laptop, MapIcon } from "lucide-react";
 
 export default async function Repository({ searchParams }) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const access = cookieStore.get("access_token")?.value;
-  const userId = cookieStore.get("user_id")?.value;
-
   const pageNumber = Number(searchParams?.page ?? 1) || 1;
   const rawSearch = (
     typeof searchParams?.search === "string" ? searchParams.search : ""
@@ -137,7 +135,7 @@ export default async function Repository({ searchParams }) {
                       className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]"
                     >
                       <Database className="w-3.5 h-3.5 mr-1" />
-                      Recommended Professors
+                      Recommended For You!
                     </Badge>
                   </div>
                 </div>
