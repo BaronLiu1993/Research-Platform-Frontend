@@ -497,7 +497,7 @@ const generateColumns = (access) => [
       const data = row.original || {};
       return (
         <div>
-          <Select className="font-main">
+          <Select className="font-main rounded-none">
             <SelectTrigger className="w-[180px] border-0 rounded-none">
               <SelectValue />
             </SelectTrigger>
