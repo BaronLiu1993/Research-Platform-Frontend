@@ -41,8 +41,11 @@ export default async function Workspace({ searchParams }) {
   const savedFetchOpts = {
     method: "GET",
     headers: access ? { Authorization: `Bearer ${access}` } : {},
-    next: { revalidate: 600 },
   };
+
+  const qs = new URLSearchParams({
+    page: String(pageNumber),
+  }).toString();
 
   let savedData = [];
   let parsedUserProfile = {};
@@ -50,7 +53,7 @@ export default async function Workspace({ searchParams }) {
   try {
     const [profileRes, savedRes] = await Promise.all([
       fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
-      fetch(`${API_BASE}/saved/kanban/get-saved`, savedFetchOpts),
+      fetch(`${API_BASE}/saved/kanban/get-saved?${qs}`, savedFetchOpts),
     ]);
 
     if (profileRes.ok) {
@@ -63,9 +66,6 @@ export default async function Workspace({ searchParams }) {
   } catch {
     //log with telemetry
   }
-
-  console.log(parsedUserProfile);
-  console.log(savedData);
 
   return (
     <div className="w-full overflow-hidden">
@@ -116,15 +116,15 @@ export default async function Workspace({ searchParams }) {
                     </Badge>
                   </div>
                 </div>
-              </div>
-
-              <div className="mb-8 overflow-x-auto">
-                <WorkspaceTable
-                  generateColumns={generateColumns}
-                  data={savedData.data}
-                  pageNumber={pageNumber}
-                  access={access}
-                />
+                <div className="mb-8 overflow-x-auto">
+                  <WorkspaceTable
+                    generateColumns={generateColumns}
+                    data={savedData.data}
+                    pageNumber={pageNumber}
+                    access={access}
+                    
+                  />
+                </div>
               </div>
             </div>
           </div>

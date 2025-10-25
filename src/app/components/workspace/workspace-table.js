@@ -22,6 +22,7 @@ import {
   TableRow,
   TableHead,
 } from "@/shadcomponents/ui/table";
+import { Input } from "@/shadcomponents/ui/input";
 
 export function WorkspaceTable({
   data = [],
@@ -31,7 +32,6 @@ export function WorkspaceTable({
 }) {
   const router = useRouter();
   const params = useSearchParams();
-  console.log(data);
   useEffect(() => {
     setIsNavigationLoading(false);
   }, [data]);
@@ -76,9 +76,21 @@ export function WorkspaceTable({
   });
 
   return (
-    <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6">
+    <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6 rounded-xs">
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <Table className="text-sm min-w-full">
+        <div>
+          <div className="flex items-center py-4 px-4">
+            <Input
+              placeholder="Find Professors..."
+              value={table.getColumn("name")?.getFilterValue() ?? ""}
+              onChange={(event) =>
+                table.getColumn("name")?.setFilterValue(event.target.value)
+              }
+              className="max-w-xs rounded-xs"
+            />
+          </div>
+        </div>
+        <Table className="text-sm min-w-full rounded-xs">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

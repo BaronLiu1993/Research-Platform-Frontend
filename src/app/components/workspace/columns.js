@@ -2,6 +2,9 @@
 
 import { Button } from "@/shadcomponents/ui/button";
 import { Badge } from "@/shadcomponents/ui/badge";
+
+import { changeStatus } from "@/app/api/status/changeStatus";
+
 import {
   Select,
   SelectItem,
@@ -11,6 +14,7 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/shadcomponents/ui/select";
+
 import {
   Dialog,
   DialogContent,
@@ -18,7 +22,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shadcomponents/ui/dialog";
+
 import { Label } from "@/shadcomponents/ui/label";
+
 import {
   ArrowUpDown,
   University,
@@ -27,9 +33,11 @@ import {
   Link2,
   SchoolIcon,
   Mail,
-  GripVertical,
+  Trash2Icon,
 } from "lucide-react";
+
 import Link from "next/link";
+import { toast } from "sonner";
 
 const InterestPills = ({ items = [] }) => {
   if (!items.length) return null;
@@ -48,6 +56,17 @@ const InterestPills = ({ items = [] }) => {
       ))}
     </div>
   );
+};
+
+const handleStatusChange = async ({ access, status, id }) => {
+  try {
+    const response = await changeStatus({ access, status, id });
+    if (response.completed) {
+      toast.success("Status Changed!");
+    }
+  } catch {
+    toast.error("Failed to Change");
+  }
 };
 
 const generateColumns = (access) => [
@@ -71,7 +90,7 @@ const generateColumns = (access) => [
             <div className="cursor-pointer flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
               <div className="flex items-center space-x-3 min-w-0">
                 <div className="flex-grow min-w-0">
-                  <h1 className="text-sm font-medium text-[#37352F] group-hover:text-blue-600 transition-colors truncate">
+                  <h1 className="text-xs font-medium text-[#37352F] group-hover:text-blue-600 transition-colors">
                     {data.name || "No name"}
                   </h1>
                 </div>
@@ -215,9 +234,9 @@ const generateColumns = (access) => [
             <div className="cursor-pointer flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
               <div className="flex items-center space-x-3 min-w-0">
                 <div className="flex-grow min-w-0">
-                  <div className="flex items-center space-x-1.5 text-sm text-[#787774] truncate">
+                  <div className="flex items-center space-x-1.5 text-xs text-[#787774]">
                     {data.school && (
-                      <span className="text-sm font-medium text-[#37352F] group-hover:text-blue-600 transition-colors truncate">
+                      <span className="text-xs font-medium text-[#37352F] group-hover:text-blue-600 transition-colors truncate">
                         {data.school}
                       </span>
                     )}
@@ -344,14 +363,15 @@ const generateColumns = (access) => [
     size: 280,
   },
   {
-    accessorKey: "interests",
+    accessorKey: "email",
+    size: 140,
     header: ({ column }) => (
       <Button
         variant="ghost"
         className="font-main font-semibold text-sm text-[#787774] px-2 py-1 -ml-2  tracking-wider"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        interests
+        email
         <ArrowUpDown className="ml-2 h-3.5 w-3.5 text-gray-400" />
       </Button>
     ),
@@ -360,8 +380,10 @@ const generateColumns = (access) => [
       return (
         <Dialog>
           <DialogTrigger asChild>
-            <div className="cursor-pointer flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
-              <InterestPills items={data.research_interests || []} />
+            <div className="cursor-pointer flex flex-col w-full py-2.5 group hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
+              <span className="text-xs font-medium text-[#37352F] group-hover:text-blue-600 transition-colors truncate">
+                {data.email}
+              </span>
             </div>
           </DialogTrigger>
 
@@ -479,7 +501,6 @@ const generateColumns = (access) => [
         </Dialog>
       );
     },
-    size: 280,
   },
   {
     accessorKey: "status",
@@ -497,68 +518,100 @@ const generateColumns = (access) => [
       const data = row.original || {};
       return (
         <div>
-          <Select className="font-main rounded-none">
-            <SelectTrigger className="w-[180px] border-0 rounded-none">
+          <Select
+            className="font-main rounded-none"
+            defaultValue={data.status}
+            onValueChange={(next) => {
+              handleStatusChange({
+                access,
+                status: next,
+                id: data.professor_id,
+              });
+            }}
+          >
+            <SelectTrigger className="w-fit cursor-pointer border-0 rounded-none">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="font-main border-0 rounded-none">
+            <SelectContent className="font-main rounded-none">
+              <SelectGroup>
+                <SelectLabel>Status</SelectLabel>
+
+                <SelectItem
+                  value="followup"
+                  className="py-0.5 flex items-center gap-2 cursor-pointer"
+                >
+                  <div className="bg-purple-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
+                    <div className="bg-purple-400 h-2 w-2 rounded-full"></div>
+                    <span>Follow Up</span>
+                  </div>
+                </SelectItem>
+
+                <SelectItem
+                  value="first"
+                  className="py-0.5 flex items-center gap-2 cursor-pointer"
+                >
+                  <div className="bg-yellow-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
+                    <div className="bg-yellow-400 h-2 w-2 rounded-full"></div>
+                    <span>1st Email</span>
+                  </div>
+                </SelectItem>
+
+                <SelectItem
+                  value="second"
+                  className="py-0.5 flex items-center gap-2 cursor-pointer"
+                >
+                  <div className="bg-orange-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
+                    <div className="bg-orange-400 h-2 w-2 rounded-full"></div>
+                    <span>2nd Email</span>
+                  </div>
+                </SelectItem>
+
+                <SelectItem
+                  value="third"
+                  className="py-0.5 flex items-center gap-2 cursor-pointer"
+                >
+                  <div className="bg-sky-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
+                    <div className="bg-sky-400 h-2 w-2 rounded-full"></div>
+                    <span>3rd Email</span>
+                  </div>
+                </SelectItem>
+                <SelectItem
+                  value="xthemail"
+                  className="py-0.5 flex items-center gap-2 cursor-pointer"
+                >
+                  <div className="bg-gray-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
+                    <div className="bg-gray-400 h-2 w-2 rounded-full"></div>
+                    <span>Xth Email</span>
+                  </div>
+                </SelectItem>
+
+                <SelectItem
+                  value="lost"
+                  className="py-0.5 flex items-center gap-2 cursor-pointer"
+                >
+                  <div className="bg-red-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
+                    <div className="bg-red-400 h-2 w-2 rounded-full"></div>
+                    <span>Lost</span>
+                  </div>
+                </SelectItem>
+
+                <SelectItem
+                  value="won"
+                  className="py-0.5 flex items-center gap-2 cursor-pointer"
+                >
+                  <div className="bg-green-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
+                    <div className="bg-green-400 h-2 w-2 rounded-full"></div>
+                    <span>Won</span>
+                  </div>
+                </SelectItem>
+              </SelectGroup>
               <SelectItem
-                value="followup"
+                value="discovered"
                 className="py-0.5 flex items-center gap-2 cursor-pointer"
               >
                 <div className="bg-purple-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
                   <div className="bg-purple-400 h-2 w-2 rounded-full"></div>
-                  <span>Follow Up</span>
-                </div>
-              </SelectItem>
-
-              <SelectItem
-                value="first"
-                className="py-0.5 flex items-center gap-2 cursor-pointer"
-              >
-                <div className="bg-yellow-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
-                  <div className="bg-yellow-400 h-2 w-2 rounded-full"></div>
-                  <span>1st Email</span>
-                </div>
-              </SelectItem>
-
-              <SelectItem
-                value="second"
-                className="py-0.5 flex items-center gap-2 cursor-pointer"
-              >
-                <div className="bg-orange-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
-                  <div className="bg-orange-400 h-2 w-2 rounded-full"></div>
-                  <span>2nd Email</span>
-                </div>
-              </SelectItem>
-
-              <SelectItem
-                value="third"
-                className="py-0.5 flex items-center gap-2 cursor-pointer"
-              >
-                <div className="bg-sky-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
-                  <div className="bg-sky-400 h-2 w-2 rounded-full"></div>
-                  <span>3rd Email</span>
-                </div>
-              </SelectItem>
-
-              <SelectItem
-                value="lost"
-                className="py-0.5 flex items-center gap-2 cursor-pointer"
-              >
-                <div className="bg-red-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
-                  <div className="bg-red-400 h-2 w-2 rounded-full"></div>
-                  <span>Lost</span>
-                </div>
-              </SelectItem>
-
-              <SelectItem
-                value="won"
-                className="py-0.5 flex items-center gap-2 cursor-pointer"
-              >
-                <div className="bg-green-100 text-[13px] w-fit rounded-sm text-xs flex items-center justify-center gap-1 font-semibold text-gray-800 px-1.5 py-0.5">
-                  <div className="bg-green-400 h-2 w-2 rounded-full"></div>
-                  <span>Won</span>
+                  <span>Discovered</span>
                 </div>
               </SelectItem>
             </SelectContent>
@@ -573,7 +626,13 @@ const generateColumns = (access) => [
     header: () => <div />,
     cell: ({ row }) => {
       const data = row.original || {};
-      return <div className="flex justify-end items-center h-full pr-1"></div>;
+      return (
+        <div className="flex justify-end items-center h-full pr-1">
+          <button>
+            <Trash2Icon className = "stroke-1 h-4 w-4 hover:text-red-700 cursor-pointer"/>
+          </button>
+        </div>
+      );
     },
     size: 90,
     enableSorting: false,
