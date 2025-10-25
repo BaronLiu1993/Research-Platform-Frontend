@@ -5,6 +5,8 @@ import { useSavedStore } from "@/app/store/useSavedStore";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { Skeleton } from "@/shadcomponents/ui/skeleton";
+
 import {
   flexRender,
   getCoreRowModel,
@@ -32,17 +34,6 @@ import {
   TableHead,
 } from "@/shadcomponents/ui/table";
 import Link from "next/link";
-import {
-  Beaker,
-  Blocks,
-  Brain,
-  ChevronDown,
-  CircuitBoard,
-  Code,
-  Heart,
-  Microscope,
-  Settings,
-} from "lucide-react";
 
 export function DataTable({
   data = [],
@@ -50,12 +41,17 @@ export function DataTable({
   pageNumber = 1,
   search = "",
   access,
-  savedProfessors
+  savedProfessors,
 }) {
   const router = useRouter();
   const params = useSearchParams();
 
   const setSaved = useSavedStore((state) => state.setSavedStore);
+
+  useEffect(() => {
+    setIsSearchLoading(false);
+    setIsNavigationLoading(false);
+  }, [data]);
 
   useEffect(() => {
     if (savedProfessors?.data) setSaved(savedProfessors.data);
@@ -64,6 +60,8 @@ export function DataTable({
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
+  const [isNavigationLoading, setIsNavigationLoading] = useState(false);
   const [query, setQuery] = useState(search ?? "");
 
   const columns = useMemo(
@@ -88,6 +86,7 @@ export function DataTable({
   const handleSearch = useCallback(
     (e) => {
       e.preventDefault();
+      setIsSearchLoading(true);
       const next = new URLSearchParams(params?.toString());
       next.set("page", "1");
       next.set("search", query.trim());
@@ -109,102 +108,18 @@ export function DataTable({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="w-[14rem] md:w-[18rem]"
-                placeholder="🔎 Search..."
+                placeholder="Search..."
               />
               <button
                 type="submit"
-                className="text-sm cursor-pointer font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
+                disabled={isSearchLoading}
+                className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-md transition-colors ${
+                  isSearchLoading ? "bg-blue-400" : "bg-[#4584F3] hover:bg-[#3574E2]"
+                }`}
               >
-                Search
+                {isSearchLoading ? "🔎 Searching..." : "👋 Search"}
               </button>
             </form>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs"
-                >
-                  Institution <ChevronDown className="w-3 h-3 ml-1" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="font-main">
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <span className="rounded-full bg-[#9065B0] h-2 w-2 mr-2" />
-                  University Health Network
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <span className="rounded-full bg-[#337EA9] h-2 w-2 mr-2" />
-                  University of Toronto
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <span className="rounded-full bg-[#D44C47] h-2 w-2 mr-2" />
-                  McMaster University
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <span className="rounded-full bg-[#CB912F] h-2 w-2 mr-2" />
-                  {"Queen's University"}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs"
-                >
-                  Faculty <ChevronDown className="w-3 h-3 ml-1" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="font-main">
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <Blocks className="text-[#D9730D] w-4 h-4 mr-2" />
-                  Applied Science and Engineering
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <Code className="text-[#337EA9] w-4 h-4 mr-2" />
-                  Computer Science
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <Heart className="text-[#D44C47] w-4 h-4 mr-2" />
-                  Health Science
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  className="inline-flex items-center rounded-md bg-white border px-2 py-1 text-gray-600 text-xs"
-                >
-                  Department <ChevronDown className="w-3 h-3 ml-1" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="font-main">
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <Settings className="w-4 h-4 mr-2" />
-                  Mechanical Engineering
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <CircuitBoard className="text-[#CB912F] w-4 h-4 mr-2" />
-                  Computer Engineering
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <Microscope className="text-[#D44C47] w-4 h-4 mr-2" />
-                  Cancer Research
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <Beaker className="text-[#9065B0] w-4 h-4 mr-2" />
-                  Biochemistry
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-xs font-normal text-[#37352F]">
-                  <Brain className="text-[#C14C8A] w-4 h-4 mr-2" />
-                  Neuroscience
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
         </div>
       </div>
@@ -245,8 +160,30 @@ export function DataTable({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.length ? (
+          <TableBody aria-busy={isLoading}>
+            {isLoading ? (
+              Array.from({ length: 8 }).map((_, r) => (
+                <TableRow key={`skeleton-row-${r}`} className="animate-pulse">
+                  <TableCell colSpan={columns.length} className="p-0">
+                    <div className="flex items-start justify-between w-full p-3 rounded-md">
+                      <div className="flex items-start gap-3">
+                        <Skeleton className="h-10 w-10 rounded-full" />
+                        <div className="flex flex-col gap-1">
+                          <Skeleton className="h-4 w-40" />
+                          <Skeleton className="h-3 w-64" />
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            <Skeleton className="h-6 w-32 rounded-full" />
+                            <Skeleton className="h-6 w-40 rounded-full" />
+                            <Skeleton className="h-6 w-36 rounded-full" />
+                          </div>
+                        </div>
+                      </div>
+                      <Skeleton className="h-6 w-16 rounded-md" />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
@@ -277,6 +214,7 @@ export function DataTable({
 
       <div className="flex justify-end mt-3 gap-3">
         <Link
+          onClick={() => setIsNavigationLoading(true)}
           className={`text-sm font-medium text-white px-3 py-1.5 rounded-md transition-colors ${
             Number(pageNumber) <= 1
               ? "bg-gray-300 cursor-not-allowed pointer-events-none"
@@ -288,6 +226,7 @@ export function DataTable({
           Previous
         </Link>
         <Link
+          onClick={() => setIsNavigationLoading(true)}
           className="text-sm font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
           href={`?page=${nextPage}&search=${encodeURIComponent(search ?? "")}`}
         >
