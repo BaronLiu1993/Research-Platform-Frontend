@@ -4,6 +4,7 @@ import { Button } from "@/shadcomponents/ui/button";
 import { Badge } from "@/shadcomponents/ui/badge";
 
 import { changeStatus } from "@/app/api/status/changeStatus";
+import { RemoveFromSaved } from "@/app/api/save/removeFromSaved";
 
 import {
   Select,
@@ -39,25 +40,6 @@ import {
 import Link from "next/link";
 import { toast } from "sonner";
 
-const InterestPills = ({ items = [] }) => {
-  if (!items.length) return null;
-  const shown = items;
-  return (
-    <div className="mt-2 flex flex-wrap gap-1.5">
-      {shown.map((interest, i) => (
-        <Badge
-          key={`${interest}-${i}`}
-          variant="outline"
-          className="text-xs font-semibold bg-gray-50 text-gray-600 border-slate-200 px-1.5 py-0.5"
-          title={interest}
-        >
-          <span className="truncate inline-block align-middle">{interest}</span>
-        </Badge>
-      ))}
-    </div>
-  );
-};
-
 const handleStatusChange = async ({ access, status, id }) => {
   try {
     const response = await changeStatus({ access, status, id });
@@ -69,7 +51,7 @@ const handleStatusChange = async ({ access, status, id }) => {
   }
 };
 
-const generateColumns = (access) => [
+const generateColumns = (access, onRemove, pendingDelete) => [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -626,10 +608,15 @@ const generateColumns = (access) => [
     header: () => <div />,
     cell: ({ row }) => {
       const data = row.original || {};
+      const isDeleting = pendingDelete.has(data.professor_id);
       return (
         <div className="flex justify-end items-center h-full pr-1">
-          <button>
-            <Trash2Icon className = "stroke-1 h-4 w-4 hover:text-red-700 cursor-pointer"/>
+          <button
+            disabled={isDeleting}
+            aria-disabled={isDeleting}
+            onClick={() => onRemove(data.professor_id)}
+          >
+            <Trash2Icon className="stroke-1 h-4 w-4 hover:text-red-700 cursor-pointer" />
           </button>
         </div>
       );
