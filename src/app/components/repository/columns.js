@@ -36,7 +36,7 @@ const InterestPills = ({ items = [] }) => {
           className="text-xs font-semibold bg-gray-50 text-gray-600 border-slate-200 px-1.5 py-0.5"
           title={interest}
         >
-          <span className="truncate max-w-[9rem] inline-block align-middle">
+          <span className="truncate inline-block align-middle">
             {interest}
           </span>
         </Badge>
@@ -51,7 +51,7 @@ const generateColumns = (access) => [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className="font-inter font-semibold text-sm text-[#787774] px-2 py-1 -ml-2 uppercase tracking-wider"
+        className="font-main font-semibold text-sm text-[#787774] px-2 py-1 -ml-2 uppercase tracking-wider"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         <PersonStandingIcon className="w-4 h-4 mr-2" />
@@ -165,7 +165,6 @@ const generateColumns = (access) => [
                 <div className="flex flex-wrap gap-1.5">
                   {(data.research_interests || []).length ? (
                     (data.research_interests || [])
-                      .slice(0, 40)
                       .map((interest, i) => (
                         <Badge
                           key={`${interest}-${i}`}
@@ -173,7 +172,7 @@ const generateColumns = (access) => [
                           className="text-xs bg-gray-50 text-gray-700 border-gray-200/80 px-2 py-0.5"
                           title={interest}
                         >
-                          <span className="truncate max-w-[10rem] inline-block align-middle">
+                          <span className="truncate inline-block align-middle">
                             {interest}
                           </span>
                         </Badge>

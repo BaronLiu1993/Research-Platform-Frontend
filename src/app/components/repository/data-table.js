@@ -16,13 +16,6 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/shadcomponents/ui/dropdown-menu";
-
 import { Input } from "@/shadcomponents/ui/input";
 
 import {
@@ -69,6 +62,23 @@ export function DataTable({
     [access, generateColumns]
   );
 
+  const goToPage = useCallback(
+    (page) => {
+      if (isNavigationLoading) return;
+
+      setIsNavigationLoading(true);
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      const next = new URLSearchParams(params?.toString());
+      next.set("page", String(page));
+      next.set("search", search ?? "");
+
+      router.push(`?${next.toString()}`, { scroll: true });
+    },
+    [isNavigationLoading, params, router, search]
+  );
+
   const table = useReactTable({
     data,
     columns,
@@ -113,11 +123,13 @@ export function DataTable({
               <button
                 type="submit"
                 disabled={isSearchLoading}
-                className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-md transition-colors ${
-                  isSearchLoading ? "bg-blue-400" : "bg-[#4584F3] hover:bg-[#3574E2]"
+                className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors ${
+                  isSearchLoading
+                    ? "bg-blue-300"
+                    : "bg-[#4584F3] hover:bg-[#3574E2]"
                 }`}
               >
-                {isSearchLoading ? "🔎 Searching..." : "👋 Search"}
+                {isSearchLoading ? "🔎 Searching..." : "🖱️ Search"}
               </button>
             </form>
           </div>
@@ -160,8 +172,8 @@ export function DataTable({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody aria-busy={isLoading}>
-            {isLoading ? (
+          <TableBody aria-busy={isSearchLoading || isNavigationLoading}>
+            {isSearchLoading || isNavigationLoading ? (
               Array.from({ length: 8 }).map((_, r) => (
                 <TableRow key={`skeleton-row-${r}`} className="animate-pulse">
                   <TableCell colSpan={columns.length} className="p-0">
@@ -188,7 +200,7 @@ export function DataTable({
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-2 py-2 align-middle">
-                      <div className="min-w-0 max-w-[28rem] truncate">
+                      <div className="min-w-0 truncate">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -213,25 +225,31 @@ export function DataTable({
       </div>
 
       <div className="flex justify-end mt-3 gap-3">
-        <Link
-          onClick={() => setIsNavigationLoading(true)}
-          className={`text-sm font-medium text-white px-3 py-1.5 rounded-md transition-colors ${
-            Number(pageNumber) <= 1
-              ? "bg-gray-300 cursor-not-allowed pointer-events-none"
-              : "bg-[#4584F3] hover:bg-[#3574E2]"
-          }`}
-          href={`?page=${prevPage}&search=${encodeURIComponent(search ?? "")}`}
-          aria-disabled={Number(pageNumber) <= 1}
+        <button
+          type="button"
+          onClick={() => goToPage(Math.max(1, Number(pageNumber) - 1))}
+          disabled={isNavigationLoading || Number(pageNumber) <= 1}
+          className={`text-sm font-medium cursor-pointer text-white px-3 py-1.5 rounded-sm transition-colors
+      ${
+        isNavigationLoading || Number(pageNumber) <= 1
+          ? "bg-gray-300"
+          : "bg-[#4584F3] hover:bg-[#3574E2]"
+      }`}
         >
           Previous
-        </Link>
-        <Link
-          onClick={() => setIsNavigationLoading(true)}
-          className="text-sm font-medium text-white bg-[#4584F3] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-md"
-          href={`?page=${nextPage}&search=${encodeURIComponent(search ?? "")}`}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => goToPage(Number(pageNumber) + 1)}
+          disabled={isNavigationLoading}
+          className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm transition-colors
+      ${
+        isNavigationLoading ? "bg-gray-300" : "bg-[#4584F3] hover:bg-[#3574E2]"
+      }`}
         >
           Next
-        </Link>
+        </button>
       </div>
     </div>
   );
