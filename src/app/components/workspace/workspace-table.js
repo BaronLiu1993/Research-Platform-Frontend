@@ -23,6 +23,7 @@ import {
   TableHead,
 } from "@/shadcomponents/ui/table";
 import { Input } from "@/shadcomponents/ui/input";
+import { Filter } from "lucide-react";
 
 export function WorkspaceTable({
   data = [],
@@ -79,7 +80,7 @@ export function WorkspaceTable({
     <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6 rounded-xs">
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
         <div>
-          <div className="flex items-center py-4 px-4">
+          <div className="flex items-center gap-4 py-4 px-4">
             <Input
               placeholder="Find Professors..."
               value={table.getColumn("name")?.getFilterValue() ?? ""}
@@ -88,6 +89,10 @@ export function WorkspaceTable({
               }
               className="max-w-xs rounded-xs"
             />
+            <div className = "flex font-main p-1 rounded-xs justify-center bg-gray-100 items-center gap-2">
+              <Filter className = "stroke-1 h-4 w-4 "/>
+              <span className = "font-main font-semibold text-sm text-[#787774] px-2 py-1 -ml-2 tracking-wider">Filter</span>
+            </div>
           </div>
         </div>
         <Table className="text-sm min-w-full rounded-xs">

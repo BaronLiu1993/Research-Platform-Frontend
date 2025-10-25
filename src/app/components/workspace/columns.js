@@ -219,7 +219,7 @@ const generateColumns = (access) => [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className="font-main font-semibold text-sm text-[#787774] px-2 py-1 -ml-2  tracking-wider"
+        className="font-main font-semibold text-sm text-[#787774] px-2 py-1 -ml-2 tracking-wider"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         school

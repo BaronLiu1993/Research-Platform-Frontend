@@ -26,6 +26,7 @@ export default async function Workspace({ searchParams }) {
   const cookieStore = cookies();
   const access = cookieStore.get("access_token")?.value;
   const pageNumber = Number(searchParams?.page ?? 1) || 1;
+  const filter = (await (searchParams?.page ?? "")) || "";
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const profileFetchOpts = {
@@ -45,6 +46,7 @@ export default async function Workspace({ searchParams }) {
 
   const qs = new URLSearchParams({
     page: String(pageNumber),
+    filter: String(filter),
   }).toString();
 
   let savedData = [];
@@ -122,7 +124,6 @@ export default async function Workspace({ searchParams }) {
                     data={savedData.data}
                     pageNumber={pageNumber}
                     access={access}
-                    
                   />
                 </div>
               </div>
