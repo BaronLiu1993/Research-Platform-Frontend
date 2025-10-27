@@ -28,22 +28,9 @@ const data = {
             <Library className="h-6 w-6 bg-orange-100 rounded-xs text-orange-500 p-0.5" />
           ),
         },
-      ],
-    },
-    {
-      title: "Coming Soon...",
-      url: "#",
-      items: [
-        {
-          title: "Inbox",
-          url: "/repository",
-          icon: (
-            <Inbox className="text-red-500 bg-red-100 h-6 w-6 p-0.5 rounded-xs" />
-          ),
-        },
         {
           title: "Workspace",
-          url: "/repository",
+          url: "/workspace",
           icon: (
             <LayoutDashboard className="h-6 w-6 bg-blue-100 rounded-xs text-[#337EA9] p-0.5" />
           ),
