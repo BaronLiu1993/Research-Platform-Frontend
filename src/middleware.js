@@ -42,5 +42,6 @@ export const config = {
     "/bookmark/workspace",
     "/inbox/email",
     "/repository",
+    "/workspace"
   ],
 };
