@@ -181,7 +181,7 @@ export default function RegisterClientWrapper({ access }) {
               >
                 privacy policy
               </a>
-              .
+              
               {attempted && errors.student_acceptedterms && (
                 <div className="flex items-center gap-1 text-red-500 text-xs mt-1">
                   <AlertCircle className="h-3.5 w-3.5" />

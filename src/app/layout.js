@@ -47,6 +47,11 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+export const metadata = {
+  title: "palette",
+  description: "Research Internship Outreach App for University Students",
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

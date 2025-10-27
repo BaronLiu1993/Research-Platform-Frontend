@@ -22,7 +22,7 @@ export async function LoginMiddleware(req) {
 
       const data = await response.json();
 
-      if (data?.accessToken && data?.refreshToken && data?.user_id) {
+      if (data?.accessToken && data?.refreshToken) {
         const isProd = process.env.NODE_ENV === "production";
         const redirectTo = "/repository";
 

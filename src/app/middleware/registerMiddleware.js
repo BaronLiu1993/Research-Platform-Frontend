@@ -24,7 +24,7 @@ export async function RegisterMiddleware(req) {
 
       const data = await response.json();
 
-      if (data?.accessToken && data?.refreshToken && data?.user_id) {
+      if (data?.accessToken && data?.refreshToken) {
         const isProd = process.env.NODE_ENV === "production";
         const redirectTo = "/repository";
         const res = NextResponse.redirect(new URL(redirectTo, url));
