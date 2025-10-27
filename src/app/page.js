@@ -2,7 +2,6 @@
 
 import {
   Bike,
-  Calendar,
   CheckSquare,
   Coffee,
   FileText,
@@ -12,7 +11,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import FloatingSticker from "./components/sticker/sticker";
 
 const AREAS = [
   "Machine Learning",
