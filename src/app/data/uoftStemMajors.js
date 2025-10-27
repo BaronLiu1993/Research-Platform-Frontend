@@ -1,4 +1,13 @@
 export const uoftStemMajors = [
+  { value: "Health Sciences", label: "Health Sciences", color: "#000000" },
+  { value: "Life Sciences", label: "Health Sciences", color: "#000000" },
+  { value: "Pharmacology", label: "Pharmacology", color: "#000000" },
+  { value: "Mathematics", label: "Mathematics", color: "#000000" },
+  {
+    value: "Computer Science",
+    label: "Computer Science",
+    color: "#000000",
+  },
   {
     value: "Computer Engineering",
     label: "Computer Engineering",
@@ -31,6 +40,16 @@ export const uoftStemMajors = [
     color: "#000000",
   },
   {
+    value: "System Design Engineer",
+    label: "System Design Engineer",
+    color: "#000000",
+  },
+  {
+    value: "Software Engineer",
+    label: "Software Engineer",
+    color: "#000000",
+  },
+  {
     value: "Aerospace Engineering",
     label: "Aerospace Engineering",
     color: "#000000",
@@ -40,7 +59,6 @@ export const uoftStemMajors = [
     label: "Biomedical Engineering",
     color: "#000000",
   },
-  { value: "Mathematics", label: "Mathematics", color: "#000000" },
   { value: "Physics", label: "Physics", color: "#000000" },
   { value: "Astronomy", label: "Astronomy", color: "#000000" },
   { value: "Chemistry", label: "Chemistry", color: "#000000" },
@@ -55,22 +73,24 @@ export const uoftStemMajors = [
     label: "Geological Engineering",
     color: "#000000",
   },
-  { value: "Health Sciences", label: "Health Sciences", color: "#000000" },
+  { value: "Biomedical Engineering", label: "Biomedical Engineering", color: "#000000" },
   { value: "Neuroscience", label: "Neuroscience", color: "#000000" },
   { value: "Pharmacology", label: "Pharmacology", color: "#000000" },
+  { value: "Statistics", label: "Statistics", color: "#000000" },
   {
     value: "Mathematical Physics",
     label: "Mathematical Physics",
     color: "#000000",
   },
+  { value: "Information", label: "Information", color: "#000000" },
   { value: "Bioinformatics", label: "Bioinformatics", color: "#000000" },
   { value: "Genetics", label: "Genetics", color: "#000000" },
   { value: "Molecular Biology", label: "Molecular Biology", color: "#000000" },
+  { value: "Immunology", label: "Immunology", color: "#000000" },
   { value: "Biochemistry", label: "Biochemistry", color: "#000000" },
   { value: "Physiology", label: "Physiology", color: "#000000" },
   { value: "Ecology", label: "Ecology", color: "#000000" },
   { value: "Microbiology", label: "Microbiology", color: "#000000" },
-  { value: "Pharmacogenomics", label: "Pharmacogenomics", color: "#000000" },
   { value: "Public Health", label: "Public Health", color: "#000000" },
   {
     value: "Veterinary Science",
@@ -79,4 +99,6 @@ export const uoftStemMajors = [
   },
   { value: "Nutrition", label: "Nutrition", color: "#000000" },
   { value: "Forensic Science", label: "Forensic Science", color: "#000000" },
+  { value: "Other", label: "Other", color: "#000000" },
+
 ];

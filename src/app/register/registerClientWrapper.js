@@ -102,8 +102,7 @@ export default function RegisterClientWrapper({ access }) {
               <h1 className="font-playfair font-semibold text-3xl">Welcome!</h1>
 
               <p className="text-sm text-gray-600">
-                We will tailor professor recommendations and outreach to your
-                profile.
+                Let's Learn a Bit More About You!
               </p>
             </div>
           </div>
@@ -206,7 +205,7 @@ export default function RegisterClientWrapper({ access }) {
           <button
             type="submit"
             disabled={!isValid || submitting}
-            className="inline-flex items-center gap-2 bg-[#529CCA] hover:bg-[#4087b1] disabled:opacity-60 disabled:hover:bg-[#529CCA] active:bg-[#357396] text-white text-sm font-medium px-4 py-2 rounded-md transition-colors"
+            className="inline-flex cursor-pointer items-center gap-2 bg-[#529CCA] hover:bg-[#4087b1] disabled:opacity-60 disabled:hover:bg-[#529CCA] active:bg-[#357396] text-white text-sm font-medium px-4 py-2 rounded-md transition-colors"
           >
             {submitting ? (
               <>
