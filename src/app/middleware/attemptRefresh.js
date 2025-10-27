@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function attemptRefresh(refreshToken, url, isProd) {
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
   if (!refreshToken) return null;
 
   const refreshResponse = await fetch(`${API_BASE}/auth/refresh-token`, {
