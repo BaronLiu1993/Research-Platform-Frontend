@@ -102,7 +102,7 @@ export default function RegisterClientWrapper({ access }) {
               <h1 className="font-playfair font-semibold text-3xl">Welcome!</h1>
 
               <p className="text-sm text-gray-600">
-                Let's Learn a Bit More About You!
+                {"Let's Learn a Bit More About You!"}
               </p>
             </div>
           </div>
