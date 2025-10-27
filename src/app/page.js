@@ -88,23 +88,18 @@ export default function Home() {
       <header className="relative z-10 flex flex-col min-h-screen items-center justify-center py-10">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
           <div className="mx-auto max-w-3xl text-center">
-            <div>
-            {stickers.map((sticker, index) => (
-              <FloatingSticker className = "w-[10rem] h-[10rem]" key={index} {...sticker} />
-            ))}
-            </div>
             <h1 className="text-5xl sm:text-6xl font-playfair leading-tight">
               <motion.span
-                className="inline-block font-main text-lg"
+                className="inline-block font-vt text-2xl"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
               >
-                Discover Anji
+                Palette🎨
               </motion.span>
               <span className="font-main z-10 block">
                 <motion.span
-                  className="inline-block font-playfair font-medium"
+                  className="inline-block font-playfair font-semibold"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
@@ -113,7 +108,7 @@ export default function Home() {
                 </motion.span>
                 <br />
                 <motion.span
-                  className="inline-block text-sky-700 font-playfair font-medium"
+                  className="inline-block text-blue-900 font-playfair font-semibold"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
@@ -130,7 +125,7 @@ export default function Home() {
               transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
             >
               <p className="text-gray-800 text-lg font-light font-main">
-                Discover professors with overlapping research interests.
+                discover professors with overlapping research interests.
               </p>
 
               <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">

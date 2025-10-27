@@ -1,9 +1,29 @@
-import { Geist, Geist_Mono, Inter, Noto_Sans, Playfair_Display } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Inter,
+  Noto_Sans,
+  Playfair_Display,
+  VT323,
+  Fraunces,
+} from "next/font/google";
 import { Toaster } from "@/shadcomponents/ui/sonner";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+export const vt = VT323({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-vt",
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunce",
   subsets: ["latin"],
 });
 
@@ -19,12 +39,12 @@ const playfair = Playfair_Display({
 
 const noto = Noto_Sans({
   subsets: ["latin"],
-  variable: "--font-noto"
-})
+  variable: "--font-noto",
+});
 
 const inter = Inter({
-   subsets: ["latin"], 
-   variable: "--font-inter" 
+  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 export default function RootLayout({ children }) {
@@ -32,7 +52,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${noto.variable} ${playfair.variable} antialiased`}
+        className={`${geistSans.variable} ${fraunces.variable} ${vt.variable} ${geistMono.variable} ${inter.variable} ${noto.variable} ${playfair.variable} antialiased`}
       >
         <main>{children}</main>
         <Toaster />
@@ -40,7 +60,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-
-
-
-

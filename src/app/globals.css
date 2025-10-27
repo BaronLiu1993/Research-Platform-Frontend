@@ -18,8 +18,10 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-fraunces: var(--font-fraunces);
   --font-main: var(--font-inter);
   --font-noto: var(--font-noto);
+  --font-vt: var(--font-vt);
   --font-playfair: var(--font-playfair);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -142,8 +144,6 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
- 
-  
 
   .dark {
     --sidebar-background: 240 5.9% 10%;
