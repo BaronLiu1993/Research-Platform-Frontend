@@ -16,7 +16,6 @@ export async function RemoveFromSaved({ id, access }) {
       return result;
     }
   } catch (error) {
-    //Add telemetry here
-    console.log(error)
+    return "Internal Server Error"
   }
 }

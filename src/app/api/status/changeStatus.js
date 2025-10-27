@@ -20,7 +20,6 @@ export const changeStatus = async ({ access, status, id }) => {
       return result;
     }
   } catch (error) {
-    //Add telemetry here
-    console.log(error);
+    return "Internal Server Error";
   }
 };

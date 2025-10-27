@@ -47,11 +47,9 @@ export default function SaveButton({
       }
     } catch (error) {
       if (isSaved) {
-        console.log(error);
         addSaved(id);
         toast.error("Failed to remove professor.");
       } else {
-        console.log(error);
         removeSaved(id);
         toast.error("Failed to save professor.");
       }

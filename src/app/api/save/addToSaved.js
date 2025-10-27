@@ -29,6 +29,6 @@ export async function AddToSaved({ professorData, access, id }) {
       return result;
     }
   } catch (error) {
-    console.log(error);
+    return "Internal Server Error"
   }
 }

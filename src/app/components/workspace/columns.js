@@ -513,7 +513,7 @@ const generateColumns = (access, onRemove, pendingDelete) => [
             <SelectTrigger className="w-fit cursor-pointer border-0 rounded-none">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="font-main rounded-none">
+            <SelectContent className="font-main rounded-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <SelectGroup>
                 <SelectLabel>Status</SelectLabel>
 
