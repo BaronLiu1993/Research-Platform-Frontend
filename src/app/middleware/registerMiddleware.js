@@ -44,14 +44,6 @@ export async function RegisterMiddleware(req) {
           maxAge: 60 * 60 * 24 * 7, 
         });
 
-        res.cookies.set("user_id", data.user_id, {
-          httpOnly: true,
-          secure: isProd,
-          sameSite: "lax",
-          path: "/",
-          maxAge: 60 * 60 * 24 * 7,
-        });
-
         return res;
       }
 

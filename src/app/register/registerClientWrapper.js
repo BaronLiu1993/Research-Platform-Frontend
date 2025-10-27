@@ -8,7 +8,6 @@ import DropdownMajor from "../components/dropdowns/dropdownmajor";
 import DropdownInterests from "../components/dropdowns/dropdowninterests";
 
 import { AlertCircle, Loader2 } from "lucide-react";
-import { SegmentPrefixRSCPathnameNormalizer } from "next/dist/server/normalizers/request/segment-prefix-rsc";
 
 export default function RegisterClientWrapper({ access }) {
   const router = useRouter();
@@ -139,7 +138,7 @@ export default function RegisterClientWrapper({ access }) {
 
           <FieldGroup
             label="Research interests"
-            hint="Choose atleast 3 topics so we can find better matches."
+            hint="Choose at most 3 topics so we can find better matches."
             error={attempted ? errors.student_interests : undefined}
           >
             <DropdownInterests
