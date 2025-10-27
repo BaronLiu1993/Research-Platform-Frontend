@@ -1,6 +1,6 @@
 export const uoftStemMajors = [
   { value: "Health Sciences", label: "Health Sciences", color: "#000000" },
-  { value: "Life Sciences", label: "Health Sciences", color: "#000000" },
+  { value: "Life Sciences", label: "Life Sciences", color: "#000000" },
   { value: "Pharmacology", label: "Pharmacology", color: "#000000" },
   { value: "Mathematics", label: "Mathematics", color: "#000000" },
   {
