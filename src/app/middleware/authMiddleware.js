@@ -8,8 +8,16 @@ export async function AuthMiddleware(req) {
   const isProd = process.env.NODE_ENV === "production";
   const { pathname } = req.nextUrl;
 
-  if ((access || refresh) && (pathname.startsWith("/auth/signin") || pathname.startsWith("/auth/signup") || pathname.startsWith("/account/register") || pathname.startsWith("/account/login"))) {
-    return NextResponse.redirect(new URL("/repository", req.url));
+  const publicPaths = ["/auth/signin", "/auth/signup"];
+  if (publicPaths.some((path) => pathname.startsWith(path))) {
+    if (access || refresh) {
+      return NextResponse.redirect(new URL("/repository", req.url));
+    }
+    return NextResponse.next();
+  }
+
+  if (pathname.startsWith("/register") && refresh) {
+    return NextResponse.next();
   }
 
   if (!access && !refresh) {
@@ -45,14 +53,11 @@ export async function AuthMiddleware(req) {
     });
     const profile = await profileCheck.json();
 
-    if (!profile.isComplete) {
-      if (req.nextUrl.pathname !== "/register") {
-        return NextResponse.redirect(new URL("/register", req.url));
-      }
-    } else {
-      if (pathname.startsWith("/register")) {
-        return NextResponse.redirect(new URL("/repository", req.url));
-      }
+    if (!profile.isComplete && pathname !== "/register") {
+      return NextResponse.redirect(new URL("/register", req.url));
+    }
+    if (profile.isComplete && pathname.startsWith("/register")) {
+      return NextResponse.redirect(new URL("/repository", req.url));
     }
 
     return NextResponse.next();
