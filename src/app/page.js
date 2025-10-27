@@ -23,11 +23,7 @@ const AREAS = [
   "Economics",
   "Computer Vision",
   "Robotics",
-  "Political Science",
-  "Philosophy",
   "Environmental Science",
-  "Linguistics",
-  "Anthropology",
   "Civil Engineering",
   "Electrical Engineering",
   "Medicine",
@@ -102,7 +98,7 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
                 >
-                  Find Your Dream
+                  The Job Board
                 </motion.span>
                 <br />
                 <motion.span
@@ -111,7 +107,7 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
                 >
-                  Research Internship
+                  Built For Researchers
                 </motion.span>
               </span>
             </h1>
@@ -123,7 +119,7 @@ export default function Home() {
               transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
             >
               <p className="text-gray-800 text-lg font-light font-main">
-                discover professors with overlapping research interests.
+                discover over 1000+ professors
               </p>
 
               <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -165,7 +161,7 @@ export default function Home() {
 
         <p className="font-main text-medium mt-6 text-gray-800">
           We recommend faculty aligned with your topics, methods, and goals.
-          Browse a curated directory of 1,000+ professors to discover more.
+          Browse a curated directory of 1000+ professors!
         </p>
 
         <div className="mt-6 font-main">

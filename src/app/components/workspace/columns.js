@@ -510,10 +510,10 @@ const generateColumns = (access, onRemove, pendingDelete) => [
               });
             }}
           >
-            <SelectTrigger className="w-fit cursor-pointer border-0 rounded-none">
+            <SelectTrigger className="w-fit cursor-pointer border-0 rounded-none outline-none ring-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:outline-none">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="font-main rounded-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <SelectContent className="font-main rounded-none pr-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <SelectGroup>
                 <SelectLabel>Status</SelectLabel>
 

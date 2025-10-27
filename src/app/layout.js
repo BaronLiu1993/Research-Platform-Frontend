@@ -9,6 +9,8 @@ import {
 } from "next/font/google";
 import { Toaster } from "@/shadcomponents/ui/sonner";
 import "./globals.css";
+import { SpeedInsights } from '@vercel/speed-insights/next';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,6 +63,7 @@ export default function RootLayout({ children }) {
       >
         <main>{children}</main>
         <Toaster />
+        <SpeedInsights />
       </body>
     </html>
   );
