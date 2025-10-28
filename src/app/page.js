@@ -33,42 +33,42 @@ const AREAS = [
 
 const stickers = [
   {
-    icon: <Smile className = "h-10 w-10 stroke-1"/>,
+    icon: <Smile className="h-10 w-10 stroke-1" />,
     color: "bg-blue-50 text-blue-600",
     edgeColor: "text-blue-600",
     delay: 0,
     position: { top: "15%", left: "8%" },
   },
   {
-    icon: <Smile className = "h-10 w-10 stroke-1"/>,
+    icon: <Smile className="h-10 w-10 stroke-1" />,
     color: "bg-red-50 text-red-600",
     edgeColor: "text-red-600",
     delay: 2,
     position: { top: "55%", left: "5%" },
   },
   {
-    icon: <FileText className = "h-10 w-10 stroke-1"/>,
+    icon: <FileText className="h-10 w-10 stroke-1" />,
     color: "bg-cyan-50 text-cyan-600",
     edgeColor: "text-cyan-600",
     delay: 3,
     position: { bottom: "10%", left: "19%" },
   },
   {
-    icon: <CheckSquare className = "h-10 w-10 stroke-1"/>,
+    icon: <CheckSquare className="h-10 w-10 stroke-1" />,
     color: "bg-purple-50 text-purple-600",
     edgeColor: "text-purple-600",
     delay: 1.5,
     position: { top: "20%", right: "12%" },
   },
   {
-    icon: <Coffee className = "h-10 w-10 stroke-1"/>,
+    icon: <Coffee className="h-10 w-10 stroke-1" />,
     color: "bg-orange-50 text-orange-600",
     edgeColor: "text-orange-600",
     delay: 2.5,
     position: { top: "50%", right: "8%" },
   },
   {
-    icon: <Bike className = "h-10 w-10 stroke-1"/>,
+    icon: <Bike className="h-10 w-10 stroke-1" />,
     color: "bg-teal-50 text-teal-600",
     edgeColor: "text-teal-600",
     delay: 0.5,
@@ -153,35 +153,6 @@ export default function Home() {
           </div>
         </div>
       </header>
-
-      <section className="mx-auto w-full max-w-7xl px-6 sm:px-10 mt-10">
-        <h2 className="font-main shadow-md font-medium text-lg text-[#5B61B2] p-2 rounded-md bg-slate-100 inline-block">
-          📝 Research Areas
-        </h2>
-
-        <p className="font-main text-medium mt-6 text-gray-800">
-          We recommend faculty aligned with your topics, methods, and goals.
-          Browse a curated directory of 1000+ professors!
-        </p>
-
-        <div className="mt-6 font-main">
-          <div className="flex flex-wrap gap-3">
-            {AREAS.map((area, idx) => (
-              <motion.span
-                key={area}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.02 }}
-                whileHover={{ scale: 1.05 }}
-                className="text-sm sm:text-base bg-white border-2 border-gray-300 rounded-lg px-4 py-2 shadow-sm hover:shadow-md hover:border-[#5B61B2] transition-all cursor-pointer"
-              >
-                {area}
-              </motion.span>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <footer className="bg-white font-light border-t mt-12 py-4">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
