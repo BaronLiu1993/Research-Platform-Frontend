@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { attemptRefresh } from "./attemptRefresh";
 
 export async function AuthMiddleware(req) {
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const access = req.cookies.get("access_token")?.value;
   const refresh = req.cookies.get("refresh_token")?.value;
   const isProd = process.env.NODE_ENV === "production";

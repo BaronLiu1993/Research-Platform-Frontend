@@ -26,6 +26,15 @@ export default async function Repository({ searchParams }) {
   const cookieStore = await cookies();
   const access = cookieStore.get("access_token")?.value;
   const pageNumber = Number(searchParams?.page ?? 1) || 1;
+  const filters = {
+    school: typeof searchParams?.school === "string" ? searchParams.school : "",
+    faculty:
+      typeof searchParams?.faculty === "string" ? searchParams.faculty : "",
+    department:
+      typeof searchParams?.department === "string"
+        ? searchParams.department
+        : "",
+  };
   const rawSearch = (
     typeof searchParams?.search === "string" ? searchParams.search : ""
   ).trim();
@@ -35,6 +44,9 @@ export default async function Repository({ searchParams }) {
   const qs = new URLSearchParams({
     page: String(pageNumber),
     search: rawSearch,
+    ...(filters.school && { school: filters.school }),
+    ...(filters.faculty && { faculty: filters.faculty }),
+    ...(filters.department && { department: filters.department }),
   }).toString();
 
   const tableFetchOpts = {

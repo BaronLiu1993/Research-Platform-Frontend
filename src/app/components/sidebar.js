@@ -13,7 +13,7 @@ import {
   SidebarRail,
 } from "@/shadcomponents/ui/sidebar";
 
-import { ChevronDown, Library, LayoutDashboard, Inbox } from "lucide-react";
+import { ChevronDown, Library, LayoutDashboard, Inbox, InboxIcon } from "lucide-react";
 
 const data = {
   navMain: [
@@ -33,6 +33,13 @@ const data = {
           url: "/workspace",
           icon: (
             <LayoutDashboard className="h-6 w-6 bg-blue-100 rounded-xs text-[#337EA9] p-0.5" />
+          ),
+        },
+        {
+          title: "Inbox",
+          url: "/inbox",
+          icon: (
+            <InboxIcon className="h-6 w-6 bg-red-100 rounded-xs text-[#a23423] p-0.5" />
           ),
         },
       ],

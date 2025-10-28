@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function RegisterMiddleware(req) {
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const url = req instanceof Request ? new URL(req.url) : req.nextUrl;
   const path = url.pathname;
 

@@ -24,7 +24,6 @@ import {
   TableHead,
 } from "@/shadcomponents/ui/table";
 import { Input } from "@/shadcomponents/ui/input";
-import { Filter } from "lucide-react";
 import { toast } from "sonner";
 
 export function WorkspaceTable({
@@ -43,30 +42,35 @@ export function WorkspaceTable({
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [isNavigationLoading, setIsNavigationLoading] = useState(false);
-  const [rows, setRows] = useState(data);                 
+  const [rows, setRows] = useState(data);
   useEffect(() => setRows(data), [data]);
+
+  
 
   const [pendingDelete, setPendingDelete] = useState(new Set());
 
-  const onRemove = useCallback(async (id)=> {
-    const prev = rows;
-    setPendingDelete(s => new Set(s).add(id));
-    setRows(prev.filter(r => r.professor_id === id ? false : true));
+  const onRemove = useCallback(
+    async (id) => {
+      const prev = rows;
+      setPendingDelete((s) => new Set(s).add(id));
+      setRows(prev.filter((r) => (r.professor_id === id ? false : true)));
 
-    try {
-      await RemoveFromSaved({ access, id });
-      toast.success("Removed Professor");
-    } catch (e) {
-      setRows(prev);
-      toast.error("Failed to remove");
-    } finally {
-      setPendingDelete(s => {
-        const next = new Set(s);
-        next.delete(id);
-        return next;
-      });
-    }
-  }, [rows, access]);
+      try {
+        await RemoveFromSaved({ access, id });
+        toast.success("Removed Professor");
+      } catch (e) {
+        setRows(prev);
+        toast.error("Failed to remove");
+      } finally {
+        setPendingDelete((s) => {
+          const next = new Set(s);
+          next.delete(id);
+          return next;
+        });
+      }
+    },
+    [rows, access]
+  );
 
   const columns = useMemo(
     () => generateColumns(access, onRemove, pendingDelete),
@@ -115,10 +119,6 @@ export function WorkspaceTable({
               }
               className="max-w-xs rounded-xs"
             />
-            <div className = "flex font-main p-1 rounded-xs justify-center bg-gray-100 items-center gap-2">
-              <Filter className = "stroke-1 h-4 w-4 "/>
-              <span className = "font-main font-semibold text-sm text-[#787774] px-2 py-1 -ml-2 tracking-wider">Filter</span>
-            </div>
           </div>
         </div>
         <Table className="text-sm min-w-full rounded-xs">

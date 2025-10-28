@@ -4,7 +4,8 @@ import { useSavedStore } from "@/app/store/useSavedStore";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import Select from "react-select";
+import { filterOptions } from "../dropdowns/filterOptions";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
 import {
@@ -26,6 +27,7 @@ import {
   TableRow,
   TableHead,
 } from "@/shadcomponents/ui/table";
+import { Label } from "@/shadcomponents/ui/label";
 
 export function DataTable({
   data = [],
@@ -38,7 +40,7 @@ export function DataTable({
   const router = useRouter();
   const params = useSearchParams();
   const setSaved = useSavedStore((state) => state.setSavedStore);
-  
+
   useEffect(() => {
     setIsSearchLoading(false);
     setIsNavigationLoading(false);
@@ -48,12 +50,21 @@ export function DataTable({
     if (savedProfessors?.data) setSaved(savedProfessors.data);
   }, [savedProfessors, setSaved]);
 
+  const flatOptions = filterOptions.flatMap((group) => group.options);
+
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [isNavigationLoading, setIsNavigationLoading] = useState(false);
   const [query, setQuery] = useState(search ?? "");
+  const [filters, setFilters] = useState({
+    school: [],
+    faculty: [],
+    department: [],
+  });
+
+  console.log(filters);
 
   const columns = useMemo(
     () => generateColumns(access),
@@ -71,7 +82,13 @@ export function DataTable({
       const next = new URLSearchParams(params?.toString());
       next.set("page", String(page));
       next.set("search", search ?? "");
-
+      Object.entries(filters).forEach(([key, val]) => {
+        if (Array.isArray(val) && val.length > 0) {
+          next.set(key, val.join(","));
+        } else {
+          next.delete(key);
+        }
+      });
       router.push(`?${next.toString()}`, { scroll: true });
     },
     [isNavigationLoading, params, router, search]
@@ -98,38 +115,96 @@ export function DataTable({
       const next = new URLSearchParams(params?.toString());
       next.set("page", "1");
       next.set("search", query.trim());
+      Object.entries(filters).forEach(([key, val]) => {
+        if (Array.isArray(val) && val.length > 0) {
+          next.set(key, val.join(","));
+        } else {
+          next.delete(key);
+        }
+      });
       router.push(`?${next.toString()}`);
     },
     [params, query, router]
   );
 
-  const prevPage = Math.max(1, Number(pageNumber) - 1);
-  const nextPage = Number(pageNumber) + 1;
-
   return (
     <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6">
       <div className="rounded-lg py-2">
-        <div className="flex flex-col gap-3 md:gap-2 pb-2">
+        <div className="flex flex-col gap-3 justify-center md:gap-2 pb-2">
           <div className="flex flex-wrap items-center gap-2 md:gap-3">
-            <form onSubmit={handleSearch} className="flex items-center gap-2">
-              <Input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="w-[14rem] md:w-[18rem]"
-                placeholder="Search..."
-              />
-              <button
-                type="submit"
-                disabled={isSearchLoading}
-                className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors ${
-                  isSearchLoading
-                    ? "bg-blue-300"
-                    : "bg-[#4584F3] hover:bg-[#3574E2]"
-                }`}
-              >
-                {isSearchLoading ? "🔎 Searching..." : "🖱️ Search"}
-              </button>
-            </form>
+            <div>
+              <form onSubmit={handleSearch} className="flex flex-col gap-2">
+                <Label className="text-xs">🔎 Query Research Interests</Label>
+                <div className="flex gap-4">
+                  <Input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="w-[14rem] placeholder:text-xs md:w-[18rem] font-main text-xs font-medium"
+                    placeholder="Search..."
+                  />
+                  <button
+                    type="submit"
+                    disabled={isSearchLoading}
+                    className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors ${
+                      isSearchLoading
+                        ? "bg-blue-300"
+                        : "bg-[#4584F3] hover:bg-[#3574E2]"
+                    }`}
+                  >
+                    {isSearchLoading ? "Querying..." : "Search"}
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label className="text-xs">Filters</Label>
+              <div className="flex items-center gap-2">
+                <Select
+                  isMulti
+                  options={filterOptions}
+                  name="filters"
+                  placeholder="Pick Filters..."
+                  value={flatOptions.filter((opt) =>
+                    filters[opt.category]?.includes(opt.value)
+                  )}
+                  onChange={(selected) => {
+                    const updated = { school: [], faculty: [], department: [] };
+
+                    selected?.forEach((opt) => {
+                      if (
+                        opt.category &&
+                        updated.hasOwnProperty(opt.category)
+                      ) {
+                        updated[opt.category].push(opt.value);
+                      }
+                    });
+
+                    setFilters(updated);
+                  }}
+                  className="w-[20rem] text-xs font-medium font-main"
+                  classNames={{
+                    control: (state) =>
+                      `!rounded-md !min-h-[40px] !border !border-slate-200 !shadow-none !bg-white 
+      hover:!border-slate-300 focus:!border-[#4584F3] focus:!ring-2 focus:!ring-[#4584F3]/20 
+      transition-all duration-150 ${state.isFocused ? "!border-[#4584F3]" : ""}`,
+                    valueContainer: () => "!px-2 !py-1",
+                    placeholder: () => "text-slate-500 text-xs",
+                    input: () => "!m-0 text-xs text-slate-700",
+                    multiValue: () =>
+                      "!bg-slate-100 !rounded-md !px-2 !py-0.5 text-sm text-slate-700",
+                    multiValueLabel: () => "!text-slate-700 text-xs",
+                    multiValueRemove: () =>
+                      "!text-slate-500 hover:!bg-slate-200 hover:!text-slate-800 rounded-sm transition-colors",
+                    menu: () =>
+                      "!rounded-md !border !border-slate-200 !shadow-md !mt-1 !bg-white text-xs overflow-hidden",
+                    option: (state) =>
+                      `!py-1.5 !px-3 text-xs cursor-pointer transition-colors ${
+                        state.isFocused ? "!bg-slate-100" : ""
+                      } ${state.isSelected ? "!bg-[#4584F3] !text-white" : "!text-slate-700"}`,
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
