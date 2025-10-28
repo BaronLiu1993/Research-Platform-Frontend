@@ -25,12 +25,20 @@ import {
 } from "@/shadcomponents/ui/table";
 import { Input } from "@/shadcomponents/ui/input";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/shadcomponents/ui/composedialog";
+import EmailEditor from "./editor/emailEditor";
 
 export function WorkspaceTable({
   data = [],
   generateColumns,
   pageNumber = 1,
   access,
+  userName,
+  userEmail,
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -38,14 +46,31 @@ export function WorkspaceTable({
     setIsNavigationLoading(false);
   }, [data]);
 
+  useEffect(() => setRows(data), [data]);
+
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [isNavigationLoading, setIsNavigationLoading] = useState(false);
   const [rows, setRows] = useState(data);
-  useEffect(() => setRows(data), [data]);
+  const [selectedRows, setSelectedRows] = useState([]);
 
-  
+  const handleSelectedRows = (prof) => {
+    try {
+      setSelectedRows((prev) =>
+        prev.find((r) => r.id === prof.id)
+          ? prev.filter((r) => r.id !== prof.id)
+          : [...prev, prof]
+      );
+
+      toast.success("Toggled Professor");
+    } catch (error) {
+      toast.error("Failed To Select");
+      console.error(error);
+    }
+  };
+
+  console.log(selectedRows);
 
   const [pendingDelete, setPendingDelete] = useState(new Set());
 
@@ -73,7 +98,7 @@ export function WorkspaceTable({
   );
 
   const columns = useMemo(
-    () => generateColumns(access, onRemove, pendingDelete),
+    () => generateColumns(access, onRemove, pendingDelete, handleSelectedRows),
     [access, generateColumns, pendingDelete, onRemove]
   );
 
@@ -119,6 +144,20 @@ export function WorkspaceTable({
               }
               className="max-w-xs rounded-xs"
             />
+            <Dialog>
+              <DialogTrigger>
+                <button className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]">
+                  Draft Emails
+                </button>
+              </DialogTrigger>
+              <DialogContent>
+                <EmailEditor
+                  access={access}
+                  userEmail={userEmail}
+                  userName={userName}
+                />
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
         <Table className="text-sm min-w-full rounded-xs">

@@ -124,6 +124,8 @@ export default async function Workspace({ searchParams }) {
                     data={savedData.data}
                     pageNumber={pageNumber}
                     access={access}
+                    userName={parsedUserProfile.student_name}
+                    userEmail={parsedUserProfile.student_email}
                   />
                 </div>
               </div>

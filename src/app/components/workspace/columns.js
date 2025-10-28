@@ -38,6 +38,7 @@ import {
 
 import Link from "next/link";
 import { toast } from "sonner";
+import { Checkbox } from "@/shadcomponents/ui/checkbox";
 
 const handleStatusChange = async ({ access, status, id }) => {
   try {
@@ -50,7 +51,25 @@ const handleStatusChange = async ({ access, status, id }) => {
   }
 };
 
-const generateColumns = (access, onRemove, pendingDelete) => [
+const generateColumns = (
+  access,
+  onRemove,
+  pendingDelete,
+  handleSelectedRows
+) => [
+  {
+    accessorKey: "checkbox",
+    header: ({ column }) => <Checkbox />,
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <>
+          <Checkbox onCheckedChange={() => handleSelectedRows({id: data.professor_id})} />
+        </>
+      );
+    },
+    size: 280,
+  },
   {
     accessorKey: "name",
     header: ({ column }) => (
