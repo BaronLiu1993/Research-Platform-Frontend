@@ -11,7 +11,7 @@ import {
 
 import MentionList from "./mentionlist";
 
-export default {
+const suggestion = {
   items: ({ query }) => {
     return [
       {
@@ -132,3 +132,5 @@ export default {
     };
   },
 };
+
+export default suggestion;

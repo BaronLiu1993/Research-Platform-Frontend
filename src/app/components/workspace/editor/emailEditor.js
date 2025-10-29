@@ -37,7 +37,7 @@ export default function EmailEditor({
 
   useEffect(() => {
     setSelectedVariables([]);
-  }, []);
+  }, [setSelectedVariables]);
 
   const vars = useSelectedVariablesStore.getState().selectedVariables;
 

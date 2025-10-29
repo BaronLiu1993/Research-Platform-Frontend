@@ -64,8 +64,6 @@ export function DataTable({
     department: [],
   });
 
-  console.log(filters);
-
   const columns = useMemo(
     () => generateColumns(access),
     [access, generateColumns]
