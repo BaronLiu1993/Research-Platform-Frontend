@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 
 import Mention from "@tiptap/extension-mention";
-import suggestion from "../tiptap/suggestion";
+import suggestion from "./tiptap/suggestion";
 import StarterKit from "@tiptap/starter-kit";
 import {
   Bold,
@@ -19,12 +19,18 @@ import {
 } from "lucide-react";
 
 import { DialogClose } from "@/shadcomponents/ui/dialog";
-import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
+import { useSelectedVariablesStore } from "@/app/store/useSelectedVariablesStore";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { GenerateSnippet } from "@/app/actions/generateSnippet";
+import { GenerateSnippet } from "@/app/api/email/snippet/generateSnippet";
 import { toast } from "sonner";
+import { SyncVariables } from "@/app/api/email/snippet/syncVariables";
 
-export default function EmailEditor({ access, userName, userEmail }) {
+export default function EmailEditor({
+  access,
+  userName,
+  userEmail,
+  selectedProfessors,
+}) {
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
   );
@@ -32,6 +38,8 @@ export default function EmailEditor({ access, userName, userEmail }) {
   useEffect(() => {
     setSelectedVariables([]);
   }, []);
+
+  const vars = useSelectedVariablesStore.getState().selectedVariables;
 
   const [subject, setSubject] = useState("");
 
@@ -73,13 +81,29 @@ export default function EmailEditor({ access, userName, userEmail }) {
     if (body.trim().length === 0 || subject.trim().length === 0) {
       toast("Empty");
     } else {
-      const response = await GenerateSnippet({
+      const generateResponse = await GenerateSnippet({
         snippet_html: body,
         snippet_subject: subject,
         access,
       });
-      if (response.success) {
-        toast("Generated Snippet");
+
+      if (generateResponse.success) {
+        const syncResponse = await SyncVariables({
+          professorIdArray: selectedProfessors,
+          variableArray: vars,
+          access,
+        });
+        console.log(syncResponse);
+        if (syncResponse.success) {
+          const response = await createMassDrafts({
+            snippetId,
+            fromName: parsedUserProfile.student_name,
+            fromEmail: parsedUserProfile.student_email,
+            dynamicFields,
+            access,
+          });
+          toast("Generated Drafts");
+        }
       } else {
         toast("Failed to Generate Snippet");
       }
@@ -166,7 +190,7 @@ export default function EmailEditor({ access, userName, userEmail }) {
             className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#529CCA] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
           >
             <Loader className="h-4 w-4" />
-            Generate Snippet
+            Create Drafts
           </button>
         </DialogClose>
       </div>

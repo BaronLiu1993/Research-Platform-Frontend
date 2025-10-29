@@ -64,7 +64,7 @@ const generateColumns = (
       const data = row.original;
       return (
         <>
-          <Checkbox onCheckedChange={() => handleSelectedRows({id: data.professor_id})} />
+          <Checkbox onCheckedChange={() => handleSelectedRows(data.professor_id)} />
         </>
       );
     },

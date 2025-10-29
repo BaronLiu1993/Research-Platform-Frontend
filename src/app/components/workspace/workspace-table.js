@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
 } from "@/shadcomponents/ui/composedialog";
 import EmailEditor from "./editor/emailEditor";
@@ -55,7 +56,7 @@ export function WorkspaceTable({
   const [rows, setRows] = useState(data);
   const [selectedRows, setSelectedRows] = useState([]);
 
-  const handleSelectedRows = (prof) => {
+  const handleTotalSelectedRows = (prof) => {
     try {
       setSelectedRows((prev) =>
         prev.find((r) => r.id === prof.id)
@@ -69,6 +70,22 @@ export function WorkspaceTable({
       console.error(error);
     }
   };
+
+  const handleSelectedRows = (profId) => {
+    try {
+      setSelectedRows((prev) =>
+        prev.includes(profId)
+          ? prev.filter((id) => id !== profId) 
+          : [...prev, profId] 
+      );
+
+      toast.success("Toggled Professor");
+    } catch (error) {
+      toast.error("Failed To Select");
+      console.error(error);
+    }
+  };
+  
 
   console.log(selectedRows);
 
@@ -145,16 +162,16 @@ export function WorkspaceTable({
               className="max-w-xs rounded-xs"
             />
             <Dialog>
-              <DialogTrigger>
-                <button className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]">
-                  Draft Emails
-                </button>
+              <DialogTrigger className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]">
+                Draft Emails
               </DialogTrigger>
               <DialogContent>
+                <DialogTitle></DialogTitle>
                 <EmailEditor
                   access={access}
                   userEmail={userEmail}
                   userName={userName}
+                  selectedProfessors={selectedRows}
                 />
               </DialogContent>
             </Dialog>

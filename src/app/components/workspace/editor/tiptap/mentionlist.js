@@ -6,7 +6,7 @@ import React, {
   useRef,
 } from "react";
 
-import { useSelectedVariablesStore } from "@/app/store/useSelectedRowsStore";
+import { useSelectedVariablesStore } from "@/app/store/useSelectedVariablesStore";
 
 const MentionList = forwardRef((props, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -71,9 +71,7 @@ const MentionList = forwardRef((props, ref) => {
       >
         {props.items.length ? (
           <>
-            <h1 className="text-xs font-semibold text-[#787774] px-3 pt-2">
-              Email Snippet Variables
-            </h1>
+
 
             {props.items.map((item, index) => (
               <button

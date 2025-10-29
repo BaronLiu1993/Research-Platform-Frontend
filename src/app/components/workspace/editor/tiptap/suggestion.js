@@ -1,12 +1,12 @@
 import { ReactRenderer } from "@tiptap/react";
 import tippy from "tippy.js";
 import {
-  Lightbulb,
-  Atom,
   School2,
   Microscope,
   LayoutTemplate,
   SquareLibrary,
+  WholeWord,
+  Pencil,
 } from "lucide-react";
 
 import MentionList from "./mentionlist";
@@ -25,39 +25,39 @@ export default {
       },
       {
         title: "Last Name",
-        description: "Query Relevant Publications Variable",
+        description: "Professor Last Name",
         icon: (
-          <Lightbulb className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#CB912F]" />
+          <WholeWord className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#CB912F]" />
         ),
         searchTerms: ["ordered", "point", "numbers"],
-        variable: "{{researchInterests}}",
+        variable: "{{lastName}}",
       },
       {
         title: "First Name",
-        description: "Insert AI Generated Portfolio",
+        description: "Professor First Name",
         icon: (
-          <Atom className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#337EA9]" />
+          <Pencil className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#337EA9]" />
         ),
         searchTerms: ["ordered", "point", "numbers"],
         variable: "{{Portfolio}}",
       },
       {
         title: "Professor Institution",
-        description: "Where They Work",
+        description: "Professors School/Institution",
         icon: (
           <School2 className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#37352F]" />
         ),
         searchTerms: ["ordered", "point", "numbers"],
-        variable: "{{professorSchool}}",
+        variable: "{{school}}",
       },
       {
         title: "Faculty",
-        description: "Professor Faculty",
+        description: "Professors Faculty",
         icon: (
           <SquareLibrary className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#9F6B53]" />
         ),
         searchTerms: ["ordered", "point", "numbers"],
-        variable: "{{professorSchool}}",
+        variable: "{{faculty}}",
       },
       {
         title: "Department",
