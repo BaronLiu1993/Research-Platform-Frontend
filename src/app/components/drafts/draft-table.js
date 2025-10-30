@@ -34,11 +34,8 @@ export function DraftsTable({
   userName,
   userEmail,
 }) {
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
-
   const router = useRouter();
   const params = useSearchParams();
-  const [draft, setDraft] = useState({});
 
   useEffect(() => {
     setIsNavigationLoading(false);
@@ -53,26 +50,7 @@ export function DraftsTable({
   const [rows, setRows] = useState(data);
   const [selectedRows, setSelectedRows] = useState([]);
 
-  const getEmailDrafts = async (draftId, access) => {
-    try {
-      const draftRes = await fetch(
-        `${API_BASE}/email/get-singular-draft?draftId=${draftId}`,
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${access}` },
-        }
-      );
-      if (draftRes.ok) {
-        const draftData = await draftRes.json();
-        setDraft(draftData);
-      } else {
-        toast.error("Failed to fetch draft.");
-      }
-    } catch (err) {
-      console.log(err);
-      toast.error("Internal Server Error");
-    }
-  };
+  console.log(selectedRows);
 
   const handleTotalSelectedRows = (prof) => {
     try {
@@ -88,13 +66,17 @@ export function DraftsTable({
     }
   };
 
-  const handleSelectedRows = (profId) => {
+  const handleSelectedRows = (prof) => {
     try {
-      setSelectedRows((prev) =>
-        prev.includes(profId)
-          ? prev.filter((id) => id !== profId)
-          : [...prev, profId]
-      );
+      setSelectedRows((prev) => {
+        const exists = prev.find((p) => p.id === prof.id);
+
+        if (exists) {
+          return prev.filter((p) => p.id !== prof.id);
+        } else {
+          return [...prev, prof];
+        }
+      });
 
       toast.success("Toggled Professor");
     } catch (error) {
@@ -137,21 +119,10 @@ export function DraftsTable({
         onRemove,
         pendingDelete,
         handleSelectedRows,
-        getEmailDrafts,
-        draft,
         userName,
         userEmail
       ),
-    [
-      access,
-      onRemove,
-      pendingDelete,
-      handleSelectedRows,
-      setDraft,
-      draft,
-      userName,
-      userEmail,
-    ]
+    [access, onRemove, pendingDelete, handleSelectedRows, userName, userEmail]
   );
 
   const goToPage = useCallback(

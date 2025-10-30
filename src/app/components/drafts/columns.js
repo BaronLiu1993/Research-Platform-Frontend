@@ -14,14 +14,11 @@ import { ArrowUpDown, Trash2Icon, Pencil } from "lucide-react";
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
 import DraftEditor from "./editor/draftEditor";
 
-
 const generateColumns = (
   access,
   onRemove,
   pendingDelete,
   handleSelectedRows,
-  getEmailDrafts,
-  draft,
   userName,
   userEmail
 ) => [
@@ -30,10 +27,17 @@ const generateColumns = (
     header: ({ column }) => <Checkbox />,
     cell: ({ row }) => {
       const data = row.original;
+      console.log(data)
       return (
         <>
           <Checkbox
-            onCheckedChange={() => handleSelectedRows(data.professor_id)}
+            onCheckedChange={() =>
+              handleSelectedRows({
+                id: data.professor_id,
+                email: data.professor_email,
+                name: data.professor_name,
+              })
+            }
           />
         </>
       );
@@ -97,14 +101,10 @@ const generateColumns = (
     header: () => <div />,
     cell: ({ row }) => {
       const data = row.original || {};
-      console.log(data);
       return (
         <div className="flex justify-end items-center h-full pr-1">
           <Dialog>
-            <DialogTrigger
-              onClick={() => getEmailDrafts(data.draft_id, access)}
-              className="flex gap-2 text-xs font-medium bg-orange-400 hover:bg-orange-500 cursor-pointer p-2 rounded-md text-white transition-colors truncate"
-            >
+            <DialogTrigger className="flex gap-2 text-xs font-medium bg-orange-400 hover:bg-orange-500 cursor-pointer p-2 rounded-md text-white transition-colors truncate">
               <Pencil className="stroke-1 h-4 w-4" />
               Edit Draft
             </DialogTrigger>
@@ -112,7 +112,7 @@ const generateColumns = (
               <DialogTitle></DialogTitle>
               <DraftEditor
                 access={access}
-                draft={draft}
+                draftId={data.draft_id}
                 userName={userName}
                 userEmail={userEmail}
               />

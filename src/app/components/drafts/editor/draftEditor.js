@@ -19,17 +19,33 @@ import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { Badge } from "@/shadcomponents/ui/badge";
 
 const handleSaveDraft = () => {
+    
+};
 
-}
-
-export default function DraftEditor({
-  access,
-  draft,
-  userName, 
-  userEmail
-}) {
-  console.log(draft)
+export default function DraftEditor({ access, draftId, userName, userEmail }) {
   const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("");
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
+
+  const getEmailDrafts = async () => {
+    try {
+      const draftRes = await fetch(
+        `${API_BASE}/email/get-singular-draft?draftId=${draftId}`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${access}` },
+        }
+      );
+      if (draftRes.ok) {
+        const draftData = await draftRes.json();
+        return { data: draftData, success: true };
+      } else {
+        return { message: "Server Error", success: false };
+      }
+    } catch (err) {
+      return { message: "Internal Server Error", success: false };
+    }
+  };
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -39,8 +55,22 @@ export default function DraftEditor({
           "prose prose-p:my-0 max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[14px]",
       },
     },
-    content: "",
+    content: body,
   });
+
+  useEffect(() => {
+    const handleEmailDraft = async () => {
+      const response = await getEmailDrafts();
+      if (response.success) {
+        setSubject(response.data.subject);
+        setBody(response.data.html);
+        if (editor) {
+          editor.commands.setContent(response.data.html);
+        }
+      }
+    };
+    handleEmailDraft();
+  }, [access, draftId, editor]);
 
   return (
     <div>
