@@ -24,7 +24,6 @@ export async function middleware(req) {
     return NextResponse.next(); 
   }
 
-  // For all other protected routes
   const authResult = await AuthMiddleware(req);
   if (authResult) {
     return authResult;

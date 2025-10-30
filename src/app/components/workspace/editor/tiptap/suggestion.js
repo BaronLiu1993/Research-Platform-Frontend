@@ -39,7 +39,7 @@ const suggestion = {
           <Pencil className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#337EA9]" />
         ),
         searchTerms: ["ordered", "point", "numbers"],
-        variable: "{{Portfolio}}",
+        variable: "{{firstName}}",
       },
       {
         title: "Professor Institution",

@@ -4,62 +4,35 @@ import "tippy.js/dist/tippy.css";
 
 import { useEffect, useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
-
-import { GenerateDrafts } from "@/app/api/email/draft/generateDraft";
-import Mention from "@tiptap/extension-mention";
-import suggestion from "./tiptap/suggestion";
 import StarterKit from "@tiptap/starter-kit";
 import {
   Bold,
-  Eye,
+  CheckCheck,
   Italic,
   List,
   ListTodo,
-  Loader,
   Strikethrough,
   X,
 } from "lucide-react";
 
 import { DialogClose } from "@/shadcomponents/ui/dialog";
-import { useSelectedVariablesStore } from "@/app/store/useSelectedVariablesStore";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { GenerateSnippet } from "@/app/api/email/snippet/generateSnippet";
-import { toast } from "sonner";
-import { SyncVariables } from "@/app/api/email/snippet/syncVariables";
 
-export default function EmailEditor({
+const handleSaveDraft = () => {
+
+}
+
+export default function DraftEditor({
   access,
-  userName,
-  userEmail,
-  selectedProfessors,
+  draft,
+  userName, 
+  userEmail
 }) {
-  const setSelectedVariables = useSelectedVariablesStore(
-    (s) => s.setSelectedVariables
-  );
-  
-  useEffect(() => {
-    setSelectedVariables([]);
-  }, [setSelectedVariables]);
-
-  const vars = useSelectedVariablesStore.getState().selectedVariables;
-
+  console.log(draft)
   const [subject, setSubject] = useState("");
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Mention.configure({
-        HTMLAttributes: {
-          class:
-            "prose bg-[#F6F3F9] text-[#9065B0] font-mono text-[14px] rounded-md",
-        },
-        suggestion: {
-          ...suggestion,
-          char: "/",
-          ignoreEvents: true,
-        },
-      }),
-    ],
+    extensions: [StarterKit],
     editorProps: {
       attributes: {
         class:
@@ -67,51 +40,7 @@ export default function EmailEditor({
       },
     },
     content: "",
-    onUpdate({ editor }) {
-      const mentions = [];
-
-      editor.state.doc.descendants((node) => {
-        if (node.type.name === "mention") {
-          mentions.push(node.attrs.id);
-        }
-      });
-      useSelectedVariablesStore.getState().setSelectedVariables(mentions);
-    },
   });
-
-  const handleSnippetGeneration = async (body, subject) => {
-    if (body.trim().length === 0 || subject.trim().length === 0) {
-      toast("Empty");
-    } else {
-      const snippetResponse = await GenerateSnippet({
-        snippet_html: body,
-        snippet_subject: subject,
-        access,
-      });
-
-      if (snippetResponse.success) {
-        const syncResponse = await SyncVariables({
-          professorIdArray: selectedProfessors,
-          variableArray: vars,
-          access,
-        });
-        if (syncResponse.success) {
-          const draftResponse = await GenerateDrafts({
-            snippetId: snippetResponse.snippetId,
-            fromName: userName,
-            fromEmail: userEmail,
-            dynamicFields: syncResponse.data.result,
-            access,
-          });
-          if (draftResponse.success) {
-            toast("Generated Drafts");
-          }
-        }
-      } else {
-        toast("Failed to Generate Snippet");
-      }
-    }
-  };
 
   return (
     <div>
@@ -188,18 +117,11 @@ export default function EmailEditor({
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex gap-4 items-center">
         <DialogClose
-          onClick={() => handleSnippetGeneration(editor.getHTML(), subject)}
+          onClick={() => handleSaveDraft(editor.getHTML(), subject)}
           className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#529CCA] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
         >
-          <Loader className="h-4 w-4" />
-          Send Emails
-        </DialogClose>
-        <DialogClose
-          onClick={() => handleSnippetGeneration(editor.getHTML(), subject)}
-          className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#D9730D] px-3 py-1.5 hover:bg-[#d9730dfb] transition-colors rounded-sm"
-        >
-          <Eye className="h-4 w-4" />
-          Preview Emails
+          <CheckCheck className="h-4 w-4" />
+          Save Draft
         </DialogClose>
       </div>
     </div>

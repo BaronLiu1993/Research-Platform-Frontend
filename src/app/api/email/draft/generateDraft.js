@@ -1,10 +1,11 @@
-export const createMassDrafts = async ({
+export const GenerateDrafts = async ({
   snippetId,
   fromName,
   fromEmail,
   dynamicFields,
   access,
 }) => {
+    console.log(dynamicFields)
   try {
     const API_BASE =
       process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
@@ -16,7 +17,7 @@ export const createMassDrafts = async ({
         Authorization: `Bearer ${access}`,
       },
       body: JSON.stringify({
-        professorData: dynamicFields.result,
+        professorData: dynamicFields,
         baseBody: {
           snippetId,
           fromName,

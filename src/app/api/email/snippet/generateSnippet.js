@@ -17,8 +17,8 @@ export const GenerateSnippet = async ({
       }),
     });
     if (response.ok) {
-      const snippetId = await response.json();
-      return { success: true, snippetId: snippetId };
+      const data = await response.json();
+      return { success: true, snippetId: data.snippetId };
     } else {
       return {
         message: "Server Error",
