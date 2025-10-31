@@ -13,6 +13,30 @@ import { ArrowUpDown, Trash2Icon, Pencil } from "lucide-react";
 
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
 import DraftEditor from "./editor/draftEditor";
+import { toast } from "sonner";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
+const deleteDraft = async ({ access, draftId }) => {
+  console.log(draftId);
+  try {
+    const deleteRes = await fetch(
+      `${API_BASE}/email/delete-draft?draftId=${draftId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      }
+    );
+    if (deleteRes.ok) {
+      toast.success("Deleted Successfully!");
+      return { message: "Success!", sucess: true };
+    }
+  } catch {
+    toast.error("Failed to Delete!");
+    return { message: "Internal Server Error", sucess: false };
+  }
+};
 
 const generateColumns = (
   access,
@@ -20,20 +44,25 @@ const generateColumns = (
   pendingDelete,
   handleSelectedRows,
   userName,
-  userEmail
+  userEmail,
+  selectedRows = []
 ) => [
   {
     accessorKey: "checkbox",
     header: ({ column }) => <Checkbox />,
     cell: ({ row }) => {
       const data = row.original;
-      console.log(data)
+      console.log(data);
+      const isSelected = selectedRows.some((r) => r.id === data.id);
+
       return (
         <>
           <Checkbox
+            checked={isSelected}
             onCheckedChange={() =>
               handleSelectedRows({
-                id: data.professor_id,
+                id: data.id,
+                professor_id: data.professor_id,
                 email: data.professor_email,
                 name: data.professor_name,
               })
@@ -111,6 +140,7 @@ const generateColumns = (
             <DialogContent>
               <DialogTitle></DialogTitle>
               <DraftEditor
+                professorEmail={data.professor_email}
                 access={access}
                 draftId={data.draft_id}
                 userName={userName}
@@ -129,15 +159,20 @@ const generateColumns = (
     header: () => <div />,
     cell: ({ row }) => {
       const data = row.original || {};
-      const isDeleting = pendingDelete.has(data.professor_id);
+      const isDeleting = pendingDelete.has(data.id);
       return (
         <div className="flex justify-end items-center h-full pr-1">
           <button
             disabled={isDeleting}
             aria-disabled={isDeleting}
-            onClick={() => onRemove(data.professor_id)}
+            onClick={async (e) => {
+              e.stopPropagation();
+              onRemove(data.id);
+              await deleteDraft({ access, draftId: data.draft_id });
+            }}
+            className="disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Trash2Icon className="stroke-1 h-4 w-4 hover:text-red-700 cursor-pointer" />
+            <Trash2Icon className="stroke-1 h-4 w-4 hover:text-red-700 cursor-pointer transition-colors" />
           </button>
         </div>
       );

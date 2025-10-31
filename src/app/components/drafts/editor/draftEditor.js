@@ -17,16 +17,20 @@ import {
 
 import { DialogClose } from "@/shadcomponents/ui/dialog";
 import { Badge } from "@/shadcomponents/ui/badge";
+import { toast } from "sonner";
 
-const handleSaveDraft = () => {
-    
-};
+const handleSaveDraft = () => {};
 
-export default function DraftEditor({ access, draftId, userName, userEmail }) {
+export default function DraftEditor({
+  access,
+  draftId,
+  userName,
+  userEmail,
+  professorEmail,
+}) {
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
-
   const getEmailDrafts = async () => {
     try {
       const draftRes = await fetch(
@@ -38,12 +42,12 @@ export default function DraftEditor({ access, draftId, userName, userEmail }) {
       );
       if (draftRes.ok) {
         const draftData = await draftRes.json();
-        return { data: draftData, success: true };
+        return { data: draftData, sucess: true };
       } else {
-        return { message: "Server Error", success: false };
+        return { message: "Server Error", sucess: false };
       }
     } catch (err) {
-      return { message: "Internal Server Error", success: false };
+      return { message: "Internal Server Error", sucess: false };
     }
   };
 
@@ -61,7 +65,7 @@ export default function DraftEditor({ access, draftId, userName, userEmail }) {
   useEffect(() => {
     const handleEmailDraft = async () => {
       const response = await getEmailDrafts();
-      if (response.success) {
+      if (response.sucess) {
         setSubject(response.data.subject);
         setBody(response.data.html);
         if (editor) {
@@ -71,6 +75,36 @@ export default function DraftEditor({ access, draftId, userName, userEmail }) {
     };
     handleEmailDraft();
   }, [access, draftId, editor]);
+  const saveDraft = async () => {
+    try {
+      if (editor) {
+        const saveRes = await fetch(
+          `${API_BASE}/email/update-draft?draftId=${draftId}`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${access}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              to: professorEmail,
+              fromEmail: userEmail,
+              fromName: userName,
+              subject,
+              body: editor.getHTML(),
+            }),
+          }
+        );
+        if (saveRes.ok) {
+          toast.success("Updated Successfully!");
+          return { message: "Sucess!", sucess: true };
+        }
+      }
+    } catch {
+      toast.error("Failed to Update!");
+      return { message: "Internal Server Error", sucess: false };
+    }
+  };
 
   return (
     <div>
@@ -147,7 +181,7 @@ export default function DraftEditor({ access, draftId, userName, userEmail }) {
       <EditorContent editor={editor} />
       <div className="font-main p-4 flex gap-4 items-center">
         <DialogClose
-          onClick={() => handleSaveDraft(editor.getHTML(), subject)}
+          onClick={saveDraft}
           className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#529CCA] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
         >
           <CheckCheck className="h-4 w-4" />

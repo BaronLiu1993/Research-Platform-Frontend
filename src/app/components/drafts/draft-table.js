@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { RemoveFromSaved } from "@/app/api/save/removeFromSaved";
 
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
@@ -37,37 +36,23 @@ export function DraftsTable({
   const router = useRouter();
   const params = useSearchParams();
 
-  useEffect(() => {
-    setIsNavigationLoading(false);
-  }, [data]);
-
-  useEffect(() => setRows(data), [data]);
-
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [isNavigationLoading, setIsNavigationLoading] = useState(false);
   const [rows, setRows] = useState(data);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [pendingDelete, setPendingDelete] = useState(new Set());
 
-  console.log(selectedRows);
+  useEffect(() => {
+    setIsNavigationLoading(false);
+  }, [data]);
 
-  const handleTotalSelectedRows = (prof) => {
-    try {
-      setSelectedRows((prev) =>
-        prev.find((r) => r.id === prof.id)
-          ? prev.filter((r) => r.id !== prof.id)
-          : [...prev, prof]
-      );
+  useEffect(() => setRows(data), [data]);
 
-      toast.success("Toggled Professor");
-    } catch (error) {
-      toast.error("Failed To Select");
-    }
-  };
-
-  const handleSelectedRows = (prof) => {
-    try {
+  const handleSelectedRows = useCallback(
+    (prof) => {
+      const isCurrentlySelected = selectedRows.find((p) => p.id === prof.id);
       setSelectedRows((prev) => {
         const exists = prev.find((p) => p.id === prof.id);
 
@@ -78,29 +63,27 @@ export function DraftsTable({
         }
       });
 
-      toast.success("Toggled Professor");
-    } catch (error) {
-      toast.error("Failed To Select");
-      console.error(error);
-    }
-  };
-
-  const updateEmailDrafts = () => {};
-
-  const [pendingDelete, setPendingDelete] = useState(new Set());
+      if (isCurrentlySelected) {
+        toast.success("Deselected Professor");
+      } else {
+        toast.success("Selected Professor");
+      }
+    },
+    [selectedRows]
+  );
 
   const onRemove = useCallback(
     async (id) => {
       const prev = rows;
       setPendingDelete((s) => new Set(s).add(id));
-      setRows(prev.filter((r) => (r.professor_id === id ? false : true)));
+      setRows((prev) => prev.filter((r) => r.id !== id));
 
       try {
-        await RemoveFromSaved({ access, id });
-        toast.success("Removed Professor");
+        setSelectedRows((prevSelected) =>
+          prevSelected.filter((r) => r.id !== id)
+        );
       } catch (e) {
         setRows(prev);
-        toast.error("Failed to remove");
       } finally {
         setPendingDelete((s) => {
           const next = new Set(s);
@@ -120,9 +103,18 @@ export function DraftsTable({
         pendingDelete,
         handleSelectedRows,
         userName,
-        userEmail
+        userEmail,
+        selectedRows
       ),
-    [access, onRemove, pendingDelete, handleSelectedRows, userName, userEmail]
+    [
+      access,
+      onRemove,
+      pendingDelete,
+      handleSelectedRows,
+      userName,
+      userEmail,
+      selectedRows,
+    ]
   );
 
   const goToPage = useCallback(
@@ -167,7 +159,10 @@ export function DraftsTable({
               }
               className="max-w-xs rounded-xs"
             />
-            <button className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]">
+            <button
+              className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]"
+              disabled={selectedRows.length === 0}
+            >
               Send Drafts
             </button>
           </div>
