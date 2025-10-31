@@ -192,15 +192,9 @@ export default function EmailEditor({
           className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#529CCA] px-3 py-1.5 hover:bg-[#3574E2] transition-colors rounded-sm"
         >
           <Loader className="h-4 w-4" />
-          Send Emails
+          Create Drafts
         </DialogClose>
-        <DialogClose
-          onClick={() => handleSnippetGeneration(editor.getHTML(), subject)}
-          className="text-sm cursor-pointer font-main font-medium flex items-center gap-1 text-white bg-[#D9730D] px-3 py-1.5 hover:bg-[#d9730dfb] transition-colors rounded-sm"
-        >
-          <Eye className="h-4 w-4" />
-          Preview Emails
-        </DialogClose>
+
       </div>
     </div>
   );

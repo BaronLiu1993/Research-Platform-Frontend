@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { SendDrafts } from "@/app/api/email/send/sendDraft";
 
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
@@ -43,6 +44,7 @@ export function DraftsTable({
   const [rows, setRows] = useState(data);
   const [selectedRows, setSelectedRows] = useState([]);
   const [pendingDelete, setPendingDelete] = useState(new Set());
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     setIsNavigationLoading(false);
@@ -146,6 +148,28 @@ export function DraftsTable({
     state: { sorting, columnFilters, columnVisibility },
   });
 
+  const handleSendDrafts = async () => {
+    if (selectedRows.length == 0) {
+      toast.error("Select a Professor!");
+    }
+    try {
+      isSending(true);
+      const response = await SendDrafts({
+        userName,
+        userEmail,
+        professorData: selectedRows,
+        access,
+      });
+      if (response.sucess) {
+        toast.success("Sent Emails!");
+      }
+      setIsSending(false)
+    } catch {
+      setIsSending(false)
+      toast.error("Failed To Send Drafts");
+    }
+  };
+
   return (
     <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6 rounded-xs">
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
@@ -161,9 +185,10 @@ export function DraftsTable({
             />
             <button
               className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]"
-              disabled={selectedRows.length === 0}
+              disabled={selectedRows.length === 0 || isSending}
+              onClick={handleSendDrafts}
             >
-              Send Drafts
+              Send Emails
             </button>
           </div>
         </div>

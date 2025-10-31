@@ -17,7 +17,6 @@ import { toast } from "sonner";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 const deleteDraft = async ({ access, draftId }) => {
-  console.log(draftId);
   try {
     const deleteRes = await fetch(
       `${API_BASE}/email/delete-draft?draftId=${draftId}`,
@@ -52,7 +51,6 @@ const generateColumns = (
     header: ({ column }) => <Checkbox />,
     cell: ({ row }) => {
       const data = row.original;
-      console.log(data);
       const isSelected = selectedRows.some((r) => r.id === data.id);
 
       return (
@@ -88,10 +86,10 @@ const generateColumns = (
     cell: ({ row }) => {
       const data = row.original || {};
       return (
-        <div className="cursor-pointer flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
+        <div className="flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
           <div className="flex items-center space-x-3 min-w-0">
             <div className="flex-grow min-w-0">
-              <h1 className="text-xs font-medium text-[#37352F] group-hover:text-blue-600 transition-colors">
+              <h1 className="text-xs font-medium text-[#37352F]">
                 {data.professor_name || "No name"}
               </h1>
             </div>
@@ -107,7 +105,7 @@ const generateColumns = (
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className="font-main font-semibold text-sm text-[#787774] px-2 py-1 -ml-2  tracking-wider"
+        className="font-main font-semibold text-sm text-[#787774] px-2 py-1 -ml-2 tracking-wider"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         email
@@ -117,8 +115,8 @@ const generateColumns = (
     cell: ({ row }) => {
       const data = row.original || {};
       return (
-        <div className="cursor-pointer flex flex-col w-full py-2.5 group hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
-          <span className="text-xs font-medium text-[#37352F] group-hover:text-blue-600 transition-colors truncate">
+        <div className="flex flex-col w-full py-2.5 group hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
+          <span className="text-xs font-medium text-[#37352F] truncate">
             {data.professor_email}
           </span>
         </div>
