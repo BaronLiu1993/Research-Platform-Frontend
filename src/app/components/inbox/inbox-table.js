@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SendDrafts } from "@/app/api/email/send/sendDraft";
 
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
@@ -27,7 +26,7 @@ import { Input } from "@/shadcomponents/ui/input";
 import { toast } from "sonner";
 import { Button } from "@/shadcomponents/ui/button";
 
-export function DraftsTable({
+export function InboxTable({
   data = [],
   generateColumns,
   pageNumber = 1,
@@ -149,39 +148,13 @@ export function DraftsTable({
     state: { sorting, columnFilters, columnVisibility },
   });
 
-  const handleSendDrafts = async () => {
-    if (selectedRows.length == 0) {
-      toast.error("Select a Professor!");
-    }
-    setIsSending(true);
-    try {
-      const response = await SendDrafts({
-        userName,
-        userEmail,
-        professorData: selectedRows,
-        access,
-      });
-      if (response?.sucess) {
-        toast.success("Sent Emails!");
-        const idsToRemove = new Set(selectedRows.map((r) => r.id));
-        setRows((prev) => prev.filter((r) => !idsToRemove.has(r.id)));
-        setSelectedRows([]);
-        setPendingDelete(new Set());
-      }
-      setIsSending(false);
-    } catch {
-      setIsSending(false);
-      toast.error("Failed To Send Drafts");
-    }
-  };
-
   return (
     <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6 rounded-xs">
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
         <div>
           <div className="flex items-center gap-4 py-4 px-4">
             <Input
-              placeholder="Find Professors..."
+              placeholder="Find Threads..."
               value={table.getColumn("name")?.getFilterValue() ?? ""}
               onChange={(event) =>
                 table.getColumn("name")?.setFilterValue(event.target.value)

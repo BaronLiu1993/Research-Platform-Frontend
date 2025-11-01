@@ -7,7 +7,7 @@ export const SendDrafts = async ({
   access,
 }) => {
   try {
-    const response = await fetch("http://localhost:8080/send/send-draft", {
+    const response = await fetch("http://localhost:8080/email/send-draft", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,7 +19,7 @@ export const SendDrafts = async ({
         professorData,
       }),
     });
-    console.log(response.ok)
+    console.log(response.ok);
     if (response.ok) {
       return { sucess: true };
     } else {

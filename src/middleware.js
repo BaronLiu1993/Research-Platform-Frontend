@@ -37,10 +37,9 @@ export const config = {
     "/account/login",
     "/account/register",
     "/register",
-    "/bookmark/kanban",
-    "/bookmark/workspace",
-    "/inbox/email",
+    "/drafts",
     "/repository",
-    "/workspace"
+    "/workspace",
+    "/inbox"
   ],
 };

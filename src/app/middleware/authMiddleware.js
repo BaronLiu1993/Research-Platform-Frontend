@@ -56,6 +56,7 @@ export async function AuthMiddleware(req) {
     if (!profile.isComplete && pathname !== "/register") {
       return NextResponse.redirect(new URL("/register", req.url));
     }
+    
     if (profile.isComplete && pathname.startsWith("/register")) {
       return NextResponse.redirect(new URL("/repository", req.url));
     }
