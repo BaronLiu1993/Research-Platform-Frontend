@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import {
   BarChart3,
   ChevronLeft,
@@ -9,13 +7,10 @@ import {
   HomeIcon,
   Inbox,
   InboxIcon,
-  Layers,
   LogIn,
-  LucideHome,
   Map,
   PanelLeft,
   Pen,
-  PenBox,
   Pencil,
   PencilRuler,
   Pin,
@@ -34,34 +29,6 @@ import {
   TabsTrigger,
 } from "@/shadcomponents/ui/tabs";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { Separator } from "@/shadcomponents/ui/separator";
-
-const stages = [
-  {
-    id: "ideate",
-    icon: <HomeIcon className="text-blue-700 h-10 w-10" />,
-    title: "Ideate",
-    description: "Go from idea to plan faster with AI help.",
-  },
-  {
-    id: "fundraise",
-    icon: <BarChart3 className="text-blue-700 h-10 w-10" />,
-    title: "Fundraise",
-    description: "From pitch to close, organized in Notion.",
-  },
-  {
-    id: "build",
-    icon: <Map className="text-blue-700 h-10 w-10" />,
-    title: "Build",
-    description: "Ship and iterate rapidly.",
-  },
-  {
-    id: "launch",
-    icon: <Rocket className="text-blue-700 h-10 w-10" />,
-    title: "Launch",
-    description: "Plan and collaborate in one place.",
-  },
-];
 
 export default function Home() {
   return (
@@ -111,31 +78,34 @@ export default function Home() {
               </p>
 
               <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <motion.button
-                  className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-black text-white border border-gray-300 py-2 px-3 inline-flex items-center justify-center whitespace-nowrap"
-                  role="button"
-                  aria-label="Login"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <LogIn className="stroke-1 h-5 w-5" />
-                  <Link href="/auth/signin">Login</Link>
-                </motion.button>
-
-                <motion.button
-                  className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-white text-gray-900 border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
-                  role="button"
-                  aria-label="Sign Up"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Pencil className="stroke-1 h-5 w-5" />
-                  <Link href="/auth/signup">Sign Up</Link>
-                </motion.button>
+                <Link href="/auth/signin">
+                  <motion.button
+                    className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-black text-white border border-gray-300 py-2 px-3 inline-flex items-center justify-center whitespace-nowrap"
+                    role="button"
+                    aria-label="Login"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <LogIn className="stroke-1 h-5 w-5" />
+                    Login
+                  </motion.button>
+                </Link>
+                <Link href="/auth/signup">
+                  <motion.button
+                    className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-white text-gray-900 border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
+                    role="button"
+                    aria-label="Sign Up"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Pencil className="stroke-1 h-5 w-5" />
+                    Sign Up
+                  </motion.button>
+                </Link>
               </div>
             </motion.div>
           </div>
@@ -208,7 +178,7 @@ export default function Home() {
                 className="
       flex flex-col items-start justify-start gap-2
       bg-gray-100 rounded-lg p-4
-      transition-all duration-200 border cursor-pointer
+      duration-200 border cursor-pointer
       hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
       data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
       w-full h-full min-w-0
@@ -228,7 +198,7 @@ export default function Home() {
                 className="
       flex flex-col items-start justify-start gap-2
       bg-gray-100 rounded-lg p-4
-      transition-all duration-200 border cursor-pointer
+      duration-200 border cursor-pointer
       hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
       data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
       w-full h-full min-w-0
@@ -248,7 +218,7 @@ export default function Home() {
                 className="
       flex flex-col items-start justify-start gap-2
       bg-gray-100 rounded-lg p-4
-      transition-all duration-200 border cursor-pointer
+      duration-200 border cursor-pointer
       hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
       data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
       w-full h-full min-w-0
@@ -268,7 +238,7 @@ export default function Home() {
                 className="
       flex flex-col items-start justify-start gap-2
       bg-gray-100 rounded-lg p-4
-      transition-all duration-200 border cursor-pointer
+      duration-200 border cursor-pointer
       hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
       data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
       w-full h-full min-w-0
