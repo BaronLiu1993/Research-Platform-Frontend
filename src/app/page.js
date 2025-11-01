@@ -267,18 +267,20 @@ export default function Home() {
                         Professors Across 10+ Disciplines—From UHN to UofT
                         Engineering
                       </h1>
-                      <motion.button
-                        className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-blue-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-blue-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
-                        role="button"
-                        aria-label="Sign Up for Drafts Tab"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Pencil className="stroke-1 h-5 w-5" />
-                        <Link href="/auth/signup">Sign Up Now!</Link>
-                      </motion.button>
+                      <Link href="/auth/signup">
+                        <motion.button
+                          className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-blue-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-blue-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
+                          role="button"
+                          aria-label="Sign Up for Drafts Tab"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Pencil className="stroke-1 h-5 w-5" />
+                          Sign Up Now!
+                        </motion.button>
+                      </Link>
                     </div>
                     <div className="divide-y">
                       <div className="font-main font-light p-5">
@@ -312,18 +314,20 @@ export default function Home() {
                       <h1 className="font-main text-2xl font-semibold">
                         Automate Saving Professors All In One Place
                       </h1>
-                      <motion.button
-                        className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-pink-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-pink-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
-                        role="button"
-                        aria-label="Sign Up for Drafts Tab"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Pencil className="stroke-1 h-5 w-5" />
-                        <Link href="/auth/signup">Sign Up Now!</Link>
-                      </motion.button>
+                      <Link href="/auth/signup">
+                        <motion.button
+                          className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-pink-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-pink-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
+                          role="button"
+                          aria-label="Sign Up for Drafts Tab"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Pencil className="stroke-1 h-5 w-5" />
+                          Sign Up Now!
+                        </motion.button>
+                      </Link>
                     </div>
                     <div className="divide-y">
                       <div className="font-main font-light p-5">
@@ -358,18 +362,20 @@ export default function Home() {
                         Streamline Cold Outreach—Send 5+ Personalised Emails At
                         Once
                       </h1>
-                      <motion.button
-                        className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-orange-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-orange-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
-                        role="button"
-                        aria-label="Sign Up for Drafts Tab"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Pencil className="stroke-1 h-5 w-5" />
-                        <Link href="/auth/signup">Sign Up Now!</Link>
-                      </motion.button>
+                      <Link href="/auth/signup">
+                        <motion.button
+                          className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-orange-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-orange-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
+                          role="button"
+                          aria-label="Sign Up for Drafts Tab"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Pencil className="stroke-1 h-5 w-5" />
+                          Sign Up Now!
+                        </motion.button>
+                      </Link>
                     </div>
                     <div className="divide-y">
                       <div className="font-main font-light p-5">
@@ -403,18 +409,20 @@ export default function Home() {
                       <h1 className="font-main text-2xl font-semibold">
                         Get Focused Inbox of Emails From Professors
                       </h1>
-                      <motion.button
-                        className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-green-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-green-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
-                        role="button"
-                        aria-label="Sign Up for Drafts Tab"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Pencil className="stroke-1 h-5 w-5" />
-                        <Link href="/auth/signup">Sign Up Now!</Link>
-                      </motion.button>
+                      <Link href="/auth/signup">
+                        <motion.button
+                          className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-green-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-green-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
+                          role="button"
+                          aria-label="Sign Up for Drafts Tab"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Pencil className="stroke-1 h-5 w-5" />
+                          Sign Up Now!
+                        </motion.button>
+                      </Link>
                     </div>
                     <div className="divide-y">
                       <div className="font-main font-light p-5">
