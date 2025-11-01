@@ -64,8 +64,6 @@ const stages = [
 ];
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("ideate");
-
   return (
     <div className="relative flex flex-col bg-white">
       <header className="relative z-10 flex flex-col items-center justify-center py-10">
@@ -200,19 +198,21 @@ export default function Home() {
           <Tabs defaultValue="discover" className="w-full">
             <TabsList
               className="
-          grid w-full bg-transparent p-0
-          grid-cols-2 sm:grid-cols-4 gap-3
-        "
+    grid w-full bg-transparent p-0
+    grid-cols-2 sm:grid-cols-4 gap-3
+    [&>*]:w-full [&>*]:h-full
+  "
             >
               <TabsTrigger
                 value="discover"
                 className="
-            flex flex-col items-start justify-start gap-2
-            bg-gray-100 rounded-lg p-4
-            transition-all duration-200 border
-            data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
-            hover:bg-gray-200 min-w-0
-          "
+      flex flex-col items-start justify-start gap-2
+      bg-gray-100 rounded-lg p-4
+      transition-all duration-200 border cursor-pointer
+      hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
+      data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
+      w-full h-full min-w-0
+    "
               >
                 <Search className="text-blue-700 h-5 w-5 shrink-0" />
                 <div className="text-2xl sm:text-3xl text-black font-playfair leading-tight">
@@ -226,12 +226,13 @@ export default function Home() {
               <TabsTrigger
                 value="draft"
                 className="
-            flex flex-col items-start justify-start gap-2
-            bg-gray-100 rounded-lg p-4
-            transition-all duration-200 border
-            data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
-            hover:bg-gray-200 min-w-0
-          "
+      flex flex-col items-start justify-start gap-2
+      bg-gray-100 rounded-lg p-4
+      transition-all duration-200 border cursor-pointer
+      hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
+      data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
+      w-full h-full min-w-0
+    "
               >
                 <Pen className="text-blue-700 h-5 w-5 shrink-0" />
                 <div className="text-2xl sm:text-3xl text-black font-playfair leading-tight">
@@ -245,12 +246,13 @@ export default function Home() {
               <TabsTrigger
                 value="send"
                 className="
-            flex flex-col items-start justify-start gap-2
-            bg-gray-100 rounded-lg p-4
-            transition-all duration-200 border
-            data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:border-2 data-[state=active]:shadow-lg
-            hover:bg-gray-200 min-w-0
-          "
+      flex flex-col items-start justify-start gap-2
+      bg-gray-100 rounded-lg p-4
+      transition-all duration-200 border cursor-pointer
+      hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
+      data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
+      w-full h-full min-w-0
+    "
               >
                 <SendIcon className="text-blue-700 h-5 w-5 shrink-0" />
                 <div className="text-2xl sm:text-3xl text-black font-playfair leading-tight">
@@ -264,12 +266,13 @@ export default function Home() {
               <TabsTrigger
                 value="inbox"
                 className="
-            flex flex-col items-start justify-start gap-2
-            bg-gray-100 rounded-lg p-4
-            transition-all duration-200 border
-            data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
-            hover:bg-gray-200 min-w-0
-          "
+      flex flex-col items-start justify-start gap-2
+      bg-gray-100 rounded-lg p-4
+      transition-all duration-200 border cursor-pointer
+      hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
+      data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
+      w-full h-full min-w-0
+    "
               >
                 <Inbox className="text-blue-700 h-5 w-5 shrink-0" />
                 <div className="text-2xl sm:text-3xl text-black font-playfair leading-tight">
@@ -470,7 +473,9 @@ export default function Home() {
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
           <div className="text-sm flex  gap-4">
             <span>Made By Jie Xuan Liu</span>
-            <a className = "underline hover:text-blue-700" href ="/blog">Click Here To Read Engineering Blog Post</a>
+            <a className="underline hover:text-blue-700" href="/blog">
+              Click Here To Read Engineering Blog Post
+            </a>
           </div>
         </div>
       </footer>
