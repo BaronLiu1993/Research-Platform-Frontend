@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
 
+import generateColumns from "../components/inbox/columns";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,12 +20,11 @@ import {
 import { AppSidebar } from "../components/sidebar";
 import { InboxIcon, Laptop, MapIcon } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
+import { InboxTable } from "../components/inbox/inbox-table";
 
 export default async function Inbox({ searchParams }) {
   const cookieStore = cookies();
   const access = cookieStore.get("access_token")?.value;
-  const pageNumber = Number(searchParams?.page ?? 1) || 1;
-  const filter = (await (searchParams?.page ?? "")) || "";
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const profileFetchOpts = {
@@ -36,31 +37,28 @@ export default async function Inbox({ searchParams }) {
     cache: "no-store",
   };
 
-  const savedFetchOpts = {
+  const inboxFetchOpts = {
     method: "GET",
     headers: access ? { Authorization: `Bearer ${access}` } : {},
   };
 
-  const qs = new URLSearchParams({
-    page: String(pageNumber),
-    filter: String(filter),
-  }).toString();
-
   let parsedUserProfile = {};
-
+  let inboxThreads = [];
   try {
-    const [profileRes, savedRes] = await Promise.all([
+    const [profileRes, inboxRes] = await Promise.all([
       fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
-      fetch(`${API_BASE}/saved/kanban/get-saved?${qs}`, savedFetchOpts),
+      fetch(`${API_BASE}/inbox/get-threads`, inboxFetchOpts),
     ]);
 
     if (profileRes.ok) {
       parsedUserProfile = await profileRes.json();
     }
 
-    if (savedRes.ok) {
-      savedData = await savedRes.json();
+    if (inboxRes.ok) {
+      inboxThreads = await inboxRes.json();
     }
+    console.log(inboxThreads);
+    console.log(parsedUserProfile);
   } catch {
     //log with telemetry
   }
@@ -116,7 +114,13 @@ export default async function Inbox({ searchParams }) {
                 </div>
                 <div className="mb-8 overflow-x-auto">
                   <div>
-                    
+                    <InboxTable
+                      data={inboxThreads.data}
+                      generateColumns={generateColumns}
+                      access={access}
+                      userName={parsedUserProfile.student_name}
+                      userEmail={parsedUserProfile.student_email}
+                    />
                   </div>
                 </div>
               </div>

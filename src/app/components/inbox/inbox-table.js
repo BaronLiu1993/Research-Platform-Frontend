@@ -29,7 +29,6 @@ import { Button } from "@/shadcomponents/ui/button";
 export function InboxTable({
   data = [],
   generateColumns,
-  pageNumber = 1,
   access,
   userName,
   userEmail,
@@ -161,13 +160,7 @@ export function InboxTable({
               }
               className="max-w-xs rounded-xs"
             />
-            <Button
-              className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]"
-              disabled={selectedRows.length === 0 || isSending}
-              onClick={handleSendDrafts}
-            >
-              Send Emails
-            </Button>
+           
           </div>
         </div>
         <Table className="text-sm min-w-full rounded-xs">
@@ -255,34 +248,6 @@ export function InboxTable({
             )}
           </TableBody>
         </Table>
-      </div>
-
-      <div className="flex justify-end mt-3 gap-3">
-        <button
-          type="button"
-          onClick={() => goToPage(Math.max(1, Number(pageNumber) - 1))}
-          disabled={isNavigationLoading || Number(pageNumber) <= 1}
-          className={`text-sm font-medium cursor-pointer text-white px-3 py-1.5 rounded-sm transition-colors
-      ${
-        isNavigationLoading || Number(pageNumber) <= 1
-          ? "bg-gray-300"
-          : "bg-[#4584F3] hover:bg-[#3574E2]"
-      }`}
-        >
-          Previous
-        </button>
-
-        <button
-          type="button"
-          onClick={() => goToPage(Number(pageNumber) + 1)}
-          disabled={isNavigationLoading}
-          className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm transition-colors
-      ${
-        isNavigationLoading ? "bg-gray-300" : "bg-[#4584F3] hover:bg-[#3574E2]"
-      }`}
-        >
-          Next
-        </button>
       </div>
     </div>
   );
