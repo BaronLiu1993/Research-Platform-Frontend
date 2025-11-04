@@ -37,16 +37,22 @@ const generateColumns = (
       console.log(data);
       return (
         <div className="flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
-          <div className="flex items-center space-x-3 min-w-0">
-            <Link href={`/inbox/thread?id=${data.thread_id}`} className="flex min-w-0">
-              <h1 className="text-xs font-medium text-[#37352F]">
+          <Link
+            href={`/inbox/thread?id=${data.thread_id}`}
+            className="flex min-w-0"
+          >
+            <div className="flex items-center space-x-3 min-w-0">
+              <h1 className="text-xs font-medium text-black">
                 {data.name || "No name"}
               </h1>
               <h1 className="text-xs font-medium text-[#37352F]">
                 {data.email || "No email"}
               </h1>
-            </Link>
-          </div>
+              <h1 className="text-xs font-light text-[#37352F]">
+                {data.subject || "No email"}
+              </h1>
+            </div>
+          </Link>
         </div>
       );
     },
