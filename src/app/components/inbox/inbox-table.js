@@ -24,7 +24,6 @@ import {
 } from "@/shadcomponents/ui/table";
 import { Input } from "@/shadcomponents/ui/input";
 import { toast } from "sonner";
-import { Button } from "@/shadcomponents/ui/button";
 
 export function InboxTable({
   data = [],
@@ -43,7 +42,6 @@ export function InboxTable({
   const [rows, setRows] = useState(data);
   const [selectedRows, setSelectedRows] = useState([]);
   const [pendingDelete, setPendingDelete] = useState(new Set());
-  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     setIsNavigationLoading(false);

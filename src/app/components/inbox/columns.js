@@ -37,7 +37,7 @@ const generateColumns = (
       console.log(data);
       return (
         <Link
-          href={`/inbox/thread?id=${data.thread_id}`}
+          href={`/inbox/thread?id=${data.thread_id}&name=${data.name}`}
           className="flex min-w-0"
         >
           <div className="flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">

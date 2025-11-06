@@ -1,10 +1,23 @@
 "use client";
 
 import { Badge } from "@/shadcomponents/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "@/shadcomponents/ui/composedialog";
 import DOMPurify from "dompurify";
 import { Check, Reply } from "lucide-react";
+import ReplyEditor from "./reply/replyEditor";
 
-export default function Thread({ messageData }) {
+export default function Thread({
+  messageData,
+  access,
+  userEmail,
+  userName,
+  professorName,
+}) {
   console.log(messageData);
   return (
     <div className="font-main flex flex-col gap-3 p-10">
@@ -25,15 +38,28 @@ export default function Thread({ messageData }) {
                       .slice(0, 16)
                       .replace("T", " ")}
                   </h2>
-                  <button>
-                    <Reply className="stroke-1 cursor-pointer hover:text-blue-700" />
-                  </button>
+                  <Dialog>
+                    <DialogTrigger>
+                      <Reply className="stroke-1 cursor-pointer hover:text-blue-700" />
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader></DialogHeader>
+                      <ReplyEditor
+                        access={access}
+                        messageId={messages.messageIdHeader}
+                        professorName={professorName}
+                        professorEmail={messages.to}
+                        userName={userName}
+                        userEmail={userEmail}
+                      />
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </div>
               <h3 className="font-light text-xs">{messages.to}</h3>
               <div className="my-1">
                 {messages.seenData.opened_email ? (
-                  <Badge className="rounded-xs text-green-900 bg-green-200">
+                  <Badge className="rounded-xs text-green-900 bg-green-100">
                     <Check />
                     Seen
                     <span>

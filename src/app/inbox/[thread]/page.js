@@ -23,6 +23,9 @@ export default async function Inbox({ searchParams }) {
   const cookieStore = cookies();
   const access = cookieStore.get("access_token")?.value;
   const threadId = (await searchParams?.id) || "";
+  const name = (await searchParams?.name) || "";
+
+  //Redirect if not name and threadid in there
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const profileFetchOpts = {
@@ -95,7 +98,13 @@ export default async function Inbox({ searchParams }) {
             </Breadcrumb>
           </header>
           <div>
-            <Thread messageData={inboxEmails.messageArray} />
+            <Thread
+              messageData={inboxEmails.messageArray}
+              access={access}
+              userEmail={parsedUserProfile.student_email}
+              userName={parsedUserProfile.student_name}
+              professorName={name}
+            />
           </div>
         </SidebarInset>
       </SidebarProvider>
