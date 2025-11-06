@@ -63,7 +63,7 @@ export default function DraftEditor({
   useEffect(() => {
     const handleEmailDraft = async () => {
       const response = await getEmailDrafts();
-      if (response.sucess) {
+      if (response.success) {
         setSubject(response.data.subject);
         setBody(response.data.html);
         if (editor) {
@@ -109,7 +109,7 @@ export default function DraftEditor({
       <div className="text-sm">
         <div className="flex justify-between mx-4">
           <Badge className="text-[#9F6B53] bg-[#F4EEEE] rounded-xs">
-            Draft Messages
+            Edit Messages
           </Badge>
           <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2">
             <X className="h-6 w-6 p-1 rounded-xs" />
@@ -117,9 +117,13 @@ export default function DraftEditor({
         </div>
         <div className="flex flex-col">
           <div className="flex gap-2 px-4 py-1">
+            <h2 className="text-[#787774]">{professorEmail}</h2>
+          </div>
+          <div className="flex gap-2 px-4 py-1">
             <h1 className="text-black">{userName}</h1>
             <h2 className="text-[#787774]">{userEmail}</h2>
           </div>
+
           <input
             onChange={(e) => setSubject(e.target.value)}
             className="px-4 py-1 w-full"

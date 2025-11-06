@@ -111,11 +111,11 @@ export default async function Workspace({ searchParams }) {
                     </Badge>
                   </div>
                   <div>
-                    <div className="m-5">
-                      <h1 className="text-xs bg-[#E7F3F8] w-fit py-1 px-2 font-main">
+                    <div className="my-5">
+                      <h1 className="text-xs bg-[#FAEBDD] text-[#D9730D] w-fit py-1 px-2 font-main">
                         How To Send Emails
                       </h1>
-                      <div className="flex p-3">
+                      <div className="flex py-3">
                         <div className="w-1 h-full bg-gray-100"></div>
                         <div>
                           <ol className="font-main text-xs">

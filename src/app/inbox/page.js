@@ -56,8 +56,6 @@ export default async function Inbox({ searchParams }) {
     if (inboxRes.ok) {
       inboxThreads = await inboxRes.json();
     }
-    console.log(inboxThreads);
-    console.log(parsedUserProfile);
   } catch {
     //log with telemetry
   }
@@ -96,7 +94,7 @@ export default async function Inbox({ searchParams }) {
             <div className="w-full max-w-screen-xl px-4 sm:px-6">
               <div className="my-8 sm:my-10 space-y-2">
                 <div className="mb-8 overflow-x-auto">
-                  <div >
+                  <div>
                     <InboxTable
                       data={inboxThreads.data}
                       generateColumns={generateColumns}

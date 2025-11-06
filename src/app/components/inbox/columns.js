@@ -30,7 +30,6 @@ const generateColumns = (
     header: ({ column }) => <div></div>,
     cell: ({ row }) => {
       const data = row.original || {};
-      console.log(data);
       return (
         <Link
           href={`/inbox/thread?id=${data.thread_id}&name=${data.name}`}

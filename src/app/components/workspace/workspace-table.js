@@ -55,6 +55,7 @@ export function WorkspaceTable({
   const [isNavigationLoading, setIsNavigationLoading] = useState(false);
   const [rows, setRows] = useState(data);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [pendingDelete, setPendingDelete] = useState(new Set());
 
   const handleTotalSelectedRows = (prof) => {
     try {
@@ -75,28 +76,21 @@ export function WorkspaceTable({
     try {
       setSelectedRows((prev) =>
         prev.includes(profId)
-          ? prev.filter((id) => id !== profId) 
-          : [...prev, profId] 
+          ? prev.filter((id) => id !== profId)
+          : [...prev, profId]
       );
 
       toast.success("Toggled Professor");
     } catch (error) {
       toast.error("Failed To Select");
-      console.error(error);
     }
   };
-  
-
-  console.log(selectedRows);
-
-  const [pendingDelete, setPendingDelete] = useState(new Set());
 
   const onRemove = useCallback(
     async (id) => {
       const prev = rows;
       setPendingDelete((s) => new Set(s).add(id));
       setRows(prev.filter((r) => (r.professor_id === id ? false : true)));
-
       try {
         await RemoveFromSaved({ access, id });
         toast.success("Removed Professor");

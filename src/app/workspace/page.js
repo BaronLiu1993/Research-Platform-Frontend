@@ -118,34 +118,21 @@ export default async function Workspace({ searchParams }) {
                     </Badge>
                   </div>
                   <div>
-                    <div className="m-5">
-                      <h1 className="text-xs bg-[#E7F3F8] w-fit py-1 px-2 font-main">
+                    <div className = "my-5">
+                      <h1 className="text-xs bg-[#E7F3F8] text-[#337EA9] w-fit py-1 px-2 font-main">
                         How to Draft Your First Email
                       </h1>
-                      <div className="flex p-3">
+                      <div className="flex py-3">
                         <div className="w-1 h-full bg-gray-100"></div>
                         <div>
                           <ol className="font-main text-xs">
                             <li>
-                              1. Use{" "}
-                              <span className="text-blue-800">checkboxes</span>{" "}
-                              to select desired professors to draft
+                              1. Use <span className = "text-blue-800">checkboxes</span> to select desired professors to
+                              draft
                             </li>
-                            <li>
-                              2. Type{" "}
-                              <span className="text-blue-800 p-1 bg-gray-100 rounded-lg">
-                                /
-                              </span>{" "}
-                              for{" "}
-                              <span className="text-blue-800">
-                                professor data snippets
-                              </span>
-                            </li>
+                            <li>2. Type <span className = "text-blue-800 p-1 bg-gray-100 rounded-lg">/</span> for <span className = "text-blue-800">professor data snippets</span></li>
                             <li>3. Click generate drafts</li>
-                            <li>
-                              4. Go to{" "}
-                              <span className="text-blue-800">drafts</span> tab
-                            </li>
+                            <li>4. Go to <span className = "text-blue-800">drafts</span> tab</li>
                           </ol>
                         </div>
                       </div>

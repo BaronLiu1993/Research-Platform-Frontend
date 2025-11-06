@@ -36,7 +36,7 @@ export default function EmailEditor({
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
   );
-  
+
   useEffect(() => {
     setSelectedVariables([]);
   }, [setSelectedVariables]);
@@ -81,8 +81,10 @@ export default function EmailEditor({
 
   const handleSnippetGeneration = async (body, subject) => {
     if (body.trim().length === 0 || subject.trim().length === 0) {
-      toast("Empty");
+      toast.error("Empty Email!");
     } else {
+      toast.loading("Generating Drafts...");
+
       const snippetResponse = await GenerateSnippet({
         snippet_html: body,
         snippet_subject: subject,
@@ -90,12 +92,15 @@ export default function EmailEditor({
       });
 
       if (snippetResponse.success) {
+        toast.loading("Created Email Skeleton...");
         const syncResponse = await SyncVariables({
           professorIdArray: selectedProfessors,
           variableArray: vars,
           access,
         });
         if (syncResponse.success) {
+          toast.success("Synced Professor Data...");
+
           const draftResponse = await GenerateDrafts({
             snippetId: snippetResponse.snippetId,
             fromName: userName,
@@ -194,7 +199,6 @@ export default function EmailEditor({
           <Loader className="h-4 w-4" />
           Create Drafts
         </DialogClose>
-
       </div>
     </div>
   );
