@@ -7,7 +7,9 @@ export const SendDrafts = async ({
   access,
 }) => {
   try {
-    const response = await fetch("http://localhost:8080/email/send-draft", {
+    const API_BASE =
+      process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
+    const response = await fetch(`${API_BASE}/email/send-draft`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,16 +21,15 @@ export const SendDrafts = async ({
         professorData,
       }),
     });
-    console.log(response.ok);
     if (response.ok) {
-      return { sucess: true };
+      return { success: true };
     } else {
       return {
         message: "Server Error",
-        sucess: false,
+        success: false,
       };
     }
   } catch {
-    return { sucess: false, message: "Internal Server Error" };
+    return { success: false, message: "Internal Server Error" };
   }
 };

@@ -161,7 +161,7 @@ export function DraftsTable({
         professorData: selectedRows,
         access,
       });
-      if (response?.sucess) {
+      if (response?.success) {
         toast.success("Sent Emails!");
         const idsToRemove = new Set(selectedRows.map((r) => r.id));
         setRows((prev) => prev.filter((r) => !idsToRemove.has(r.id)));
