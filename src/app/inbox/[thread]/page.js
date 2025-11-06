@@ -16,7 +16,7 @@ import {
 } from "@/shadcomponents/ui/sidebar";
 
 import { AppSidebar } from "@/app/components/sidebar";
-import { Laptop, MapIcon } from "lucide-react";
+import { InboxIcon, Laptop, Mail, MapIcon } from "lucide-react";
 import Thread from "@/app/components/inbox/thread";
 
 export default async function Inbox({ searchParams }) {
@@ -90,8 +90,15 @@ export default async function Inbox({ searchParams }) {
                 <BreadcrumbSeparator>/</BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <BreadcrumbPage className="font-main flex cursor-pointer items-center hover:underline gap-2 font-light text-[#37352F]">
-                    <MapIcon className="h-5 w-5 text-blue-700" />
-                    Workspace
+                    <InboxIcon className="h-5 w-5 text-blue-700" />
+                    Inbox
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="font-main flex cursor-pointer items-center hover:underline gap-2 font-light text-[#37352F]">
+                    <Mail className="h-5 w-5 text-blue-700" />
+                    Thread
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>

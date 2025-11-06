@@ -17,7 +17,7 @@ import {
 } from "@/shadcomponents/ui/sidebar";
 
 import { AppSidebar } from "../components/sidebar";
-import { Laptop, MapIcon, PlaneLanding, Workflow } from "lucide-react";
+import { Laptop, MapIcon, Pen, PlaneLanding, Workflow } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { DraftsTable } from "../components/drafts/draft-table";
 
@@ -58,7 +58,6 @@ export default async function Workspace({ searchParams }) {
     if (draftsRes.ok) {
       draftsData = await draftsRes.json();
     }
-    console.log(draftsData);
   } catch {
     //log with telemetry
   }
@@ -86,8 +85,8 @@ export default async function Workspace({ searchParams }) {
                 <BreadcrumbSeparator>/</BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <BreadcrumbPage className="font-main flex cursor-pointer items-center hover:underline gap-2 font-light text-[#37352F]">
-                    <MapIcon className="h-5 w-5 text-blue-700" />
-                    Workspace
+                    <Pen className="h-5 w-5 text-blue-700" />
+                    Drafts
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
@@ -110,6 +109,41 @@ export default async function Workspace({ searchParams }) {
                       <PlaneLanding className="w-3.5 h-3.5 mr-1" />
                       Send Your Drafts!
                     </Badge>
+                  </div>
+                  <div>
+                    <div className="m-5">
+                      <h1 className="text-xs bg-[#E7F3F8] w-fit py-1 px-2 font-main">
+                        How To Send Emails
+                      </h1>
+                      <div className="flex p-3">
+                        <div className="w-1 h-full bg-gray-100"></div>
+                        <div>
+                          <ol className="font-main text-xs">
+                            <li>
+                              1. Click
+                              <span className="text-blue-800 p-1 bg-gray-100 rounded-lg">
+                              edit draft button
+                              </span>{" "}
+                              to check what you are sending
+                            </li>
+                            <li>2. Double check emails before sending</li>
+                            <li>
+                              3. Use{" "}
+                              <span className="text-blue-800">checkboxes</span>{" "}
+                              to select your desired professor to send to
+                            </li>
+                            <li>
+                              4. Click <span className="text-blue-800">Send Button</span> to{" "}
+                              <span className="text-blue-800">drafts</span> tab
+                            </li>
+                            <li>
+                              5. Check <span className="text-blue-800">Emails</span> and <span className="text-blue-800">Read Receipts</span> to{" "}
+                              <span className="text-blue-800">drafts</span> tab
+                            </li>
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="mb-8 overflow-x-auto">

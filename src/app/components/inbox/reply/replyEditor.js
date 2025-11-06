@@ -28,6 +28,7 @@ export default function ReplyEditor({
   professorEmail,
   userName,
   userEmail,
+  threadId
 }) {
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -55,9 +56,9 @@ export default function ReplyEditor({
         subject,
         messageId,
         access,
+        threadId
       });
   
-      console.log("API Response:", response);  // Log the response for debugging
   
       if (response.success) {
         toast.success("Sent Response!");
@@ -65,7 +66,6 @@ export default function ReplyEditor({
         toast.error("Failed to Send! Reason: " + response.message);  // Show the server message
       }
     } catch (error) {
-      console.error("Error in sendDraft:", error);  // Log the error for debugging
       toast.error("Failed to Send!");
     }
   };

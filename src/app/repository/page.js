@@ -35,6 +35,7 @@ export default async function Repository({ searchParams }) {
         ? searchParams.department
         : "",
   };
+  
   const rawSearch = (
     typeof searchParams?.search === "string" ? searchParams.search : ""
   ).trim();

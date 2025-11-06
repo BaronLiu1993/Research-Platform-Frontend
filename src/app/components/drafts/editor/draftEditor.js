@@ -40,12 +40,12 @@ export default function DraftEditor({
       );
       if (draftRes.ok) {
         const draftData = await draftRes.json();
-        return { data: draftData, sucess: true };
+        return { data: draftData, success: true };
       } else {
-        return { message: "Server Error", sucess: false };
+        return { message: "Server Error", success: false };
       }
     } catch (err) {
-      return { message: "Internal Server Error", sucess: false };
+      return { message: "Internal Server Error", success: false };
     }
   };
 

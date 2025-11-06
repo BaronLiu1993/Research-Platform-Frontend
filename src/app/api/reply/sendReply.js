@@ -9,6 +9,7 @@ export const SendReply = async ({
   subject,
   messageId,
   access,
+  threadId,
 }) => {
   try {
     const API_BASE =
@@ -28,6 +29,7 @@ export const SendReply = async ({
           professorName,
           body,
           subject,
+          threadId,
         }),
       }
     );

@@ -1,9 +1,5 @@
 "use client";
 
-import { Button } from "@/shadcomponents/ui/button";
-
-import { ArrowUpDown } from "lucide-react";
-
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
 import Link from "next/link";
 
@@ -40,7 +36,7 @@ const generateColumns = (
           href={`/inbox/thread?id=${data.thread_id}&name=${data.name}`}
           className="flex min-w-0"
         >
-          <div className="flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
+          <div className="flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 hover:shadow-[0_6px_15px_0_rgba(0,0,0,0.15)] -mx-3 px-3 rounded-md transition-all duration-200">
             <div className="flex items-center space-x-3 min-w-0">
               <h1 className="text-xs font-medium text-black">
                 {data.name || "No name"}

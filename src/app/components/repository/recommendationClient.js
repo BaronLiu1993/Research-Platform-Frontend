@@ -27,6 +27,8 @@ import {
   Microscope,
   SchoolIcon,
 } from "lucide-react";
+import { Skeleton } from "@/shadcomponents/ui/skeleton";
+import { useEffect, useState } from "react";
 
 function InterestBadges({ interests }) {
   if (!Array.isArray(interests) || interests.length === 0) return null;
@@ -57,12 +59,49 @@ function InterestBadges({ interests }) {
   );
 }
 
+function CarouselSkeletonLoader() {
+  return (
+    <div className="flex gap-4 mt-4 overflow-x-auto -ml-3 md:-ml-4 whitespace-nowrap">
+      {[...Array(4)].map((_, index) => (
+        <div key={index} className="w-[300px] flex-shrink-0 p-4 bg-gray-100 rounded-lg animate-pulse">
+          {/* Skeleton Image Placeholder */}
+          <div className="h-48 bg-gray-50 rounded mb-4" />
+
+          {/* Skeleton Title Placeholder */}
+          <div className="h-4 bg-gray-50 rounded w-3/4 mb-2" />
+
+          {/* Skeleton School Placeholder */}
+          <div className="h-4 bg-gray-50 rounded w-1/2 mb-2" />
+
+          {/* Skeleton Faculty Placeholder */}
+          <div className="h-3 bg-gray-50 rounded w-1/3 mb-2" />
+
+          {/* Skeleton Interests Placeholder */}
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            <div className="h-4 bg-gray-50 rounded w-3/4 mb-1" />
+            <div className="h-4 bg-gray-50 rounded w-3/4 mb-1" />
+            <div className="h-4 bg-gray-50 rounded w-3/4 mb-1" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+
 export default function RecommendationsClient({ matches, access }) {
   const { open } = useSidebar();
   const itemBasisClass = open
     ? "basis-full sm:basis-full md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
     : "basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5";
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (matches) {
+      setLoading(false);
+    }
+  }, [matches]);
 
+ 
   if (!matches?.length) {
     return (
       <div className="p-6 text-sm text-neutral-600 bg-slate-50 border border-slate-200 rounded-lg">

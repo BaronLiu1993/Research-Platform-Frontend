@@ -17,6 +17,7 @@ import { toast } from "sonner";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 const deleteDraft = async ({ access, draftId }) => {
+  toast.loading("Deleting...")
   try {
     const deleteRes = await fetch(
       `${API_BASE}/email/delete-draft?draftId=${draftId}`,
@@ -28,12 +29,12 @@ const deleteDraft = async ({ access, draftId }) => {
       }
     );
     if (deleteRes.ok) {
-      toast.success("Deleted Successfully!");
-      return { message: "Success!", sucess: true };
+      toast.success("❌ Deleted!");
+      return { message: "Success!", success: true };
     }
   } catch {
     toast.error("Failed to Delete!");
-    return { message: "Internal Server Error", sucess: false };
+    return { message: "Internal Server Error", success: false };
   }
 };
 

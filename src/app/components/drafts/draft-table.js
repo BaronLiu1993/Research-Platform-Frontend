@@ -37,7 +37,6 @@ export function DraftsTable({
 }) {
   const router = useRouter();
   const params = useSearchParams();
-
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -67,9 +66,9 @@ export function DraftsTable({
       });
 
       if (isCurrentlySelected) {
-        toast.success("Deselected Professor");
+        toast.success("❌ Deselected Professor");
       } else {
-        toast.success("Selected Professor");
+        toast.success("✅ Selected Professor");
       }
     },
     [selectedRows]
@@ -155,6 +154,7 @@ export function DraftsTable({
     }
     setIsSending(true);
     try {
+      toast.loading("Sending...")
       const response = await SendDrafts({
         userName,
         userEmail,
@@ -162,7 +162,7 @@ export function DraftsTable({
         access,
       });
       if (response?.success) {
-        toast.success("Sent Emails!");
+        toast.success("Sent!");
         const idsToRemove = new Set(selectedRows.map((r) => r.id));
         setRows((prev) => prev.filter((r) => !idsToRemove.has(r.id)));
         setSelectedRows([]);

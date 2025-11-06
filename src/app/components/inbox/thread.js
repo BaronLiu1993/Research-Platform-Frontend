@@ -18,14 +18,13 @@ export default function Thread({
   userName,
   professorName,
 }) {
-  console.log(messageData);
   return (
     <div className="font-main flex flex-col gap-3 p-10">
       {messageData.map((messages, idx) => {
         const sanitizedHTML = DOMPurify.sanitize(messages.body);
         return (
           <div key={idx} className="border-b-1">
-            <h1 className="font-main font-light text-2xl">
+            <h1 className="font-main font-light text-2xl ">
               {messages.subject}
             </h1>
             <div className="flex flex-col">
@@ -51,6 +50,7 @@ export default function Thread({
                         professorEmail={messages.to}
                         userName={userName}
                         userEmail={userEmail}
+                        threadId={messages.threadId}
                       />
                     </DialogContent>
                   </Dialog>
