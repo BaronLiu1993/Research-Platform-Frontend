@@ -82,6 +82,8 @@ export default function EmailEditor({
   const handleSnippetGeneration = async (body, subject) => {
     if (body.trim().length === 0 || subject.trim().length === 0) {
       toast.error("Empty Email!");
+    } else if (selectedProfessors.length == 0) {
+      toast.error("No Professors Selected...");
     } else {
       toast.loading("Generating Drafts...");
 

@@ -80,9 +80,8 @@ export function WorkspaceTable({
           : [...prev, profId]
       );
 
-      toast.success("Toggled Professor");
     } catch (error) {
-      toast.error("Failed To Select");
+      //add telemetry here
     }
   };
 
@@ -93,7 +92,7 @@ export function WorkspaceTable({
       setRows(prev.filter((r) => (r.professor_id === id ? false : true)));
       try {
         await RemoveFromSaved({ access, id });
-        toast.success("Removed Professor");
+        toast.success("Removed!");
       } catch (e) {
         setRows(prev);
         toast.error("Failed to remove");
