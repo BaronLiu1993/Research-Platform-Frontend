@@ -111,8 +111,47 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <div className="w-full max-w-5xl mx-auto border rounded-sm">
-        <div className="bg-white rounded-sm shadow-2xl overflow-hidden">
+      <div className="flex flex-wrap gap-6 font-main mb-10 justify-center">
+        <div className="w-64 p-6 border rounded-md shadow-md bg-white">
+          <h3 className="text-xl font-bold">Integrated projects</h3>
+          <p className="text-sm text-gray-600">
+            Plan tasks, track progress, and align teams.
+          </p>
+        </div>
+
+        <div className="w-64 p-6 border rounded-md shadow-md bg-white">
+          <h3 className="text-xl font-bold">Collaborative tools</h3>
+          <p className="text-sm text-gray-600">
+            Enhance teamwork with shared resources and real-time feedback.
+          </p>
+        </div>
+
+        <div className="w-64 p-6 border rounded-md shadow-md bg-white">
+          <h3 className="text-xl font-bold">Analytics & Insights</h3>
+          <p className="text-sm text-gray-600">
+            Access in-depth analytics to drive data-informed decisions.
+          </p>
+        </div>
+
+        <div className="w-64 p-6 border rounded-md shadow-md bg-white">
+          <h3 className="text-xl font-bold">Seamless integration</h3>
+          <p className="text-sm text-gray-600">
+            Integrate tools and services for a unified workflow.
+          </p>
+        </div>
+      </div>
+
+      <div className="w-full max-w-5xl mx-auto">
+        <motion.div
+          className="bg-white rounded-sm shadow-2xl overflow-hidden"
+          initial={{ opacity: 0 }} // Starting with opacity 0
+          animate={{ opacity: 1 }} // Fade in to opacity 1
+          transition={{
+            delay: 1, // 1 second delay before the animation starts
+            duration: 0.6, // 0.6 seconds for the fading animation
+            ease: "easeOut", // Smoothing effect
+          }}
+        >
           <div className="bg-gray-100 border-b border-gray-300 px-4 flex items-center gap-3">
             <div className="flex gap-2">
               <button className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600"></button>
@@ -140,311 +179,7 @@ export default function Home() {
           <section className="p-10 min-h-96 bg-white">
             <div></div>
           </section>
-        </div>
-      </div>
-
-      <div className="flex flex-col mt-20 px-6 items-center">
-        <h1 className="text-5xl font-playfair mb-6 flex flex-col">
-          <motion.span
-            className="inline-block font-playfair font-light"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-          >
-            Land Your
-          </motion.span>
-          <br className="sm:hidden" />
-          <motion.span
-            className="inline-block font-playfair font-light"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-          >
-            Dream Research Internship
-          </motion.span>
-        </h1>
-
-        <div className="w-full max-w-5xl">
-          <Tabs defaultValue="discover" className="w-full">
-            <TabsList
-              className="
-    grid w-full bg-transparent p-0
-    grid-cols-2 sm:grid-cols-4 gap-3
-    [&>*]:w-full [&>*]:h-full
-  "
-            >
-              <TabsTrigger
-                value="discover"
-                className="
-      flex flex-col items-start justify-start gap-2
-      bg-gray-100 rounded-lg p-4
-      duration-200 border cursor-pointer
-      hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
-      data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
-      w-full h-full min-w-0
-    "
-              >
-                <Search className="text-blue-700 h-5 w-5 shrink-0" />
-                <div className="text-2xl sm:text-3xl text-black font-playfair leading-tight">
-                  Discover
-                </div>
-                <div className="text-sm font-light text-gray-700">
-                  Find 1000+ professors!
-                </div>
-              </TabsTrigger>
-
-              <TabsTrigger
-                value="draft"
-                className="
-      flex flex-col items-start justify-start gap-2
-      bg-gray-100 rounded-lg p-4
-      duration-200 border cursor-pointer
-      hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
-      data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
-      w-full h-full min-w-0
-    "
-              >
-                <Pen className="text-blue-700 h-5 w-5 shrink-0" />
-                <div className="text-2xl sm:text-3xl text-black font-playfair leading-tight">
-                  Draft
-                </div>
-                <div className="text-sm font-light text-gray-700">
-                  Save and track professors.
-                </div>
-              </TabsTrigger>
-
-              <TabsTrigger
-                value="send"
-                className="
-      flex flex-col items-start justify-start gap-2
-      bg-gray-100 rounded-lg p-4
-      duration-200 border cursor-pointer
-      hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
-      data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
-      w-full h-full min-w-0
-    "
-              >
-                <SendIcon className="text-blue-700 h-5 w-5 shrink-0" />
-                <div className="text-2xl sm:text-3xl text-black font-playfair leading-tight">
-                  Send
-                </div>
-                <div className="text-sm font-light text-gray-700">
-                  Personalize and send emails.
-                </div>
-              </TabsTrigger>
-
-              <TabsTrigger
-                value="inbox"
-                className="
-      flex flex-col items-start justify-start gap-2
-      bg-gray-100 rounded-lg p-4
-      duration-200 border cursor-pointer
-      hover:bg-gray-200 hover:scale-[1.02] active:scale-[0.98] transition-transform
-      data-[state=active]:bg-white data-[state=active]:border-gray-200 data-[state=active]:shadow-lg
-      w-full h-full min-w-0
-    "
-              >
-                <Inbox className="text-blue-700 h-5 w-5 shrink-0" />
-                <div className="text-2xl sm:text-3xl text-black font-playfair leading-tight">
-                  Inbox
-                </div>
-                <div className="text-sm font-light text-gray-700">
-                  Focused emails from profs.
-                </div>
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="discover" className="mt-6">
-              <div className="mx-auto w-full max-w-5xl mt-20">
-                <div className="flex items-stretch rounded-xl border shadow-sm overflow-hidden min-h-[34rem] sm:min-h-[38rem]">
-                  <div className="w-full sm:w-[26rem] bg-white">
-                    <div className="flex flex-col justify-between gap-2 p-6">
-                      <Badge className="bg-[#E7F3F8] text-[#337EA9] w-fit">
-                        <Pin />
-                        Job Board
-                      </Badge>
-                      <h1 className="font-main text-2xl font-semibold">
-                        Professors Across 10+ Disciplines—From UHN to UofT
-                        Engineering
-                      </h1>
-                      <Link href="/auth/signup">
-                        <motion.button
-                          className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-blue-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-blue-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
-                          role="button"
-                          aria-label="Sign Up for Drafts Tab"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Pencil className="stroke-1 h-5 w-5" />
-                          Sign Up Now!
-                        </motion.button>
-                      </Link>
-                    </div>
-                    <div className="divide-y">
-                      <div className="font-main font-light p-5">
-                        Search by Research Interests!
-                      </div>
-                      <div className="font-main font-light p-5">
-                        Filter by School and Faculty!
-                      </div>
-                      <div className="font-main font-light p-5">
-                        Get Recommended Professors that Match You!
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="hidden sm:block flex-1 bg-blue-700">
-                    <div className="w-full h-full" />
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="draft" className="mt-6 ">
-              <div className="mx-auto w-full max-w-5xl mt-20">
-                <div className="flex items-stretch rounded-xl border shadow-sm overflow-hidden min-h-[34rem] sm:min-h-[38rem]">
-                  <div className="w-full sm:w-[26rem] bg-white">
-                    <div className="flex flex-col justify-between gap-2 p-6">
-                      <Badge className="bg-[#E7F3F8] text-[#337EA9] w-fit">
-                        <PencilRuler />
-                        Drafts
-                      </Badge>
-                      <h1 className="font-main text-2xl font-semibold">
-                        Automate Saving Professors All In One Place
-                      </h1>
-                      <Link href="/auth/signup">
-                        <motion.button
-                          className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-pink-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-pink-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
-                          role="button"
-                          aria-label="Sign Up for Drafts Tab"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Pencil className="stroke-1 h-5 w-5" />
-                          Sign Up Now!
-                        </motion.button>
-                      </Link>
-                    </div>
-                    <div className="divide-y">
-                      <div className="font-main font-light p-5">
-                        Save Professors to Workspace
-                      </div>
-                      <div className="font-main font-light p-5">
-                        Track Email Status
-                      </div>
-                      <div className="font-main font-light p-5">
-                        Get Professor Information All In One Place
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="hidden sm:block flex-1 bg-pink-700">
-                    <div className="w-full h-full" />
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="send" className="mt-6">
-              <div className="mx-auto w-full max-w-5xl mt-20">
-                <div className="flex items-stretch rounded-xl border shadow-sm overflow-hidden min-h-[34rem] sm:min-h-[38rem]">
-                  <div className="w-full sm:w-[26rem] bg-white">
-                    <div className="flex flex-col justify-between gap-2 p-6">
-                      <Badge className="bg-[#E7F3F8] text-[#337EA9] w-fit">
-                        <Send />
-                        Send
-                      </Badge>
-                      <h1 className="font-main text-2xl font-semibold">
-                        Streamline Cold Outreach—Send 5+ Personalised Emails At
-                        Once
-                      </h1>
-                      <Link href="/auth/signup">
-                        <motion.button
-                          className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-orange-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-orange-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
-                          role="button"
-                          aria-label="Sign Up for Drafts Tab"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Pencil className="stroke-1 h-5 w-5" />
-                          Sign Up Now!
-                        </motion.button>
-                      </Link>
-                    </div>
-                    <div className="divide-y">
-                      <div className="font-main font-light p-5">
-                        Work with Custom Snippets with Professor Data Built In
-                      </div>
-                      <div className="font-main font-light p-5">
-                        Review Emails Before Sending
-                      </div>
-                      <div className="font-main font-light p-5">
-                        Track If Professors Left You On Seen
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="hidden sm:block flex-1 bg-orange-700">
-                    <div className="w-full h-full" />
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="inbox" className="mt-6">
-              <div className="mx-auto w-full max-w-5xl mt-20">
-                <div className="flex items-stretch rounded-xl border shadow-sm overflow-hidden min-h-[34rem] sm:min-h-[38rem]">
-                  <div className="w-full sm:w-[26rem] bg-white">
-                    <div className="flex flex-col justify-between gap-2 p-6">
-                      <Badge className="bg-[#E7F3F8] text-[#337EA9] w-fit">
-                        <InboxIcon />
-                        Inbox
-                      </Badge>
-                      <h1 className="font-main text-2xl font-semibold">
-                        Get Focused Inbox of Emails From Professors
-                      </h1>
-                      <Link href="/auth/signup">
-                        <motion.button
-                          className="font-main w-fit rounded-md gap-2 cursor-pointer font-medium text-xs bg-green-700 text-white border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-green-600 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
-                          role="button"
-                          aria-label="Sign Up for Drafts Tab"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Pencil className="stroke-1 h-5 w-5" />
-                          Sign Up Now!
-                        </motion.button>
-                      </Link>
-                    </div>
-                    <div className="divide-y">
-                      <div className="font-main font-light p-5">
-                        Focus Only On Emails From Professors
-                      </div>
-                      <div className="font-main font-light p-5">
-                        Includes Read Receipts from Professors
-                      </div>
-                      <div className="font-main font-light p-5">
-                        Reply and Use the Inbox Just Like You Would Gmail
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="hidden sm:block flex-1 bg-green-700">
-                    <div className="w-full h-full" />
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+        </motion.div>
       </div>
 
       <footer className="bg-white font-light border-t mt-12 py-4">
