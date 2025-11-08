@@ -54,7 +54,6 @@ export function DraftsTable({
 
   const handleSelectedRows = useCallback(
     (prof) => {
-      const isCurrentlySelected = selectedRows.find((p) => p.id === prof.id);
       setSelectedRows((prev) => {
         const exists = prev.find((p) => p.id === prof.id);
 

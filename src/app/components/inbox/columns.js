@@ -2,7 +2,21 @@
 
 import Link from "next/link";
 import clsx from "clsx";
-import { Mail, Send } from "lucide-react";
+
+function formatDate(isoOrDateLike) {
+  const d = new Date(isoOrDateLike);
+  const date = d.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+  const time = d.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+  return `${date} · ${time}`;
+}
 
 const generateColumns = () => [
   {
@@ -16,7 +30,6 @@ const generateColumns = () => [
       const href = `/inbox/thread?id=${data.thread_id}&name=${encodeURIComponent(
         name
       )}`;
-
       return (
         <Link
           href={href}
@@ -24,12 +37,9 @@ const generateColumns = () => [
             "group flex min-w-0 items-center",
             "rounded-md px-2 py-2 transition-colors",
             "focus:bg-neutral-100/80 focus:outline-none",
-            "hover:text-blue-800"
           )}
         >
-          <div className="flex w-full min-w-0 items-center gap-3">
-            <Mail className="stroke-2 w-5 h-5" />
-
+          <div className="flex w-full min-w-0 items-center gap-3 justify-between">
             <div className="flex min-w-0 flex-col">
               <div className="flex min-w-0 items-center justify-between text-[13px] leading-tight text-neutral-900">
                 <div className="flex gap-10">
@@ -42,6 +52,7 @@ const generateColumns = () => [
                 </div>
               </div>
             </div>
+            <div className = "text-gray-500 text-[12px]">{formatDate(data.sent_at)}</div>
           </div>
         </Link>
       );

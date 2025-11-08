@@ -31,6 +31,7 @@ export function InboxTable({
   access,
   userName,
   userEmail,
+  pageNumber,
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -202,6 +203,33 @@ export function InboxTable({
             )}
           </TableBody>
         </Table>
+      </div>
+      <div className="flex justify-end mt-3 gap-3">
+        <button
+          type="button"
+          onClick={() => goToPage(Math.max(1, Number(pageNumber) - 1))}
+          disabled={isNavigationLoading || Number(pageNumber) <= 1}
+          className={`text-sm font-medium cursor-pointer text-white px-3 py-1.5 rounded-sm transition-colors
+      ${
+        isNavigationLoading || Number(pageNumber) <= 1
+          ? "bg-gray-300"
+          : "bg-[#4584F3] hover:bg-[#3574E2]"
+      }`}
+        >
+          Previous
+        </button>
+
+        <button
+          type="button"
+          onClick={() => goToPage(Number(pageNumber) + 1)}
+          disabled={isNavigationLoading}
+          className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm transition-colors
+      ${
+        isNavigationLoading ? "bg-gray-300" : "bg-[#4584F3] hover:bg-[#3574E2]"
+      }`}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

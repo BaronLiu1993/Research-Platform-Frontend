@@ -36,9 +36,7 @@ const InterestPills = ({ items = [] }) => {
           className="text-xs font-semibold bg-gray-50 text-gray-600 border-slate-200 px-1.5 py-0.5"
           title={interest}
         >
-          <span className="truncate inline-block align-middle">
-            {interest}
-          </span>
+          <span className="truncate inline-block align-middle">{interest}</span>
         </Badge>
       ))}
     </div>
@@ -119,7 +117,7 @@ const generateColumns = (access) => [
             </DialogHeader>
 
             <div className="grid gap-3 py-4 px-6 text-sm overflow-y-auto">
-            <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+              <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
                 <Label className="text-right font-medium text-gray-500 pt-1">
                   Email
                 </Label>
@@ -164,19 +162,18 @@ const generateColumns = (access) => [
                 </Label>
                 <div className="flex flex-wrap gap-1.5">
                   {(data.research_interests || []).length ? (
-                    (data.research_interests || [])
-                      .map((interest, i) => (
-                        <Badge
-                          key={`${interest}-${i}`}
-                          variant="secondary"
-                          className="text-xs bg-gray-50 text-gray-700 border-gray-200/80 px-2 py-0.5"
-                          title={interest}
-                        >
-                          <span className="truncate inline-block align-middle">
-                            {interest}
-                          </span>
-                        </Badge>
-                      ))
+                    (data.research_interests || []).map((interest, i) => (
+                      <Badge
+                        key={`${interest}-${i}`}
+                        variant="secondary"
+                        className="text-xs bg-gray-50 text-gray-700 border-gray-200/80 px-2 py-0.5"
+                        title={interest}
+                      >
+                        <span className="truncate inline-block align-middle">
+                          {interest}
+                        </span>
+                      </Badge>
+                    ))
                   ) : (
                     <p className="text-gray-400 text-xs">—</p>
                   )}
@@ -195,8 +192,7 @@ const generateColumns = (access) => [
               </div>
             </div>
             <DialogFooter className="pt-4 pb-5 px-6 bg-slate-50/50 rounded-b-lg">
-              <SaveButton professorData={data} access={access} 
-              />
+              <SaveButton professorData={data} access={access} />
             </DialogFooter>
           </DialogContent>
         </Dialog>
