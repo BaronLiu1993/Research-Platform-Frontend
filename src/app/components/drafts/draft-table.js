@@ -64,12 +64,6 @@ export function DraftsTable({
           return [...prev, prof];
         }
       });
-
-      if (isCurrentlySelected) {
-        toast.success("❌ Deselected Professor");
-      } else {
-        toast.success("✅ Selected Professor");
-      }
     },
     [selectedRows]
   );
@@ -149,29 +143,37 @@ export function DraftsTable({
   });
 
   const handleSendDrafts = async () => {
-    if (selectedRows.length == 0) {
+    toast.dismiss();
+
+    if (!selectedRows.length) {
       toast.error("Select a Professor!");
+      return;
     }
+
     setIsSending(true);
+    const tId = toast.loading("Sending...");
+
     try {
-      toast.loading("Sending...")
       const response = await SendDrafts({
         userName,
         userEmail,
         professorData: selectedRows,
         access,
       });
+
       if (response?.success) {
-        toast.success("Sent!");
+        toast.success("Sent!", { id: tId });
         const idsToRemove = new Set(selectedRows.map((r) => r.id));
         setRows((prev) => prev.filter((r) => !idsToRemove.has(r.id)));
         setSelectedRows([]);
         setPendingDelete(new Set());
+      } else {
+        toast.error(response?.message || "Failed To Send Drafts", { id: tId });
       }
+    } catch (e) {
+      toast.error("Failed To Send Drafts", { id: tId });
+    } finally {
       setIsSending(false);
-    } catch {
-      setIsSending(false);
-      toast.error("Failed To Send Drafts");
     }
   };
 

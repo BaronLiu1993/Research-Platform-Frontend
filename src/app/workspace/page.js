@@ -118,21 +118,41 @@ export default async function Workspace({ searchParams }) {
                     </Badge>
                   </div>
                   <div>
-                    <div className = "my-5">
-                      <h1 className="text-xs bg-[#E7F3F8] text-[#337EA9] w-fit py-1 px-2 font-main">
+                    <div className="my-5">
+                      <div className="inline-flex items-center rounded-md bg-[#F6F3F9] px-2 py-0.5 text-[11px] font-main font-medium text-[#9065B0]">
                         How to Draft Your First Email
-                      </h1>
-                      <div className="flex py-3">
-                        <div className="w-1 h-full bg-gray-100"></div>
-                        <div>
-                          <ol className="font-main text-xs">
-                            <li>
-                              1. Use <span className = "text-blue-800">checkboxes</span> to select desired professors to
-                              draft
+                      </div>
+
+                      <div className="mt-2 flex gap-2">
+                        <div className="flex-1">
+                          <ol className="list-decimal pl-4 space-y-1 font-main text-[13px] text-[#37352F] marker:text-slate-400">
+                            <li className="leading-5">
+                              Use{" "}
+                              <span className="rounded bg-slate-100 px-1 py-0.5 text-blue-700">
+                                checkboxes
+                              </span>{" "}
+                              to select desired professors to draft
                             </li>
-                            <li>2. Type <span className = "text-blue-800 p-1 bg-gray-100 rounded-lg">/</span> for <span className = "text-blue-800">professor data snippets</span></li>
-                            <li>3. Click generate drafts</li>
-                            <li>4. Go to <span className = "text-blue-800">drafts</span> tab</li>
+                            <li className="leading-5">
+                              Type{" "}
+                              <span className="rounded bg-slate-100 px-1 py-0.5 text-slate-900">
+                                /
+                              </span>{" "}
+                              for{" "}
+                              <span className="text-blue-700">
+                                professor data snippets
+                              </span>
+                            </li>
+                            <li className="leading-5">
+                              Click{" "}
+                              <span className="rounded bg-slate-100 px-1 py-0.5 text-blue-700">
+                                Generate drafts
+                              </span>
+                            </li>
+                            <li className="leading-5">
+                              Go to the{" "}
+                              <span className="text-blue-700">Drafts</span> tab
+                            </li>
                           </ol>
                         </div>
                       </div>

@@ -111,34 +111,40 @@ export default async function Workspace({ searchParams }) {
                     </Badge>
                   </div>
                   <div>
-                    <div className="my-5">
-                      <h1 className="text-xs bg-[#FAEBDD] text-[#D9730D] w-fit py-1 px-2 font-main">
+                    <div className="mt-5">
+                      <div className="inline-flex items-center rounded-md bg-[#FAEBDD] px-2 py-0.5 text-[11px] font-main font-medium text-[#D9730D]">
                         How To Send Emails
-                      </h1>
-                      <div className="flex py-3">
-                        <div className="w-1 h-full bg-gray-100"></div>
-                        <div>
-                          <ol className="font-main text-xs">
-                            <li>
-                              1. Click
-                              <span className="text-blue-800 p-1 bg-gray-100 rounded-lg">
-                              edit draft button
+                      </div>
+
+                      <div className="mt-2 flex gap-2">
+                        <div className="flex-1">
+                          <ol className="list-decimal pl-4 space-y-1 font-main text-[13px] text-[#37352F] marker:text-slate-400">
+                            <li className="leading-5">
+                              Click{" "}
+                              <span className="rounded bg-slate-100 px-1 py-0.5 text-blue-700">
+                                edit draft
                               </span>{" "}
-                              to check what you are sending
+                              to review what you’re sending
                             </li>
-                            <li>2. Double check emails before sending</li>
-                            <li>
-                              3. Use{" "}
-                              <span className="text-blue-800">checkboxes</span>{" "}
-                              to select your desired professor to send to
+                            <li className="leading-5">
+                              Double-check emails before sending
                             </li>
-                            <li>
-                              4. Click <span className="text-blue-800">Send Button</span> to{" "}
-                              <span className="text-blue-800">drafts</span> tab
+                            <li className="leading-5">
+                              Use{" "}
+                              <span className="text-blue-700">checkboxes</span>{" "}
+                              to select professors to send to
                             </li>
-                            <li>
-                              5. Check <span className="text-blue-800">Emails</span> and <span className="text-blue-800">Read Receipts</span> to{" "}
-                              <span className="text-blue-800">drafts</span> tab
+                            <li className="leading-5">
+                              Click the{" "}
+                              <span className="text-blue-700">Send</span> button
+                            </li>
+                            <li className="leading-5">
+                              Check{" "}
+                              <span className="text-blue-700">Emails</span> and{" "}
+                              <span className="text-blue-700">
+                                Read Receipts
+                              </span>{" "}
+                              for status
                             </li>
                           </ol>
                         </div>

@@ -4,7 +4,7 @@ import "tippy.js/dist/tippy.css";
 
 import { useEffect, useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
-
+import HardBreak from "@tiptap/extension-hard-break";
 import { GenerateDrafts } from "@/app/api/email/draft/generateDraft";
 import Mention from "@tiptap/extension-mention";
 import suggestion from "./tiptap/suggestion";
@@ -47,11 +47,24 @@ export default function EmailEditor({
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        hardBreak: false,
+        heading: { levels: [1, 2, 3] },
+        blockquote: true,
+        code: true,
+      }),
+      HardBreak.extend({
+        addKeyboardShortcuts() {
+          return {
+            Enter: () => this.editor.commands.setHardBreak(),
+            "Mod-Enter": () => this.editor.commands.splitBlock(), // optional: new paragraph
+          };
+        },
+      }),
       Mention.configure({
         HTMLAttributes: {
           class:
-            "prose bg-[#F6F3F9] text-[#9065B0] font-mono text-[14px] rounded-md",
+            "bg-[#F6F3F9] text-[#9065B0] font-mono text-[12px] rounded px-1 py-0.5 align-baseline",
         },
         suggestion: {
           ...suggestion,
@@ -62,64 +75,95 @@ export default function EmailEditor({
     ],
     editorProps: {
       attributes: {
-        class:
-          "prose prose-p:my-0 max-w-[35.9rem] w-full h-full min-h-[300px] p-2 text-[14px]",
+        class: [
+          "w-full min-h-[300px] p-3",
+          "text-[13px] leading-[1.35] font-sans text-[#202124]",
+          "bg-white border border-slate-200 rounded-xs",
+          "outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-200",
+          "[&p]:m-0",
+          "[&p+p]:mt-1",
+          "[&p]:leading-[1.35]",
+          "[&h1]:m-0 [&h1]:text-[15px] [&h1]:leading-[1.3] [&h1+p]:mt-1",
+          "[&h2]:m-0 [&h2]:text-[14px] [&h2]:leading-[1.3] [&h2+p]:mt-1",
+          "[&h3]:m-0 [&h3]:text-[13px] [&h3]:leading-[1.3] [&h3+p]:mt-1",
+          "[&ul]:m-0 [&ol]:m-0 [&ul]:pl-4 [&ol]:pl-4",
+          "[&li]:my-0 [&li>p]:m-0",
+          "[&li+li]:mt-1",
+          "[&blockquote]:m-0 [&blockquote]:pl-3 [&blockquote]:border-l [&blockquote]:border-slate-200 [&blockquote+p]:mt-1",
+          "[&code]:text-[12px] [&code]:bg-slate-100 [&code]:px-1 [&code]:py-0.5 [&code]:rounded",
+          "[&img]:my-1 [&table]:my-1",
+        ].join(" "),
       },
     },
     content: "",
     onUpdate({ editor }) {
       const mentions = [];
-
       editor.state.doc.descendants((node) => {
-        if (node.type.name === "mention") {
-          mentions.push(node.attrs.id);
-        }
+        if (node.type.name === "mention") mentions.push(node.attrs.id);
       });
       useSelectedVariablesStore.getState().setSelectedVariables(mentions);
     },
   });
 
   const handleSnippetGeneration = async (body, subject) => {
-    if (body.trim().length === 0 || subject.trim().length === 0) {
+    toast.dismiss();
+
+    if (!body || !body.trim() || !subject || !subject.trim()) {
       toast.error("Empty Email!");
-    } else if (selectedProfessors.length == 0) {
+      return;
+    }
+    if (!selectedProfessors.length) {
       toast.error("No Professors Selected...");
-    } else {
-      toast.loading("Generating Drafts...");
+      return;
+    }
+
+    let tId;
+    try {
+      tId = toast.loading("Generating drafts...");
 
       const snippetResponse = await GenerateSnippet({
         snippet_html: body,
         snippet_subject: subject,
         access,
       });
-
-      if (snippetResponse.success) {
-        toast.loading("Created Email Skeleton...");
-        const syncResponse = await SyncVariables({
-          professorIdArray: selectedProfessors,
-          variableArray: vars,
-          access,
-        });
-        if (syncResponse.success) {
-          toast.success("Synced Professor Data...");
-
-          const draftResponse = await GenerateDrafts({
-            snippetId: snippetResponse.snippetId,
-            fromName: userName,
-            fromEmail: userEmail,
-            dynamicFields: syncResponse.data.result,
-            access,
-          });
-          if (draftResponse.success) {
-            toast("Generated Drafts");
-          }
-        }
-      } else {
-        toast("Failed to Generate Snippet");
+      if (!snippetResponse?.success) {
+        toast.error("Failed to generate snippet.", { id: tId });
+        return;
       }
+
+      toast.loading("Creating email skeleton...", { id: tId });
+      const syncResponse = await SyncVariables({
+        professorIdArray: selectedProfessors,
+        variableArray: vars,
+        access,
+      });
+      if (!syncResponse?.success) {
+        toast.error("Failed to sync professor data.", { id: tId });
+        return;
+      }
+
+      toast.loading("Building drafts...", { id: tId });
+      const draftResponse = await GenerateDrafts({
+        snippetId: snippetResponse.snippetId,
+        fromName: userName,
+        fromEmail: userEmail,
+        dynamicFields: syncResponse.data.result,
+        access,
+      });
+      if (!draftResponse?.success) {
+        toast.error("Failed to generate drafts.", { id: tId });
+        return;
+      }
+
+      toast.success("Drafts generated!", { id: tId });
+    } catch (e) {
+      toast.error("Something went wrong.", { id: tId });
     }
   };
 
+  if (editor) {
+    console.log(editor.getHTML());
+  }
   return (
     <div>
       <div className="text-sm">
