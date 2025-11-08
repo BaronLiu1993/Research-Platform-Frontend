@@ -128,7 +128,7 @@ export default function Home() {
       </header>
 
       <section className="w-full">
-        <div className="mx-auto w-full max-w-5xl px-6 sm:px-10">
+        <div className="mx-auto w-full max-w-6xl px-6 sm:px-10">
           <motion.div
             variants={listVariants}
             initial="hidden"
@@ -137,10 +137,10 @@ export default function Home() {
           >
             <motion.div
               variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border border-white/40 bg-white/60 p-6 shadow-lg backdrop-blur-md"
+              className="relative flex h-full flex-col rounded-2xl border-2 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
             >
               <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
-              <h3 className="relative text-lg font-semibold text-gray-900">
+              <h3 className="relative text-lg font-semibold text-blue-900">
                 Professor Board
               </h3>
               <p className="relative mt-1 text-md text-gray-700">
@@ -150,11 +150,11 @@ export default function Home() {
 
             <motion.div
               variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border border-white/40 bg-white/60 p-6 shadow-lg backdrop-blur-md"
+              className="relative flex h-full flex-col rounded-2xl border-2 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
             >
               <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
-              <h3 className="relative text-lg font-semibold text-gray-900">
-                Collaborative tools
+              <h3 className="relative text-lg font-semibold text-blue-900">
+                Drafting Tools
               </h3>
               <p className="relative mt-1 text-md text-gray-700">
                 Enhance teamwork with shared resources and real-time feedback.
@@ -163,11 +163,11 @@ export default function Home() {
 
             <motion.div
               variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border border-white/40 bg-white/60 p-6 shadow-lg backdrop-blur-md"
+              className="relative flex h-full flex-col rounded-2xl border-2 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
             >
               <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
-              <h3 className="relative text-lg font-semibold text-gray-900">
-                Analytics &amp; Insights
+              <h3 className="relative text-lg font-semibold text-blue-900">
+                Send Emails On Mass
               </h3>
               <p className="relative mt-1 text-md text-gray-700">
                 Access in-depth analytics to drive data-informed decisions.
@@ -176,11 +176,11 @@ export default function Home() {
 
             <motion.div
               variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border border-white/40 bg-white/60 p-6 shadow-lg backdrop-blur-md"
+              className="relative flex h-full flex-col rounded-2xl border-2 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
             >
               <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
-              <h3 className="relative text-lg font-semibold text-gray-900">
-                Seamless integration
+              <h3 className="relative text-lg font-semibold text-blue-900">
+                Track Outreach!
               </h3>
               <p className="relative mt-1 text-md text-gray-700">
                 Integrate tools and services for a unified workflow.
