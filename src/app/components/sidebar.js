@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -13,7 +14,17 @@ import {
   SidebarRail,
 } from "@/shadcomponents/ui/sidebar";
 
-import { ChevronDown, Library, LayoutDashboard, Inbox, InboxIcon, Pen } from "lucide-react";
+import { LogOut } from "../api/logout/logout";
+
+import {
+  ChevronDown,
+  Library,
+  LayoutDashboard,
+  Inbox,
+  InboxIcon,
+  Pen,
+} from "lucide-react";
+import { Button } from "@/shadcomponents/ui/button";
 
 const data = {
   navMain: [
@@ -29,7 +40,7 @@ const data = {
           ),
         },
         {
-          title: "Workspace",
+          title: "Saved",
           url: "/workspace",
           icon: (
             <LayoutDashboard className="h-6 w-6 bg-blue-100 rounded-xs text-[#337EA9] p-0.5" />
@@ -122,6 +133,14 @@ export function AppSidebar({ student_data, ...props }) {
         ))}
       </SidebarContent>
       <SidebarRail />
+      <SidebarFooter>
+        <Button
+          onClick={LogOut}
+          className="w-fit text-xs p-2 text-white bg-[#D44C47] hover:bg-red-500 cursor-pointer"
+        >
+          Sign Out
+        </Button>
+      </SidebarFooter>
     </Sidebar>
   );
 }

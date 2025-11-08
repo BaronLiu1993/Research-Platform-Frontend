@@ -30,6 +30,21 @@ import {
 } from "@/shadcomponents/ui/tabs";
 import { Badge } from "@/shadcomponents/ui/badge";
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
+};
+
+const listVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.4,
+    },
+  },
+};
+
 export default function Home() {
   return (
     <div className="relative flex flex-col bg-white">
@@ -111,52 +126,86 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <div className="flex flex-wrap gap-6 font-main mb-10 justify-center">
-        <div className="w-64 p-6 border rounded-md shadow-md bg-white">
-          <h3 className="text-xl font-bold">Integrated projects</h3>
-          <p className="text-sm text-gray-600">
-            Plan tasks, track progress, and align teams.
-          </p>
-        </div>
 
-        <div className="w-64 p-6 border rounded-md shadow-md bg-white">
-          <h3 className="text-xl font-bold">Collaborative tools</h3>
-          <p className="text-sm text-gray-600">
-            Enhance teamwork with shared resources and real-time feedback.
-          </p>
-        </div>
+      <section className="w-full">
+        <div className="mx-auto w-full max-w-5xl px-6 sm:px-10">
+          <motion.div
+            variants={listVariants}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 font-main mb-10"
+          >
+            <motion.div
+              variants={cardVariants}
+              className="relative flex h-full flex-col rounded-2xl border border-white/40 bg-white/60 p-6 shadow-lg backdrop-blur-md"
+            >
+              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
+              <h3 className="relative text-lg font-semibold text-gray-900">
+                Professor Board
+              </h3>
+              <p className="relative mt-1 text-md text-gray-700">
+                Plan tasks, track progress, and align teams.
+              </p>
+            </motion.div>
 
-        <div className="w-64 p-6 border rounded-md shadow-md bg-white">
-          <h3 className="text-xl font-bold">Analytics & Insights</h3>
-          <p className="text-sm text-gray-600">
-            Access in-depth analytics to drive data-informed decisions.
-          </p>
-        </div>
+            <motion.div
+              variants={cardVariants}
+              className="relative flex h-full flex-col rounded-2xl border border-white/40 bg-white/60 p-6 shadow-lg backdrop-blur-md"
+            >
+              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
+              <h3 className="relative text-lg font-semibold text-gray-900">
+                Collaborative tools
+              </h3>
+              <p className="relative mt-1 text-md text-gray-700">
+                Enhance teamwork with shared resources and real-time feedback.
+              </p>
+            </motion.div>
 
-        <div className="w-64 p-6 border rounded-md shadow-md bg-white">
-          <h3 className="text-xl font-bold">Seamless integration</h3>
-          <p className="text-sm text-gray-600">
-            Integrate tools and services for a unified workflow.
-          </p>
+            <motion.div
+              variants={cardVariants}
+              className="relative flex h-full flex-col rounded-2xl border border-white/40 bg-white/60 p-6 shadow-lg backdrop-blur-md"
+            >
+              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
+              <h3 className="relative text-lg font-semibold text-gray-900">
+                Analytics &amp; Insights
+              </h3>
+              <p className="relative mt-1 text-md text-gray-700">
+                Access in-depth analytics to drive data-informed decisions.
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={cardVariants}
+              className="relative flex h-full flex-col rounded-2xl border border-white/40 bg-white/60 p-6 shadow-lg backdrop-blur-md"
+            >
+              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
+              <h3 className="relative text-lg font-semibold text-gray-900">
+                Seamless integration
+              </h3>
+              <p className="relative mt-1 text-md text-gray-700">
+                Integrate tools and services for a unified workflow.
+              </p>
+            </motion.div>
+          </motion.div>
         </div>
-      </div>
+      </section>
 
       <div className="w-full max-w-5xl mx-auto">
         <motion.div
           className="bg-white rounded-sm shadow-2xl overflow-hidden"
-          initial={{ opacity: 0 }} // Starting with opacity 0
-          animate={{ opacity: 1 }} // Fade in to opacity 1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{
-            delay: 1, // 1 second delay before the animation starts
-            duration: 0.6, // 0.6 seconds for the fading animation
-            ease: "easeOut", // Smoothing effect
+            delay: 1,
+            duration: 0.6,
+            ease: "easeOut",
           }}
         >
           <div className="bg-gray-100 border-b border-gray-300 px-4 flex items-center gap-3">
             <div className="flex gap-2">
-              <button className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600"></button>
-              <button className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600"></button>
-              <button className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600"></button>
+              <button className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600" />
+              <button className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600" />
+              <button className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600" />
             </div>
 
             <div className="flex gap-1 justify-center items-center">
@@ -184,7 +233,7 @@ export default function Home() {
 
       <footer className="bg-white font-light border-t mt-12 py-4">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
-          <div className="text-sm flex  gap-4">
+          <div className="text-sm flex gap-4">
             <span>Made By Jie Xuan Liu</span>
             <a className="underline hover:text-blue-700" href="/blog">
               Click Here To Read Engineering Blog Post

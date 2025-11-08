@@ -1,13 +1,11 @@
 "use client";
 
 import { useSavedStore } from "@/app/store/useSavedStore";
-
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Select from "react-select";
 import { filterOptions } from "../dropdowns/filterOptions";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
-
 import {
   flexRender,
   getCoreRowModel,
@@ -16,9 +14,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-
 import { Input } from "@/shadcomponents/ui/input";
-
 import {
   Table,
   TableBody,
@@ -72,11 +68,8 @@ export function DataTable({
   const goToPage = useCallback(
     (page) => {
       if (isNavigationLoading) return;
-
       setIsNavigationLoading(true);
-
       window.scrollTo({ top: 0, behavior: "smooth" });
-
       const next = new URLSearchParams(params?.toString());
       next.set("page", String(page));
       next.set("search", search ?? "");
@@ -89,7 +82,7 @@ export function DataTable({
       });
       router.push(`?${next.toString()}`, { scroll: true });
     },
-    [isNavigationLoading, params, router, search]
+    [isNavigationLoading, params, router, search, filters]
   );
 
   const table = useReactTable({
@@ -122,7 +115,7 @@ export function DataTable({
       });
       router.push(`?${next.toString()}`);
     },
-    [params, query, router]
+    [params, query, router, filters]
   );
 
   return (
@@ -131,77 +124,86 @@ export function DataTable({
         <div className="flex flex-col gap-3 justify-center md:gap-2 pb-2">
           <div className="flex flex-wrap items-center gap-2 md:gap-3">
             <div>
-              <form onSubmit={handleSearch} className="flex flex-col gap-2">
-                <Label className="text-xs">🔎 Query Research Interests</Label>
-                <div className="flex gap-4">
+              <form
+                onSubmit={handleSearch}
+                className="flex flex-wrap items-end gap-3 md:gap-4"
+              >
+                <div className="flex flex-col gap-2">
+                  <Label className="text-xs">🔎 Query Research Interests</Label>
                   <Input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    className="w-[14rem] placeholder:text-xs md:w-[18rem] font-main text-xs font-medium"
+                    className="h-10 w-[14rem] md:w-[18rem] placeholder:text-xs font-main text-xs font-medium"
                     placeholder="Search..."
                   />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label className="text-xs">Filters</Label>
+                  <div className="flex items-center">
+                    <Select
+                      isMulti
+                      closeMenuOnSelect={false}
+                      isClearable
+                      options={filterOptions}
+                      name="filters"
+                      placeholder="Pick Filters..."
+                      value={flatOptions.filter((opt) =>
+                        filters[opt.category]?.includes(opt.value)
+                      )}
+                      onChange={(selected) => {
+                        const updated = {
+                          school: [],
+                          faculty: [],
+                          department: [],
+                        };
+                        selected?.forEach((opt) => {
+                          if (
+                            opt?.category &&
+                            Object.prototype.hasOwnProperty.call(
+                              updated,
+                              opt.category
+                            )
+                          ) {
+                            updated[opt.category].push(opt.value);
+                          }
+                        });
+                        setFilters(updated);
+                      }}
+                      className="w-[20rem] text-xs font-medium font-main"
+                      classNames={{
+                        control: (s) =>
+                          `!min-h-10 !h-auto !rounded-md !border !border-slate-200 !bg-white 
+                           hover:!border-slate-300 focus:!border-[#4584F3] focus:!ring-2 focus:!ring-[#4584F3]/20`,
+                        valueContainer: () =>
+                          `!px-2 !py-1 !max-h-10 !overflow-y-auto !flex !flex-wrap gap-1`,
+                        multiValue: () =>
+                          `!bg-slate-100 !rounded-md !px-2 !py-0.5 !text-[11px]`,
+                        multiValueLabel: () => `!text-slate-700 !text-[11px]`,
+                        multiValueRemove: () =>
+                          `!text-slate-500 hover:!bg-slate-200 hover:!text-slate-800 rounded-sm`,
+                        menu: () =>
+                          `!rounded-md !border !border-slate-200 !shadow-md !mt-1 !bg-white text-xs overflow-hidden`,
+                        option: (state) =>
+                          `!py-1.5 !px-3 text-xs cursor-pointer transition-colors
+                           ${state.isFocused ? "!bg-slate-100" : ""} 
+                           ${state.isSelected ? "!bg-[#4584F3] !text-white" : "!text-slate-700"}`,
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="self-end">
                   <button
                     type="submit"
                     disabled={isSearchLoading}
-                    className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors ${
-                      isSearchLoading
-                        ? "bg-blue-300"
-                        : "bg-[#4584F3] hover:bg-[#3574E2]"
-                    }`}
+                    className={`h-10 inline-flex items-center justify-center text-sm cursor-pointer font-medium text-white px-4 rounded-md transition-colors
+        ${isSearchLoading ? "bg-blue-300" : "bg-[#4584F3] hover:bg-[#3574E2]"}`}
                   >
                     {isSearchLoading ? "Querying..." : "Search"}
                   </button>
                 </div>
               </form>
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label className="text-xs">Filters</Label>
-              <div className="flex items-center gap-2">
-                <Select
-                  isMulti
-                  options={filterOptions}
-                  name="filters"
-                  placeholder="Pick Filters..."
-                  value={flatOptions.filter((opt) =>
-                    filters[opt.category]?.includes(opt.value)
-                  )}
-                  onChange={(selected) => {
-                    const updated = { school: [], faculty: [], department: [] };
-
-                    selected?.forEach((opt) => {
-                      if (
-                        opt.category &&
-                        updated.hasOwnProperty(opt.category)
-                      ) {
-                        updated[opt.category].push(opt.value);
-                      }
-                    });
-
-                    setFilters(updated);
-                  }}
-                  className="w-[20rem] text-xs font-medium font-main"
-                  classNames={{
-                    control: (state) =>
-                      `!rounded-md !min-h-[40px] !border !border-slate-200 !shadow-none !bg-white 
-      hover:!border-slate-300 focus:!border-[#4584F3] focus:!ring-2 focus:!ring-[#4584F3]/20 
-      transition-all duration-150 ${state.isFocused ? "!border-[#4584F3]" : ""}`,
-                    valueContainer: () => "!px-2 !py-1",
-                    placeholder: () => "text-slate-500 text-xs",
-                    input: () => "!m-0 text-xs text-slate-700",
-                    multiValue: () =>
-                      "!bg-slate-100 !rounded-md !px-2 !py-0.5 text-sm text-slate-700",
-                    multiValueLabel: () => "!text-slate-700 text-xs",
-                    multiValueRemove: () =>
-                      "!text-slate-500 hover:!bg-slate-200 hover:!text-slate-800 rounded-sm transition-colors",
-                    menu: () =>
-                      "!rounded-md !border !border-slate-200 !shadow-md !mt-1 !bg-white text-xs overflow-hidden",
-                    option: (state) =>
-                      `!py-1.5 !px-3 text-xs cursor-pointer transition-colors ${
-                        state.isFocused ? "!bg-slate-100" : ""
-                      } ${state.isSelected ? "!bg-[#4584F3] !text-white" : "!text-slate-700"}`,
-                  }}
-                />
-              </div>
             </div>
           </div>
         </div>
