@@ -17,7 +17,8 @@ import { toast } from "sonner";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 const deleteDraft = async ({ access, draftId }) => {
-  toast.loading("Deleting...")
+  const id = toast.loading("Deleting..."); 
+
   try {
     const deleteRes = await fetch(
       `${API_BASE}/email/delete-draft?draftId=${draftId}`,
@@ -28,13 +29,20 @@ const deleteDraft = async ({ access, draftId }) => {
         },
       }
     );
+
+    toast.dismiss(id); 
+
     if (deleteRes.ok) {
-      toast.success("❌ Deleted!");
-      return { message: "Success!", success: true };
+      toast.success("Deleted!");
+      return { success: true };
+    } else {
+      toast.error("Failed to Delete!");
+      return { success: false };
     }
-  } catch {
+  } catch (e) {
+    toast.dismiss(id); 
     toast.error("Failed to Delete!");
-    return { message: "Internal Server Error", success: false };
+    return { success: false };
   }
 };
 
@@ -138,6 +146,7 @@ const generateColumns = (
               <DialogTitle></DialogTitle>
               <DraftEditor
                 professorEmail={data.professor_email}
+                professorName={data.professor_name}
                 access={access}
                 draftId={data.draft_id}
                 userName={userName}

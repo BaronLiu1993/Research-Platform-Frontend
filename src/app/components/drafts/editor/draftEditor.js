@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 
 import { DialogClose } from "@/shadcomponents/ui/dialog";
-import { Badge } from "@/shadcomponents/ui/badge";
 import { toast } from "sonner";
 
 export default function DraftEditor({
@@ -25,6 +24,7 @@ export default function DraftEditor({
   draftId,
   userName,
   userEmail,
+  professorName,
   professorEmail,
 }) {
   const [subject, setSubject] = useState("");
@@ -62,7 +62,7 @@ export default function DraftEditor({
         addKeyboardShortcuts() {
           return {
             Enter: () => this.editor.commands.setHardBreak(),
-            "Mod-Enter": () => this.editor.commands.splitBlock(), // optional: new paragraph
+            "Mod-Enter": () => this.editor.commands.splitBlock(),
           };
         },
       }),
@@ -141,15 +141,14 @@ export default function DraftEditor({
     <div>
       <div className="text-sm">
         <div className="flex justify-between mx-4">
-          <Badge className="text-[#9F6B53] bg-[#F4EEEE] rounded-xs">
-            Edit Messages
-          </Badge>
+          <div></div>
           <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2">
             <X className="h-6 w-6 p-1 rounded-xs" />
           </DialogClose>
         </div>
         <div className="flex flex-col">
           <div className="flex gap-2 px-4 py-1">
+          <h1 className="text-black">{professorName}</h1>
             <h2 className="text-[#787774]">{professorEmail}</h2>
           </div>
           <div className="flex gap-2 px-4 py-1">
