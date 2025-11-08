@@ -57,21 +57,6 @@ export function WorkspaceTable({
   const [selectedRows, setSelectedRows] = useState([]);
   const [pendingDelete, setPendingDelete] = useState(new Set());
 
-  const handleTotalSelectedRows = (prof) => {
-    try {
-      setSelectedRows((prev) =>
-        prev.find((r) => r.id === prof.id)
-          ? prev.filter((r) => r.id !== prof.id)
-          : [...prev, prof]
-      );
-
-      toast.success("Toggled Professor");
-    } catch (error) {
-      toast.error("Failed To Select");
-      console.error(error);
-    }
-  };
-
   const handleSelectedRows = (profId) => {
     try {
       setSelectedRows((prev) =>

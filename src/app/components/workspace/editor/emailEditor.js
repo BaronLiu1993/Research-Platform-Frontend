@@ -118,52 +118,82 @@ export default function EmailEditor({
     }
 
     let tId;
-    try {
-      tId = toast.loading("Generating drafts...");
 
-      const snippetResponse = await GenerateSnippet({
-        snippet_html: body,
-        snippet_subject: subject,
-        access,
-      });
-      if (!snippetResponse?.success) {
-        toast.error("Failed to generate snippet.", { id: tId });
-        return;
+    if (vars.length > 0) {
+      try {
+        tId = toast.loading("Generating drafts...");
+
+        const snippetResponse = await GenerateSnippet({
+          snippet_html: body,
+          snippet_subject: subject,
+          access,
+        });
+        if (!snippetResponse?.success) {
+          toast.error("Failed to generate snippet.", { id: tId });
+          return;
+        }
+
+        toast.loading("Creating email skeleton...", { id: tId });
+        const syncResponse = await SyncVariables({
+          professorIdArray: selectedProfessors,
+          variableArray: vars,
+          access,
+        });
+        if (!syncResponse?.success) {
+          toast.error("Failed to sync professor data.", { id: tId });
+          return;
+        }
+
+        toast.loading("Building drafts...", { id: tId });
+        const draftResponse = await GenerateDrafts({
+          snippetId: snippetResponse.snippetId,
+          fromName: userName,
+          fromEmail: userEmail,
+          dynamicFields: syncResponse.data.result,
+          access,
+        });
+        if (!draftResponse?.success) {
+          toast.error("Failed to generate drafts.", { id: tId });
+          return;
+        }
+
+        toast.success("Drafts generated!", { id: tId });
+      } catch (e) {
+        toast.error("Something went wrong.", { id: tId });
       }
+    } else {
+      try {
+        tId = toast.loading("Generating drafts...");
 
-      toast.loading("Creating email skeleton...", { id: tId });
-      const syncResponse = await SyncVariables({
-        professorIdArray: selectedProfessors,
-        variableArray: vars,
-        access,
-      });
-      if (!syncResponse?.success) {
-        toast.error("Failed to sync professor data.", { id: tId });
-        return;
+        const snippetResponse = await GenerateSnippet({
+          snippet_html: body,
+          snippet_subject: subject,
+          access,
+        });
+        if (!snippetResponse?.success) {
+          toast.error("Failed to generate snippet.", { id: tId });
+          return;
+        }
+
+        toast.loading("Building drafts...", { id: tId });
+        const draftResponse = await GenerateDrafts({
+          snippetId: snippetResponse.snippetId,
+          fromName: userName,
+          fromEmail: userEmail,
+          dynamicFields: [],
+          access,
+        });
+        if (!draftResponse?.success) {
+          toast.error("Failed to generate drafts.", { id: tId });
+          return;
+        }
+
+        toast.success("Drafts generated!", { id: tId });
+      } catch (e) {
+        toast.error("Something went wrong.", { id: tId });
       }
-
-      toast.loading("Building drafts...", { id: tId });
-      const draftResponse = await GenerateDrafts({
-        snippetId: snippetResponse.snippetId,
-        fromName: userName,
-        fromEmail: userEmail,
-        dynamicFields: syncResponse.data.result,
-        access,
-      });
-      if (!draftResponse?.success) {
-        toast.error("Failed to generate drafts.", { id: tId });
-        return;
-      }
-
-      toast.success("Drafts generated!", { id: tId });
-    } catch (e) {
-      toast.error("Something went wrong.", { id: tId });
     }
   };
-
-  if (editor) {
-    console.log(editor.getHTML());
-  }
   return (
     <div>
       <div className="text-sm">

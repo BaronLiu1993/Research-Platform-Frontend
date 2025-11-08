@@ -67,16 +67,12 @@ function CarouselSkeletonLoader() {
           {/* Skeleton Image Placeholder */}
           <div className="h-48 bg-gray-50 rounded mb-4" />
 
-          {/* Skeleton Title Placeholder */}
           <div className="h-4 bg-gray-50 rounded w-3/4 mb-2" />
 
-          {/* Skeleton School Placeholder */}
           <div className="h-4 bg-gray-50 rounded w-1/2 mb-2" />
 
-          {/* Skeleton Faculty Placeholder */}
           <div className="h-3 bg-gray-50 rounded w-1/3 mb-2" />
 
-          {/* Skeleton Interests Placeholder */}
           <div className="flex flex-wrap gap-1.5 mt-2">
             <div className="h-4 bg-gray-50 rounded w-3/4 mb-1" />
             <div className="h-4 bg-gray-50 rounded w-3/4 mb-1" />
@@ -265,8 +261,8 @@ export default function RecommendationsClient({ matches, access }) {
         ))}
       </CarouselContent>
 
-      <CarouselPrevious className="absolute left-0 z-10 ml-1 md:ml-2" />
-      <CarouselNext className="absolute right-0 z-10 mr-1 md:mr-2" />
+      <CarouselPrevious className="absolute bg-[#4584F3] hover:bg-[#3574E2] hover:text-white text-white left-0 z-10 ml-1 md:ml-2" />
+      <CarouselNext className="absolute bg-[#4584F3] hover:bg-[#3574E2] hover:text-white text-white right-0 z-10 mr-1 md:mr-2" />
     </>
   );
 }

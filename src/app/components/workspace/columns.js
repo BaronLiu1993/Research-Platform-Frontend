@@ -59,7 +59,7 @@ const generateColumns = (
 ) => [
   {
     accessorKey: "checkbox",
-    header: ({ column }) => <Checkbox />,
+    header: ({ column }) =>  <div></div>,
     cell: ({ row }) => {
       const data = row.original;
       return (
@@ -79,7 +79,6 @@ const generateColumns = (
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         name
-        <ArrowUpDown className="ml-2 h-3.5 w-3.5 text-gray-400" />
       </Button>
     ),
     cell: ({ row }) => {
@@ -223,7 +222,6 @@ const generateColumns = (
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         school
-        <ArrowUpDown className="ml-2 h-3.5 w-3.5 text-gray-400" />
       </Button>
     ),
     cell: ({ row }) => {
@@ -372,7 +370,6 @@ const generateColumns = (
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         email
-        <ArrowUpDown className="ml-2 h-3.5 w-3.5 text-gray-400" />
       </Button>
     ),
     cell: ({ row }) => {
@@ -511,7 +508,6 @@ const generateColumns = (
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         status
-        <ArrowUpDown className="ml-2 h-3.5 w-3.5 text-gray-400" />
       </Button>
     ),
     cell: ({ row }) => {

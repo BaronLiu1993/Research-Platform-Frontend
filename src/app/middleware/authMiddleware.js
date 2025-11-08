@@ -1,48 +1,80 @@
 import { NextResponse } from "next/server";
 import { attemptRefresh } from "./attemptRefresh";
 
+function ensureRepositoryDefaults(url) {
+  if (url.pathname === "/repository" && url.searchParams.size === 0) {
+    url.searchParams.set("page", "1");
+    url.searchParams.set("search", "");
+    return true; 
+  }
+  return false;
+}
+
 export async function AuthMiddleware(req) {
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const access = req.cookies.get("access_token")?.value;
   const refresh = req.cookies.get("refresh_token")?.value;
   const isProd = process.env.NODE_ENV === "production";
-  const { pathname } = req.nextUrl;
+  const url = req.nextUrl.clone();
+  const { pathname } = url;
 
   const publicPaths = ["/auth/signin", "/auth/signup"];
-  if (publicPaths.some((path) => pathname.startsWith(path))) {
+
+  if (publicPaths.some((p) => pathname.startsWith(p))) {
     if (access || refresh) {
-      return NextResponse.redirect(new URL("/repository", req.url));
+      url.pathname = "/repository";
+      url.searchParams.set("page", "1");
+      url.searchParams.set("filter", "");
+      return NextResponse.redirect(url);
     }
     return NextResponse.next();
   }
 
-  if (pathname.startsWith("/register") && refresh) {
-    return NextResponse.next();
-  }
-
   if (!access && !refresh) {
-    return NextResponse.redirect(new URL("/auth/signin", req.url));
+    url.pathname = "/auth/signin";
+    url.search = "";
+    return NextResponse.redirect(url);
   }
 
   if (!access && refresh) {
     const refreshed = await attemptRefresh(refresh, req.url, isProd);
     if (!refreshed) {
-      return NextResponse.redirect(new URL("/auth/signin", req.url));
+      const signIn = req.nextUrl.clone();
+      signIn.pathname = "/auth/signin";
+      signIn.search = "";
+      return NextResponse.redirect(signIn);
+    }
+    const nextUrl = refreshed.headers.get("Location");
+    if (nextUrl) {
+      const redirected = new URL(nextUrl);
+      if (ensureRepositoryDefaults(redirected)) {
+        return NextResponse.redirect(redirected);
+      }
     }
     return refreshed;
   }
 
   try {
-    const response = await fetch(`${API_BASE}/auth/is-authenticated`, {
+    const authRes = await fetch(`${API_BASE}/auth/is-authenticated`, {
       method: "GET",
       headers: { Authorization: `Bearer ${access}` },
     });
-    const successStatus = await response.json();
+    const successStatus = await authRes.json();
 
-    if (!successStatus.success) {
+    if (!successStatus?.success) {
       const refreshed = await attemptRefresh(refresh, req.url, isProd);
       if (!refreshed) {
-        return NextResponse.redirect(new URL("/auth/signin", req.url));
+        const signIn = req.nextUrl.clone();
+        signIn.pathname = "/auth/signin";
+        signIn.search = "";
+        return NextResponse.redirect(signIn);
+      }
+      const nextUrl = refreshed.headers.get("Location");
+      if (nextUrl) {
+        const redirected = new URL(nextUrl);
+        if (ensureRepositoryDefaults(redirected)) {
+          return NextResponse.redirect(redirected);
+        }
       }
       return refreshed;
     }
@@ -53,16 +85,35 @@ export async function AuthMiddleware(req) {
     });
     const profile = await profileCheck.json();
 
-    if (!profile.isComplete && pathname !== "/register") {
-      return NextResponse.redirect(new URL("/register", req.url));
+    if (!profile?.isComplete && pathname !== "/register") {
+      url.pathname = "/register";
+      url.search = "";
+      return NextResponse.redirect(url);
     }
-    
-    if (profile.isComplete && pathname.startsWith("/register")) {
-      return NextResponse.redirect(new URL("/repository", req.url));
+
+
+    if (profile?.isComplete && pathname.startsWith("/register")) {
+      url.pathname = "/repository";
+      url.searchParams.set("page", "1");
+      url.searchParams.set("search", "");
+      return NextResponse.redirect(url);
+    }
+
+    if (ensureRepositoryDefaults(url)) {
+      return NextResponse.redirect(url);
     }
 
     return NextResponse.next();
-  } catch (err) {
-    return NextResponse.redirect(new URL("/auth/signin", req.url));
+  } catch {
+    const signIn = req.nextUrl.clone();
+    signIn.pathname = "/auth/signin";
+    signIn.search = "";
+    return NextResponse.redirect(signIn);
   }
 }
+
+export const config = {
+  matcher: [
+    "/((?!_next/|static/|favicons/|images/|favicon.ico).*)",
+  ],
+};

@@ -18,8 +18,9 @@ import {
 } from "@/shadcomponents/ui/sidebar";
 
 import { AppSidebar } from "../components/sidebar";
-import { InboxIcon, Laptop, MapIcon } from "lucide-react";
+import { InboxIcon, Laptop, MapIcon, Send, Workflow } from "lucide-react";
 import { InboxTable } from "../components/inbox/inbox-table";
+import { Badge } from "@/shadcomponents/ui/badge";
 
 export default async function Inbox({ searchParams }) {
   const cookieStore = cookies();
@@ -93,16 +94,33 @@ export default async function Inbox({ searchParams }) {
           <div className="flex-1 overflow-y-auto overflow-x-hidden font-main">
             <div className="w-full max-w-screen-xl px-4 sm:px-6">
               <div className="my-8 sm:my-10 space-y-2">
-                <div className="mb-8 overflow-x-auto">
-                  <div>
-                    <InboxTable
-                      data={inboxThreads.data}
-                      generateColumns={generateColumns}
-                      access={access}
-                      userName={parsedUserProfile.student_name}
-                      userEmail={parsedUserProfile.student_email}
-                    />
+                {/* Header block matches Workspace */}
+                <div className="mt-2 mx-6">
+                  <div className="flex items-center justify-between gap-2 pt-2">
+                    <h1 className="text-xl sm:text-2xl text-[#37352F] font-semibold">
+                      Inbox
+                    </h1>
                   </div>
+
+                  <div className="flex items-center py-2 gap-2">
+                    <Badge
+                      variant="secondary"
+                      className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]"
+                    >
+                      <Send className="w-3.5 h-3.5 mr-1" />
+                      View Professor Threads
+                    </Badge>
+                  </div>
+                </div>
+
+                <div className="mb-8 overflow-x-auto">
+                  <InboxTable
+                    data={inboxThreads.data}
+                    generateColumns={generateColumns}
+                    access={access}
+                    userName={parsedUserProfile.student_name}
+                    userEmail={parsedUserProfile.student_email}
+                  />
                 </div>
               </div>
             </div>

@@ -40,6 +40,7 @@ export const config = {
     "/drafts",
     "/repository",
     "/workspace",
-    "/inbox"
+    "/inbox",
+    "/inbox/threads"
   ],
 };

@@ -95,16 +95,7 @@ export function InboxTable({
   );
 
   const columns = useMemo(
-    () =>
-      generateColumns(
-        access,
-        onRemove,
-        pendingDelete,
-        handleSelectedRows,
-        userName,
-        userEmail,
-        selectedRows
-      ),
+    () => generateColumns(),
     [
       access,
       onRemove,
@@ -158,44 +149,9 @@ export function InboxTable({
               }
               className="max-w-xs rounded-xs"
             />
-           
           </div>
         </div>
         <Table className="text-sm min-w-full rounded-xs">
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  const canSort = header.column.getCanSort();
-                  const sortDir = header.column.getIsSorted();
-                  return (
-                    <TableHead
-                      key={header.id}
-                      onClick={
-                        canSort
-                          ? header.column.getToggleSortingHandler()
-                          : undefined
-                      }
-                      className={
-                        "text-xs whitespace-nowrap " +
-                        (canSort ? "cursor-pointer select-none" : "")
-                      }
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {sortDir === "asc"
-                        ? " 🔼"
-                        : sortDir === "desc"
-                          ? " 🔽"
-                          : ""}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
           <TableBody aria-busy={isNavigationLoading}>
             {isNavigationLoading ? (
               Array.from({ length: 8 }).map((_, r) => (
