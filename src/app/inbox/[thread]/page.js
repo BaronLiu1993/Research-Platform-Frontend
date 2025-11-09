@@ -24,9 +24,6 @@ export default async function Inbox({ searchParams }) {
   const access = cookieStore.get("access_token")?.value;
   const threadId = (await searchParams?.id) || "";
   const name = (await searchParams?.name) || "";
-
-  //Redirect if not name and threadid in there
-
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const profileFetchOpts = {
     headers: access
@@ -90,8 +87,13 @@ export default async function Inbox({ searchParams }) {
                 <BreadcrumbSeparator>/</BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <BreadcrumbPage className="font-main flex cursor-pointer items-center hover:underline gap-2 font-light text-[#37352F]">
-                    <InboxIcon className="h-5 w-5 text-blue-700" />
-                    Inbox
+                    <Link
+                      href="/inbox"
+                      className="font-main text-sm flex items-center hover:underline gap-2 font-light text-[#37352F]"
+                    >
+                      <InboxIcon className="h-5 w-5 text-blue-700" />
+                      Home
+                    </Link>
                   </BreadcrumbPage>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>/</BreadcrumbSeparator>

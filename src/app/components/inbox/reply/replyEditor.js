@@ -31,7 +31,6 @@ export default function ReplyEditor({
   threadId,
 }) {
   const [subject, setSubject] = useState("");
-
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
