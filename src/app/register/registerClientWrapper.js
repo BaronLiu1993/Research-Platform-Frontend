@@ -9,24 +9,6 @@ import DropdownInterests from "../components/dropdowns/dropdowninterests";
 
 import { AlertCircle, Loader2 } from "lucide-react";
 
-function FieldGroup({ label, hint, error, children }) {
-  return (
-    <div className="space-y-1.5">
-      <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-gray-800">{label}</label>
-        {hint ? <span className="text-xs text-gray-500">{hint}</span> : null}
-      </div>
-      <div className="rounded-md">{children}</div>
-      {error ? (
-        <div className="flex items-center gap-1 text-red-500 text-xs">
-          <AlertCircle className="h-3.5 w-3.5" />
-          <span>{error}</span>
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
 export default function RegisterClientWrapper({ access }) {
   const router = useRouter();
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
@@ -40,6 +22,7 @@ export default function RegisterClientWrapper({ access }) {
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [attempted, setAttempted] = useState(false);
 
   const handleAddInterests = (val) => {
@@ -98,9 +81,11 @@ export default function RegisterClientWrapper({ access }) {
         return;
       }
 
+      setSubmitting(true);
       router.push("/repository");
     } catch (e) {
       setSubmitError("Internal server error. Please try again.");
+      setSubmitting(false);
     }
   };
 
@@ -218,11 +203,11 @@ export default function RegisterClientWrapper({ access }) {
         <div className="px-6 py-4 border-t bg-white flex items-center justify-between">
           <button
             type="submit"
-            onClick={() => setSubmitting(true)}
+            onClick={() => setIsLoading(true)}
             disabled={!isValid || submitting}
             className="inline-flex cursor-pointer items-center gap-2 bg-[#529CCA] hover:bg-[#4087b1] disabled:opacity-60 disabled:hover:bg-[#529CCA] active:bg-[#357396] text-white text-sm font-medium px-4 py-2 rounded-md transition-colors"
           >
-            {submitting ? (
+            {isLoading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Saving…
@@ -234,5 +219,23 @@ export default function RegisterClientWrapper({ access }) {
         </div>
       </div>
     </form>
+  );
+}
+
+function FieldGroup({ label, hint, error, children }) {
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between">
+        <label className="text-sm font-medium text-gray-800">{label}</label>
+        {hint ? <span className="text-xs text-gray-500">{hint}</span> : null}
+      </div>
+      <div className="rounded-md">{children}</div>
+      {error ? (
+        <div className="flex items-center gap-1 text-red-500 text-xs">
+          <AlertCircle className="h-3.5 w-3.5" />
+          <span>{error}</span>
+        </div>
+      ) : null}
+    </div>
   );
 }
