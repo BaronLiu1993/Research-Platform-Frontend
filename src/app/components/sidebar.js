@@ -74,7 +74,9 @@ export function AppSidebar({ student_data, ...props }) {
         <div className="flex items-center gap-2">
           <div>
             <h1 className="text-sm font-medium">{student_data.student_name}</h1>
-            <p className="text-xs">{student_data.student_email.slice(0, 25)}</p>
+            <p className="text-xs max-w-[200px] truncate">
+              {student_data.student_email}
+            </p>
           </div>
         </div>
       </SidebarHeader>
