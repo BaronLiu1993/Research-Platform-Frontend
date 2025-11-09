@@ -41,6 +41,6 @@ export const config = {
     "/repository",
     "/workspace",
     "/inbox",
-    "/inbox/threads"
+    "/inbox/thread"
   ],
 };

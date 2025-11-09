@@ -41,9 +41,11 @@ export default function Thread({
 
           const seen = messages?.seenData?.opened_email;
           const seenAt = messages?.seenData?.opened_email_at;
-
           return (
-            <article key={idx} className="group py-6 border-b-2 transition-colors">
+            <article
+              key={idx}
+              className="group py-6 border-b-2 transition-colors"
+            >
               <h1 className="text-[22px] leading-7 font-semibold tracking-tight text-neutral-900">
                 {messages.subject}
               </h1>
@@ -100,8 +102,9 @@ export default function Thread({
                     <DialogContent className="sm:max-w-2xl">
                       <DialogHeader />
                       <ReplyEditor
+                        subject={messageData[0].subject}
                         access={access}
-                        messageId={messages.messageIdHeader}
+                        messageId={messageData[0].messageIdHeader}
                         professorName={professorName}
                         professorEmail={messages.to}
                         userName={userName}

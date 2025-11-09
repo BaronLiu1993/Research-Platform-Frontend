@@ -7,7 +7,6 @@ import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
   Bold,
-  CheckCheck,
   Italic,
   List,
   ListTodo,
@@ -29,8 +28,8 @@ export default function ReplyEditor({
   userName,
   userEmail,
   threadId,
+  subject
 }) {
-  const [subject, setSubject] = useState("");
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -108,8 +107,8 @@ export default function ReplyEditor({
           </DialogClose>
         </div>
         <div className="flex flex-col">
-        <div className="flex gap-2 px-4 py-1">
-        <h1 className="text-black">{professorName}</h1>
+          <div className="flex gap-2 px-4 py-1">
+            <h1 className="text-black">{professorName}</h1>
 
             <h2 className="text-[#787774]">{professorEmail}</h2>
           </div>
@@ -117,12 +116,6 @@ export default function ReplyEditor({
             <h1 className="text-black">{userName}</h1>
             <h2 className="text-[#787774]">{userEmail}</h2>
           </div>
-          <input
-            onChange={(e) => setSubject(e.target.value)}
-            className="px-4 py-1 w-full"
-            placeholder="Subject"
-            value={subject}
-          />
         </div>
       </div>
       {editor && (
