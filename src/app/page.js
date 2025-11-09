@@ -4,10 +4,13 @@ import {
   BarChart3,
   ChevronLeft,
   ChevronRight,
+  Database,
+  Eye,
   HomeIcon,
   Inbox,
   InboxIcon,
   LogIn,
+  Mail,
   Map,
   PanelLeft,
   Pen,
@@ -127,7 +130,7 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="w-full">
+      <section className="w-full font-main">
         <div className="mx-auto w-full max-w-6xl px-6 sm:px-10">
           <motion.div
             variants={listVariants}
@@ -137,53 +140,52 @@ export default function Home() {
           >
             <motion.div
               variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border-2 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
+              className="relative flex h-full flex-col rounded-2xl border-1 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
             >
-              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
-              <h3 className="relative text-lg font-semibold text-blue-900">
+              <Database className="stroke-1 text-white fill-blue-900" />
+              <h3 className="relative text-lg font-semibold">
                 Professor Board
               </h3>
-              <p className="relative mt-1 text-md text-gray-700">
-                Plan tasks, track progress, and align teams.
+              <p className="relative mt-1 text-sm text-gray-700">
+                Access a database with over 1000+ professors that work in
+                healthcare to engineering
               </p>
             </motion.div>
 
             <motion.div
               variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border-2 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
+              className="relative flex h-full flex-col rounded-2xl border-1 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
             >
-              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
-              <h3 className="relative text-lg font-semibold text-blue-900">
-                Drafting Tools
-              </h3>
-              <p className="relative mt-1 text-md text-gray-700">
-                Enhance teamwork with shared resources and real-time feedback.
+              <Pencil className="stroke-1 text-white fill-blue-900" />
+
+              <h3 className="relative text-lg font-semibold">Drafting Tools</h3>
+              <p className="relative mt-1 text-sm text-gray-700">
+                Save, draft and organise many email drafts all at once
               </p>
             </motion.div>
 
             <motion.div
               variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border-2 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
+              className="relative flex h-full flex-col rounded-2xl border-1 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
             >
-              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
-              <h3 className="relative text-lg font-semibold text-blue-900">
+              <Mail className="stroke-1 text-white fill-blue-900" />
+
+              <h3 className="relative text-lg font-semibold text-gray-700">
                 Send Emails On Mass
               </h3>
-              <p className="relative mt-1 text-md text-gray-700">
-                Access in-depth analytics to drive data-informed decisions.
+              <p className="relative mt-1 text-sm">
+                Send many emails at once and edit drafts to your liking
               </p>
             </motion.div>
 
             <motion.div
               variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border-2 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
+              className="relative flex h-full flex-col rounded-2xl border-1 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
             >
-              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/70 via-white/20 to-transparent" />
-              <h3 className="relative text-lg font-semibold text-blue-900">
-                Track Outreach!
-              </h3>
-              <p className="relative mt-1 text-md text-gray-700">
-                Integrate tools and services for a unified workflow.
+              <Eye className="stroke-1 text-white fill-blue-900" />
+              <h3 className="relative text-lg font-semibold">Track Outreach</h3>
+              <p className="relative mt-1 text-sm text-gray-700">
+                Built in inbox for replying to professors with read receipts
               </p>
             </motion.div>
           </motion.div>
