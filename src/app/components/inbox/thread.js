@@ -35,7 +35,7 @@ export default function Thread({
 }) {
   return (
     <div className="font-main w-full max-w-3xl py-8">
-      <div className="divide-y divide-neutral-200/70">
+      <div className="divide-y divide-neutral-200/70 px-10">
         {messageData.map((messages, idx) => {
           const sanitizedHTML = DOMPurify.sanitize(messages.body);
 
