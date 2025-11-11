@@ -74,11 +74,11 @@ export default async function Inbox({ searchParams }) {
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink asChild>
                     <Link
-                      href="/"
+                      href="/repository"
                       className="font-main text-sm flex items-center hover:underline gap-2 font-light text-[#37352F]"
                     >
                       <Laptop className="h-5 w-5 text-blue-700" />
-                      Home
+                      Repository
                     </Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
