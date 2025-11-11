@@ -8,6 +8,7 @@ export const GenerateDrafts = async ({
   try {
     const API_BASE =
       process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
+
     const response = await fetch(`${API_BASE}/email/create-draft`, {
       method: "POST",
       headers: {
