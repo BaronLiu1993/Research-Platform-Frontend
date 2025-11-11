@@ -1,9 +1,10 @@
 export const GenerateVariablelessDrafts = async ({
-  snippetId,
   fromName,
   fromEmail,
-  emailContents,
+  html,
+  subject,
   access,
+  professorData,
 }) => {
   try {
     const API_BASE =
@@ -18,12 +19,13 @@ export const GenerateVariablelessDrafts = async ({
           Authorization: `Bearer ${access}`,
         },
         body: JSON.stringify({
-          emailContents: emailContents,
+          html,
+          subject,
           baseBody: {
-            snippetId,
             fromName,
             fromEmail,
           },
+          professorData: professorData,
         }),
       }
     );

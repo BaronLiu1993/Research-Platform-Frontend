@@ -26,6 +26,7 @@ import { Badge } from "@/shadcomponents/ui/badge";
 import { GenerateSnippet } from "@/app/api/email/snippet/generateSnippet";
 import { toast } from "sonner";
 import { SyncVariables } from "@/app/api/email/snippet/syncVariables";
+import { GenerateVariablelessDrafts } from "@/app/api/email/draft/generateVariablelessDrafts";
 
 export default function EmailEditor({
   access,
@@ -165,26 +166,17 @@ export default function EmailEditor({
       try {
         tId = toast.loading("Generating drafts...");
 
-        const snippetResponse = await GenerateSnippet({
-          snippet_html: body,
-          snippet_subject: subject,
-          access,
-        });
-        if (!snippetResponse?.success) {
-          toast.error("Failed to generate snippet.", { id: tId });
-          return;
-        }
-
-        toast.loading("Building drafts...", { id: tId });
-        const draftResponse = await GenerateDrafts({
-          snippetId: snippetResponse.snippetId,
+        const draftResponse = await GenerateVariablelessDrafts({
           fromName: userName,
           fromEmail: userEmail,
-          dynamicFields: [],
-          access,
+          html: body,
+          subject: subject,
+          professorData: selectedProfessors,
+          access: access,
         });
+
         if (!draftResponse?.success) {
-          toast.error("Failed to generate drafts.", { id: tId });
+          toast.error("Failed to generate snippet.", { id: tId });
           return;
         }
 
