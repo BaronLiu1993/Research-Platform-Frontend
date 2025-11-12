@@ -26,7 +26,6 @@ import {
 import { Label } from "@/shadcomponents/ui/label";
 
 import {
-  ArrowUpDown,
   University,
   BrainCircuit,
   Microscope,
@@ -55,16 +54,28 @@ const generateColumns = (
   access,
   onRemove,
   pendingDelete,
-  handleSelectedRows
+  handleSelectedRows,
+  handleSelectedAllRowData,
+  isSelectionLimitReached,
+  selectedRows
 ) => [
   {
     accessorKey: "checkbox",
-    header: ({ column }) =>  <div></div>,
+    header: ({ column }) => <div></div>,
     cell: ({ row }) => {
       const data = row.original;
       return (
         <>
-          <Checkbox onCheckedChange={() => handleSelectedRows(data.professor_id)} />
+          <Checkbox
+            onCheckedChange={() => {
+              handleSelectedRows(data.professor_id);
+              handleSelectedAllRowData({
+                id: data.professor_id,
+                name: data.name,
+                email: data.email,
+              });
+            }}
+          />
         </>
       );
     },

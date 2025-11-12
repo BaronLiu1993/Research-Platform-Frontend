@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/shadcomponents/ui/composedialog";
 
-import { ArrowUpDown, Trash2Icon, Pencil } from "lucide-react";
+import { Trash2Icon, Pencil } from "lucide-react";
 
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
 import DraftEditor from "./editor/draftEditor";
@@ -57,7 +57,7 @@ const generateColumns = (
 ) => [
   {
     accessorKey: "checkbox",
-    header: ({ column }) => <Checkbox />,
+    header: ({ column }) => <div></div>,
     cell: ({ row }) => {
       const data = row.original;
       const isSelected = selectedRows.some((r) => r.id === data.id);

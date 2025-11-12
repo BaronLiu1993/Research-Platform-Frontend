@@ -33,6 +33,7 @@ export default function EmailEditor({
   userName,
   userEmail,
   selectedProfessors,
+  fullSelectedProfessors
 }) {
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
@@ -43,9 +44,7 @@ export default function EmailEditor({
   }, [setSelectedVariables]);
 
   const vars = useSelectedVariablesStore.getState().selectedVariables;
-
   const [subject, setSubject] = useState("");
-
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -171,7 +170,7 @@ export default function EmailEditor({
           fromEmail: userEmail,
           html: body,
           subject: subject,
-          professorData: selectedProfessors,
+          professorData: fullSelectedProfessors,
           access: access,
         });
 

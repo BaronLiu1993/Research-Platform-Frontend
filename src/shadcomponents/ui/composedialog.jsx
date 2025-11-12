@@ -58,7 +58,6 @@ function DialogContent({
             "fixed bottom-4 left-4 z-50 grid w-full max-w-xl gap-4 rounded-sm border shadow-lg duration-200",
             className
           )}
-          // 👇 prevent close on Esc and outside click
           onEscapeKeyDown={(e) => e.preventDefault()}
           onPointerDownOutside={(e) => e.preventDefault()}
           {...props}

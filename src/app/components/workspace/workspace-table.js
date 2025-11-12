@@ -55,19 +55,43 @@ export function WorkspaceTable({
   const [isNavigationLoading, setIsNavigationLoading] = useState(false);
   const [rows, setRows] = useState(data);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [allDataSelectedRows, setAllDataSelectedRows] = useState([]);
   const [pendingDelete, setPendingDelete] = useState(new Set());
+  const isSelectionLimitReached = allDataSelectedRows.length >= 5;
+
+  console.log(selectedRows);
+  console.log(allDataSelectedRows);
+
+  const handleSelectedAllRowData = (profObj) => {
+    try {
+      setAllDataSelectedRows((prev) => {
+        const alreadySelected = prev.some((item) => item.id === profObj.id);
+        if (alreadySelected) {
+          return prev.filter((item) => item.id !== profObj.id);
+        } else if (prev.length >= 5) {
+          toast.error("You can only select up to 5 professors.");
+          return prev;
+        } else {
+          return [...prev, profObj];
+        }
+      });
+    } catch (error) {}
+  };
 
   const handleSelectedRows = (profId) => {
     try {
-      setSelectedRows((prev) =>
-        prev.includes(profId)
-          ? prev.filter((id) => id !== profId)
-          : [...prev, profId]
-      );
+      setSelectedRows((prev) => {
+        const alreadySelected = prev.includes(profId);
 
-    } catch (error) {
-      //add telemetry here
-    }
+        if (alreadySelected) {
+          return prev.filter((id) => id !== profId);
+        } else if (prev.length >= 5) {
+          return prev;
+        } else {
+          return [...prev, profId];
+        }
+      });
+    } catch (error) {}
   };
 
   const onRemove = useCallback(
@@ -93,8 +117,24 @@ export function WorkspaceTable({
   );
 
   const columns = useMemo(
-    () => generateColumns(access, onRemove, pendingDelete, handleSelectedRows),
-    [access, generateColumns, pendingDelete, onRemove]
+    () =>
+      generateColumns(
+        access,
+        onRemove,
+        pendingDelete,
+        handleSelectedRows,
+        handleSelectedAllRowData,
+        isSelectionLimitReached
+      ),
+    [
+      access,
+      generateColumns,
+      pendingDelete,
+      onRemove,
+      handleSelectedRows,
+      handleSelectedAllRowData,
+      isSelectionLimitReached,
+    ]
   );
 
   const goToPage = useCallback(
@@ -150,6 +190,7 @@ export function WorkspaceTable({
                   userEmail={userEmail}
                   userName={userName}
                   selectedProfessors={selectedRows}
+                  fullSelectedProfessors={allDataSelectedRows}
                 />
               </DialogContent>
             </Dialog>
