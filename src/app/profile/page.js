@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-import generateColumns from "../components/drafts/columns";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,15 +16,13 @@ import {
 } from "@/shadcomponents/ui/sidebar";
 
 import { AppSidebar } from "../components/sidebar";
-import { Laptop, MapIcon, Pen, PlaneLanding, Workflow } from "lucide-react";
+import { Laptop, PersonStanding, PlaneLanding } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { DraftsTable } from "../components/drafts/draft-table";
+import Dashboard from "../components/profile/dashboard";
 
-export default async function Drafts({ searchParams }) {
+export default async function Profile({ searchParams }) {
   const cookieStore = await cookies();
   const access = cookieStore.get("access_token")?.value;
-  const pageNumber = Number(searchParams?.page ?? 1) || 1;
-
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const profileFetchOpts = {
     headers: access
@@ -37,27 +34,19 @@ export default async function Drafts({ searchParams }) {
     cache: "no-store",
   };
 
-  const draftsFetchOpts = {
-    method: "GET",
-    headers: access ? { Authorization: `Bearer ${access}` } : {},
-  };
-
-  let draftsData = [];
+  
   let parsedUserProfile = {};
 
   try {
-    const [profileRes, draftsRes] = await Promise.all([
+    const [profileRes] = await Promise.all([
       fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
-      fetch(`${API_BASE}/email/get-drafts`, draftsFetchOpts),
     ]);
 
     if (profileRes.ok) {
       parsedUserProfile = await profileRes.json();
     }
 
-    if (draftsRes.ok) {
-      draftsData = await draftsRes.json();
-    }
+   
   } catch {
     //log with telemetry
   }
@@ -78,15 +67,15 @@ export default async function Drafts({ searchParams }) {
                       className="font-main text-sm flex items-center hover:underline gap-2 font-light text-[#37352F]"
                     >
                       <Laptop className="h-5 w-5 text-blue-700" />
-                      Repository
+                      Home
                     </Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>/</BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <BreadcrumbPage className="font-main flex cursor-pointer items-center hover:underline gap-2 font-light text-[#37352F]">
-                    <Pen className="h-5 w-5 text-blue-700" />
-                    Drafts
+                    <PersonStanding className="h-5 w-5 text-blue-700" />
+                    Profile
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
@@ -98,7 +87,7 @@ export default async function Drafts({ searchParams }) {
                 <div className="mt-2 mx-6">
                   <div className="flex items-center justify-between gap-2 pt-2">
                     <h1 className="text-xl sm:text-2xl text-[#37352F] font-semibold">
-                      Drafts
+                      Profile
                     </h1>
                   </div>
                   <div className="flex items-center py-2 gap-2">
@@ -107,60 +96,12 @@ export default async function Drafts({ searchParams }) {
                       className="bg-[#F1F1EF] text-[#37352F] rounded-md text-[11px]"
                     >
                       <PlaneLanding className="w-3.5 h-3.5 mr-1" />
-                      Send Your Drafts!
+                      Change Your Profile!
                     </Badge>
-                  </div>
-                  <div>
-                    <div className="mt-5">
-                      <div className="inline-flex items-center rounded-md bg-[#FAEBDD] px-2 py-0.5 text-[11px] font-main font-medium text-[#D9730D]">
-                        How To Send Emails
-                      </div>
-
-                      <div className="mt-2 flex gap-2">
-                        <div className="flex-1">
-                          <ol className="list-decimal pl-4 space-y-1 font-main text-[13px] text-[#37352F] marker:text-slate-400">
-                            <li className="leading-5">
-                              Click{" "}
-                              <span className="rounded bg-slate-100 px-1 py-0.5 text-blue-700">
-                                edit draft
-                              </span>{" "}
-                              to review what you’re sending
-                            </li>
-                            <li className="leading-5">
-                              Double-check emails before sending
-                            </li>
-                            <li className="leading-5">
-                              Use{" "}
-                              <span className="text-blue-700">checkboxes</span>{" "}
-                              to select professors to send to
-                            </li>
-                            <li className="leading-5">
-                              Click the{" "}
-                              <span className="text-blue-700">Send</span> button
-                            </li>
-                            <li className="leading-5">
-                              Check{" "}
-                              <span className="text-blue-700">Emails</span> and{" "}
-                              <span className="text-blue-700">
-                                Read Receipts
-                              </span>{" "}
-                              for status
-                            </li>
-                          </ol>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
                 <div className="mb-8 overflow-x-auto">
-                  <DraftsTable
-                    generateColumns={generateColumns}
-                    data={draftsData.data}
-                    pageNumber={pageNumber}
-                    access={access}
-                    userName={parsedUserProfile.student_name}
-                    userEmail={parsedUserProfile.student_email}
-                  />
+                  <Dashboard />
                 </div>
               </div>
             </div>

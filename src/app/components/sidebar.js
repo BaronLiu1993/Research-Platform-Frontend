@@ -23,6 +23,7 @@ import {
   Inbox,
   InboxIcon,
   Pen,
+  PersonStanding,
 } from "lucide-react";
 import { Button } from "@/shadcomponents/ui/button";
 
@@ -58,6 +59,13 @@ const data = {
           url: "/inbox",
           icon: (
             <InboxIcon className="h-6 w-6 bg-red-100 rounded-xs text-[#a23423] p-0.5" />
+          ),
+        },
+        {
+          title: "Profile",
+          url: "/profile",
+          icon: (
+            <PersonStanding className="h-6 w-6 bg-[#EDF3EC] rounded-xs text-[#448361] p-0.5" />
           ),
         },
       ],

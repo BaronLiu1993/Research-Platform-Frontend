@@ -3,7 +3,7 @@
 //Filetype is either resume or transcript
 export async function uploadFile({ file, access, fileName, fileType }) {
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
-    // put in the file and upload
+  // put in the file and upload
   try {
     const response = await fetch(`${API_BASE}/storage/generate-upload-url`, {
       method: "POST",
@@ -17,8 +17,14 @@ export async function uploadFile({ file, access, fileName, fileType }) {
       }),
     });
     const urlData = await response.json();
+    console.log(urlData);
+
+    /**
+     * 
+     * 
+    console.log(urlData);
     if (response.ok) {
-      const uploadRes = await fetch(urlData.signedUrl, {
+      const uploadRes = await fetch("url", {
         method: "PUT",
         headers: { "Content-Type": file.type },
         body: file,
@@ -27,6 +33,7 @@ export async function uploadFile({ file, access, fileName, fileType }) {
         return { message: "Added Successfully", success: true };
       }
     }
+     */
   } catch {
     return { message: "Internal Server Error", success: true };
   }
