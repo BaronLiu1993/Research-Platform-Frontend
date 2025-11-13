@@ -1,5 +1,6 @@
 "use client";
 
+import { getFile } from "@/app/api/storage/getFile";
 import { uploadFile } from "@/app/api/storage/uploadFile";
 import { Button } from "@/shadcomponents/ui/button";
 import { LeafyGreen, Newspaper } from "lucide-react";
@@ -70,6 +71,21 @@ export default function Dashboard({ access, fileExists }) {
     }
   };
 
+  const handleGetFile = async ({ access, fileName, fileType }) => {
+    try {
+      const urlRes = await getFile({ access, fileName, fileType });
+      console.log(urlRes)
+      if (urlRes) {
+        window.open(urlRes.urlData.url.signedUrl, "_blank", "noopener,noreferrer");
+      } else {
+        toast.error("No file URL returned");
+      }
+    } catch (err) {
+      toast.error("Failed To Retrieve");
+    }
+  };
+  
+
   const resumeStatusClasses =
     resumeStatus === "Uploaded"
       ? "bg-[#E6F4EA] text-[#1E8E3E]"
@@ -126,8 +142,13 @@ export default function Dashboard({ access, fileExists }) {
           <button
             type="button"
             className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
-            onClick={(e) => {
+            onClick={async (e) => {
               e.stopPropagation();
+              await handleGetFile({
+                access,
+                fileType: "resume",
+                fileName: fileExists.resumeName,
+              });
             }}
           >
             Preview
@@ -174,8 +195,13 @@ export default function Dashboard({ access, fileExists }) {
           <button
             type="button"
             className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
-            onClick={(e) => {
+            onClick={async (e) => {
               e.stopPropagation();
+              await handleGetFile({
+                access,
+                fileType: "transcript",
+                fileName: fileExists.transcriptName,
+              });
             }}
           >
             Preview

@@ -4,10 +4,8 @@
 export async function uploadFile({ file, access, fileName, fileType }) {
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   // put in the file and upload
-  console.log("fired");
   try {
-    console.log(fileName);
-    console.log(fileType);
+
     const response = await fetch(
       `${API_BASE}/storage/generate-upload-url/${fileType}`,
       {
