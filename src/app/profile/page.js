@@ -34,19 +34,27 @@ export default async function Profile({ searchParams }) {
     cache: "no-store",
   };
 
-  
+  const fileFetchOpts = {
+    method: "GET",
+    headers: access ? { Authorization: `Bearer ${access}` } : {},
+  };
+
   let parsedUserProfile = {};
+  let fileExists = [];
 
   try {
-    const [profileRes] = await Promise.all([
+    const [fileRes, profileRes] = await Promise.all([
+      fetch(`${API_BASE}/storage/check-file-existance`, fileFetchOpts),
       fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
     ]);
+
+    if (fileRes.ok) {
+      fileExists = await fileRes.json();
+    }
 
     if (profileRes.ok) {
       parsedUserProfile = await profileRes.json();
     }
-
-   
   } catch {
     //log with telemetry
   }
@@ -101,7 +109,7 @@ export default async function Profile({ searchParams }) {
                   </div>
                 </div>
                 <div className="mb-8 overflow-x-auto">
-                  <Dashboard />
+                  <Dashboard access={access} fileExists = {fileExists}/>
                 </div>
               </div>
             </div>
