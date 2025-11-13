@@ -124,7 +124,7 @@ export default async function Drafts({ searchParams }) {
                               <span className="rounded bg-slate-100 px-1 py-0.5 text-blue-700">
                                 edit draft
                               </span>{" "}
-                              to review what you’re sending
+                              {"to review what you’re sending"}
                             </li>
                             <li className="leading-5">
                               Double-check emails before sending
