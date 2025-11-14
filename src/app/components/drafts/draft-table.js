@@ -26,6 +26,8 @@ import {
 import { Input } from "@/shadcomponents/ui/input";
 import { toast } from "sonner";
 import { Button } from "@/shadcomponents/ui/button";
+import { SendDraftsWithAttachments } from "@/app/api/email/send/sendDraftWithAttachments";
+import { MailCheck, Paperclip } from "lucide-react";
 
 export function DraftsTable({
   data = [],
@@ -176,6 +178,41 @@ export function DraftsTable({
     }
   };
 
+  const handleSendDraftsWithAttachments = async () => {
+    toast.dismiss();
+
+    if (!selectedRows.length) {
+      toast.error("Select a Professor!");
+      return;
+    }
+
+    setIsSending(true);
+    const tId = toast.loading("Sending...");
+
+    try {
+      const response = await SendDraftsWithAttachments({
+        userName,
+        userEmail,
+        professorData: selectedRows,
+        access,
+      });
+
+      if (response?.success) {
+        toast.success("Sent!", { id: tId });
+        const idsToRemove = new Set(selectedRows.map((r) => r.id));
+        setRows((prev) => prev.filter((r) => !idsToRemove.has(r.id)));
+        setSelectedRows([]);
+        setPendingDelete(new Set());
+      } else {
+        toast.error(response?.message || "Failed To Send Drafts", { id: tId });
+      }
+    } catch (e) {
+      toast.error("Failed To Send Drafts", { id: tId });
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   return (
     <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6 rounded-xs">
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
@@ -194,7 +231,16 @@ export function DraftsTable({
               disabled={selectedRows.length === 0 || isSending}
               onClick={handleSendDrafts}
             >
+              <MailCheck />
               Send Emails
+            </Button>
+            <Button
+              className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#9065B0] hover:bg-[#9A6EC0]"
+              disabled={selectedRows.length === 0 || isSending}
+              onClick={handleSendDraftsWithAttachments}
+            >
+              <Paperclip />
+              Send Emails With Attachments
             </Button>
           </div>
         </div>
