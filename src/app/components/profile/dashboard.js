@@ -101,7 +101,7 @@ export default function Dashboard({ access, fileExists }) {
         : "bg-[#FDEBEC] text-[#D44C47]";
 
   return (
-    <div className="flex flex-col gap-4 w-fit">
+    <div className="flex flex-col gap-4 m-10 w-fit">
       <div className="flex font-main gap-4">
         <div className="relative w-[10rem] h-[11rem]">
           <input
@@ -215,7 +215,7 @@ export default function Dashboard({ access, fileExists }) {
           className="text-xs cursor-pointer font-medium text-white px-2 py-1 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Uploading..." : "Submit"}
+          {isSubmitting ? "Uploading..." : "Update"}
         </Button>
       </div>
     </div>

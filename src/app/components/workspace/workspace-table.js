@@ -59,9 +59,6 @@ export function WorkspaceTable({
   const [pendingDelete, setPendingDelete] = useState(new Set());
   const isSelectionLimitReached = allDataSelectedRows.length >= 5;
 
-  console.log(selectedRows);
-  console.log(allDataSelectedRows);
-
   const handleSelectedAllRowData = (profObj) => {
     try {
       setAllDataSelectedRows((prev) => {
@@ -124,7 +121,7 @@ export function WorkspaceTable({
         pendingDelete,
         handleSelectedRows,
         handleSelectedAllRowData,
-        isSelectionLimitReached
+        allDataSelectedRows
       ),
     [
       access,
@@ -134,6 +131,7 @@ export function WorkspaceTable({
       handleSelectedRows,
       handleSelectedAllRowData,
       isSelectionLimitReached,
+      allDataSelectedRows
     ]
   );
 

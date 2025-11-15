@@ -56,7 +56,6 @@ const generateColumns = (
   pendingDelete,
   handleSelectedRows,
   handleSelectedAllRowData,
-  isSelectionLimitReached,
   selectedRows
 ) => [
   {
@@ -64,9 +63,11 @@ const generateColumns = (
     header: ({ column }) => <div></div>,
     cell: ({ row }) => {
       const data = row.original;
+      const isSelected = selectedRows.some((r) => r.id === data.professor_id);
       return (
         <>
           <Checkbox
+            checked={isSelected}
             onCheckedChange={() => {
               handleSelectedRows(data.professor_id);
               handleSelectedAllRowData({
