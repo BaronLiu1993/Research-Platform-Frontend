@@ -11,10 +11,9 @@ import DropdownInterests from "../dropdowns/dropdowninterests";
 import DropdownMajor from "../dropdowns/dropdownmajor";
 import DropdownYear from "../dropdowns/dropdownyear";
 
-
 export default function Dashboard({ access, fileExists, profileData }) {
   const fullProfile = profileData.profile;
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080";
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const [resume, setResume] = useState(null);
   const [transcript, setTranscript] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
