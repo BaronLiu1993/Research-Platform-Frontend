@@ -57,7 +57,7 @@ export default function EmailEditor({
         addKeyboardShortcuts() {
           return {
             Enter: () => this.editor.commands.setHardBreak(),
-            "Mod-Enter": () => this.editor.commands.splitBlock(), // optional: new paragraph
+            "Mod-Enter": () => this.editor.commands.splitBlock(),
           };
         },
       }),

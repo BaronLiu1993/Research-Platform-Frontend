@@ -122,24 +122,22 @@ export function DataTable({
     <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6">
       <div className="rounded-lg py-2">
         <div className="flex flex-col gap-3 justify-center md:gap-2 pb-2">
-          <div className="flex flex-wrap items-center gap-2 md:gap-3">
-            <div>
+          <div className="flex flex-wrap items-center gap-2 md:gap-3 w-full">
+            <div className="w-full">
               <form
                 onSubmit={handleSearch}
-                className="flex flex-wrap items-end gap-3 md:gap-4"
+                className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-end gap-3 md:gap-4 w-full"
               >
-                <div className="flex flex-col gap-2">
-                  <Label className="text-xs">🔎 Query Research Interests</Label>
+                <div className="flex flex-col gap-2 w-full sm:w-auto">
                   <Input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    className="h-10 w-[14rem] md:w-[18rem] placeholder:text-xs font-main text-xs font-medium"
-                    placeholder="Search..."
+                    className="h-10 w-full sm:w-[14rem] md:w-[18rem] placeholder:text-xs font-main text-xs font-medium"
+                    placeholder="Search Research Interests..."
                   />
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <Label className="text-xs">Filters</Label>
+                <div className="flex flex-col gap-2 w-full sm:w-auto">
                   <div className="flex items-center">
                     <Select
                       isMulti
@@ -170,7 +168,7 @@ export function DataTable({
                         });
                         setFilters(updated);
                       }}
-                      className="w-[20rem] text-xs font-medium font-main"
+                      className="w-full sm:w-[20rem] text-xs font-medium font-main"
                       classNames={{
                         control: (s) =>
                           `!min-h-10 !h-auto !rounded-md !border !border-slate-200 !bg-white 
@@ -187,17 +185,21 @@ export function DataTable({
                         option: (state) =>
                           `!py-1.5 !px-3 text-xs cursor-pointer transition-colors
                            ${state.isFocused ? "!bg-slate-100" : ""} 
-                           ${state.isSelected ? "!bg-[#4584F3] !text-white" : "!text-slate-700"}`,
+                           ${
+                             state.isSelected
+                               ? "!bg-[#4584F3] !text-white"
+                               : "!text-slate-700"
+                           }`,
                       }}
                     />
                   </div>
                 </div>
 
-                <div className="self-end">
+                <div className="w-full sm:w-auto sm:self-end">
                   <button
                     type="submit"
                     disabled={isSearchLoading}
-                    className={`h-10 inline-flex items-center justify-center text-sm cursor-pointer font-medium text-white px-4 rounded-md transition-colors
+                    className={`h-10 sm:w-fit inline-flex items-center justify-center text-sm cursor-pointer font-medium text-white px-4 rounded-md transition-colors
         ${isSearchLoading ? "bg-blue-300" : "bg-[#4584F3] hover:bg-[#3574E2]"}`}
                   >
                     {isSearchLoading ? "Querying..." : "Search"}
@@ -297,7 +299,7 @@ export function DataTable({
         </Table>
       </div>
 
-      <div className="flex justify-end mt-3 gap-3">
+      <div className="flex flex-row justify-between items-stretch gap-2 mt-3 sm:justify-end sm:gap-3">
         <button
           type="button"
           onClick={() => goToPage(Math.max(1, Number(pageNumber) - 1))}

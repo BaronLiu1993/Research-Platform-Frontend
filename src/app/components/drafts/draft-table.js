@@ -224,7 +224,7 @@ export function DraftsTable({
               onChange={(event) =>
                 table.getColumn("name")?.setFilterValue(event.target.value)
               }
-              className="max-w-xs rounded-xs"
+              className="max-w-xs rounded-md placeholder:text-xs placeholder:font-medium"
             />
             <Button
               className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]"

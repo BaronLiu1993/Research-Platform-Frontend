@@ -13,7 +13,6 @@ import DropdownYear from "../dropdowns/dropdownyear";
 
 export default function Dashboard({ access, fileExists, profileData }) {
   const fullProfile = profileData.profile;
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const [resume, setResume] = useState(null);
   const [transcript, setTranscript] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -100,13 +99,6 @@ export default function Dashboard({ access, fileExists, profileData }) {
       return;
     }
 
-    if (!API_BASE) {
-      const msg = "API base URL is not configured.";
-      setSubmitError(msg);
-      toast.error(msg);
-      return;
-    }
-
     const payload = {
       student_year: formData.student_year,
       student_major: formData.student_major,
@@ -117,7 +109,8 @@ export default function Dashboard({ access, fileExists, profileData }) {
     try {
       const promises = [];
 
-      const profilePromise = fetch(`${API_BASE}/auth/update-profile`, {
+      /**
+       * const profilePromise = fetch(`${API_BASE}/auth/update-profile`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -136,8 +129,9 @@ export default function Dashboard({ access, fileExists, profileData }) {
           throw new Error(msg);
         }
       });
+             promises.push(profilePromise);
 
-      promises.push(profilePromise);
+       */
 
       if (resume) promises.push(handleUploadResume());
       if (transcript) promises.push(handleUploadTranscript());
@@ -206,7 +200,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
   return (
     <form
       onSubmit={handleSubmission}
-      className="flex flex-col gap-4 mx-10 w-fit"
+      className="flex flex-col gap-4 mx-6 w-fit"
     >
       <div className="flex flex-col gap-5">
         <FieldGroup
@@ -237,19 +231,20 @@ export default function Dashboard({ access, fileExists, profileData }) {
 
         <FieldGroup
           label="Research interests"
-          hint="Choose at most 3 topics so we can find better matches."
+          hint="Choose at most 3 topics."
           error={attempted ? errors.student_interests : undefined}
         >
-          <DropdownInterests
-            name="student_interests"
-            value={formData.student_interests}
-            onChange={handleAddInterests}
-          />
+          <div className="w-[20rem] sm:w-[24rem]">
+            <DropdownInterests
+              name="student_interests"
+              value={formData.student_interests}
+              onChange={handleAddInterests}
+            />
+          </div>
         </FieldGroup>
       </div>
 
       <div className="flex font-main gap-4">
-        {/* Resume card */}
         <div className="relative w-[10rem] h-[11rem]">
           <input
             id="resume-upload"
@@ -303,7 +298,6 @@ export default function Dashboard({ access, fileExists, profileData }) {
           </button>
         </div>
 
-        {/* Transcript card */}
         <div className="relative w-[10rem] h-[11rem]">
           <input
             id="transcript-upload"

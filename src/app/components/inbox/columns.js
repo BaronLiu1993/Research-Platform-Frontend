@@ -30,29 +30,36 @@ const generateColumns = () => [
       const href = `/inbox/thread?id=${data.thread_id}&name=${encodeURIComponent(
         name
       )}`;
+
       return (
         <Link
           href={href}
           className={clsx(
             "group flex min-w-0 items-center",
             "rounded-md px-2 py-2 transition-colors",
-            "focus:bg-neutral-100/80 focus:outline-none",
+            "focus:bg-neutral-100/80 focus:outline-none"
           )}
         >
-          <div className="flex w-full min-w-0 items-center gap-3 justify-between">
-            <div className="flex min-w-0 flex-col">
-              <div className="flex min-w-0 items-center justify-between text-[13px] leading-tight text-neutral-900">
-                <div className="flex gap-10">
-                  <div>
-                    <span className="truncate font-medium">{name}</span>
-                    <span className="mx-2 text-neutral-300">•</span>
-                    <span className="truncate text-neutral-600">{email}</span>
-                  </div>
-                  <span className="line-clamp-1">{subject}</span>
-                </div>
+          <div className="flex w-full min-w-0 items-center gap-3">
+            <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+              <div className="flex items-center justify-between gap-2">
+                <span className="truncate font-medium text-[13px] text-neutral-900">
+                  {name}
+                </span>
+                <span className="flex-shrink-0 text-[11px] text-neutral-500">
+                  {formatDate(data.sent_at)}
+                </span>
+              </div>
+
+              {/* Second row: subject (always) + email (only on md+) */}
+              <div className="flex items-center gap-1 text-[12px] text-neutral-600 min-w-0">
+                <span className="truncate">{subject}</span>
+                <span className="hidden md:inline-flex text-neutral-300">•</span>
+                <span className="hidden md:inline truncate text-neutral-500">
+                  {email}
+                </span>
               </div>
             </div>
-            <div className = "text-gray-500 text-[12px]">{formatDate(data.sent_at)}</div>
           </div>
         </Link>
       );

@@ -28,7 +28,7 @@ const InterestPills = ({ items = [] }) => {
   if (!items.length) return null;
   const shown = items;
   return (
-    <div className="mt-2 flex flex-wrap gap-1.5 pl-[calc(28px_+_0.75rem)]">
+    <div className="mt-2 hidden sm:flex flex-wrap gap-1.5 pl-[calc(28px_+_0.75rem)]">
       {shown.map((interest, i) => (
         <Badge
           key={`${interest}-${i}`}
@@ -36,7 +36,9 @@ const InterestPills = ({ items = [] }) => {
           className="text-xs font-semibold bg-gray-50 text-gray-600 border-slate-200 px-1.5 py-0.5"
           title={interest}
         >
-          <span className="truncate inline-block align-middle">{interest}</span>
+          <span className="truncate inline-block align-middle">
+            {interest}
+          </span>
         </Badge>
       ))}
     </div>
@@ -49,7 +51,7 @@ const generateColumns = (access) => [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className="font-main font-semibold text-sm text-[#787774] px-2 py-1 -ml-2 uppercase tracking-wider"
+        className="font-main font-semibold text-xs sm:text-sm text-[#787774] px-2 py-1 -ml-2 uppercase tracking-wider"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         <PersonStandingIcon className="w-4 h-4 mr-2" />
@@ -62,14 +64,25 @@ const generateColumns = (access) => [
       return (
         <Dialog>
           <DialogTrigger asChild>
-            <div className="cursor-pointer flex flex-col w-full py-2.5 group pr-4 hover:bg-gray-50 -mx-3 px-3 rounded-md transition-colors duration-150">
+            <div className="cursor-pointer flex flex-col w-full py-2.5 group pr-2 sm:pr-4 hover:bg-gray-50 -mx-2 sm:-mx-3 px-2 sm:px-3 rounded-md transition-colors duration-150">
               <div className="flex items-center space-x-3 min-w-0">
                 <Microscope className="bg-slate-100 text-slate-500 h-7 w-7 p-1.5 rounded-md flex-shrink-0" />
                 <div className="flex-grow min-w-0">
                   <h1 className="text-sm font-medium text-[#37352F] group-hover:text-blue-600 transition-colors truncate">
                     {data.name || "No name"}
                   </h1>
-                  <div className="flex items-center space-x-1.5 text-xs text-[#787774] truncate">
+
+                  {/* Compact line for mobile */}
+                  <div className="flex sm:hidden items-center space-x-1.5 text-[11px] text-[#787774] truncate">
+                    {data.school ? (
+                      <span>{data.school}</span>
+                    ) : (
+                      <span>{data.department || "N/A Department"}</span>
+                    )}
+                  </div>
+
+                  {/* Detailed line for larger screens */}
+                  <div className="hidden sm:flex items-center space-x-1.5 text-xs text-[#787774] truncate">
                     <span>{data.department || "N/A Department"}</span>
                     {data.school && (
                       <span className="text-[#787774]">@ {data.school}</span>
@@ -81,12 +94,12 @@ const generateColumns = (access) => [
             </div>
           </DialogTrigger>
 
-          <DialogContent className="sm:max-w-[640px] font-sans bg-white shadow-xl rounded-lg max-h-[85vh] overflow-hidden">
-            <DialogHeader className="pb-3 pt-5 px-6">
-              <DialogTitle className="text-lg font-semibold text-gray-900 truncate">
+          <DialogContent className="sm:max-w-[640px] w-[95vw] font-sans bg-white shadow-xl rounded-lg max-h-[85vh] overflow-hidden">
+            <DialogHeader className="pb-3 pt-4 sm:pt-5 px-4 sm:px-6">
+              <DialogTitle className="text-base sm:text-lg font-semibold text-gray-900 truncate">
                 <div>{data.name || "Professor"}</div>
-                <div className="flex gap-2 mt-2">
-                  <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <div className="grid grid-cols-[100px_1fr] items-start gap-x-3 sm:gap-x-4 gap-y-1">
                     {data.url ? (
                       <Link
                         href={data.url}
@@ -97,11 +110,11 @@ const generateColumns = (access) => [
                         Profile
                       </Link>
                     ) : (
-                      <span className="text-gray-400">No URL</span>
+                      <span className="text-gray-400 text-xs">No URL</span>
                     )}
                   </div>
                   {data.lab_url && (
-                    <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+                    <div className="grid grid-cols-[100px_1fr] items-start gap-x-3 sm:gap-x-4 gap-y-1">
                       <Link
                         href={data.lab_url}
                         target="_blank"
@@ -116,47 +129,50 @@ const generateColumns = (access) => [
               </DialogTitle>
             </DialogHeader>
 
-            <div className="grid gap-3 py-4 px-6 text-sm overflow-y-auto">
-              <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+            <div className="grid gap-3 py-3 sm:py-4 px-4 sm:px-6 text-xs sm:text-sm overflow-y-auto">
+              <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] items-start gap-x-3 sm:gap-x-4 gap-y-1">
                 <Label className="text-right font-medium text-gray-500 pt-1">
                   Email
                 </Label>
-                <Badge className="bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
+                <Badge className="bg-sky-50 text-sky-700 font-medium text-[11px] sm:text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
                   <Mail className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
                   <span className="break-words">{data.email || "—"}</span>
                 </Badge>
               </div>
-              <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+
+              <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] items-start gap-x-3 sm:gap-x-4 gap-y-1">
                 <Label className="text-right font-medium text-gray-500 pt-1">
                   School
                 </Label>
-                <Badge className="bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
+                <Badge className="bg-sky-50 text-sky-700 font-medium text-[11px] sm:text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
                   <University className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
                   <span className="break-words">{data.school || "—"}</span>
                 </Badge>
               </div>
 
-              <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+              <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] items-start gap-x-3 sm:gap-x-4 gap-y-1">
                 <Label className="text-right font-medium text-gray-500 pt-1">
                   Department
                 </Label>
-                <Badge className="bg-purple-50 text-purple-700 font-medium text-xs py-1 px-2 border border-purple-200/50 flex items-start text-left whitespace-normal">
+                <Badge className="bg-purple-50 text-purple-700 font-medium text-[11px] sm:text-xs py-1 px-2 border border-purple-200/50 flex items-start text-left whitespace-normal">
                   <BrainCircuit className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
-                  <span className="break-words">{data.department || "—"}</span>
+                  <span className="break-words">
+                    {data.department || "—"}
+                  </span>
                 </Badge>
               </div>
 
-              <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+              <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] items-start gap-x-3 sm:gap-x-4 gap-y-1">
                 <Label className="text-right font-medium text-gray-500 pt-1">
                   Faculty
                 </Label>
-                <Badge className="bg-green-50 text-green-700 font-medium text-xs py-1 px-2 border border-green-200/50 flex items-start text-left whitespace-normal">
+                <Badge className="bg-green-50 text-green-700 font-medium text-[11px] sm:text-xs py-1 px-2 border border-green-200/50 flex items-start text-left whitespace-normal">
                   <Microscope className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
                   <span className="break-words">{data.faculty || "—"}</span>
                 </Badge>
               </div>
 
-              <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+              <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] items-start gap-x-3 sm:gap-x-4 gap-y-1">
                 <Label className="text-right font-medium text-gray-500 pt-1">
                   Interests
                 </Label>
@@ -166,7 +182,7 @@ const generateColumns = (access) => [
                       <Badge
                         key={`${interest}-${i}`}
                         variant="secondary"
-                        className="text-xs bg-gray-50 text-gray-700 border-gray-200/80 px-2 py-0.5"
+                        className="text-[11px] sm:text-xs bg-gray-50 text-gray-700 border-gray-200/80 px-2 py-0.5"
                         title={interest}
                       >
                         <span className="truncate inline-block align-middle">
@@ -180,19 +196,22 @@ const generateColumns = (access) => [
                 </div>
               </div>
 
-              <div className="grid grid-cols-[100px_1fr] items-start gap-x-4 gap-y-1">
+              <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] items-start gap-x-3 sm:gap-x-4 gap-y-1">
                 <Label className="text-right font-medium text-gray-500 pt-1">
-                  Lab Affiliation
+                  Lab
                 </Label>
-                <Badge className="bg-sky-50 text-sky-700 font-medium text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
+                <Badge className="bg-sky-50 text-sky-700 font-medium text-[11px] sm:text-xs py-1 px-2 border border-sky-200/50 flex items-start text-left whitespace-normal">
                   <span className="break-words">
                     {data.labs || "No Lab Affiliation"}
                   </span>
                 </Badge>
               </div>
             </div>
-            <DialogFooter className="pt-4 pb-5 px-6 bg-slate-50/50 rounded-b-lg">
-              <SaveButton professorData={data} access={access} />
+
+            <DialogFooter className="pt-3 sm:pt-4 pb-4 sm:pb-5 px-4 sm:px-6 bg-slate-50/50 rounded-b-lg">
+              <div className="w-full flex justify-end">
+                <SaveButton professorData={data} access={access} />
+              </div>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -202,11 +221,11 @@ const generateColumns = (access) => [
   },
   {
     accessorKey: "actions",
-    header: () => <div />,
+    header: () => <div className="hidden sm:block" />,
     cell: ({ row }) => {
       const data = row.original || {};
       return (
-        <div className="flex justify-end items-center h-full pr-1">
+        <div className="hidden sm:flex justify-end items-center h-full pr-1">
           <SaveButton professorData={data} access={access} />
         </div>
       );

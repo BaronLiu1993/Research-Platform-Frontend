@@ -32,6 +32,7 @@ import {
   DialogTrigger,
 } from "@/shadcomponents/ui/composedialog";
 import EmailEditor from "./editor/emailEditor";
+import { Mail } from "lucide-react";
 
 export function WorkspaceTable({
   data = [],
@@ -131,7 +132,7 @@ export function WorkspaceTable({
       handleSelectedRows,
       handleSelectedAllRowData,
       isSelectionLimitReached,
-      allDataSelectedRows
+      allDataSelectedRows,
     ]
   );
 
@@ -165,23 +166,24 @@ export function WorkspaceTable({
   });
 
   return (
-    <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6 rounded-xs">
+    <div className="w-full max-w-screen-xl mx-auto p-3 sm:p-4 md:p-6 rounded-xs">
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
         <div>
-          <div className="flex items-center gap-4 py-4 px-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between py-3 sm:py-4 px-3 sm:px-4">
             <Input
               placeholder="Find Professors..."
               value={table.getColumn("name")?.getFilterValue() ?? ""}
               onChange={(event) =>
                 table.getColumn("name")?.setFilterValue(event.target.value)
               }
-              className="max-w-xs rounded-xs"
+              className="w-full sm:max-w-xs placeholder:text-xs placeholder:font-medium rounded-md"
             />
             <Dialog>
-              <DialogTrigger className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]">
-                Draft Emails
+              <DialogTrigger className="w-full sm:w-auto text-sm flex items-center justify-center gap-2 cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]">
+                <Mail className="stroke-1" />
+                <span>Draft Emails</span>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="w-[95vw] max-w-2xl sm:w-full">
                 <DialogTitle></DialogTitle>
                 <EmailEditor
                   access={access}
@@ -194,7 +196,7 @@ export function WorkspaceTable({
             </Dialog>
           </div>
         </div>
-        <Table className="text-sm min-w-full rounded-xs">
+        <Table className="text-xs sm:text-sm min-w-full rounded-xs">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -210,7 +212,7 @@ export function WorkspaceTable({
                           : undefined
                       }
                       className={
-                        "text-xs whitespace-nowrap " +
+                        "text-[11px] sm:text-xs whitespace-nowrap " +
                         (canSort ? "cursor-pointer select-none" : "")
                       }
                     >
@@ -234,10 +236,10 @@ export function WorkspaceTable({
               Array.from({ length: 8 }).map((_, r) => (
                 <TableRow key={`skeleton-row-${r}`} className="animate-pulse">
                   <TableCell colSpan={columns.length} className="p-0">
-                    <div className="flex items-start justify-between w-full p-3 rounded-md">
-                      <div className="flex items-start gap-3">
+                    <div className="flex flex-col sm:flex-row items-start justify-between w-full p-3 rounded-md gap-3">
+                      <div className="flex items-start gap-3 w-full">
                         <Skeleton className="h-10 w-10 rounded-full" />
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 w-full">
                           <Skeleton className="h-4 w-40" />
                           <Skeleton className="h-3 w-64" />
                           <div className="flex flex-wrap gap-2 mt-2">
@@ -256,7 +258,10 @@ export function WorkspaceTable({
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-2 py-2 align-middle">
+                    <TableCell
+                      key={cell.id}
+                      className="px-2 py-2 align-middle text-xs sm:text-sm"
+                    >
                       <div className="min-w-0 truncate">
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -281,7 +286,13 @@ export function WorkspaceTable({
         </Table>
       </div>
 
-      <div className="flex justify-end mt-3 gap-3">
+      <div
+        className="
+  flex flex-row justify-between   /* mobile: row + space between */
+  gap-2 mt-3
+  sm:justify-end sm:gap-3         /* desktop: right aligned */
+"
+      >
         <button
           type="button"
           onClick={() => goToPage(Math.max(1, Number(pageNumber) - 1))}
@@ -291,7 +302,8 @@ export function WorkspaceTable({
         isNavigationLoading || Number(pageNumber) <= 1
           ? "bg-gray-300"
           : "bg-[#4584F3] hover:bg-[#3574E2]"
-      }`}
+      }
+    `}
         >
           Previous
         </button>
@@ -301,9 +313,8 @@ export function WorkspaceTable({
           onClick={() => goToPage(Number(pageNumber) + 1)}
           disabled={isNavigationLoading}
           className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm transition-colors
-      ${
-        isNavigationLoading ? "bg-gray-300" : "bg-[#4584F3] hover:bg-[#3574E2]"
-      }`}
+      ${isNavigationLoading ? "bg-gray-300" : "bg-[#4584F3] hover:bg-[#3574E2]"}
+    `}
         >
           Next
         </button>

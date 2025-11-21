@@ -148,7 +148,7 @@ export function InboxTable({
               onChange={(event) =>
                 table.getColumn("name")?.setFilterValue(event.target.value)
               }
-              className="max-w-xs rounded-xs"
+              className="max-w-xs rounded-md placeholder:font-medium placeholder:text-xs"
             />
           </div>
         </div>
