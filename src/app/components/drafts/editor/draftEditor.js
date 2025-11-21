@@ -30,6 +30,9 @@ export default function DraftEditor({
   
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+
+
+
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const getEmailDrafts = async () => {
     try {
@@ -137,6 +140,10 @@ export default function DraftEditor({
       return { message: "Internal Server Error", sucess: false };
     }
   };
+
+  const generateSkeletonLoad = async () => {
+    
+  }
 
   return (
     <div>

@@ -23,7 +23,6 @@ import {
   TableRow,
   TableHead,
 } from "@/shadcomponents/ui/table";
-import { Label } from "@/shadcomponents/ui/label";
 
 export function DataTable({
   data = [],

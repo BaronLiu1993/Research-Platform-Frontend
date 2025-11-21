@@ -179,10 +179,25 @@ export function WorkspaceTable({
               className="w-full sm:max-w-xs placeholder:text-xs placeholder:font-medium rounded-md"
             />
             <Dialog>
-              <DialogTrigger className="w-full sm:w-auto text-sm flex items-center justify-center gap-2 cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]">
-                <Mail className="stroke-1" />
-                <span>Draft Emails</span>
+              <DialogTrigger asChild>
+                <button
+                  disabled={selectedRows.length === 0}
+                  className={`
+      w-full sm:w-auto text-sm flex items-center justify-center gap-2 
+      font-medium text-white px-3 py-1.5 rounded-sm transition-colors
+      bg-[#4584F3]
+      hover:bg-[#3574E2]
+      disabled:bg-gray-300
+      disabled:text-gray-600
+      disabled:cursor-not-allowed
+      disabled:hover:bg-gray-300
+    `}
+                >
+                  <Mail className="stroke-1" />
+                  <span>Draft Emails</span>
+                </button>
               </DialogTrigger>
+
               <DialogContent className="w-[95vw] max-w-2xl sm:w-full">
                 <DialogTitle></DialogTitle>
                 <EmailEditor

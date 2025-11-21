@@ -12,6 +12,8 @@ import DropdownMajor from "../dropdowns/dropdownmajor";
 import DropdownYear from "../dropdowns/dropdownyear";
 
 export default function Dashboard({ access, fileExists, profileData }) {
+  const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
+
   const fullProfile = profileData.profile;
   const [resume, setResume] = useState(null);
   const [transcript, setTranscript] = useState(null);
@@ -109,8 +111,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
     try {
       const promises = [];
 
-      /**
-       * const profilePromise = fetch(`${API_BASE}/auth/update-profile`, {
+      const profilePromise = fetch(`${API_BASE}/auth/update-profile`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -129,10 +130,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
           throw new Error(msg);
         }
       });
-             promises.push(profilePromise);
-
-       */
-
+      promises.push(profilePromise);
       if (resume) promises.push(handleUploadResume());
       if (transcript) promises.push(handleUploadTranscript());
 

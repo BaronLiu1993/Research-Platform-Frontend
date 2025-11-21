@@ -68,24 +68,30 @@ const generateColumns = (access) => [
               <div className="flex items-center space-x-3 min-w-0">
                 <Microscope className="bg-slate-100 text-slate-500 h-7 w-7 p-1.5 rounded-md flex-shrink-0" />
                 <div className="flex-grow min-w-0">
-                  <h1 className="text-sm font-medium text-[#37352F] group-hover:text-blue-600 transition-colors truncate">
+                  <h1 className="text-xs sm:text-sm font-medium text-[#37352F] group-hover:text-blue-600 transition-colors truncate max-w-[13rem] sm:max-w-full">
                     {data.name || "No name"}
                   </h1>
 
-                  {/* Compact line for mobile */}
-                  <div className="flex sm:hidden items-center space-x-1.5 text-[11px] text-[#787774] truncate">
+                  <div className="flex sm:hidden items-center space-x-1.5 text-[11px] text-[#787774] min-w-0">
                     {data.school ? (
-                      <span>{data.school}</span>
+                      <span className="truncate max-w-[11rem]">
+                        {data.school}
+                      </span>
                     ) : (
-                      <span>{data.department || "N/A Department"}</span>
+                      <span className="truncate max-w-[11rem]">
+                        {data.department || "N/A Department"}
+                      </span>
                     )}
                   </div>
 
-                  {/* Detailed line for larger screens */}
-                  <div className="hidden sm:flex items-center space-x-1.5 text-xs text-[#787774] truncate">
-                    <span>{data.department || "N/A Department"}</span>
+                  <div className="hidden sm:flex items-center space-x-1.5 text-xs text-[#787774] min-w-0">
+                    <span className="truncate max-w-[14rem]">
+                      {data.department || "N/A Department"}
+                    </span>
                     {data.school && (
-                      <span className="text-[#787774]">@ {data.school}</span>
+                      <span className="truncate max-w-[14rem] text-[#787774]">
+                        @ {data.school}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -97,7 +103,9 @@ const generateColumns = (access) => [
           <DialogContent className="sm:max-w-[640px] w-[95vw] font-sans bg-white shadow-xl rounded-lg max-h-[85vh] overflow-hidden">
             <DialogHeader className="pb-3 pt-4 sm:pt-5 px-4 sm:px-6">
               <DialogTitle className="text-base sm:text-lg font-semibold text-gray-900 truncate">
-                <div>{data.name || "Professor"}</div>
+                <div className="truncate max-w-full">
+                  {data.name || "Professor"}
+                </div>
                 <div className="flex flex-wrap gap-2 mt-2">
                   <div className="grid grid-cols-[100px_1fr] items-start gap-x-3 sm:gap-x-4 gap-y-1">
                     {data.url ? (
