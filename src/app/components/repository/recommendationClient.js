@@ -26,7 +26,6 @@ import {
   Microscope,
   SchoolIcon,
 } from "lucide-react";
-import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import { useEffect, useState } from "react";
 
 function InterestBadges({ interests }) {
@@ -57,32 +56,6 @@ function InterestBadges({ interests }) {
     </div>
   );
 }
-
-function CarouselSkeletonLoader() {
-  return (
-    <div className="flex gap-4 mt-4 overflow-x-auto -ml-3 md:-ml-4 whitespace-nowrap">
-      {[...Array(4)].map((_, index) => (
-        <div key={index} className="w-[300px] flex-shrink-0 p-4 bg-gray-100 rounded-lg animate-pulse">
-          {/* Skeleton Image Placeholder */}
-          <div className="h-48 bg-gray-50 rounded mb-4" />
-
-          <div className="h-4 bg-gray-50 rounded w-3/4 mb-2" />
-
-          <div className="h-4 bg-gray-50 rounded w-1/2 mb-2" />
-
-          <div className="h-3 bg-gray-50 rounded w-1/3 mb-2" />
-
-          <div className="flex flex-wrap gap-1.5 mt-2">
-            <div className="h-4 bg-gray-50 rounded w-3/4 mb-1" />
-            <div className="h-4 bg-gray-50 rounded w-3/4 mb-1" />
-            <div className="h-4 bg-gray-50 rounded w-3/4 mb-1" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 
 export default function RecommendationsClient({ matches, access }) {
   const { open } = useSidebar();

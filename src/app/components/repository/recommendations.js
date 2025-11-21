@@ -27,7 +27,7 @@ export default async function Recommendations() {
       responses = await res.json();
     } 
   } catch (e) {
-
+    
   }
 
   const matches = Array.isArray(responses?.matches) ? responses.matches : [];
