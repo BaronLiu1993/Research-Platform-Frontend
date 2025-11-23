@@ -3,13 +3,14 @@
 import { getFile } from "@/app/api/storage/getFile";
 import { uploadFile } from "@/app/api/storage/uploadFile";
 import { Button } from "@/shadcomponents/ui/button";
-import { AlertCircle, Leaf, Newspaper } from "lucide-react";
+import { AlertCircle, Leaf, Newspaper, Trash, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import DropdownInterests from "../dropdowns/dropdowninterests";
 import DropdownMajor from "../dropdowns/dropdownmajor";
 import DropdownYear from "../dropdowns/dropdownyear";
+import { DeleteFile } from "@/app/api/storage/deleteFile";
 
 export default function Dashboard({ access, fileExists, profileData }) {
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
@@ -20,6 +21,10 @@ export default function Dashboard({ access, fileExists, profileData }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [attempted, setAttempted] = useState(false);
+  const [resumeExists, setResumeExists] = useState(fileExists.resumeExists);
+  const [transcriptExists, setTranscriptExists] = useState(
+    fileExists.transcriptExists
+  );
 
   const [formData, setFormData] = useState({
     student_major: fullProfile.student_major ?? "",
@@ -90,6 +95,38 @@ export default function Dashboard({ access, fileExists, profileData }) {
     }
   };
 
+  const handleDeleteResume = async () => {
+    try {
+      await DeleteFile({
+        fileType: "resume",
+        fileName: fileExists.resumeName,
+        access,
+      });
+      setResumeExists(false);
+      setResumeStatus("Not Uploaded");
+      toast.success("Deleted Resume");
+    } catch (error) {
+      toast.error("Failed to upload resume");
+      throw error;
+    }
+  };
+
+  const handleDeleteTranscript = async () => {
+    try {
+      await uploadFile({
+        fileType: "transcript",
+        fileName: fileExists.transcriptName,
+        access,
+      });
+      setTranscriptExists(false);
+      setTranscriptStatus("Not Uploaded");
+      toast.success("Deleted Transcript");
+    } catch (error) {
+      toast.error("Failed to Delete Transcript");
+      throw error;
+    }
+  };
+
   const handleSubmission = async (e) => {
     e?.preventDefault();
     setAttempted(true);
@@ -130,11 +167,14 @@ export default function Dashboard({ access, fileExists, profileData }) {
           throw new Error(msg);
         }
       });
-      promises.push(profilePromise);
+      //promises.push(profilePromise);
       if (resume) promises.push(handleUploadResume());
       if (transcript) promises.push(handleUploadTranscript());
 
       await Promise.all(promises);
+
+      if (resume) setResumeExists(true);
+      if (transcript) setTranscriptExists(true);
       toast.success("Saved changes.");
     } catch (err) {
       const msg = err?.message || "Internal server error. Please try again.";
@@ -280,20 +320,38 @@ export default function Dashboard({ access, fileExists, profileData }) {
             </div>
           </label>
 
-          <button
-            type="button"
-            className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
-            onClick={async (e) => {
-              e.stopPropagation();
-              await handleGetFile({
-                access,
-                fileType: "resume",
-                fileName: fileExists?.resumeName,
-              });
-            }}
-          >
-            Preview
-          </button>
+          <div>
+            {resumeExists ? (
+              <div>
+                <button
+                  type="button"
+                  className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    await handleGetFile({
+                      access,
+                      fileType: "resume",
+                      fileName: fileExists?.resumeName,
+                    });
+                  }}
+                >
+                  Preview
+                </button>
+                <button
+                  type="button"
+                  className="absolute top-1 left-1 rounded-md font-medium cursor-pointer px-1.5 py-0.5 text-[12px] font-main"
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    await handleDeleteResume();
+                  }}
+                >
+                  <Trash2 className="stroke-1 h-5 w-5 hover:text-red-500" />
+                </button>
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </div>
         </div>
 
         <div className="relative w-[10rem] h-[11rem]">
@@ -333,20 +391,34 @@ export default function Dashboard({ access, fileExists, profileData }) {
             </div>
           </label>
 
-          <button
-            type="button"
-            className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
-            onClick={async (e) => {
-              e.stopPropagation();
-              await handleGetFile({
-                access,
-                fileType: "transcript",
-                fileName: fileExists?.transcriptName,
-              });
-            }}
-          >
-            Preview
-          </button>
+          <div>
+            {transcriptExists ? (
+              <div>
+                <button
+                  type="button"
+                  className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    await handleDeleteTranscript();
+                  }}
+                >
+                  Preview
+                </button>
+                <button
+                  type="button"
+                  className="absolute top-1 left-1 rounded-md font-medium cursor-pointer px-1.5 py-0.5 text-[12px] font-main"
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    await handleDeleteTranscript();
+                  }}
+                >
+                  <Trash2 className="stroke-1 h-5 w-5 hover:text-red-500" />
+                </button>
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </div>
         </div>
       </div>
 
