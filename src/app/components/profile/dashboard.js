@@ -3,7 +3,15 @@
 import { getFile } from "@/app/api/storage/getFile";
 import { uploadFile } from "@/app/api/storage/uploadFile";
 import { Button } from "@/shadcomponents/ui/button";
-import { AlertCircle, Leaf, Newspaper, Trash, Trash2 } from "lucide-react";
+import {
+  AlertCircle,
+  File,
+  Leaf,
+  Newspaper,
+  PersonStandingIcon,
+  Trash,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -18,7 +26,9 @@ export default function Dashboard({ access, fileExists, profileData }) {
   const fullProfile = profileData.profile;
   const [resume, setResume] = useState(null);
   const [transcript, setTranscript] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmittingFile, setIsSubmittingFile] = useState(false);
+  const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
+
   const [submitError, setSubmitError] = useState("");
   const [attempted, setAttempted] = useState(false);
   const [resumeExists, setResumeExists] = useState(fileExists.resumeExists);
@@ -127,7 +137,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
     }
   };
 
-  const handleSubmission = async (e) => {
+  const handleProfileUpdate = async (e) => {
     e?.preventDefault();
     setAttempted(true);
     setSubmitError("");
@@ -144,44 +154,68 @@ export default function Dashboard({ access, fileExists, profileData }) {
       student_interests: formData.student_interests,
     };
 
-    setIsSubmitting(true);
+    setIsSubmittingProfile(true);
     try {
-      const promises = [];
-
-      const profilePromise = fetch(`${API_BASE}/auth/update-profile`, {
+      const res = await fetch(`${API_BASE}/auth/update-profile`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${access}`,
         },
         body: JSON.stringify(payload),
-      }).then(async (res) => {
-        if (!res.ok) {
-          let msg = "Update failed.";
-          try {
-            const data = await res.json();
-            if (data?.message) msg = data.message;
-          } catch {
-            // telemetry
-          }
-          throw new Error(msg);
-        }
       });
-      //promises.push(profilePromise);
-      if (resume) promises.push(handleUploadResume());
-      if (transcript) promises.push(handleUploadTranscript());
 
-      await Promise.all(promises);
+      if (!res.ok) {
+        let msg = "Update failed.";
+        try {
+          const data = await res.json();
+          if (data?.message) msg = data.message;
+        } catch {
+          // ignore parse errors
+        }
+        throw new Error(msg);
+      }
 
-      if (resume) setResumeExists(true);
-      if (transcript) setTranscriptExists(true);
-      toast.success("Saved changes.");
+      toast.success("Profile updated.");
     } catch (err) {
       const msg = err?.message || "Internal server error. Please try again.";
       setSubmitError(msg);
       toast.error(msg);
     } finally {
-      setIsSubmitting(false);
+      setIsSubmittingProfile(false);
+    }
+  };
+
+  const handleFileUpdate = async (e) => {
+    e?.preventDefault();
+    setSubmitError("");
+
+    setIsSubmittingFile(true);
+
+    try {
+      const promises = [];
+
+      if (resume) promises.push(handleUploadResume());
+      if (transcript) promises.push(handleUploadTranscript());
+
+      if (promises.length === 0) {
+        toast.info("No files to upload.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      await Promise.all(promises);
+
+      if (resume) setResumeExists(true);
+      if (transcript) setTranscriptExists(true);
+
+      toast.success("Files saved.");
+    } catch (err) {
+      const msg = err?.message || "Internal server error. Please try again.";
+      setSubmitError(msg);
+      toast.error(msg);
+    } finally {
+      setIsSubmittingFile(false);
     }
   };
 
@@ -233,6 +267,10 @@ export default function Dashboard({ access, fileExists, profileData }) {
     setSubmitError("");
     setErrors((prev) => ({ ...prev, student_interests: undefined }));
     setFormData((p) => ({ ...p, student_interests: val }));
+  };
+
+  const handleSubmission = (e) => {
+    e?.preventDefault();
   };
 
   return (
@@ -422,14 +460,24 @@ export default function Dashboard({ access, fileExists, profileData }) {
         </div>
       </div>
 
-      <div>
+      <div className = "flex gap-4">
         <Button
           type="submit"
-          onClick={handleSubmission}
+          onClick={handleProfileUpdate}
           className="text-xs cursor-pointer font-medium text-white px-2 py-1 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2]"
-          disabled={isSubmitting}
+          disabled={isSubmittingProfile}
         >
-          {isSubmitting ? "Saving..." : "Update"}
+          <PersonStandingIcon className="stroke-1" />
+          {isSubmittingProfile ? "Saving..." : "Update Profile"}
+        </Button>
+        <Button
+          type="submit"
+          onClick={handleFileUpdate}
+          className="text-xs cursor-pointer font-medium text-white px-2 py-1 rounded-sm bg-none transition-colors bg-[#9065B0] hover:bg-[#9A6EC0]"
+          disabled={isSubmittingFile}
+        >
+          <File className="stroke-1" />
+          {isSubmittingFile ? "Saving..." : "Apply File Changes"}
         </Button>
         {submitError && (
           <p className="mt-2 text-xs text-red-500 font-main">{submitError}</p>
