@@ -57,16 +57,19 @@ export function DraftsTable({
   const handleSelectedRows = useCallback(
     (prof) => {
       setSelectedRows((prev) => {
-        const exists = prev.find((p) => p.id === prof.id);
-
-        if (exists) {
+        const alreadySelected = prev.some((p) => p.id === prof.id);
+        if (alreadySelected) {
           return prev.filter((p) => p.id !== prof.id);
-        } else {
-          return [...prev, prof];
         }
+        
+        if (prev.length >= 5) {
+          toast.error("You can only select up to 5 professors.");
+          return prev;
+        }
+        return [...prev, prof];
       });
     },
-    [selectedRows]
+    [setSelectedRows]
   );
 
   const onRemove = useCallback(
@@ -236,7 +239,6 @@ export function DraftsTable({
                 <MailCheck className="h-4 w-4" />
                 <span>Send Emails</span>
               </Button>
-
               <Button
                 className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#9065B0] transition-colors hover:bg-[#9A6EC0] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
                 disabled={selectedRows.length === 0 || isSending}

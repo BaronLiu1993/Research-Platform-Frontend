@@ -200,7 +200,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
 
       if (promises.length === 0) {
         toast.info("No files to upload.");
-        setIsSubmitting(false);
+        setIsSubmittingFile(false);
         return;
       }
 
@@ -306,8 +306,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
         </FieldGroup>
 
         <FieldGroup
-          label="Research interests"
-          hint="Choose at most 3 topics."
+          label="Research interests (3 Max)"
           error={attempted ? errors.student_interests : undefined}
         >
           <div className="w-[20rem] sm:w-[24rem]">
@@ -321,7 +320,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
       </div>
 
       <div className="flex font-main gap-4">
-        <div className="relative w-[10rem] h-[11rem]">
+        <div className="relative w-[12.5rem] h-[13rem]">
           <input
             id="resume-upload"
             type="file"
@@ -337,12 +336,11 @@ export default function Dashboard({ access, fileExists, profileData }) {
               }
             }}
           />
-
           <label
             htmlFor="resume-upload"
-            className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-[10rem] h-[11rem] inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
-            <div className="bg-gray-100 w-full h-[6rem]" />
+            <div className="bg-gray-100 w-full h-[8rem]" />
             <div>
               <div className="flex items-center p-2 gap-2">
                 <Newspaper className="fill-blue-800 text-white h-4 w-4" />
@@ -392,7 +390,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
           </div>
         </div>
 
-        <div className="relative w-[10rem] h-[11rem]">
+        <div className="relative w-[12.5rem] h-[13rem]">
           <input
             id="transcript-upload"
             type="file"
@@ -413,7 +411,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
             htmlFor="transcript-upload"
             className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
-            <div className="bg-gray-100 w-full h-[6rem]" />
+            <div className="bg-gray-100 w-full h-[8rem]" />
             <div>
               <div className="flex items-center p-2 gap-2">
                 <Leaf className="fill-blue-800 text-white h-4 w-4" />

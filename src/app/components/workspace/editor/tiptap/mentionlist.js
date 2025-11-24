@@ -64,18 +64,16 @@ const MentionList = forwardRef((props, ref) => {
   }, []);
 
   return (
-    <div className="rounded-sm border py-3 px-1 bg-white w-[360px]">
+    <div className="rounded-xs border py-3 px-1 bg-white w-[360px]">
       <div
         ref={scrollContainerRef}
         className="flex flex-col pr-1 max-h-[200px] overflow-y-auto mt-2"
       >
         {props.items.length ? (
           <>
-
-
             {props.items.map((item, index) => (
               <button
-                className={`flex font-main gap-2 items-center p-2 rounded-xs hover:bg-gray-100 ${
+                className={`flex font-main cursor-pointer gap-2 items-center p-2 rounded-xs hover:bg-gray-100 ${
                   selectedIndex === index ? "bg-gray-100" : ""
                 }`}
                 key={index}

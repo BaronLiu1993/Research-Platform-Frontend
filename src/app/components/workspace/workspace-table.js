@@ -73,7 +73,9 @@ export function WorkspaceTable({
           return [...prev, profObj];
         }
       });
-    } catch (error) {}
+    } catch (error) {
+      
+    }
   };
 
   const handleSelectedRows = (profId) => {

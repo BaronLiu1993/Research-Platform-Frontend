@@ -58,8 +58,7 @@ export default async function Inbox({ searchParams }) {
     if (inboxRes.ok) {
       inboxEmails = await inboxRes.json();
     }
-    console.log(inboxEmails);
-    console.log(parsedUserProfile);
+
   } catch {
     //log with telemetry
   }

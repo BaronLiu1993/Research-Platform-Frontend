@@ -30,16 +30,7 @@ const suggestion = {
           <WholeWord className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#CB912F]" />
         ),
         searchTerms: ["ordered", "point", "numbers"],
-        variable: "{{lastName}}",
-      },
-      {
-        title: "First Name",
-        description: "Professor First Name",
-        icon: (
-          <Pencil className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-[#337EA9]" />
-        ),
-        searchTerms: ["ordered", "point", "numbers"],
-        variable: "{{firstName}}",
+        variable: "{{last_name}}",
       },
       {
         title: "Professor Institution",
@@ -118,7 +109,6 @@ const suggestion = {
       onKeyDown(props) {
         if (props.event.key === "Escape") {
           popup[0].hide();
-
           return true;
         }
 
