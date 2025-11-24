@@ -217,37 +217,33 @@ export function DraftsTable({
     <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6 rounded-xs">
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
         <div>
-          <div className="flex items-center justify-between gap-4 py-4 px-4">
+          <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
             <Input
               placeholder="Find Professors..."
               value={table.getColumn("name")?.getFilterValue() ?? ""}
               onChange={(event) =>
                 table.getColumn("name")?.setFilterValue(event.target.value)
               }
-              className="max-w-xs rounded-md placeholder:text-xs placeholder:font-medium"
+              className="w-full rounded-md placeholder:text-xs placeholder:font-medium sm:max-w-xs"
             />
-            <div className="flex gap-4">
+
+            <div className="flex flex-col w-full gap-2 sm:w-auto sm:flex-row sm:justify-end sm:gap-4">
               <Button
-                className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#4584F3] hover:bg-[#3574E2] disabled:bg-gray-300
-                  disabled:text-gray-600
-                    disabled:cursor-not-allowed
-                  disabled:hover:bg-gray-300"
+                className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#4584F3] transition-colors hover:bg-[#3574E2] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
                 disabled={selectedRows.length === 0 || isSending}
                 onClick={handleSendDrafts}
               >
-                <MailCheck />
-                Send Emails
+                <MailCheck className="h-4 w-4" />
+                <span>Send Emails</span>
               </Button>
+
               <Button
-                className="text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm bg-none transition-colors bg-[#9065B0] hover:bg-[#9A6EC0] disabled:bg-gray-300
-                        disabled:text-gray-600
-                          disabled:cursor-not-allowed
-                        disabled:hover:bg-gray-300"
+                className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#9065B0] transition-colors hover:bg-[#9A6EC0] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
                 disabled={selectedRows.length === 0 || isSending}
                 onClick={handleSendDraftsWithAttachments}
               >
-                <Paperclip />
-                Send With Attachments
+                <Paperclip className="h-4 w-4" />
+                <span>Send With Attachments</span>
               </Button>
             </div>
           </div>

@@ -437,7 +437,11 @@ export default function Dashboard({ access, fileExists, profileData }) {
                   className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
                   onClick={async (e) => {
                     e.stopPropagation();
-                    await handleDeleteTranscript();
+                    await handleGetFile({
+                      access,
+                      fileType: "transcript",
+                      fileName: fileExists?.transcriptName,
+                    });
                   }}
                 >
                   Preview
@@ -460,7 +464,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
         </div>
       </div>
 
-      <div className = "flex gap-4">
+      <div className="flex gap-4">
         <Button
           type="submit"
           onClick={handleProfileUpdate}
