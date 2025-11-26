@@ -46,7 +46,7 @@ export default async function Inbox({ searchParams }) {
     const [profileRes, inboxRes] = await Promise.all([
       fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
       fetch(
-        `${API_BASE}/inbox/get-emails-in-thread?threadId=${threadId}`,
+        `${API_BASE}/inbox/get-email-previews?threadId=${threadId}`,
         inboxFetchOpts
       ),
     ]);
@@ -62,6 +62,7 @@ export default async function Inbox({ searchParams }) {
   } catch {
     //log with telemetry
   }
+
 
   return (
     <div className="w-full overflow-hidden">
@@ -91,7 +92,7 @@ export default async function Inbox({ searchParams }) {
                       className="font-main text-sm flex items-center hover:underline gap-2 font-light text-[#37352F]"
                     >
                       <InboxIcon className="h-5 w-5 text-blue-700" />
-                      Home
+                      Inbox
                     </Link>
                   </BreadcrumbPage>
                 </BreadcrumbItem>
@@ -107,7 +108,7 @@ export default async function Inbox({ searchParams }) {
           </header>
           <div>
             <Thread
-              messageData={inboxEmails.messageArray}
+              messageData={inboxEmails.messages}
               access={access}
               userEmail={parsedUserProfile.student_email}
               userName={parsedUserProfile.student_name}
