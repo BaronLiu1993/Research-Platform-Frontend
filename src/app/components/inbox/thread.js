@@ -18,6 +18,7 @@ import {
   AccordionTrigger,
 } from "@/shadcomponents/ui/accordion";
 import { EmailBodyViewer } from "./emailBodyViewer";
+import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
 function formatDate(isoOrDateLike) {
   const d = new Date(isoOrDateLike);
@@ -71,6 +72,7 @@ export default function Thread({
           headers: {
             Authorization: `Bearer ${access}`,
           },
+          next: { revalidate: 3600 }
         }
       );
 
@@ -135,7 +137,18 @@ export default function Thread({
 
               <AccordionContent className="flex flex-col gap-4 text-balance">
                 {isLoading && (
-                  <p className="text-xs text-neutral-500">Loading…</p>
+                  <div className="flex flex-col gap-4 p-6">
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-11/12" />
+                    <Skeleton className="h-4 w-10/12" />
+                    <Skeleton className="h-4 w-9/12" />
+                    <Skeleton className="h-4 w-3/5" />
+                    <div className="h-6" />
+                    <Skeleton className="h-4 w-10/12" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-9/12" />
+                    <Skeleton className="h-4 w-1/2" />
+                  </div>
                 )}
 
                 {isError && (
