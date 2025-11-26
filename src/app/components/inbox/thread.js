@@ -41,33 +41,6 @@ function getHeader(headers = [], name) {
   );
 }
 
-/**
- * <Dialog>
-                      <DialogTrigger asChild>
-                        <button
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-transparent text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200"
-                          aria-label="Reply"
-                          title="Reply"
-                        >
-                          <Reply className="h-4 w-4 stroke-[1.5]" />
-                        </button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-2xl">
-                        <DialogHeader />
-                        <ReplyEditor
-                          subject={getHeader(headers, "Subject")}
-                          access={access}
-                          messageId={message.id}
-                          professorName={professorName}
-                          professorEmail={getHeader(headers, "To")}
-                          userName={userName}
-                          userEmail={userEmail}
-                          threadId={message.threadId}
-                        />
-                      </DialogContent>
-                    </Dialog>
- */
-
 export default function Thread({
   messageData,
   access,
@@ -145,8 +118,6 @@ export default function Thread({
 
           const rawHtml = bodyEntry?.html ?? null;
           const rawText = bodyEntry?.text ?? null;
-          const hasHtml = !!rawHtml;
-          console.log(rawHtml)
 
           return (
             <AccordionItem key={message.id} value={message.id}>
@@ -158,7 +129,7 @@ export default function Thread({
                   </div>
                 </div>
                 <p className="text-sm text-neutral-600 line-clamp-2">
-                  {message.snippet}
+                  {message.snippet.slice(0, 100)}...
                 </p>
               </AccordionTrigger>
 
