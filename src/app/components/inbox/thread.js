@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import DOMPurify from "dompurify";
-import { Badge } from "@/shadcomponents/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -19,20 +17,11 @@ import {
 } from "@/shadcomponents/ui/accordion";
 import { EmailBodyViewer } from "./emailBodyViewer";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
+import { Badge } from "@/shadcomponents/ui/badge";
 
-function formatDate(isoOrDateLike) {
-  const d = new Date(isoOrDateLike);
-  const date = d.toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-  const time = d.toLocaleTimeString(undefined, {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-  return `${date} · ${time}`;
+function formatDate(date) {
+  const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+  return new Date(date).toLocaleDateString('en-US', options);
 }
 
 function getHeader(headers = [], name) {
@@ -53,7 +42,6 @@ export default function Thread({
   const [bodies, setBodies] = useState({});
   const [loadingId, setLoadingId] = useState(null);
   const [errorId, setErrorId] = useState(null);
-
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 
   const handleValueChange = async (value) => {
@@ -72,7 +60,7 @@ export default function Thread({
           headers: {
             Authorization: `Bearer ${access}`,
           },
-          next: { revalidate: 3600 }
+          next: { revalidate: 3600 },
         }
       );
 
@@ -87,10 +75,10 @@ export default function Thread({
         [value]: {
           html: data.html || null,
           text: data.text || null,
+          seenData: data.seenData || null
         },
       }));
     } catch (err) {
-      console.error(err);
       setErrorId(value);
     } finally {
       setLoadingId(null);
@@ -99,6 +87,9 @@ export default function Thread({
 
   return (
     <div className="font-main w-full max-w-3xl py-8">
+      <div className ="text-xl font-medium px-8">
+        {getHeader(messageData[0].payload.headers, "Subject") || "No Subject"}
+      </div>
       <Accordion
         type="single"
         collapsible
@@ -109,10 +100,8 @@ export default function Thread({
         {messageData.map((message) => {
           const headers = message.payload?.headers || [];
           const from = getHeader(headers, "From") || "";
-          const dateHeader = getHeader(headers, "Date");
-          const formattedDate = dateHeader
-            ? dateHeader
-            : formatDate(Number(message.internalDate));
+          const name = from.split("<")
+          const formattedDate = formatDate(Number(message.internalDate));
 
           const bodyEntry = bodies[message.id];
           const isLoading = loadingId === message.id;
@@ -120,17 +109,23 @@ export default function Thread({
 
           const rawHtml = bodyEntry?.html ?? null;
           const rawText = bodyEntry?.text ?? null;
+          const rawSeenData = bodyEntry?.seenData ?? null;
+          console.log(rawSeenData)
 
           return (
             <AccordionItem key={message.id} value={message.id}>
-              <AccordionTrigger className="flex flex-col items-start gap-1">
+              <AccordionTrigger className="flex cursor-pointer flex-col items-start gap-1">
                 <div className="text-xs text-neutral-500 w-full justify-between flex">
-                  <div className="text-xs text-neutral-500">{from}</div>
+                  <div className="text-sm text-black">{name[0]}</div>
                   <div className="text-xs text-neutral-500">
                     {formattedDate}
                   </div>
+                  <Badge>
+                  {rawSeenData ? (rawSeenData.opened_email ? <div>Seen @ {formatDate(rawSeenData.opened_email_at)}</div> : <div>Not Seen</div>) : null}
+
+                  </Badge>
                 </div>
-                <p className="text-sm text-neutral-600 line-clamp-2">
+                <p className="text-xs text-neutral-600 line-clamp-2">
                   {message.snippet.slice(0, 100)}...
                 </p>
               </AccordionTrigger>
@@ -163,17 +158,15 @@ export default function Thread({
                       html={rawHtml}
                       text={rawText || message.snippet}
                     />
-
-                    {/* Reply dialog (optional) */}
-                    {/*
                     <Dialog>
                       <DialogTrigger asChild>
                         <button
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-transparent text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200"
+                          className="inline-flex gap-2 border-[1.5px] p-2 cursor-pointer items-center justify-center w-fit rounded-sm text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200"
                           aria-label="Reply"
                           title="Reply"
                         >
-                          <Reply className="h-4 w-4 stroke-[1.5]" />
+                          <Reply className="h-5 w-5 stroke-[1.5]" />
+                          <span className = "font-medium">Reply</span>
                         </button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-2xl">
@@ -190,7 +183,6 @@ export default function Thread({
                         />
                       </DialogContent>
                     </Dialog>
-                    */}
                   </>
                 )}
               </AccordionContent>
