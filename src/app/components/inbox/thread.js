@@ -20,8 +20,13 @@ import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import { Badge } from "@/shadcomponents/ui/badge";
 
 function formatDate(date) {
-  const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
-  return new Date(date).toLocaleDateString('en-US', options);
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  return new Date(date).toLocaleDateString("en-US", options);
 }
 
 function getHeader(headers = [], name) {
@@ -75,7 +80,7 @@ export default function Thread({
         [value]: {
           html: data.html || null,
           text: data.text || null,
-          seenData: data.seenData || null
+          seenData: data.seenData || null,
         },
       }));
     } catch (err) {
@@ -87,7 +92,7 @@ export default function Thread({
 
   return (
     <div className="font-main w-full max-w-3xl py-8">
-      <div className ="text-xl font-medium px-8">
+      <div className="text-xl font-medium px-8">
         {getHeader(messageData[0].payload.headers, "Subject") || "No Subject"}
       </div>
       <Accordion
@@ -100,7 +105,7 @@ export default function Thread({
         {messageData.map((message) => {
           const headers = message.payload?.headers || [];
           const from = getHeader(headers, "From") || "";
-          const name = from.split("<")
+          const name = from.split("<");
           const formattedDate = formatDate(Number(message.internalDate));
 
           const bodyEntry = bodies[message.id];
@@ -110,20 +115,29 @@ export default function Thread({
           const rawHtml = bodyEntry?.html ?? null;
           const rawText = bodyEntry?.text ?? null;
           const rawSeenData = bodyEntry?.seenData ?? null;
-          console.log(rawSeenData)
+          console.log(rawSeenData);
 
           return (
             <AccordionItem key={message.id} value={message.id}>
               <AccordionTrigger className="flex cursor-pointer flex-col items-start gap-1">
                 <div className="text-xs text-neutral-500 w-full justify-between flex">
-                  <div className="text-sm text-black">{name[0]}</div>
+                  <div className="text-sm text-black flex gap-4">
+                    <span>{name[0]}</span>
+                    <div>
+                      {rawSeenData ? (
+                        !rawSeenData.opened_email ? (
+                          <Badge className="text-[#448361] bg-[#EDF3EC] rounded-xs">
+                            Seen on {formatDate(rawSeenData.opened_email_at)}
+                          </Badge>
+                        ) : (
+                          <Badge className="text-[#D9730D] bg-[#FAEBDD] rounded-xs">Not Seen</Badge>
+                        )
+                      ) : null}
+                    </div>
+                  </div>
                   <div className="text-xs text-neutral-500">
                     {formattedDate}
                   </div>
-                  <Badge>
-                  {rawSeenData ? (rawSeenData.opened_email ? <div>Seen @ {formatDate(rawSeenData.opened_email_at)}</div> : <div>Not Seen</div>) : null}
-
-                  </Badge>
                 </div>
                 <p className="text-xs text-neutral-600 line-clamp-2">
                   {message.snippet.slice(0, 100)}...
@@ -166,7 +180,7 @@ export default function Thread({
                           title="Reply"
                         >
                           <Reply className="h-5 w-5 stroke-[1.5]" />
-                          <span className = "font-medium">Reply</span>
+                          <span className="font-medium">Reply</span>
                         </button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-2xl">
