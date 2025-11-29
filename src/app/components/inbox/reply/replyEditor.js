@@ -1,8 +1,6 @@
 "use client";
 
 import "tippy.js/dist/tippy.css";
-
-import { useState } from "react";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import {
@@ -28,7 +26,7 @@ export default function ReplyEditor({
   userName,
   userEmail,
   threadId,
-  subject
+  subject,
 }) {
   const editor = useEditor({
     extensions: [

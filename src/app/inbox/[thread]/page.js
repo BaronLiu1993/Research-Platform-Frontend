@@ -24,6 +24,7 @@ export default async function Inbox({ searchParams }) {
   const access = cookieStore.get("access_token")?.value;
   const threadId = (await searchParams?.id) || "";
   const name = (await searchParams?.name) || "";
+  const email = (await searchParams?.email) || "";
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const profileFetchOpts = {
     headers: access
@@ -110,6 +111,7 @@ export default async function Inbox({ searchParams }) {
             <Thread
               messageData={inboxEmails.messages}
               access={access}
+              professorEmail={email}
               userEmail={parsedUserProfile.student_email}
               userName={parsedUserProfile.student_name}
               professorName={name}

@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/shadcomponents/ui/composedialog";
-import { Check, Reply } from "lucide-react";
+import { Reply } from "lucide-react";
 import ReplyEditor from "./reply/replyEditor";
 import {
   Accordion,
@@ -40,51 +40,59 @@ export default function Thread({
   messageData,
   access,
   userEmail,
+  professorEmail,
   userName,
   professorName,
 }) {
-  const [openId, setOpenId] = useState(messageData[0]?.id ?? null);
+  const [openIds, setOpenIds] = useState([]);  
   const [bodies, setBodies] = useState({});
   const [loadingId, setLoadingId] = useState(null);
   const [errorId, setErrorId] = useState(null);
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 
   const handleValueChange = async (value) => {
-    setOpenId(value);
-    if (!value) return;
-    if (bodies[value]) return;
+    setOpenIds(value);  
+
+    if (value.length === 0) return;  
+    const newOpenId = value[value.length - 1]; 
+
+    if (bodies[newOpenId]) return; 
 
     try {
-      setLoadingId(value);
+      setLoadingId(newOpenId);
       setErrorId(null);
+      let res = null;
 
-      const res = await fetch(
-        `${API_BASE}/inbox/get-email?messageId=${encodeURIComponent(value)}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${access}`,
-          },
-          next: { revalidate: 3600 },
-        }
-      );
+      const currentMessage = messageData.find((msg) => msg.id === newOpenId);
+      console.log(currentMessage)
+      const fromUser = currentMessage?.payload?.headers
+        .find((header) => header.name === "From")
+        .value.includes(`<${userEmail}>`);
+      console.log(fromUser)
+      const queryParams = `messageId=${encodeURIComponent(newOpenId)}&fromUser=${fromUser}`;
+      res = await fetch(`${API_BASE}/inbox/get-email?${queryParams}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+        next: { revalidate: 3600 },
+      });
 
       if (!res.ok) {
         throw new Error("Failed to fetch message body");
       }
 
       const data = await res.json();
-      console.log(data);
       setBodies((prev) => ({
         ...prev,
-        [value]: {
+        [newOpenId]: {
           html: data.html || null,
           text: data.text || null,
           seenData: data.seenData || null,
         },
       }));
     } catch (err) {
-      setErrorId(value);
+      setErrorId(newOpenId);
     } finally {
       setLoadingId(null);
     }
@@ -96,13 +104,14 @@ export default function Thread({
         {getHeader(messageData[0].payload.headers, "Subject") || "No Subject"}
       </div>
       <Accordion
-        type="single"
+        type="multiple"  
         collapsible
+        value={openIds}  
         className="w-full p-8"
-        value={openId ?? undefined}
-        onValueChange={handleValueChange}
+        onValueChange={handleValueChange}  
       >
         {messageData.map((message) => {
+          console.log(message)
           const headers = message.payload?.headers || [];
           const from = getHeader(headers, "From") || "";
           const name = from.split("<");
@@ -115,22 +124,22 @@ export default function Thread({
           const rawHtml = bodyEntry?.html ?? null;
           const rawText = bodyEntry?.text ?? null;
           const rawSeenData = bodyEntry?.seenData ?? null;
-          console.log(rawSeenData);
-
           return (
             <AccordionItem key={message.id} value={message.id}>
-              <AccordionTrigger className="flex cursor-pointer flex-col items-start gap-1">
+              <AccordionTrigger className="flex rounded-none border-b-1 cursor-pointer pb-6 flex-col items-start gap-1">
                 <div className="text-xs text-neutral-500 w-full justify-between flex">
                   <div className="text-sm text-black flex gap-4">
                     <span>{name[0]}</span>
                     <div>
                       {rawSeenData ? (
-                        !rawSeenData.opened_email ? (
+                        rawSeenData.opened_email ? (
                           <Badge className="text-[#448361] bg-[#EDF3EC] rounded-xs">
-                            Seen on {formatDate(rawSeenData.opened_email_at)}
+                            Read at {formatDate(rawSeenData.opened_email_at)}
                           </Badge>
                         ) : (
-                          <Badge className="text-[#D9730D] bg-[#FAEBDD] rounded-xs">Not Seen</Badge>
+                          <Badge className="text-[#D9730D] bg-[#FAEBDD] rounded-xs">
+                            Not Seen
+                          </Badge>
                         )
                       ) : null}
                     </div>
@@ -168,10 +177,7 @@ export default function Thread({
 
                 {!isLoading && !isError && (
                   <>
-                    <EmailBodyViewer
-                      html={rawHtml}
-                      text={rawText || message.snippet}
-                    />
+                    <EmailBodyViewer html={rawHtml} text={rawText} />
                     <Dialog>
                       <DialogTrigger asChild>
                         <button
@@ -190,7 +196,7 @@ export default function Thread({
                           access={access}
                           messageId={message.id}
                           professorName={professorName}
-                          professorEmail={getHeader(headers, "To")}
+                          professorEmail={professorEmail}
                           userName={userName}
                           userEmail={userEmail}
                           threadId={message.threadId}

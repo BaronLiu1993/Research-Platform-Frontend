@@ -25,11 +25,11 @@ const generateColumns = () => [
     cell: ({ row }) => {
       const data = row.original || {};
       const name = data.name || "Untitled";
-      const email = data.email || "no-email";
+      const email = data.email || "no email";
       const subject = data.subject || "No subject";
       const href = `/inbox/thread?id=${data.thread_id}&name=${encodeURIComponent(
         name
-      )}`;
+      )}&email=${encodeURIComponent(email)}`;
 
       return (
         <Link
@@ -51,10 +51,11 @@ const generateColumns = () => [
                 </span>
               </div>
 
-              {/* Second row: subject (always) + email (only on md+) */}
               <div className="flex items-center gap-1 text-[12px] text-neutral-600 min-w-0">
                 <span className="truncate">{subject}</span>
-                <span className="hidden md:inline-flex text-neutral-300">•</span>
+                <span className="hidden md:inline-flex text-neutral-300">
+                  •
+                </span>
                 <span className="hidden md:inline truncate text-neutral-500">
                   {email}
                 </span>
