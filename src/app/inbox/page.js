@@ -75,7 +75,7 @@ export default async function Inbox({ searchParams }) {
                   <BreadcrumbLink asChild>
                     <Link
                       href="/repository"
-                      className="font-main text-sm flex items-center hover:underline gap-2 font-medium text-xs text-[#37352F]"
+                      className="font-main flex items-center hover:underline gap-2 font-medium text-xs text-[#37352F]"
                     >
                       <Laptop className="h-5 w-5 text-blue-700" />
                       Repository
