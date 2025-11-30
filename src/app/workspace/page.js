@@ -82,7 +82,7 @@ export default async function Workspace({ searchParams }) {
                   <BreadcrumbLink asChild>
                     <Link
                       href="/repository"
-                      className="font-main text-sm flex items-center hover:underline gap-2 font-light text-[#37352F]"
+                      className="font-main font-medium text-xs flex items-center hover:underline gap-2 text-[#37352F]"
                     >
                       <Laptop className="h-5 w-5 text-blue-700" />
                       Repository
@@ -94,7 +94,7 @@ export default async function Workspace({ searchParams }) {
                   <BreadcrumbPage className="font-main flex cursor-pointer items-center hover:underline gap-2 font-light text-[#37352F]">
                     <Link
                       href="/workspace"
-                      className="font-main text-sm flex items-center hover:underline gap-2 font-light text-[#37352F]"
+                      className="font-main font-medium text-xs flex items-center hover:underline gap-2 text-[#37352F]"
                     >
                       <MapIcon className="h-5 w-5 text-blue-700" />
                       Workspace
