@@ -90,7 +90,7 @@ export default async function Inbox({ searchParams }) {
                   <BreadcrumbPage className="font-main font-medium text-xs flex cursor-pointer items-center hover:underline gap-2 text-[#37352F]">
                     <Link
                       href="/inbox"
-                      className="font-main text-sm flex items-center hover:underline gap-2 font-light text-[#37352F]"
+                      className="font-main font-medium text-xs flex items-center hover:underline gap-2 text-[#37352F]"
                     >
                       <InboxIcon className="h-5 w-5 text-blue-700" />
                       Inbox
