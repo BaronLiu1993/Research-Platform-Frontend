@@ -1,37 +1,21 @@
 "use client";
 
 import {
-  BarChart3,
   ChevronLeft,
   ChevronRight,
   Database,
   Eye,
-  HomeIcon,
-  Inbox,
-  InboxIcon,
   LogIn,
   Mail,
   Map,
   PanelLeft,
   Pen,
   Pencil,
-  PencilRuler,
-  Pin,
   Plus,
-  Rocket,
-  Search,
-  Send,
-  SendIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/shadcomponents/ui/tabs";
-import { Badge } from "@/shadcomponents/ui/badge";
+
 
 const cardVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -70,7 +54,7 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
                 >
-                  The Job Board
+                  All In One Workspace
                 </motion.span>
                 <br />
                 <motion.span
@@ -79,7 +63,7 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
                 >
-                  Built For Researchers
+                  For Landing Research Internships
                 </motion.span>
               </span>
             </h1>
