@@ -36,6 +36,7 @@ export function DraftsTable({
   access,
   userName,
   userEmail,
+  labelId
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -163,6 +164,7 @@ export function DraftsTable({
         userEmail,
         professorData: selectedRows,
         access,
+        labelId
       });
 
       if (response?.success) {
@@ -198,6 +200,7 @@ export function DraftsTable({
         userEmail,
         professorData: selectedRows,
         access,
+        labelId
       });
 
       if (response?.success) {

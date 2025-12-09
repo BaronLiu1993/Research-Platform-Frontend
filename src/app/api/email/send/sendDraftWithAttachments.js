@@ -5,6 +5,7 @@ export const SendDraftsWithAttachments = async ({
   userEmail,
   professorData,
   access,
+  labelId
 }) => {
   try {
     const API_BASE =
@@ -19,6 +20,7 @@ export const SendDraftsWithAttachments = async ({
         userName,
         userEmail,
         professorData,
+        labelId
       }),
     });
     if (response.ok) {

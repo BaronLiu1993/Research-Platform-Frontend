@@ -160,6 +160,7 @@ export default async function Drafts({ searchParams }) {
                     access={access}
                     userName={parsedUserProfile.student_name}
                     userEmail={parsedUserProfile.student_email}
+                    labelId={parsedUserProfile.label_id}
                   />
                 </div>
               </div>
