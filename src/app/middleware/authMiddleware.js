@@ -92,7 +92,7 @@ export async function AuthMiddleware(req) {
     }
 
 
-    if (profile?.isComplete && pathname.startsWith("/register")) {
+    if (profile?.isComplete && pathname === "/register") {
       url.pathname = "/repository";
       url.searchParams.set("page", "1");
       url.searchParams.set("search", "");
