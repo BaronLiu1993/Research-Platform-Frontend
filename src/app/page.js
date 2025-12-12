@@ -48,7 +48,7 @@ export default function Home() {
               </motion.span>
               <span className="font-main z-10 block">
                 <motion.span
-                  className="inline-block font-main"
+                  className="inline-block font-playfair"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
@@ -57,7 +57,7 @@ export default function Home() {
                 </motion.span>
                 <br />
                 <motion.span
-                  className="inline-block text-blue-900 font-main"
+                  className="inline-block text-blue-900 font-playfair"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
@@ -73,7 +73,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
             >
-              <p className="text-gray-800 text-md font-light font-main">
+              <p className="text-gray-800 text-lg font-medium font-main">
                 discover, outreach and land research internships with over 1000+
                 professors
               </p>
@@ -163,7 +163,7 @@ export default function Home() {
           className="flex-1 bg-white rounded-sm shadow-2xl overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6, ease: "easeOut" }}
+          transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
         >
           <div className="bg-gray-100 w-full border-b border-gray-300 px-4 flex items-center gap-3">
             <div className="flex gap-2">
