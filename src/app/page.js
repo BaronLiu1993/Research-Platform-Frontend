@@ -16,7 +16,6 @@ import {
 import Link from "next/link";
 import { motion } from "motion/react";
 
-
 const cardVariants = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
@@ -49,7 +48,7 @@ export default function Home() {
               </motion.span>
               <span className="font-main z-10 block">
                 <motion.span
-                  className="inline-block font-playfair font-light"
+                  className="inline-block font-main"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
@@ -58,12 +57,12 @@ export default function Home() {
                 </motion.span>
                 <br />
                 <motion.span
-                  className="inline-block text-blue-900 font-playfair font-light"
+                  className="inline-block text-blue-900 font-main"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
                 >
-                  For Landing Research Internships
+                  For Research Internships
                 </motion.span>
               </span>
             </h1>
@@ -82,7 +81,7 @@ export default function Home() {
               <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link href="/auth/signin">
                   <motion.button
-                    className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-black text-white border border-gray-300 py-2 px-3 inline-flex items-center justify-center whitespace-nowrap"
+                    className="font-main rounded-xs gap-2 cursor-pointer font-medium text-lg bg-black text-white border border-gray-300 py-2 px-3 inline-flex items-center justify-center whitespace-nowrap"
                     role="button"
                     aria-label="Login"
                     initial={{ opacity: 0, y: 20 }}
@@ -96,7 +95,7 @@ export default function Home() {
                 </Link>
                 <Link href="/auth/signup">
                   <motion.button
-                    className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-white text-gray-900 border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
+                    className="font-main rounded-xs gap-2 cursor-pointer font-medium text-lg bg-white text-gray-900 border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
                     role="button"
                     aria-label="Sign Up"
                     initial={{ opacity: 0, y: 20 }}
@@ -114,99 +113,77 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="w-full font-main">
-        <div className="mx-auto w-full max-w-6xl px-6 sm:px-10">
-          <motion.div
-            variants={listVariants}
-            initial="hidden"
-            animate="show"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 font-main mb-10"
-          >
+      <div className="w-full flex mt-10 max-w-5xl mx-auto">
+        <section className="font-main w-64">
+          <div className="mx-auto px-6 sm:px-10">
             <motion.div
-              variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border-1 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
+              variants={listVariants}
+              initial="hidden"
+              animate="show"
+              className="font-main mb-10 space-y-6"
             >
-              <Database className="stroke-1 text-white fill-blue-900" />
-              <h3 className="relative text-lg font-semibold">
-                Professor Board
-              </h3>
-              <p className="relative mt-1 text-sm text-gray-700">
-                Access a database with over 1000+ professors that work in
-                healthcare to engineering
-              </p>
+              <motion.div
+                variants={cardVariants}
+                className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
+              >
+                <Database className="stroke-1 text-white fill-blue-900" />
+                <h3 className="text-lg font-semibold">Professor Board</h3>
+              </motion.div>
+
+              <motion.div
+                variants={cardVariants}
+                className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
+              >
+                <Pencil className="stroke-1 text-white fill-blue-900" />
+                <h3 className="text-lg font-semibold">Drafting Tools</h3>
+              </motion.div>
+
+              <motion.div
+                variants={cardVariants}
+                className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
+              >
+                <Mail className="stroke-1 text-white fill-blue-900" />
+                <h3 className="text-lg font-semibold text-gray-700">
+                  Send Emails On Mass
+                </h3>
+              </motion.div>
+
+              <motion.div
+                variants={cardVariants}
+                className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
+              >
+                <Eye className="stroke-1 text-white fill-blue-900" />
+                <h3 className="text-lg font-semibold">Track Outreach</h3>
+              </motion.div>
             </motion.div>
+          </div>
+        </section>
 
-            <motion.div
-              variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border-1 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
-            >
-              <Pencil className="stroke-1 text-white fill-blue-900" />
-
-              <h3 className="relative text-lg font-semibold">Drafting Tools</h3>
-              <p className="relative mt-1 text-sm text-gray-700">
-                Save, draft and organise many email drafts all at once
-              </p>
-            </motion.div>
-
-            <motion.div
-              variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border-1 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
-            >
-              <Mail className="stroke-1 text-white fill-blue-900" />
-
-              <h3 className="relative text-lg font-semibold text-gray-700">
-                Send Emails On Mass
-              </h3>
-              <p className="relative mt-1 text-sm">
-                Send many emails at once and edit drafts to your liking
-              </p>
-            </motion.div>
-
-            <motion.div
-              variants={cardVariants}
-              className="relative flex h-full flex-col rounded-2xl border-1 border-gray-200 bg-white/40 p-6 shadow-lg backdrop-blur-md"
-            >
-              <Eye className="stroke-1 text-white fill-blue-900" />
-              <h3 className="relative text-lg font-semibold">Track Outreach</h3>
-              <p className="relative mt-1 text-sm text-gray-700">
-                Built in inbox for replying to professors with read receipts
-              </p>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      <div className="w-full max-w-5xl mx-auto">
         <motion.div
-          className="bg-white rounded-sm shadow-2xl overflow-hidden"
+          className="flex-1 bg-white rounded-sm shadow-2xl overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{
-            delay: 1,
-            duration: 0.6,
-            ease: "easeOut",
-          }}
+          transition={{ delay: 1, duration: 0.6, ease: "easeOut" }}
         >
-          <div className="bg-gray-100 border-b border-gray-300 px-4 flex items-center gap-3">
+          <div className="bg-gray-100 w-full border-b border-gray-300 px-4 flex items-center gap-3">
             <div className="flex gap-2">
               <button className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600" />
               <button className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600" />
               <button className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600" />
             </div>
 
-            <div className="flex gap-1 justify-center items-center">
+            <div className="flex gap-1 items-center">
               <PanelLeft className="stroke-1 h-4 w-4" />
               <ChevronLeft className="stroke-1 h-4 w-4" />
               <ChevronRight className="stroke-1 h-4 w-4" />
             </div>
 
-            <div className="flex gap-1 justify-center items-center">
-              <div className="bg-white border-x-1 border-gray-300 z-10 px-4 flex items-center relative">
+            <div className="flex gap-1 items-center">
+              <div className="bg-white border-x border-gray-300 px-4 flex items-center">
                 <span className="text-xs font-main py-1 font-light text-gray-800">
                   🎨 palette
                 </span>
               </div>
-
               <Plus className="stroke-1 h-4 w-4" />
             </div>
           </div>
