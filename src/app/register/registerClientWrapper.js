@@ -22,7 +22,6 @@ export default function RegisterClientWrapper({ access }) {
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [attempted, setAttempted] = useState(false);
 
   const handleAddInterests = (val) => {
@@ -53,6 +52,7 @@ export default function RegisterClientWrapper({ access }) {
     setSubmitError("");
 
     if (!isValid) return;
+    setSubmitting(true);
 
     const payload = {
       student_year: formData.student_year,
@@ -76,15 +76,17 @@ export default function RegisterClientWrapper({ access }) {
         try {
           const data = await res.json();
           if (data?.message) msg = data.message;
-        } catch {}
+        } catch {
+          setSubmitError("Internal server error. Please try again.");
+        }
         setSubmitError(msg);
         return;
       }
 
-      setSubmitting(true);
       router.push("/repository");
     } catch (e) {
       setSubmitError("Internal server error. Please try again.");
+    } finally {
       setSubmitting(false);
     }
   };
@@ -203,11 +205,10 @@ export default function RegisterClientWrapper({ access }) {
         <div className="px-6 py-4 border-t bg-white flex items-center justify-between">
           <button
             type="submit"
-            onClick={() => setIsLoading(true)}
             disabled={!isValid || submitting}
             className="inline-flex cursor-pointer items-center gap-2 bg-[#529CCA] hover:bg-[#4087b1] disabled:opacity-60 disabled:hover:bg-[#529CCA] active:bg-[#357396] text-white text-sm font-medium px-4 py-2 rounded-md transition-colors"
           >
-            {isLoading ? (
+            {submitting ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Saving…
