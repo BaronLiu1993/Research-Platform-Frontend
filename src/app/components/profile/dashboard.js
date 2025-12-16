@@ -123,7 +123,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
 
   const handleDeleteTranscript = async () => {
     try {
-      await uploadFile({
+      await DeleteFile({
         fileType: "transcript",
         fileName: fileExists.transcriptName,
         access,

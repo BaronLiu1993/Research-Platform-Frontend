@@ -178,7 +178,7 @@ export function InboxTable({
               ))
             ) : table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
+                <TableRow key={row.id} className = "hover:bg-gray-100 hover:shadow-[inset_0_-2px_0_rgba(0,0,0,0.14)] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)]">
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-2 py-2 align-middle">
                       <div className="min-w-0 truncate">
