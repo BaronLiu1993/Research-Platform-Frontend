@@ -49,7 +49,6 @@ export default function Thread({
   const [loadingId, setLoadingId] = useState(null);
   const [errorId, setErrorId] = useState(null);
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
-
   const handleValueChange = async (value) => {
     setOpenIds(value);  
 

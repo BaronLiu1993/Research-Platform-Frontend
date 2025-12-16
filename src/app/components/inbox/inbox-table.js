@@ -96,7 +96,7 @@ export function InboxTable({
   );
 
   const columns = useMemo(
-    () => generateColumns(),
+    () => generateColumns(access),
     [
       access,
       onRemove,
