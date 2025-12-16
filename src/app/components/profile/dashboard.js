@@ -276,192 +276,196 @@ export default function Dashboard({ access, fileExists, profileData }) {
   return (
     <form
       onSubmit={handleSubmission}
-      className="flex flex-col gap-4 mx-6 w-fit"
+      className="flex flex-col gap-4 mx-6 w-fit min-h-screen"
     >
       <div className="flex flex-col gap-5">
-        <FieldGroup
-          label="Year of study"
-          error={attempted ? errors.student_year : undefined}
-        >
-          <DropdownYear
-            name="student_year"
-            value={formData.student_year}
-            onChange={(val) =>
-              setFormData((p) => ({ ...p, student_year: val }))
-            }
-          />
-        </FieldGroup>
+        <div className="flex justify-center items-center gap-5">
+          <div className="flex flex-col gap-5">
+            <FieldGroup
+              label="Year of study"
+              error={attempted ? errors.student_year : undefined}
+            >
+              <DropdownYear
+                name="student_year"
+                value={formData.student_year}
+                onChange={(val) =>
+                  setFormData((p) => ({ ...p, student_year: val }))
+                }
+              />
+            </FieldGroup>
 
-        <FieldGroup
-          label="Major"
-          error={attempted ? errors.student_major : undefined}
-        >
-          <DropdownMajor
-            name="student_major"
-            value={formData.student_major}
-            onChange={(val) =>
-              setFormData((p) => ({ ...p, student_major: val }))
-            }
-          />
-        </FieldGroup>
-
-        <FieldGroup
-          label="Research interests (3 Max)"
-          error={attempted ? errors.student_interests : undefined}
-        >
-          <div className="w-[20rem] sm:w-[24rem]">
-            <DropdownInterests
-              name="student_interests"
-              value={formData.student_interests}
-              onChange={handleAddInterests}
-            />
-          </div>
-        </FieldGroup>
-      </div>
-
-      <div className="flex font-main gap-4">
-        <div className="relative w-[12.5rem] h-[13rem]">
-          <input
-            id="resume-upload"
-            type="file"
-            accept=".pdf"
-            className="sr-only"
-            onChange={(e) => {
-              const file = e.target.files?.[0] ?? null;
-              setResume(file);
-              if (file) {
-                setResumeStatus("New file");
-              } else if (!file && !fileExists?.resumeExists) {
-                setResumeStatus("Not Uploaded");
-              }
-            }}
-          />
-          <label
-            htmlFor="resume-upload"
-            className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-          >
-            <div className="bg-gray-100 w-full h-[8rem]" />
-            <div>
-              <div className="flex items-center p-2 gap-2">
-                <Newspaper className="fill-blue-800 text-white h-4 w-4" />
-                <span className="font-main text-[13px] font-medium">
-                  Resume
-                </span>
+            <FieldGroup
+              label="Major"
+              error={attempted ? errors.student_major : undefined}
+            >
+              <DropdownMajor
+                name="student_major"
+                value={formData.student_major}
+                onChange={(val) =>
+                  setFormData((p) => ({ ...p, student_major: val }))
+                }
+              />
+            </FieldGroup>
+            <FieldGroup
+              label="Research interests (3 Max)"
+              error={attempted ? errors.student_interests : undefined}
+            >
+              <div className="w-[20rem] sm:w-[24rem]">
+                <DropdownInterests
+                  name="student_interests"
+                  value={formData.student_interests}
+                  onChange={handleAddInterests}
+                />
               </div>
-              <div
-                className={`mx-2 w-fit rounded-xs p-1 text-[11px] font-main font-medium ${resumeStatusClasses}`}
+            </FieldGroup>
+          </div>
+          <div className="flex font-main gap-4">
+            <div className="relative w-[12.5rem] h-[13rem]">
+              <input
+                id="resume-upload"
+                type="file"
+                accept=".pdf"
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] ?? null;
+                  setResume(file);
+                  if (file) {
+                    setResumeStatus("New file");
+                  } else if (!file && !fileExists?.resumeExists) {
+                    setResumeStatus("Not Uploaded");
+                  }
+                }}
+              />
+              <label
+                htmlFor="resume-upload"
+                className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
-                <span>{resumeStatus}</span>
+                <div className="bg-gray-100 w-full h-[8rem]" />
+                <div>
+                  <div className="flex items-center p-2 gap-2">
+                    <Newspaper className="fill-blue-800 text-white h-4 w-4" />
+                    <span className="font-main text-[13px] font-medium">
+                      Resume
+                    </span>
+                  </div>
+                  <div
+                    className={`mx-2 w-fit rounded-xs p-1 text-[11px] font-main font-medium ${resumeStatusClasses}`}
+                  >
+                    <span>{resumeStatus}</span>
+                  </div>
+                </div>
+              </label>
+
+              <div>
+                {resumeExists ? (
+                  <div>
+                    <button
+                      type="button"
+                      className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        await handleGetFile({
+                          access,
+                          fileType: "resume",
+                          fileName: fileExists?.resumeName,
+                        });
+                      }}
+                    >
+                      Preview
+                    </button>
+                    <button
+                      type="button"
+                      className="absolute top-1 left-1 rounded-md font-medium cursor-pointer px-1.5 py-0.5 text-[12px] font-main"
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        await handleDeleteResume();
+                      }}
+                    >
+                      <Trash2 className="stroke-1 h-5 w-5 hover:text-red-500" />
+                    </button>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </div>
             </div>
-          </label>
 
-          <div>
-            {resumeExists ? (
-              <div>
-                <button
-                  type="button"
-                  className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
-                  onClick={async (e) => {
-                    e.stopPropagation();
-                    await handleGetFile({
-                      access,
-                      fileType: "resume",
-                      fileName: fileExists?.resumeName,
-                    });
-                  }}
-                >
-                  Preview
-                </button>
-                <button
-                  type="button"
-                  className="absolute top-1 left-1 rounded-md font-medium cursor-pointer px-1.5 py-0.5 text-[12px] font-main"
-                  onClick={async (e) => {
-                    e.stopPropagation();
-                    await handleDeleteResume();
-                  }}
-                >
-                  <Trash2 className="stroke-1 h-5 w-5 hover:text-red-500" />
-                </button>
-              </div>
-            ) : (
-              <div></div>
-            )}
-          </div>
-        </div>
+            <div className="relative w-[12.5rem] h-[13rem]">
+              <input
+                id="transcript-upload"
+                type="file"
+                accept=".pdf"
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] ?? null;
+                  setTranscript(file);
+                  if (file) {
+                    setTranscriptStatus("New file");
+                  } else if (!file && !fileExists?.transcriptExists) {
+                    setTranscriptStatus("Not Uploaded");
+                  }
+                }}
+              />
 
-        <div className="relative w-[12.5rem] h-[13rem]">
-          <input
-            id="transcript-upload"
-            type="file"
-            accept=".pdf"
-            className="sr-only"
-            onChange={(e) => {
-              const file = e.target.files?.[0] ?? null;
-              setTranscript(file);
-              if (file) {
-                setTranscriptStatus("New file");
-              } else if (!file && !fileExists?.transcriptExists) {
-                setTranscriptStatus("Not Uploaded");
-              }
-            }}
-          />
-
-          <label
-            htmlFor="transcript-upload"
-            className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-          >
-            <div className="bg-gray-100 w-full h-[8rem]" />
-            <div>
-              <div className="flex items-center p-2 gap-2">
-                <Leaf className="fill-blue-800 text-white h-4 w-4" />
-                <span className="font-main text-[13px] font-medium">
-                  Transcript
-                </span>
-              </div>
-              <div
-                className={`mx-2 w-fit rounded-xs p-1 text-[11px] font-main font-medium ${transcriptStatusClasses}`}
+              <label
+                htmlFor="transcript-upload"
+                className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
-                <span>{transcriptStatus}</span>
+                <div className="bg-gray-100 w-full h-[8rem]" />
+                <div>
+                  <div className="flex items-center p-2 gap-2">
+                    <Leaf className="fill-blue-800 text-white h-4 w-4" />
+                    <span className="font-main text-[13px] font-medium">
+                      Transcript
+                    </span>
+                  </div>
+                  <div
+                    className={`mx-2 w-fit rounded-xs p-1 text-[11px] font-main font-medium ${transcriptStatusClasses}`}
+                  >
+                    <span>{transcriptStatus}</span>
+                  </div>
+                </div>
+              </label>
+
+              <div>
+                {transcriptExists ? (
+                  <div>
+                    <button
+                      type="button"
+                      className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        await handleGetFile({
+                          access,
+                          fileType: "transcript",
+                          fileName: fileExists?.transcriptName,
+                        });
+                      }}
+                    >
+                      Preview
+                    </button>
+                    <button
+                      type="button"
+                      className="absolute top-1 left-1 rounded-md font-medium cursor-pointer px-1.5 py-0.5 text-[12px] font-main"
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        await handleDeleteTranscript();
+                      }}
+                    >
+                      <Trash2 className="stroke-1 h-5 w-5 hover:text-red-500" />
+                    </button>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </div>
             </div>
-          </label>
-
-          <div>
-            {transcriptExists ? (
-              <div>
-                <button
-                  type="button"
-                  className="absolute top-1 right-1 rounded-md font-medium cursor-pointer bg-white/90 border px-1.5 py-0.5 text-[12px] font-main hover:bg-gray-50"
-                  onClick={async (e) => {
-                    e.stopPropagation();
-                    await handleGetFile({
-                      access,
-                      fileType: "transcript",
-                      fileName: fileExists?.transcriptName,
-                    });
-                  }}
-                >
-                  Preview
-                </button>
-                <button
-                  type="button"
-                  className="absolute top-1 left-1 rounded-md font-medium cursor-pointer px-1.5 py-0.5 text-[12px] font-main"
-                  onClick={async (e) => {
-                    e.stopPropagation();
-                    await handleDeleteTranscript();
-                  }}
-                >
-                  <Trash2 className="stroke-1 h-5 w-5 hover:text-red-500" />
-                </button>
-              </div>
-            ) : (
-              <div></div>
-            )}
           </div>
         </div>
       </div>
-
+      {submitError && (
+        <p className="mt-2 text-xs text-red-500 font-main">{submitError}</p>
+      )}
       <div className="flex gap-4">
         <Button
           type="submit"
@@ -481,9 +485,6 @@ export default function Dashboard({ access, fileExists, profileData }) {
           <File className="stroke-1" />
           {isSubmittingFile ? "Saving..." : "Apply File Changes"}
         </Button>
-        {submitError && (
-          <p className="mt-2 text-xs text-red-500 font-main">{submitError}</p>
-        )}
       </div>
     </form>
   );
