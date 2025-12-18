@@ -9,7 +9,6 @@ export default async function Recommendations() {
   const cookieStore = await cookies();
   const userId = cookieStore.get("user_id")?.value;
   const access = cookieStore.get("access_token")?.value;
-
   let responses = { matches: [] };
   try {
     const res = await fetch(
