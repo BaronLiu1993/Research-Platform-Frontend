@@ -86,6 +86,7 @@ export default function RegisterClientWrapper({ access }) {
           const data = await res.json();
           if (data?.message) msg = data.message;
         } catch {
+          setSubmitting(false);
           setSubmitError("Internal server error. Please try again.");
         }
         setSubmitError(msg);
@@ -94,6 +95,7 @@ export default function RegisterClientWrapper({ access }) {
 
       router.push("/repository");
     } catch (e) {
+      setSubmitting(false);
       setSubmitError("Internal server error. Please try again.");
     }
   };
