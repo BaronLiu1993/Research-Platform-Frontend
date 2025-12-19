@@ -20,7 +20,7 @@ export const LogOut = async () => {
       });
     }
   } catch {
-    //telemetry here
+    
   } finally {
     cookieStore.delete("access_token", delOpts);
     cookieStore.delete("refresh_token", delOpts);

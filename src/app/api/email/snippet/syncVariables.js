@@ -26,7 +26,7 @@ export const SyncVariables = async ({
       const data = await response.json();
       return { data, success: true };
     } else {
-      return { message: "Internal Server Error", success: false };
+      return { message: "Error", success: false };
     }
   } catch (err) {
     return { message: "Internal Server Error", success: false };
