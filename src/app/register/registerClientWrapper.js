@@ -7,7 +7,7 @@ import DropdownYear from "../components/dropdowns/dropdownyear";
 import DropdownMajor from "../components/dropdowns/dropdownmajor";
 import DropdownInterests from "../components/dropdowns/dropdowninterests";
 
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2, Send } from "lucide-react";
 
 export default function RegisterClientWrapper({ access }) {
   const router = useRouter();
