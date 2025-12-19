@@ -18,16 +18,13 @@ export default async function Recommendations() {
       {
         method: "GET",
         headers: access ? { Authorization: `Bearer ${access}` } : {},
-        next: { revalidate: 3600 },
         cache: "force-cache",
       }
     );
     if (res.ok) {
       responses = await res.json();
-    } 
-  } catch (e) {
-    
-  }
+    }
+  } catch (e) {}
 
   const matches = Array.isArray(responses?.matches) ? responses.matches : [];
 
