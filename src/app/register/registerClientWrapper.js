@@ -95,8 +95,6 @@ export default function RegisterClientWrapper({ access }) {
       router.push("/repository");
     } catch (e) {
       setSubmitError("Internal server error. Please try again.");
-    } finally {
-      setSubmitting(false);
     }
   };
 
