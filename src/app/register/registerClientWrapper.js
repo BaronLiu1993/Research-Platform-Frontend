@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import DropdownYear from "../components/dropdowns/dropdownyear";
 import DropdownMajor from "../components/dropdowns/dropdownmajor";
 import DropdownInterests from "../components/dropdowns/dropdowninterests";
-
 import { AlertCircle, Loader2, Send } from "lucide-react";
 
 export default function RegisterClientWrapper({ access }) {
@@ -62,7 +61,7 @@ export default function RegisterClientWrapper({ access }) {
     };
 
     try {
-      const [registerRes, watchRes] = Promise.all([
+      const [registerRes, watchRes] = await Promise.all([
         fetch(`${API_BASE}/auth/register`, {
           method: "POST",
           headers: {
@@ -83,20 +82,21 @@ export default function RegisterClientWrapper({ access }) {
       if (!registerRes.ok || !watchRes.ok) {
         let msg = "Registration failed.";
         try {
-          const data = await res.json();
+          const data = await registerRes.json();
           if (data?.message) msg = data.message;
         } catch {
+          setSubmitting(false);
           setSubmitError("Internal server error. Please try again.");
         }
+        setSubmitting(false);
         setSubmitError(msg);
         return;
       }
 
       router.push("/repository");
     } catch (e) {
-      setSubmitError("Internal server error. Please try again.");
-    } finally {
       setSubmitting(false);
+      setSubmitError("Internal server error. Please try again.");
     }
   };
 
