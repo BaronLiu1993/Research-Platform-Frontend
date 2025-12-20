@@ -81,7 +81,7 @@ export default function Home() {
               <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link href="/auth/signin">
                   <motion.button
-                    className="font-main rounded-xs gap-2 cursor-pointer font-medium text-lg bg-black text-white border border-gray-300 py-2 px-3 inline-flex items-center justify-center whitespace-nowrap"
+                    className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-black text-white border border-gray-300 py-2 px-3 inline-flex items-center justify-center whitespace-nowrap"
                     role="button"
                     aria-label="Login"
                     initial={{ opacity: 0, y: 20 }}
@@ -95,7 +95,7 @@ export default function Home() {
                 </Link>
                 <Link href="/auth/signup">
                   <motion.button
-                    className="font-main rounded-xs gap-2 cursor-pointer font-medium text-lg bg-white text-gray-900 border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
+                    className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-white text-gray-900 border border-gray-200 py-2 px-3 inline-flex items-center justify-center hover:bg-gray-50 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.9)] whitespace-nowrap"
                     role="button"
                     aria-label="Sign Up"
                     initial={{ opacity: 0, y: 20 }}
