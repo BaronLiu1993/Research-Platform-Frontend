@@ -72,7 +72,6 @@ export default function ReplyEditor({
 
   const sendDraft = async () => {
     try {
-      toast.loading("Sending Response...");
       const response = await SendReply({
         userName,
         userEmail,
