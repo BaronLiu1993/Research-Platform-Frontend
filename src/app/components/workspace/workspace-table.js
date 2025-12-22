@@ -73,9 +73,7 @@ export function WorkspaceTable({
           return [...prev, profObj];
         }
       });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const handleSelectedRows = (profId) => {
@@ -189,10 +187,8 @@ export function WorkspaceTable({
       font-medium text-white px-3 py-1.5 rounded-sm transition-colors
       bg-[#4584F3]
       hover:bg-[#3574E2]
-      disabled:bg-gray-300
-      disabled:text-gray-600
-      disabled:cursor-not-allowed
-      disabled:hover:bg-gray-300
+      disabled:bg-gray-100
+      disabled:text-gray-300
     `}
                 >
                   <Mail className="stroke-1" />

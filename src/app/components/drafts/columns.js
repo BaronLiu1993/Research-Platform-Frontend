@@ -17,7 +17,7 @@ import { toast } from "sonner";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 const deleteDraft = async ({ access, draftId }) => {
-  const id = toast.loading("Deleting..."); 
+  const id = toast.loading("Deleting...");
 
   try {
     const deleteRes = await fetch(
@@ -30,7 +30,7 @@ const deleteDraft = async ({ access, draftId }) => {
       }
     );
 
-    toast.dismiss(id); 
+    toast.dismiss(id);
 
     if (deleteRes.ok) {
       toast.success("Deleted!");
@@ -40,7 +40,7 @@ const deleteDraft = async ({ access, draftId }) => {
       return { success: false };
     }
   } catch (e) {
-    toast.dismiss(id); 
+    toast.dismiss(id);
     toast.error("Failed to Delete!");
     return { success: false };
   }
@@ -66,6 +66,7 @@ const generateColumns = (
         <>
           <Checkbox
             checked={isSelected}
+            className="h-3 w-3 sm:h-4 sm:w-4 cursor-pointer bg-gray-50 border-2 border-gray-700 rounded-none"
             onCheckedChange={() =>
               handleSelectedRows({
                 id: data.id,

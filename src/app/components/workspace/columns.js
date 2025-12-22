@@ -67,7 +67,7 @@ const generateColumns = (
       return (
         <>
           <Checkbox
-            className="h-5 w-5 sm:h-4 sm:w-4" // bigger on small screens
+            className="h-3 w-3 sm:h-4 sm:w-4 cursor-pointer bg-gray-50 border-2 border-gray-700 rounded-none"
             checked={isSelected}
             onCheckedChange={() => {
               handleSelectedRows(data.professor_id);
