@@ -27,13 +27,15 @@ import { GenerateSnippet } from "@/app/api/email/snippet/generateSnippet";
 import { toast } from "sonner";
 import { SyncVariables } from "@/app/api/email/snippet/syncVariables";
 import { GenerateVariablelessDrafts } from "@/app/api/email/draft/generateVariablelessDrafts";
+import { Button } from "@/shadcomponents/ui/button";
 
 export default function EmailEditor({
   access,
   userName,
   userEmail,
   selectedProfessors,
-  fullSelectedProfessors
+  fullSelectedProfessors,
+  handleIsEditing,
 }) {
   const setSelectedVariables = useSelectedVariablesStore(
     (s) => s.setSelectedVariables
@@ -121,7 +123,7 @@ export default function EmailEditor({
 
     if (vars.length > 0) {
       try {
-        tId = toast.loading("Generating drafts...");
+        tId = toast.loading("Composing Drafts...");
 
         const snippetResponse = await GenerateSnippet({
           snippet_html: body,
@@ -129,11 +131,11 @@ export default function EmailEditor({
           access,
         });
         if (!snippetResponse?.success) {
-          toast.error("Failed to generate snippet.", { id: tId });
+          toast.error("Failed to generate snippet", { id: tId });
           return;
         }
 
-        toast.loading("Creating email skeleton...", { id: tId });
+        toast.loading("Initialising Email Skeleton...", { id: tId });
         const syncResponse = await SyncVariables({
           professorIdArray: selectedProfessors,
           variableArray: vars,
@@ -144,7 +146,7 @@ export default function EmailEditor({
           return;
         }
 
-        toast.loading("Building drafts...", { id: tId });
+        toast.loading("Composing Drafts...", { id: tId });
         const draftResponse = await GenerateDrafts({
           snippetId: snippetResponse.snippetId,
           fromName: userName,
@@ -157,13 +159,13 @@ export default function EmailEditor({
           return;
         }
 
-        toast.success("Drafts generated!", { id: tId });
+        toast.success("Composed Drafts", { id: tId });
       } catch (e) {
-        toast.error("Something went wrong.", { id: tId });
+        toast.error("Something Went Wrong", { id: tId });
       }
     } else {
       try {
-        tId = toast.loading("Generating drafts...");
+        tId = toast.loading("Composing Drafts...");
 
         const draftResponse = await GenerateVariablelessDrafts({
           fromName: userName,
@@ -175,16 +177,17 @@ export default function EmailEditor({
         });
 
         if (!draftResponse?.success) {
-          toast.error("Failed to generate snippet.", { id: tId });
+          toast.error("Failed To Compose Snippet.");
           return;
         }
-
-        toast.success("Drafts generated!", { id: tId });
+        handleIsEditing(false);
+        toast.success("Composed Drafts", { id: tId });
       } catch (e) {
-        toast.error("Something went wrong.", { id: tId });
+        toast.error("Something Went Wrong", { id: tId });
       }
     }
   };
+
   return (
     <div>
       <div className="text-sm">
@@ -192,8 +195,10 @@ export default function EmailEditor({
           <Badge className="text-[#9F6B53] bg-[#F4EEEE] rounded-xs">
             Draft Messages
           </Badge>
-          <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2">
-            <X className="h-6 w-6 p-1 rounded-xs" />
+          <DialogClose asChild>
+            <button className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2 cursor-pointer" onClick={() => handleIsEditing(false)}>
+              <X className="h-6 w-6 p-1 rounded-xs" />
+            </button>
           </DialogClose>
         </div>
         <div className="flex flex-col">

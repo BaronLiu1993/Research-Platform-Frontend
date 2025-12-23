@@ -36,7 +36,7 @@ export function DraftsTable({
   access,
   userName,
   userEmail,
-  labelId
+  labelId,
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -62,7 +62,7 @@ export function DraftsTable({
         if (alreadySelected) {
           return prev.filter((p) => p.id !== prof.id);
         }
-        
+
         if (prev.length >= 5) {
           toast.error("You can only select up to 5 professors.");
           return prev;
@@ -164,11 +164,11 @@ export function DraftsTable({
         userEmail,
         professorData: selectedRows,
         access,
-        labelId
+        labelId,
       });
 
       if (response?.success) {
-        toast.success("Sent!", { id: tId });
+        toast.success("Sent Emails!", { id: tId });
         const idsToRemove = new Set(selectedRows.map((r) => r.id));
         setRows((prev) => prev.filter((r) => !idsToRemove.has(r.id)));
         setSelectedRows([]);
@@ -200,7 +200,7 @@ export function DraftsTable({
         userEmail,
         professorData: selectedRows,
         access,
-        labelId
+        labelId,
       });
 
       if (response?.success) {
@@ -235,7 +235,7 @@ export function DraftsTable({
 
             <div className="flex flex-col w-full gap-2 sm:w-auto sm:flex-row sm:justify-end sm:gap-4">
               <Button
-                className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#4584F3] transition-colors hover:bg-[#3574E2] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
+                className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#4584F3] transition-colors hover:bg-[#3574E2] disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
                 disabled={selectedRows.length === 0 || isSending}
                 onClick={handleSendDrafts}
               >
@@ -243,7 +243,7 @@ export function DraftsTable({
                 <span>Send Emails</span>
               </Button>
               <Button
-                className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#9065B0] transition-colors hover:bg-[#9A6EC0] disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
+                className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#9065B0] transition-colors hover:bg-[#9A6EC0] disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
                 disabled={selectedRows.length === 0 || isSending}
                 onClick={handleSendDraftsWithAttachments}
               >

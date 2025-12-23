@@ -44,18 +44,18 @@ export default function Thread({
   userName,
   professorName,
 }) {
-  const [openIds, setOpenIds] = useState([]);  
+  const [openIds, setOpenIds] = useState([]);
   const [bodies, setBodies] = useState({});
   const [loadingId, setLoadingId] = useState(null);
   const [errorId, setErrorId] = useState(null);
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const handleValueChange = async (value) => {
-    setOpenIds(value);  
+    setOpenIds(value);
 
-    if (value.length === 0) return;  
-    const newOpenId = value[value.length - 1]; 
+    if (value.length === 0) return;
+    const newOpenId = value[value.length - 1];
 
-    if (bodies[newOpenId]) return; 
+    if (bodies[newOpenId]) return;
 
     try {
       setLoadingId(newOpenId);
@@ -63,11 +63,11 @@ export default function Thread({
       let res = null;
 
       const currentMessage = messageData.find((msg) => msg.id === newOpenId);
-      console.log(currentMessage)
+      console.log(currentMessage);
       const fromUser = currentMessage?.payload?.headers
         .find((header) => header.name === "From")
         .value.includes(`<${userEmail}>`);
-      console.log(fromUser)
+      console.log(fromUser);
       const queryParams = `messageId=${encodeURIComponent(newOpenId)}&fromUser=${fromUser}`;
       res = await fetch(`${API_BASE}/inbox/get-email?${queryParams}`, {
         method: "GET",
@@ -103,14 +103,14 @@ export default function Thread({
         {getHeader(messageData[0].payload.headers, "Subject") || "No Subject"}
       </div>
       <Accordion
-        type="multiple"  
+        type="multiple"
         collapsible
-        value={openIds}  
+        value={openIds}
         className="w-full p-8"
-        onValueChange={handleValueChange}  
+        onValueChange={handleValueChange}
       >
         {messageData.map((message) => {
-          console.log(message)
+          console.log(message);
           const headers = message.payload?.headers || [];
           const from = getHeader(headers, "From") || "";
           const name = from.split("<");

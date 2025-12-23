@@ -67,7 +67,7 @@ const generateColumns = (
       return (
         <>
           <Checkbox
-            className="h-3 w-3 sm:h-4 sm:w-4 cursor-pointer bg-gray-50 border-2 border-gray-700 rounded-none"
+            className="h-3 w-3 sm:h-4 sm:w-4 cursor-pointer bg-gray-50 border-2 border-gray-700 rounded-xs"
             checked={isSelected}
             onCheckedChange={() => {
               handleSelectedRows(data.professor_id);
@@ -228,14 +228,12 @@ const generateColumns = (
   {
     accessorKey: "school",
     header: ({ column }) => (
-      <div className="hidden sm:block">
-        <button
-          className="font-main font-medium text-sm text-[#787774] px-2 py-1 -ml-2"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          school
-        </button>
-      </div>
+      <button
+        className="font-main font-medium text-xs sm:text-sm text-[#787774] px-2 py-1 -ml-2"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        school
+      </button>
     ),
     cell: ({ row }) => {
       const data = row.original || {};
@@ -319,7 +317,9 @@ const generateColumns = (
                   </Label>
                   <Badge className="bg-purple-50 text-purple-700 font-medium text-xs py-1 px-2 border border-purple-200/50 flex items-start text-left whitespace-normal">
                     <BrainCircuit className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
-                    <span className="break-words">{data.department || "—"}</span>
+                    <span className="break-words">
+                      {data.department || "—"}
+                    </span>
                   </Badge>
                 </div>
 
@@ -379,14 +379,12 @@ const generateColumns = (
     accessorKey: "email",
     size: 140,
     header: ({ column }) => (
-      <div className="hidden sm:block">
-        <button
-          className="font-main font-medium text-sm text-[#787774] px-2 py-1 -ml-2"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          email
-        </button>
-      </div>
+      <button
+        className="font-main font-medium text-xs sm:text-sm text-[#787774] px-2 py-1 -ml-2"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        email
+      </button>
     ),
     cell: ({ row }) => {
       const data = row.original || {};
@@ -462,7 +460,9 @@ const generateColumns = (
                   </Label>
                   <Badge className="bg-purple-50 text-purple-700 font-medium text-xs py-1 px-2 border border-purple-200/50 flex items-start text-left whitespace-normal">
                     <BrainCircuit className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" />
-                    <span className="break-words">{data.department || "—"}</span>
+                    <span className="break-words">
+                      {data.department || "—"}
+                    </span>
                   </Badge>
                 </div>
 

@@ -39,11 +39,11 @@ export default function SaveButton({
           id,
           access,
         });
-        toast.success("Professor Removed.");
+        toast.success("Professor Removed From Saved");
       } else {
         addSaved(id);
         await AddToSaved({ id, professorData, access });
-        toast.success("Professor Saved.");
+        toast.success("Professor Saved");
       }
     } catch (error) {
       if (isSaved) {

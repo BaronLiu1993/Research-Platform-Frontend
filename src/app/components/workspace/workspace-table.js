@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { RemoveFromSaved } from "@/app/api/save/removeFromSaved";
 
+import { Button } from "@/shadcomponents/ui/button";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
 import {
@@ -58,6 +59,7 @@ export function WorkspaceTable({
   const [selectedRows, setSelectedRows] = useState([]);
   const [allDataSelectedRows, setAllDataSelectedRows] = useState([]);
   const [pendingDelete, setPendingDelete] = useState(new Set());
+  const [isEditing, setIsEditing] = useState(false);
   const isSelectionLimitReached = allDataSelectedRows.length >= 5;
 
   const handleSelectedAllRowData = (profObj) => {
@@ -67,7 +69,7 @@ export function WorkspaceTable({
         if (alreadySelected) {
           return prev.filter((item) => item.id !== profObj.id);
         } else if (prev.length >= 5) {
-          toast.error("You can only select up to 5 professors.");
+          toast.error("You Can Only Select Up To 5 Professors");
           return prev;
         } else {
           return [...prev, profObj];
@@ -99,10 +101,10 @@ export function WorkspaceTable({
       setRows(prev.filter((r) => (r.professor_id === id ? false : true)));
       try {
         await RemoveFromSaved({ access, id });
-        toast.success("Removed!");
+        toast.success("Deleted From Workspace");
       } catch (e) {
         setRows(prev);
-        toast.error("Failed to remove");
+        toast.error("Failed to Remove");
       } finally {
         setPendingDelete((s) => {
           const next = new Set(s);
@@ -180,20 +182,14 @@ export function WorkspaceTable({
             />
             <Dialog>
               <DialogTrigger asChild>
-                <button
-                  disabled={selectedRows.length === 0}
-                  className={`
-      w-full sm:w-auto text-sm flex items-center justify-center gap-2 
-      font-medium text-white px-3 py-1.5 rounded-sm transition-colors
-      bg-[#4584F3]
-      hover:bg-[#3574E2]
-      disabled:bg-gray-100
-      disabled:text-gray-300
-    `}
+                <Button
+                  className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#4584F3] transition-colors hover:bg-[#3574E2] disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
+                  disabled={selectedRows.length === 0 || isEditing}
+                  onClick={() => setIsEditing(true)}
                 >
-                  <Mail className="stroke-1" />
+                  <Mail className="h-4 w-4" />
                   <span>Draft Emails</span>
-                </button>
+                </Button>
               </DialogTrigger>
 
               <DialogContent className="w-[95vw] max-w-2xl sm:w-full">
@@ -204,6 +200,7 @@ export function WorkspaceTable({
                   userName={userName}
                   selectedProfessors={selectedRows}
                   fullSelectedProfessors={allDataSelectedRows}
+                  handleIsEditing={setIsEditing}
                 />
               </DialogContent>
             </Dialog>
@@ -300,10 +297,7 @@ export function WorkspaceTable({
       </div>
 
       <div
-        className="
-  flex flex-row justify-between   /* mobile: row + space between */
-  gap-2 mt-3
-  sm:justify-end sm:gap-3         /* desktop: right aligned */
+        className="flex flex-row justify-between gap-2 mt-3 sm:justify-end sm:gap-3        
 "
       >
         <button
