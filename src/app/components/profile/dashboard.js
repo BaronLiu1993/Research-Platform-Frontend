@@ -19,6 +19,7 @@ import DropdownInterests from "../dropdowns/dropdowninterests";
 import DropdownMajor from "../dropdowns/dropdownmajor";
 import DropdownYear from "../dropdowns/dropdownyear";
 import { DeleteFile } from "@/app/api/storage/deleteFile";
+import Image from "next/image";
 
 export default function Dashboard({ access, fileExists, profileData }) {
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
@@ -340,7 +341,13 @@ export default function Dashboard({ access, fileExists, profileData }) {
                 htmlFor="resume-upload"
                 className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
-                <div className="bg-gray-100 w-full h-[8rem]" />
+                <Image
+                  className="bg-gray-100 w-full h-[8rem]"
+                  src="/luncheon.svg"
+                  alt="resume upload background image"
+                  width={200}
+                  height={200}
+                />
                 <div>
                   <div className="flex items-center p-2 gap-2">
                     <Newspaper className="fill-blue-800 text-white h-4 w-4" />
@@ -381,7 +388,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
                         await handleDeleteResume();
                       }}
                     >
-                      <Trash2 className="stroke-1 h-5 w-5 hover:text-red-500" />
+                      <Trash2 className="stroke-2 h-5 w-5 text-white hover:text-red-500" />
                     </button>
                   </div>
                 ) : (
@@ -411,7 +418,15 @@ export default function Dashboard({ access, fileExists, profileData }) {
                 htmlFor="transcript-upload"
                 className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
-                <div className="bg-gray-100 w-full h-[8rem]" />
+                <Image
+                  className="w-full h-[8rem]"
+                  src="/walk.svg"
+                  alt="transcript upload background image"
+                  width={200}
+                  height={200}
+                  priority
+                />
+
                 <div>
                   <div className="flex items-center p-2 gap-2">
                     <Leaf className="fill-blue-800 text-white h-4 w-4" />
@@ -452,7 +467,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
                         await handleDeleteTranscript();
                       }}
                     >
-                      <Trash2 className="stroke-1 h-5 w-5 hover:text-red-500" />
+                      <Trash2 className="stroke-2 h-5 w-5 hover:text-red-500 text-black" />
                     </button>
                   </div>
                 ) : (

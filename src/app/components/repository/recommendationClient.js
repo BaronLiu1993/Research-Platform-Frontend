@@ -69,7 +69,6 @@ export default function RecommendationsClient({ matches, access }) {
     }
   }, [matches]);
 
- 
   if (!matches?.length) {
     return (
       <div className="p-6 text-sm text-neutral-600 bg-slate-50 border border-slate-200 rounded-lg">
@@ -197,20 +196,18 @@ export default function RecommendationsClient({ matches, access }) {
                   </Label>
                   <div className="flex flex-wrap gap-1.5">
                     {(response.research_interests || []).length ? (
-                      (response.research_interests || [])
-                        .slice(0, 40)
-                        .map((interest, i) => (
-                          <Badge
-                            key={`${interest}-${i}`}
-                            variant="secondary"
-                            className="text-xs bg-gray-50 text-gray-700 border-gray-200/80 px-2 py-0.5"
-                            title={interest}
-                          >
-                            <span className="truncate max-w-[10rem] inline-block align-middle">
-                              {interest}
-                            </span>
-                          </Badge>
-                        ))
+                      (response.research_interests || []).map((interest, i) => (
+                        <Badge
+                          key={`${interest}-${i}`}
+                          variant="secondary"
+                          className="text-xs bg-gray-50 text-gray-700 border-gray-200/80 px-2 py-0.5"
+                          title={interest}
+                        >
+                          <span className="inline-block align-middle">
+                            {interest}
+                          </span>
+                        </Badge>
+                      ))
                     ) : (
                       <p className="text-gray-400 text-xs">—</p>
                     )}
