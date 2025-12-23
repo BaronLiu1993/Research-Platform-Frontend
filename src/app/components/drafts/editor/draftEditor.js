@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import { DialogClose } from "@/shadcomponents/ui/dialog";
+import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import { toast } from "sonner";
 
 export default function DraftEditor({
@@ -26,10 +27,11 @@ export default function DraftEditor({
   userEmail,
   professorName,
   professorEmail,
+  handleIsEditing,
 }) {
-  
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const getEmailDrafts = async () => {
@@ -96,6 +98,7 @@ export default function DraftEditor({
 
   useEffect(() => {
     const handleEmailDraft = async () => {
+      setIsLoading(true);
       const response = await getEmailDrafts();
       if (response.success) {
         setSubject(response.data.subject);
@@ -104,6 +107,9 @@ export default function DraftEditor({
           editor.commands.setContent(response.data.html);
         }
       }
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
     };
     handleEmailDraft();
   }, [access, draftId, editor]);
@@ -139,8 +145,42 @@ export default function DraftEditor({
     }
   };
 
-  const generateSkeletonLoad = async () => {
-    
+  if (isLoading) {
+    return (
+      <div>
+        <div className="text-sm">
+          <div className="flex justify-between mx-4">
+            <div />
+            <div className="mx-2">
+              <Skeleton className="h-6 w-6 rounded-xs" />
+            </div>
+          </div>
+
+          <div className="flex flex-col">
+            <div className="flex gap-2 px-4 py-1 items-center">
+              <Skeleton className="h-4 w-24 rounded-xs" />
+              <Skeleton className="h-4 w-40 rounded-xs" />
+            </div>
+
+            <div className="px-4 py-1">
+              <Skeleton className="h-8 w-full rounded-xs" />
+            </div>
+          </div>
+        </div>
+
+        <div className="px-4 mt-2">
+          <Skeleton className="h-8 w-[220px] rounded-xs" />
+        </div>
+
+        <div className="px-4 mt-2">
+          <Skeleton className="h-[300px] w-full rounded-xs" />
+        </div>
+
+        <div className="font-main p-4 flex gap-4 items-center">
+          <Skeleton className="h-9 w-32 rounded-sm" />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -148,13 +188,13 @@ export default function DraftEditor({
       <div className="text-sm">
         <div className="flex justify-between mx-4">
           <div></div>
-          <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2">
+          <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2 cursor-pointer">
             <X className="h-6 w-6 p-1 rounded-xs" />
           </DialogClose>
         </div>
         <div className="flex flex-col">
           <div className="flex gap-2 px-4 py-1">
-          <h1 className="text-black">{professorName}</h1>
+            <h1 className="text-black">{professorName}</h1>
             <h2 className="text-[#787774]">{professorEmail}</h2>
           </div>
           <div className="flex gap-2 px-4 py-1">

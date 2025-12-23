@@ -27,7 +27,6 @@ import { GenerateSnippet } from "@/app/api/email/snippet/generateSnippet";
 import { toast } from "sonner";
 import { SyncVariables } from "@/app/api/email/snippet/syncVariables";
 import { GenerateVariablelessDrafts } from "@/app/api/email/draft/generateVariablelessDrafts";
-import { Button } from "@/shadcomponents/ui/button";
 
 export default function EmailEditor({
   access,
@@ -196,7 +195,10 @@ export default function EmailEditor({
             Draft Messages
           </Badge>
           <DialogClose asChild>
-            <button className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2 cursor-pointer" onClick={() => handleIsEditing(false)}>
+            <button
+              className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2 cursor-pointer"
+              onClick={() => handleIsEditing(false)}
+            >
               <X className="h-6 w-6 p-1 rounded-xs" />
             </button>
           </DialogClose>

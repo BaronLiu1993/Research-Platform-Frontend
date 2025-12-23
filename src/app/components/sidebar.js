@@ -58,7 +58,7 @@ const data = {
           title: "Inbox",
           url: "/inbox",
           icon: (
-            <InboxIcon className="h-6 w-6 bg-red-100 rounded-xs text-[#a23423] p-0.5" />
+            <InboxIcon className="h-6 w-6 bg-indigo-100 rounded-xs text-indigo-500 p-0.5" />
           ),
         },
         {
@@ -75,7 +75,7 @@ const data = {
 
 export function AppSidebar({ student_data, ...props }) {
   const [expanded, setExpanded] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <Sidebar className="w-[12rem] font-main" {...props}>
       <SidebarHeader className="font-main rounded-sm m-2">
@@ -145,10 +145,18 @@ export function AppSidebar({ student_data, ...props }) {
       <SidebarRail />
       <SidebarFooter>
         <Button
-          onClick={LogOut}
-          className="w-fit text-xs p-2 text-white bg-[#D44C47] hover:bg-red-500 cursor-pointer"
+          disabled={isLoading}
+          onClick={async () => {
+            try {
+              setIsLoading(true);
+              await LogOut();
+            } finally {
+              setIsLoading(false);
+            }
+          }}
+          className="w-fit text-xs p-2 text-white bg-[#D44C47] hover:bg-red-500 disabled:opacity-50 disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 cursor-pointer"
         >
-          Sign Out
+          {isLoading ? "Bye!..." : "Sign Out"}
         </Button>
       </SidebarFooter>
     </Sidebar>

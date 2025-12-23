@@ -53,7 +53,9 @@ const generateColumns = (
   handleSelectedRows,
   userName,
   userEmail,
-  selectedRows = []
+  selectedRows = [],
+  handleIsEditing,
+  isEditing
 ) => [
   {
     accessorKey: "checkbox",
@@ -139,12 +141,18 @@ const generateColumns = (
       return (
         <div className="flex justify-end items-center h-full pr-1">
           <Dialog>
-            <DialogTrigger className="flex gap-2 text-xs font-medium bg-orange-400 hover:bg-orange-500 cursor-pointer p-2 rounded-md text-white transition-colors truncate">
-              <Pencil className="stroke-1 h-4 w-4" />
-              Edit Draft
+            <DialogTrigger asChild>
+              <button
+                type="button"
+                className="flex items-center gap-2 text-xs font-medium bg-orange-400 hover:bg-orange-500 cursor-pointer p-2 rounded-md text-white transition-colors truncate disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300"
+              >
+                <Pencil className="stroke-1 h-4 w-4" />
+                Edit Draft
+              </button>
             </DialogTrigger>
+
             <DialogContent>
-              <DialogTitle></DialogTitle>
+              <DialogTitle />
               <DraftEditor
                 professorEmail={data.professor_email}
                 professorName={data.professor_name}
@@ -152,6 +160,7 @@ const generateColumns = (
                 draftId={data.draft_id}
                 userName={userName}
                 userEmail={userEmail}
+                handleIsEditing={handleIsEditing}
               />
             </DialogContent>
           </Dialog>

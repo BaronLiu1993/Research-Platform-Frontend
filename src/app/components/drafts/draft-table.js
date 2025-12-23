@@ -48,6 +48,7 @@ export function DraftsTable({
   const [selectedRows, setSelectedRows] = useState([]);
   const [pendingDelete, setPendingDelete] = useState(new Set());
   const [isSending, setIsSending] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setIsNavigationLoading(false);
@@ -105,7 +106,8 @@ export function DraftsTable({
         handleSelectedRows,
         userName,
         userEmail,
-        selectedRows
+        selectedRows,
+        setIsEditing
       ),
     [
       access,
@@ -115,6 +117,8 @@ export function DraftsTable({
       userName,
       userEmail,
       selectedRows,
+      setIsEditing,
+      isEditing
     ]
   );
 
