@@ -36,15 +36,7 @@ export default function Home() {
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-5xl sm:text-6xl font-playfair leading-tight">
-              <motion.span
-                className="inline-block font-vt text-2xl"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-              >
-                Palette🎨
-              </motion.span>
-              <span className="font-main z-10 block">
+              <span className="z-10 block">
                 <motion.span
                   className="inline-block font-playfair"
                   initial={{ opacity: 0, y: 30 }}
@@ -55,7 +47,7 @@ export default function Home() {
                 </motion.span>
                 <br />
                 <motion.span
-                  className="inline-block text-blue-900 font-playfair"
+                  className="inline-block text-blue-400 font-playfair"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
@@ -66,20 +58,20 @@ export default function Home() {
             </h1>
 
             <motion.div
-              className="mx-auto max-w-2xl"
+              className="mx-auto max-w-2xl mt-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
             >
               <p className="text-gray-800 text-lg font-medium font-main">
-                discover, outreach and land research internships with over 1000+
-                professors
+                discover, outreach, organise and land research internships with
+                over 1000+ professors all in one workspace
               </p>
 
               <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link href="/auth/signin">
                   <motion.button
-                    className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-black text-white border border-gray-300 py-2 px-3 inline-flex items-center justify-center whitespace-nowrap"
+                    className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-blue-500 text-white border border-gray-300 py-2 px-4 inline-flex items-center justify-center whitespace-nowrap"
                     role="button"
                     aria-label="Login"
                     initial={{ opacity: 0, y: 20 }}
@@ -122,25 +114,29 @@ export default function Home() {
             >
               <motion.div
                 variants={cardVariants}
-                className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
+                className="relative flex flex-col h-full gap-2 border border-gray-200 bg-white/40 p-6"
               >
-                <Database className="stroke-1 text-white fill-blue-900" />
-                <h3 className="text-lg font-semibold">Professor Board</h3>
+                <Database className="stroke-1 text-white fill-blue-500" />
+                <h3 className="text-lg font-semibold">
+                  Access to 1000+ Professors
+                </h3>
               </motion.div>
 
               <motion.div
                 variants={cardVariants}
                 className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
-                <Pencil className="stroke-1 text-white fill-blue-900" />
-                <h3 className="text-lg font-semibold">Drafting Tools</h3>
+                <Pencil className="stroke-1 text-white fill-blue-500" />
+                <h3 className="text-lg font-semibold">
+                  Tools for Drafting Emails
+                </h3>
               </motion.div>
 
               <motion.div
                 variants={cardVariants}
                 className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
-                <Mail className="stroke-1 text-white fill-blue-900" />
+                <Mail className="stroke-1 text-white fill-blue-500" />
                 <h3 className="text-lg font-semibold text-gray-700">
                   Send Emails On Mass
                 </h3>
@@ -150,8 +146,10 @@ export default function Home() {
                 variants={cardVariants}
                 className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
-                <Eye className="stroke-1 text-white fill-blue-900" />
-                <h3 className="text-lg font-semibold">Track Outreach</h3>
+                <Eye className="stroke-1 text-white fill-blue-500" />
+                <h3 className="text-lg font-semibold">
+                  Track and Organise Outreach
+                </h3>
               </motion.div>
             </motion.div>
           </div>
