@@ -34,7 +34,7 @@ export default function Home() {
     <div className="relative flex flex-col bg-white">
       <header className="relative z-10 flex flex-col items-center justify-center py-10">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-3xl text-center my-20">
             <h1 className="text-5xl sm:text-6xl font-playfair leading-tight">
               <span className="z-10 block">
                 <motion.span
