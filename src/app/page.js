@@ -190,23 +190,23 @@ export default function Home() {
         </motion.div>
       </div>
 
-      <footer className="bg-white font-light border-t mt-12 py-4">
+      <footer className="bg-white font-light flex border-t mt-12 py-4">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
           <div className="text-sm flex gap-4">
             <span>Made By Jie Xuan Liu</span>
-            <a className="underline hover:text-blue-700" href="/blog">
+            <a className="underline hover:text-blue-500" href="/blog">
               Engineering Blog
             </a>
           </div>
-          <div className="text-sm flex gap-4">
-            <span>Made By Jie Xuan Liu</span>
-            <a className="underline hover:text-blue-700" href="/blog">
-              Terms of Service
+        </div>
+        <div className="w-[20rem] flex gap-5">
+          <div className="text-sm w-fit flex gap-4">
+            <a className="underline hover:text-blue-500" href="/terms">
+              Terms of Use
             </a>
           </div>
           <div className="text-sm flex gap-4">
-            <span>Made By Jie Xuan Liu</span>
-            <a className="underline hover:text-blue-700" href="/blog">
+            <a className="underline hover:text-blue-500" href="/privacy">
               Privacy Policy
             </a>
           </div>
