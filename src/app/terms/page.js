@@ -180,7 +180,7 @@ export default async function Terms() {
           <p className="text-md mb-5">
             If you wish to make any use of the Services, Content, or Marks other
             than as set out in this section or elsewhere in our Legal Terms,
-            please address your request to: ____________. If we ever grant you
+            please address your request to: jiexuan55@gmail.com. If we ever grant you
             the permission to post, reproduce, or publicly display any part of
             our Services or Content, you must identify us as the owners or
             licensors of the Services, Content, or Marks and ensure that any
