@@ -47,7 +47,7 @@ export default function Home() {
                 </motion.span>
                 <br />
                 <motion.span
-                  className="inline-block text-blue-400 font-playfair"
+                  className="inline-block text-blue-500 font-playfair"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
@@ -114,7 +114,7 @@ export default function Home() {
             >
               <motion.div
                 variants={cardVariants}
-                className="relative flex flex-col h-full gap-2 border border-gray-200 bg-white/40 p-6"
+                className="relative flex rounded-md shadow-md flex-col h-full gap-2 border border-gray-200 bg-white/40 p-6"
               >
                 <Database className="stroke-1 text-white fill-blue-500" />
                 <h3 className="text-lg font-semibold">
@@ -124,7 +124,7 @@ export default function Home() {
 
               <motion.div
                 variants={cardVariants}
-                className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
+                className="relative gap-2 rounded-md shadow-md flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
                 <Pencil className="stroke-1 text-white fill-blue-500" />
                 <h3 className="text-lg font-semibold">
@@ -134,7 +134,7 @@ export default function Home() {
 
               <motion.div
                 variants={cardVariants}
-                className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
+                className="relative gap-2 rounded-md shadow-md flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
                 <Mail className="stroke-1 text-white fill-blue-500" />
                 <h3 className="text-lg font-semibold text-gray-700">
@@ -144,7 +144,7 @@ export default function Home() {
 
               <motion.div
                 variants={cardVariants}
-                className="relative flex h-full flex-col border border-gray-200 bg-white/40 p-6"
+                className="relative rounded-md gap-2 shadow-md flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
                 <Eye className="stroke-1 text-white fill-blue-500" />
                 <h3 className="text-lg font-semibold">
@@ -177,7 +177,7 @@ export default function Home() {
             <div className="flex gap-1 items-center">
               <div className="bg-white border-x border-gray-300 px-4 flex items-center">
                 <span className="text-xs font-main py-1 font-light text-gray-800">
-                  🎨 palette
+                  palette
                 </span>
               </div>
               <Plus className="stroke-1 h-4 w-4" />
@@ -195,7 +195,19 @@ export default function Home() {
           <div className="text-sm flex gap-4">
             <span>Made By Jie Xuan Liu</span>
             <a className="underline hover:text-blue-700" href="/blog">
-              Click Here To Read Engineering Blog Post
+              Engineering Blog
+            </a>
+          </div>
+          <div className="text-sm flex gap-4">
+            <span>Made By Jie Xuan Liu</span>
+            <a className="underline hover:text-blue-700" href="/blog">
+              Terms of Service
+            </a>
+          </div>
+          <div className="text-sm flex gap-4">
+            <span>Made By Jie Xuan Liu</span>
+            <a className="underline hover:text-blue-700" href="/blog">
+              Privacy Policy
             </a>
           </div>
         </div>
