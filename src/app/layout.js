@@ -9,8 +9,7 @@ import {
 } from "next/font/google";
 import { Toaster } from "@/shadcomponents/ui/sonner";
 import "./globals.css";
-import { SpeedInsights } from '@vercel/speed-insights/next';
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,8 +49,9 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "palette",
-  description: "Research Internship Outreach App for University Students",
+  title: "Palette",
+  description:
+    "Palette is your all-in-one research internship outreach platform for sourcing leads, sending emails, tracking follow-ups, and organizing your pipeline in one place.",
 };
 
 export default function RootLayout({ children }) {

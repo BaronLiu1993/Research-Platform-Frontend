@@ -7,9 +7,7 @@ import {
   Eye,
   LogIn,
   Mail,
-  Map,
   PanelLeft,
-  Pen,
   Pencil,
   Plus,
 } from "lucide-react";
