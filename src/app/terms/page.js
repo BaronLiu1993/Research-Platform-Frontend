@@ -27,7 +27,7 @@ export default async function Terms() {
           </BreadcrumbSeparator>
           <BreadcrumbItem>
             <BreadcrumbPage className="font-main font-medium text-xs text-[#37352F] hover:underline cursor-pointer flex items-center gap-2">
-              <Newspaper className="text-blue-500 h-4 w-4" />
+              <Newspaper className="text-[#5AC2FF] h-4 w-4" />
               Terms of Use
             </BreadcrumbPage>
           </BreadcrumbItem>

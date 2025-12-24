@@ -82,15 +82,15 @@ export default async function Profile({ searchParams }) {
                       href="/repository"
                       className="font-main flex items-center hover:underline gap-2 font-medium text-xs text-[#37352F]"
                     >
-                      <Laptop className="h-5 w-5 text-blue-700" />
-                      Home
+                      <Laptop className="h-5 w-5 text-[#5AC2FF]" />
+                      Repository
                     </Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator>/</BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <BreadcrumbPage className="font-main flex cursor-pointer items-center hover:underline gap-2 font-medium text-xs text-[#37352F]">
-                    <PersonStanding className="h-5 w-5 text-blue-700" />
+                    <PersonStanding className="h-5 w-5 text-[#5AC2FF]" />
                     Profile
                   </BreadcrumbPage>
                 </BreadcrumbItem>
