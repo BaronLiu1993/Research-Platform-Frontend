@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import { motion } from "motion/react";
 import Image from "next/image";
+import Video from "./components/video/video";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -33,14 +34,14 @@ const listVariants = {
 export default function Home() {
   return (
     <div className="relative flex flex-col bg-white">
-      <div className = "flex p-4 items-center">
+      <div className="flex p-4 items-center">
         <Image src="/logo.svg" width={50} height={50} alt="logo" />
-        <span className = "font-playfair text-xl font-medium">palette</span>
+        <span className="font-playfair text-2xl font-medium">palette</span>
       </div>
       <header className="relative z-10 flex flex-col items-center justify-center py-10">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
-          <div className="mx-auto max-w-3xl text-center my-20">
-            <h1 className="text-5xl sm:text-6xl font-playfair leading-tight">
+          <div className="mx-auto max-w-3xl text-center my-5">
+            <h1 className="text-6xl sm:text-6xl font-playfair leading-tight">
               <span className="z-10 block">
                 <motion.span
                   className="inline-block font-playfair"
@@ -69,7 +70,7 @@ export default function Home() {
               transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
             >
               <p className="text-gray-800 text-lg font-medium font-main">
-                discover, outreach, organise and land research internships with
+                discover, outreach, organise and land your next dream research internships with
                 over 1000+ professors all in one workspace
               </p>
 
@@ -122,7 +123,7 @@ export default function Home() {
                 className="relative flex rounded-md shadow-md flex-col h-full gap-2 border border-gray-200 bg-white/40 p-6"
               >
                 <Database className="stroke-1 text-white fill-[#5AC2FF]" />
-                <h3 className="text-lg font-semibold">
+                <h3 className="text-sm font-semibold">
                   Access to 1000+ Professors
                 </h3>
               </motion.div>
@@ -132,8 +133,8 @@ export default function Home() {
                 className="relative gap-2 rounded-md shadow-md flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
                 <Pencil className="stroke-1 text-white fill-[#5AC2FF]" />
-                <h3 className="text-lg font-semibold">
-                  Tools for Drafting Emails
+                <h3 className="text-sm font-semibold">
+                  Tools for Drafting Mass Emails
                 </h3>
               </motion.div>
 
@@ -142,18 +143,8 @@ export default function Home() {
                 className="relative gap-2 rounded-md shadow-md flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
                 <Mail className="stroke-1 text-white fill-[#5AC2FF]" />
-                <h3 className="text-lg font-semibold text-gray-700">
-                  Send Emails On Mass
-                </h3>
-              </motion.div>
-
-              <motion.div
-                variants={cardVariants}
-                className="relative rounded-md gap-2 shadow-md flex h-full flex-col border border-gray-200 bg-white/40 p-6"
-              >
-                <Eye className="stroke-1 text-white fill-[#5AC2FF]" />
-                <h3 className="text-lg font-semibold">
-                  Track and Organise Outreach
+                <h3 className="text-sm font-semibold text-gray-700">
+                  Track and Organise All Your Outreach Emails
                 </h3>
               </motion.div>
             </motion.div>
@@ -161,7 +152,7 @@ export default function Home() {
         </section>
 
         <motion.div
-          className="flex-1 bg-white rounded-sm shadow-2xl overflow-hidden"
+          className="flex-1 bg-white rounded-sm h-fit shadow-2xl overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
@@ -189,8 +180,8 @@ export default function Home() {
             </div>
           </div>
 
-          <section className="p-10 min-h-96 bg-white">
-            <div></div>
+          <section className="bg-white">
+            <Video />
           </section>
         </motion.div>
       </div>
