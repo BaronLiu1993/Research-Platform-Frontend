@@ -84,7 +84,7 @@ export default async function Workspace({ searchParams }) {
                       href="/repository"
                       className="font-main font-medium text-xs flex items-center hover:underline gap-2 text-[#37352F]"
                     >
-                      <Laptop className="h-5 w-5 text-blue-700" />
+                      <Laptop className="h-5 w-5 text-[#5AC2FF]" />
                       Repository
                     </Link>
                   </BreadcrumbLink>
@@ -96,7 +96,7 @@ export default async function Workspace({ searchParams }) {
                       href="/workspace"
                       className="font-main font-medium text-xs flex items-center hover:underline gap-2 text-[#37352F]"
                     >
-                      <MapIcon className="h-5 w-5 text-blue-700" />
+                      <MapIcon className="h-5 w-5 text-[#5AC2FF]" />
                       Workspace
                     </Link>
                   </BreadcrumbPage>

@@ -23,7 +23,7 @@ export default async function SignIn() {
               href="/"
               className="flex items-center font-medium text-xs text-[#37352F] gap-2 hover:underline"
             >
-              <Laptop className="rounded-xs text-white fill-blue-700 h-5 w-5" />
+              <Laptop className="rounded-xs text-white fill-[#5AC2FF] h-5 w-5" />
               Home
             </BreadcrumbLink>
           </BreadcrumbItem>
@@ -32,7 +32,7 @@ export default async function SignIn() {
           </BreadcrumbSeparator>
           <BreadcrumbItem>
             <BreadcrumbPage className="font-main font-medium text-xs text-[#37352F] hover:underline cursor-pointer flex items-center gap-2">
-              <LockKeyhole className="text-blue-700 h-4 w-4" />
+              <LockKeyhole className="text-[#5AC2FF] h-4 w-4" />
               Login
             </BreadcrumbPage>
           </BreadcrumbItem>

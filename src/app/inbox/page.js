@@ -77,7 +77,7 @@ export default async function Inbox({ searchParams }) {
                       href="/repository"
                       className="font-main flex items-center hover:underline gap-2 font-medium text-xs text-[#37352F]"
                     >
-                      <Laptop className="h-5 w-5 text-blue-700" />
+                      <Laptop className="h-5 w-5 text-[#5AC2FF]" />
                       Repository
                     </Link>
                   </BreadcrumbLink>
@@ -85,7 +85,7 @@ export default async function Inbox({ searchParams }) {
                 <BreadcrumbSeparator>/</BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <BreadcrumbPage className="font-main flex cursor-pointer items-center hover:underline gap-2 font-medium text-xs text-[#37352F]">
-                    <InboxIcon className="h-5 w-5 text-blue-700" />
+                    <InboxIcon className="h-5 w-5 text-[#5AC2FF]" />
                     Inbox
                   </BreadcrumbPage>
                 </BreadcrumbItem>

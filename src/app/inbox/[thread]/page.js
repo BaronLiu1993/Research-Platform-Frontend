@@ -80,7 +80,7 @@ export default async function Inbox({ searchParams }) {
                       href="/"
                       className="font-main font-medium text-xs flex items-center hover:underline gap-2 text-[#37352F]"
                     >
-                      <Laptop className="h-5 w-5 text-blue-700" />
+                      <Laptop className="h-5 w-5 text-[#5AC2FF]" />
                       Home
                     </Link>
                   </BreadcrumbLink>
@@ -92,7 +92,7 @@ export default async function Inbox({ searchParams }) {
                       href="/inbox"
                       className="font-main font-medium text-xs flex items-center hover:underline gap-2 text-[#37352F]"
                     >
-                      <InboxIcon className="h-5 w-5 text-blue-700" />
+                      <InboxIcon className="h-5 w-5 text-[#5AC2FF]" />
                       Inbox
                     </Link>
                   </BreadcrumbPage>
@@ -100,7 +100,7 @@ export default async function Inbox({ searchParams }) {
                 <BreadcrumbSeparator>/</BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <BreadcrumbPage className="font-main flex cursor-pointer items-center hover:underline gap-2 font-medium text-xs text-[#37352F]">
-                    <Mail className="h-5 w-5 text-blue-700" />
+                    <Mail className="h-5 w-5 text-[#5AC2FF]" />
                     Thread
                   </BreadcrumbPage>
                 </BreadcrumbItem>
@@ -115,7 +115,7 @@ export default async function Inbox({ searchParams }) {
               userEmail={parsedUserProfile.student_email}
               userName={parsedUserProfile.student_name}
               professorName={name}
-            />
+            /> 
           </div>
         </SidebarInset>
       </SidebarProvider>

@@ -77,7 +77,7 @@ export default async function Drafts({ searchParams }) {
                       href="/repository"
                       className="font-main font-medium text-xs flex items-center hover:underline gap-2 text-[#37352F]"
                     >
-                      <Laptop className="h-5 w-5 text-blue-700" />
+                      <Laptop className="h-5 w-5 text-[#5AC2FF]" />
                       Repository
                     </Link>
                   </BreadcrumbLink>
@@ -85,7 +85,7 @@ export default async function Drafts({ searchParams }) {
                 <BreadcrumbSeparator>/</BreadcrumbSeparator>
                 <BreadcrumbItem>
                   <BreadcrumbPage className="font-main flex font-medium text-xs cursor-pointer items-center hover:underline gap-2 text-[#37352F]">
-                    <Pen className="h-5 w-5 text-blue-700" />
+                    <Pen className="h-5 w-5 text-[#5AC2FF]" />
                     Drafts
                   </BreadcrumbPage>
                 </BreadcrumbItem>

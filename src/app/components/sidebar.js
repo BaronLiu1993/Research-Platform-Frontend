@@ -20,7 +20,6 @@ import {
   ChevronDown,
   Library,
   LayoutDashboard,
-  Inbox,
   InboxIcon,
   Pen,
   PersonStanding,
@@ -156,7 +155,7 @@ export function AppSidebar({ student_data, ...props }) {
           }}
           className="w-fit text-xs p-2 text-white bg-[#D44C47] hover:bg-red-500 disabled:opacity-50 disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 cursor-pointer"
         >
-          {isLoading ? "Bye!..." : "Sign Out"}
+          {isLoading ? "Signing Out..." : "Sign Out"}
         </Button>
       </SidebarFooter>
     </Sidebar>

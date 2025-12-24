@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
+import Image from "next/image";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -32,6 +33,10 @@ const listVariants = {
 export default function Home() {
   return (
     <div className="relative flex flex-col bg-white">
+      <div className = "flex p-4 items-center">
+        <Image src="/logo.svg" width={50} height={50} alt="logo" />
+        <span className = "font-playfair text-xl font-medium">palette</span>
+      </div>
       <header className="relative z-10 flex flex-col items-center justify-center py-10">
         <div className="mx-auto w-full max-w-7xl px-6 sm:px-10">
           <div className="mx-auto max-w-3xl text-center my-20">
@@ -47,7 +52,7 @@ export default function Home() {
                 </motion.span>
                 <br />
                 <motion.span
-                  className="inline-block text-blue-500 font-playfair"
+                  className="inline-block text-[#5AC2FF] font-playfair"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
@@ -71,7 +76,7 @@ export default function Home() {
               <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link href="/auth/signin">
                   <motion.button
-                    className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-blue-500 text-white border border-gray-300 py-2 px-4 inline-flex items-center justify-center whitespace-nowrap"
+                    className="font-main rounded-md gap-2 cursor-pointer font-medium text-lg bg-[#5AC2FF] text-white border border-gray-300 py-2 px-4 inline-flex items-center justify-center whitespace-nowrap"
                     role="button"
                     aria-label="Login"
                     initial={{ opacity: 0, y: 20 }}
@@ -116,7 +121,7 @@ export default function Home() {
                 variants={cardVariants}
                 className="relative flex rounded-md shadow-md flex-col h-full gap-2 border border-gray-200 bg-white/40 p-6"
               >
-                <Database className="stroke-1 text-white fill-blue-500" />
+                <Database className="stroke-1 text-white fill-[#5AC2FF]" />
                 <h3 className="text-lg font-semibold">
                   Access to 1000+ Professors
                 </h3>
@@ -126,7 +131,7 @@ export default function Home() {
                 variants={cardVariants}
                 className="relative gap-2 rounded-md shadow-md flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
-                <Pencil className="stroke-1 text-white fill-blue-500" />
+                <Pencil className="stroke-1 text-white fill-[#5AC2FF]" />
                 <h3 className="text-lg font-semibold">
                   Tools for Drafting Emails
                 </h3>
@@ -136,7 +141,7 @@ export default function Home() {
                 variants={cardVariants}
                 className="relative gap-2 rounded-md shadow-md flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
-                <Mail className="stroke-1 text-white fill-blue-500" />
+                <Mail className="stroke-1 text-white fill-[#5AC2FF]" />
                 <h3 className="text-lg font-semibold text-gray-700">
                   Send Emails On Mass
                 </h3>
@@ -146,7 +151,7 @@ export default function Home() {
                 variants={cardVariants}
                 className="relative rounded-md gap-2 shadow-md flex h-full flex-col border border-gray-200 bg-white/40 p-6"
               >
-                <Eye className="stroke-1 text-white fill-blue-500" />
+                <Eye className="stroke-1 text-white fill-[#5AC2FF]" />
                 <h3 className="text-lg font-semibold">
                   Track and Organise Outreach
                 </h3>
