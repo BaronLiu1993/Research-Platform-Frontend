@@ -17,7 +17,7 @@ import {
 } from "@/shadcomponents/ui/sidebar";
 
 import { AppSidebar } from "../components/sidebar";
-import { Laptop, MapIcon, Pen, PlaneLanding, Workflow } from "lucide-react";
+import { Laptop, Pen, PlaneLanding } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import { DraftsTable } from "../components/drafts/draft-table";
 

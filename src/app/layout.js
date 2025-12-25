@@ -51,7 +51,7 @@ const inter = Inter({
 export const metadata = {
   title: "Palette",
   description:
-    "Palette is your all-in-one research internship outreach platform for sourcing leads, sending emails, tracking follow-ups, and organizing your pipeline in one place.",
+    "Palette is your all-in-one research internship outreach platform for sourcing leads, sending emails, tracking follow-ups, and organizing your pipeline in one place. Land your dream research internship with Palette!",
 };
 
 export default function RootLayout({ children }) {

@@ -70,8 +70,8 @@ export default function Home() {
               transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
             >
               <p className="text-gray-800 text-lg font-medium font-main">
-                discover, outreach, organise and land your next dream research internships with
-                over 1000+ professors all in one workspace
+                discover, outreach, organise and land your next dream research
+                internships with over 1000+ professors all in one workspace
               </p>
 
               <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -152,13 +152,21 @@ export default function Home() {
         </section>
 
         <motion.div
-          className="flex-1 bg-white rounded-sm h-fit shadow-2xl overflow-hidden"
+          className="flex-1 bg-white rounded-sm h-fit shadow-2xl overflow-visible"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
         >
-          <div className="bg-gray-100 w-full border-b border-gray-300 px-4 flex items-center gap-3">
-            <div className="flex gap-2">
+          <div
+            className="
+      relative bg-gray-100 w-full border-b border-gray-300 px-4
+      flex items-center gap-3 z-20
+      after:absolute after:left-0 after:bottom-[-10px]
+      after:w-full after:h-[10px]
+      after:bg-gray-100 jusify-center
+    "
+          >
+            <div className="flex gap-2 py-2">
               <button className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600" />
               <button className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600" />
               <button className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600" />
@@ -169,18 +177,9 @@ export default function Home() {
               <ChevronLeft className="stroke-1 h-4 w-4" />
               <ChevronRight className="stroke-1 h-4 w-4" />
             </div>
-
-            <div className="flex gap-1 items-center">
-              <div className="bg-white border-x border-gray-300 px-4 flex items-center">
-                <span className="text-xs font-main py-1 font-light text-gray-800">
-                  palette
-                </span>
-              </div>
-              <Plus className="stroke-1 h-4 w-4" />
-            </div>
           </div>
 
-          <section className="bg-white">
+          <section className="bg-white relative z-10">
             <Video />
           </section>
         </motion.div>

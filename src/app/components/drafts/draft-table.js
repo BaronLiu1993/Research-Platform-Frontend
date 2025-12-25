@@ -16,6 +16,14 @@ import {
 } from "@tanstack/react-table";
 
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/shadcomponents/ui/dropdown-menu";
+
+import {
   Table,
   TableBody,
   TableCell,
@@ -27,7 +35,13 @@ import { Input } from "@/shadcomponents/ui/input";
 import { toast } from "sonner";
 import { Button } from "@/shadcomponents/ui/button";
 import { SendDraftsWithAttachments } from "@/app/api/email/send/sendDraftWithAttachments";
-import { MailCheck, Paperclip } from "lucide-react";
+import {
+  ArrowRightFromLine,
+  MailCheck,
+  Newspaper,
+  Paperclip,
+  School,
+} from "lucide-react";
 
 export function DraftsTable({
   data = [],
@@ -118,7 +132,7 @@ export function DraftsTable({
       userEmail,
       selectedRows,
       setIsEditing,
-      isEditing
+      isEditing,
     ]
   );
 
@@ -187,7 +201,10 @@ export function DraftsTable({
     }
   };
 
-  const handleSendDraftsWithAttachments = async () => {
+  const handleSendDraftsWithAttachments = async ({
+    sendResume,
+    sendTranscript,
+  }) => {
     toast.dismiss();
 
     if (!selectedRows.length) {
@@ -205,6 +222,8 @@ export function DraftsTable({
         professorData: selectedRows,
         access,
         labelId,
+        sendResume,
+        sendTranscript,
       });
 
       if (response?.success) {
@@ -246,14 +265,85 @@ export function DraftsTable({
                 <MailCheck className="h-4 w-4" />
                 <span>Send Emails</span>
               </Button>
-              <Button
-                className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#9065B0] transition-colors hover:bg-[#9A6EC0] disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
-                disabled={selectedRows.length === 0 || isSending}
-                onClick={handleSendDraftsWithAttachments}
-              >
-                <Paperclip className="h-4 w-4" />
-                <span>Send With Attachments</span>
-              </Button>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#9065B0] transition-colors hover:bg-[#9A6EC0] disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
+                    disabled={selectedRows.length === 0 || isSending}
+                  >
+                    <Paperclip className="h-4 w-4" />
+                    <span>Send With Attachments</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="
+                    w-56 font-main
+                    [&_[role=menuitem]]:h-auto
+                    [&_[role=menuitem]]:items-center
+                    [&_[role=menuitem]]:gap-4
+                    [&_[role=menuitem]]:overflow-visible
+                    [&_[role=menuitem]_svg]:!w-10
+                    [&_[role=menuitem]_svg]:!h-10
+                  "
+                  align="start"
+                >
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      asChild
+                      className="text-xs font-light cursor-pointer focus:bg-gray-100"
+                    >
+                      <button
+                        onClick={() =>
+                          handleSendDraftsWithAttachments({
+                            sendResume: true,
+                            sendTranscript: false,
+                          })
+                        }
+                        className="w-full flex items-center gap-3 p-2 hover:bg-gray-100"
+                      >
+                        <Newspaper className="p-2 rounded-sm border h-12 w-12 stroke-[1px] text-violet-500 shrink-0" />
+                        Only Resume
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      asChild
+                      className="text-xs hover:bg-gray-100 font-light cursor-pointer"
+                    >
+                      <button
+                        onClick={() =>
+                          handleSendDraftsWithAttachments({
+                            sendResume: false,
+                            sendTranscript: true,
+                          })
+                        }
+                        className="w-full flex items-center gap-3 p-2 hover:bg-gray-100"
+                      >
+                        <School className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-blue-500" />
+                        Only Transcript
+                      </button>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                      asChild
+                      className="text-xs hover:bg-gray-100 font-light cursor-pointer"
+                    >
+                      <button
+                        onClick={() =>
+                          handleSendDraftsWithAttachments({
+                            sendResume: true,
+                            sendTranscript: true,
+                          })
+                        }
+                        className="w-full flex items-center gap-3 p-2 hover:bg-gray-100"
+                      >
+                        <ArrowRightFromLine className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-emerald-500" />
+                        Transcript + Resume
+                      </button>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>

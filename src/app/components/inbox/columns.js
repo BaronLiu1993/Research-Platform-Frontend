@@ -27,7 +27,7 @@ async function markSeen({ threadId, access, status }) {
       return;
     }
   } catch (err) {
-    console.log(err);
+    
   }
 }
 
