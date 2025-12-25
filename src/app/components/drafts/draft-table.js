@@ -3,9 +3,9 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SendDrafts } from "@/app/api/email/send/sendDraft";
+import { SendDraftsWithAttachments } from "@/app/api/email/send/sendDraftWithAttachments";
 
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
-
 import {
   flexRender,
   getCoreRowModel,
@@ -31,10 +31,11 @@ import {
   TableRow,
   TableHead,
 } from "@/shadcomponents/ui/table";
+
 import { Input } from "@/shadcomponents/ui/input";
 import { toast } from "sonner";
 import { Button } from "@/shadcomponents/ui/button";
-import { SendDraftsWithAttachments } from "@/app/api/email/send/sendDraftWithAttachments";
+
 import {
   ArrowRightFromLine,
   MailCheck,
@@ -51,14 +52,16 @@ export function DraftsTable({
   userName,
   userEmail,
   labelId,
+  fileExists,
 }) {
   const router = useRouter();
   const params = useSearchParams();
+
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [isNavigationLoading, setIsNavigationLoading] = useState(false);
-  const [rows, setRows] = useState(data);
+  const [removedIds, setRemovedIds] = useState(() => new Set());
   const [selectedRows, setSelectedRows] = useState([]);
   const [pendingDelete, setPendingDelete] = useState(new Set());
   const [isSending, setIsSending] = useState(false);
@@ -66,50 +69,51 @@ export function DraftsTable({
 
   useEffect(() => {
     setIsNavigationLoading(false);
-  }, [data]);
+    setRemovedIds(new Set());
+    setSelectedRows([]);
+    setPendingDelete(new Set());
+  }, [pageNumber]);
 
-  useEffect(() => setRows(data), [data]);
+  const rows = useMemo(() => {
+    if (!Array.isArray(data) || data.length === 0) return [];
+    if (!removedIds.size) return data;
+    return data.filter((r) => !removedIds.has(r.id));
+  }, [data, removedIds]);
 
-  const handleSelectedRows = useCallback(
-    (prof) => {
-      setSelectedRows((prev) => {
-        const alreadySelected = prev.some((p) => p.id === prof.id);
-        if (alreadySelected) {
-          return prev.filter((p) => p.id !== prof.id);
-        }
+  const handleSelectedRows = useCallback((prof) => {
+    setSelectedRows((prev) => {
+      const alreadySelected = prev.some((p) => p.id === prof.id);
+      if (alreadySelected) return prev.filter((p) => p.id !== prof.id);
 
-        if (prev.length >= 5) {
-          toast.error("You can only select up to 5 professors.");
-          return prev;
-        }
-        return [...prev, prof];
-      });
-    },
-    [setSelectedRows]
-  );
-
-  const onRemove = useCallback(
-    async (id) => {
-      const prev = rows;
-      setPendingDelete((s) => new Set(s).add(id));
-      setRows((prev) => prev.filter((r) => r.id !== id));
-
-      try {
-        setSelectedRows((prevSelected) =>
-          prevSelected.filter((r) => r.id !== id)
-        );
-      } catch (e) {
-        setRows(prev);
-      } finally {
-        setPendingDelete((s) => {
-          const next = new Set(s);
-          next.delete(id);
-          return next;
-        });
+      if (prev.length >= 5) {
+        toast.error("You can only select up to 5 professors.");
+        return prev;
       }
-    },
-    [rows, access]
-  );
+      return [...prev, prof];
+    });
+  }, []);
+
+  const onRemove = useCallback(async (id) => {
+    setPendingDelete((s) => {
+      const next = new Set(s);
+      next.add(id);
+      return next;
+    });
+
+    setRemovedIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+
+    setSelectedRows((prevSelected) => prevSelected.filter((r) => r.id !== id));
+
+    setPendingDelete((s) => {
+      const next = new Set(s);
+      next.delete(id);
+      return next;
+    });
+  }, []);
 
   const columns = useMemo(
     () =>
@@ -131,7 +135,7 @@ export function DraftsTable({
       userName,
       userEmail,
       selectedRows,
-      setIsEditing,
+      generateColumns,
       isEditing,
     ]
   );
@@ -141,7 +145,6 @@ export function DraftsTable({
       if (isNavigationLoading) return;
 
       setIsNavigationLoading(true);
-
       window.scrollTo({ top: 0, behavior: "smooth" });
 
       const next = new URLSearchParams(params?.toString());
@@ -165,6 +168,19 @@ export function DraftsTable({
     state: { sorting, columnFilters, columnVisibility },
   });
 
+  const removeSelectedFromUI = useCallback(() => {
+    const idsToRemove = new Set(selectedRows.map((r) => r.id));
+
+    setRemovedIds((prev) => {
+      const next = new Set(prev);
+      idsToRemove.forEach((id) => next.add(id));
+      return next;
+    });
+
+    setSelectedRows([]);
+    setPendingDelete(new Set());
+  }, [selectedRows]);
+
   const handleSendDrafts = async () => {
     toast.dismiss();
 
@@ -187,14 +203,11 @@ export function DraftsTable({
 
       if (response?.success) {
         toast.success("Sent Emails!", { id: tId });
-        const idsToRemove = new Set(selectedRows.map((r) => r.id));
-        setRows((prev) => prev.filter((r) => !idsToRemove.has(r.id)));
-        setSelectedRows([]);
-        setPendingDelete(new Set());
+        removeSelectedFromUI();
       } else {
         toast.error(response?.message || "Failed To Send Drafts", { id: tId });
       }
-    } catch (e) {
+    } catch {
       toast.error("Failed To Send Drafts", { id: tId });
     } finally {
       setIsSending(false);
@@ -207,6 +220,14 @@ export function DraftsTable({
   }) => {
     toast.dismiss();
 
+    if (fileExists?.resumeExists === false && sendResume === true) {
+      toast.error("Missing Resume...");
+      return;
+    }
+    if (fileExists?.transcriptExists === false && sendTranscript === true) {
+      toast.error("Missing Transcript...");
+      return;
+    }
     if (!selectedRows.length) {
       toast.error("Select a Professor!");
       return;
@@ -228,14 +249,11 @@ export function DraftsTable({
 
       if (response?.success) {
         toast.success("Sent!", { id: tId });
-        const idsToRemove = new Set(selectedRows.map((r) => r.id));
-        setRows((prev) => prev.filter((r) => !idsToRemove.has(r.id)));
-        setSelectedRows([]);
-        setPendingDelete(new Set());
+        removeSelectedFromUI();
       } else {
         toast.error(response?.message || "Failed To Send Drafts", { id: tId });
       }
-    } catch (e) {
+    } catch {
       toast.error("Failed To Send Drafts", { id: tId });
     } finally {
       setIsSending(false);
@@ -276,6 +294,7 @@ export function DraftsTable({
                     <span>Send With Attachments</span>
                   </Button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent
                   className="
                     w-56 font-main
@@ -306,6 +325,7 @@ export function DraftsTable({
                         Only Resume
                       </button>
                     </DropdownMenuItem>
+
                     <DropdownMenuItem
                       asChild
                       className="text-xs hover:bg-gray-100 font-light cursor-pointer"
@@ -319,7 +339,7 @@ export function DraftsTable({
                         }
                         className="w-full flex items-center gap-3 p-2 hover:bg-gray-100"
                       >
-                        <School className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-blue-500" />
+                        <School className="p-2 rounded-sm border h-12 w-12 stroke-[1px] text-blue-500 shrink-0" />
                         Only Transcript
                       </button>
                     </DropdownMenuItem>
@@ -337,7 +357,7 @@ export function DraftsTable({
                         }
                         className="w-full flex items-center gap-3 p-2 hover:bg-gray-100"
                       >
-                        <ArrowRightFromLine className="p-2 rounded-sm border-1 h-12 w-12 stroke-[1px] text-emerald-500" />
+                        <ArrowRightFromLine className="p-2 rounded-sm border h-12 w-12 stroke-[1px] text-emerald-500 shrink-0" />
                         Transcript + Resume
                       </button>
                     </DropdownMenuItem>
@@ -347,6 +367,7 @@ export function DraftsTable({
             </div>
           </div>
         </div>
+
         <Table className="text-sm min-w-full rounded-xs">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -374,14 +395,15 @@ export function DraftsTable({
                       {sortDir === "asc"
                         ? " 🔼"
                         : sortDir === "desc"
-                          ? " 🔽"
-                          : ""}
+                        ? " 🔽"
+                        : ""}
                     </TableHead>
                   );
                 })}
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody aria-busy={isNavigationLoading}>
             {isNavigationLoading ? (
               Array.from({ length: 8 }).map((_, r) => (

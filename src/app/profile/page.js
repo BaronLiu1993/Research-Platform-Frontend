@@ -41,7 +41,7 @@ export default async function Profile({ searchParams }) {
 
   let parsedUserProfile = {};
   let profileData = {}
-  let fileExists = [];
+  let fileExists = {};
 
   try {
     const [fileRes, profileRes, profileDataRes] = await Promise.all([

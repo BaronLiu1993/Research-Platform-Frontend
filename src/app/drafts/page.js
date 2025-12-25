@@ -42,13 +42,20 @@ export default async function Drafts({ searchParams }) {
     headers: access ? { Authorization: `Bearer ${access}` } : {},
   };
 
+  const fileFetchOpts = {
+    method: "GET",
+    headers: access ? { Authorization: `Bearer ${access}` } : {},
+  };
+
   let draftsData = [];
   let parsedUserProfile = {};
+  let fileExists = {};
 
   try {
-    const [profileRes, draftsRes] = await Promise.all([
+    const [profileRes, draftsRes, fileRes] = await Promise.all([
       fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
       fetch(`${API_BASE}/email/get-drafts`, draftsFetchOpts),
+      fetch(`${API_BASE}/storage/check-file-existance`, fileFetchOpts),
     ]);
 
     if (profileRes.ok) {
@@ -58,6 +65,11 @@ export default async function Drafts({ searchParams }) {
     if (draftsRes.ok) {
       draftsData = await draftsRes.json();
     }
+
+    if (fileRes.ok) {
+      fileExists = await fileRes.json();
+    }
+
   } catch {
     //log with telemetry
   }
@@ -158,6 +170,7 @@ export default async function Drafts({ searchParams }) {
                     data={draftsData.data}
                     pageNumber={pageNumber}
                     access={access}
+                    fileExists={fileExists}
                     userName={parsedUserProfile.student_name}
                     userEmail={parsedUserProfile.student_email}
                     labelId={parsedUserProfile.label_id}

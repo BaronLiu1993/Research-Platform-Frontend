@@ -26,6 +26,7 @@ import {
 } from "@/shadcomponents/ui/table";
 import { Input } from "@/shadcomponents/ui/input";
 import { toast } from "sonner";
+
 import {
   Dialog,
   DialogContent,
@@ -45,65 +46,88 @@ export function WorkspaceTable({
 }) {
   const router = useRouter();
   const params = useSearchParams();
-  useEffect(() => {
-    setIsNavigationLoading(false);
-  }, [data]);
-
-  useEffect(() => setRows(data), [data]);
 
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [isNavigationLoading, setIsNavigationLoading] = useState(false);
-  const [rows, setRows] = useState(data);
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [allDataSelectedRows, setAllDataSelectedRows] = useState([]);
+
+
+  const [removedIds, setRemovedIds] = useState(() => new Set());
+
+  const [selectedRows, setSelectedRows] = useState([]); 
+  const [allDataSelectedRows, setAllDataSelectedRows] = useState([]); 
   const [pendingDelete, setPendingDelete] = useState(new Set());
   const [isEditing, setIsEditing] = useState(false);
+
   const isSelectionLimitReached = allDataSelectedRows.length >= 5;
 
-  const handleSelectedAllRowData = (profObj) => {
-    try {
-      setAllDataSelectedRows((prev) => {
-        const alreadySelected = prev.some((item) => item.id === profObj.id);
-        if (alreadySelected) {
-          return prev.filter((item) => item.id !== profObj.id);
-        } else if (prev.length >= 5) {
-          toast.error("You Can Only Select Up To 5 Professors");
-          return prev;
-        } else {
-          return [...prev, profObj];
-        }
-      });
-    } catch (error) {}
-  };
+  useEffect(() => {
+    setIsNavigationLoading(false);
+    setRemovedIds(new Set());
+    setSelectedRows([]);
+    setAllDataSelectedRows([]);
+    setPendingDelete(new Set());
+  }, [pageNumber]);
 
-  const handleSelectedRows = (profId) => {
-    try {
-      setSelectedRows((prev) => {
-        const alreadySelected = prev.includes(profId);
+  const rows = useMemo(() => {
+    if (!Array.isArray(data) || data.length === 0) return [];
+    if (!removedIds.size) return data;
 
-        if (alreadySelected) {
-          return prev.filter((id) => id !== profId);
-        } else if (prev.length >= 5) {
-          return prev;
-        } else {
-          return [...prev, profId];
-        }
-      });
-    } catch (error) {}
-  };
+    return data.filter((r) => !removedIds.has(r.professor_id));
+  }, [data, removedIds]);
+
+  const handleSelectedAllRowData = useCallback((profObj) => {
+    setAllDataSelectedRows((prev) => {
+      const alreadySelected = prev.some((item) => item.id === profObj.id);
+      if (alreadySelected) return prev.filter((item) => item.id !== profObj.id);
+
+      if (prev.length >= 5) {
+        toast.error("You Can Only Select Up To 5 Professors");
+        return prev;
+      }
+      return [...prev, profObj];
+    });
+  }, []);
+
+  const handleSelectedRows = useCallback((profId) => {
+    setSelectedRows((prev) => {
+      const alreadySelected = prev.includes(profId);
+      if (alreadySelected) return prev.filter((id) => id !== profId);
+      if (prev.length >= 5) return prev;
+      return [...prev, profId];
+    });
+  }, []);
 
   const onRemove = useCallback(
     async (id) => {
-      const prev = rows;
-      setPendingDelete((s) => new Set(s).add(id));
-      setRows(prev.filter((r) => (r.professor_id === id ? false : true)));
+      // optimistic remove
+      setPendingDelete((s) => {
+        const next = new Set(s);
+        next.add(id);
+        return next;
+      });
+
+      setRemovedIds((prev) => {
+        const next = new Set(prev);
+        next.add(id);
+        return next;
+      });
+
+      // also unselect if selected
+      setSelectedRows((prev) => prev.filter((pid) => pid !== id));
+      setAllDataSelectedRows((prev) => prev.filter((obj) => obj.id !== id));
+
       try {
         await RemoveFromSaved({ access, id });
         toast.success("Deleted From Workspace");
       } catch (e) {
-        setRows(prev);
+        // rollback optimistic remove on failure
+        setRemovedIds((prev) => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        });
         toast.error("Failed to Remove");
       } finally {
         setPendingDelete((s) => {
@@ -113,7 +137,7 @@ export function WorkspaceTable({
         });
       }
     },
-    [rows, access]
+    [access]
   );
 
   const columns = useMemo(
@@ -129,12 +153,12 @@ export function WorkspaceTable({
     [
       access,
       generateColumns,
-      pendingDelete,
       onRemove,
+      pendingDelete,
       handleSelectedRows,
       handleSelectedAllRowData,
-      isSelectionLimitReached,
       allDataSelectedRows,
+      isSelectionLimitReached,
     ]
   );
 
@@ -143,7 +167,6 @@ export function WorkspaceTable({
       if (isNavigationLoading) return;
 
       setIsNavigationLoading(true);
-
       window.scrollTo({ top: 0, behavior: "smooth" });
 
       const next = new URLSearchParams(params?.toString());
@@ -180,6 +203,7 @@ export function WorkspaceTable({
               }
               className="w-full sm:max-w-xs placeholder:text-xs placeholder:font-medium rounded-md"
             />
+
             <Dialog>
               <DialogTrigger asChild>
                 <Button
@@ -206,6 +230,7 @@ export function WorkspaceTable({
             </Dialog>
           </div>
         </div>
+
         <Table className="text-xs sm:text-sm min-w-full rounded-xs">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -233,14 +258,15 @@ export function WorkspaceTable({
                       {sortDir === "asc"
                         ? " 🔼"
                         : sortDir === "desc"
-                          ? " 🔽"
-                          : ""}
+                        ? " 🔽"
+                        : ""}
                     </TableHead>
                   );
                 })}
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody aria-busy={isNavigationLoading}>
             {isNavigationLoading ? (
               Array.from({ length: 8 }).map((_, r) => (
@@ -296,10 +322,7 @@ export function WorkspaceTable({
         </Table>
       </div>
 
-      <div
-        className="flex flex-row justify-between gap-2 mt-3 sm:justify-end sm:gap-3        
-"
-      >
+      <div className="flex flex-row justify-between gap-2 mt-3 sm:justify-end sm:gap-3">
         <button
           type="button"
           onClick={() => goToPage(Math.max(1, Number(pageNumber) - 1))}
