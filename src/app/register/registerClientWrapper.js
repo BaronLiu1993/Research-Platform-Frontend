@@ -82,7 +82,7 @@ export default function RegisterClientWrapper({ access }) {
       if (!registerRes.ok || !watchRes.ok) {
         let msg = "Registration failed.";
         try {
-          const data = await registerRes.json();
+          const data = await watchRes.json();
           if (data?.message) msg = data.message;
         } catch {
           setSubmitting(false);
