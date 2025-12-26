@@ -28,7 +28,7 @@ export const SendDraftsWithAttachments = async ({
       }),
     });
     if (response.ok) {
-      return { success: true };
+      return { success: true, message: "Sent Draft With Attachments" };
     } else {
       return {
         message: "Server Error",

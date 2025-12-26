@@ -20,6 +20,7 @@ export const changeStatus = async ({ access, status, id }) => {
       return result;
     }
   } catch (error) {
-    return "Internal Server Error";
+    return { success: false, message: "Internal Server Error" };
+
   }
 };

@@ -1,7 +1,6 @@
 "use server";
 
 export async function AddToSaved({ professorData, access, id }) {
-
   const data = {
     name: professorData.name || "",
     url: professorData.url || "",
@@ -28,7 +27,7 @@ export async function AddToSaved({ professorData, access, id }) {
       const result = await response.json();
       return result;
     }
-  } catch (error) {
-    return "Internal Server Error"
+  } catch {
+    return { success: false, message: "Internal Server Error" };
   }
 }

@@ -63,11 +63,9 @@ export default function Thread({
       let res = null;
 
       const currentMessage = messageData.find((msg) => msg.id === newOpenId);
-      console.log(currentMessage);
       const fromUser = currentMessage?.payload?.headers
         .find((header) => header.name === "From")
         .value.includes(`<${userEmail}>`);
-      console.log(fromUser);
       const queryParams = `messageId=${encodeURIComponent(newOpenId)}&fromUser=${fromUser}`;
       res = await fetch(`${API_BASE}/inbox/get-email?${queryParams}`, {
         method: "GET",
@@ -110,7 +108,6 @@ export default function Thread({
         onValueChange={handleValueChange}
       >
         {messageData.map((message) => {
-          console.log(message);
           const headers = message.payload?.headers || [];
           const from = getHeader(headers, "From") || "";
           const name = from.split("<");

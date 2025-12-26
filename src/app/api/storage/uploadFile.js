@@ -1,9 +1,7 @@
 "use server";
 
-//Filetype is either resume or transcript
 export async function uploadFile({ file, access, fileName, fileType }) {
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
-  // put in the file and upload
   try {
     const response = await fetch(
       `${API_BASE}/storage/generate-upload-url/${fileType}`,

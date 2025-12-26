@@ -5,7 +5,7 @@ export const SendDrafts = async ({
   userEmail,
   professorData,
   access,
-  labelId
+  labelId,
 }) => {
   try {
     const API_BASE =
@@ -20,11 +20,11 @@ export const SendDrafts = async ({
         userName,
         userEmail,
         professorData,
-        labelId
+        labelId,
       }),
     });
     if (response.ok) {
-      return { success: true };
+      return { success: true, message: "Sent Draft" };
     } else {
       return {
         message: "Server Error",
