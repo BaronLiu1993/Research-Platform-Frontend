@@ -1,7 +1,13 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  startTransition,
+} from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 
@@ -18,12 +24,9 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHeader,
   TableRow,
-  TableHead,
 } from "@/shadcomponents/ui/table";
 import { Input } from "@/shadcomponents/ui/input";
-import { toast } from "sonner";
 
 export function InboxTable({
   data = [],
@@ -35,77 +38,27 @@ export function InboxTable({
 }) {
   const router = useRouter();
   const params = useSearchParams();
+  const pathname = usePathname();
 
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [isNavigationLoading, setIsNavigationLoading] = useState(false);
-  const [rows, setRows] = useState(data);
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [pendingDelete, setPendingDelete] = useState(new Set());
 
+  const paramsKey = params?.toString() ?? "";
   useEffect(() => {
-    setIsNavigationLoading(false);
-  }, [data]);
+    if (isNavigationLoading) setIsNavigationLoading(false);
+  }, [pathname, paramsKey]);
 
-  useEffect(() => setRows(data), [data]);
+  const columns = useMemo(() => {
+    return generateColumns(access);
+  }, [generateColumns, access, userName, userEmail]);
 
-  const handleSelectedRows = useCallback(
-    (prof) => {
-      const isCurrentlySelected = selectedRows.find((p) => p.id === prof.id);
-      setSelectedRows((prev) => {
-        const exists = prev.find((p) => p.id === prof.id);
-
-        if (exists) {
-          return prev.filter((p) => p.id !== prof.id);
-        } else {
-          return [...prev, prof];
-        }
-      });
-
-      if (isCurrentlySelected) {
-        toast.success("Deselected Professor");
-      } else {
-        toast.success("Selected Professor");
-      }
+  const pushWithTransition = useCallback(
+    (url, options) => {
+      startTransition(() => router.push(url, options));
     },
-    [selectedRows]
-  );
-
-  const onRemove = useCallback(
-    async (id) => {
-      const prev = rows;
-      setPendingDelete((s) => new Set(s).add(id));
-      setRows((prev) => prev.filter((r) => r.id !== id));
-
-      try {
-        setSelectedRows((prevSelected) =>
-          prevSelected.filter((r) => r.id !== id)
-        );
-      } catch (e) {
-        setRows(prev);
-      } finally {
-        setPendingDelete((s) => {
-          const next = new Set(s);
-          next.delete(id);
-          return next;
-        });
-      }
-    },
-    [rows, access]
-  );
-
-  const columns = useMemo(
-    () => generateColumns(access),
-    [
-      access,
-      onRemove,
-      pendingDelete,
-      handleSelectedRows,
-      userName,
-      userEmail,
-      selectedRows,
-    ]
+    [router]
   );
 
   const goToPage = useCallback(
@@ -113,18 +66,18 @@ export function InboxTable({
       if (isNavigationLoading) return;
 
       setIsNavigationLoading(true);
-
       window.scrollTo({ top: 0, behavior: "smooth" });
 
-      const next = new URLSearchParams(params?.toString());
+      const next = new URLSearchParams(paramsKey);
       next.set("page", String(page));
-      router.push(`?${next.toString()}`, { scroll: true });
+
+      pushWithTransition(`?${next.toString()}`, { scroll: true });
     },
-    [isNavigationLoading, params, router]
+    [isNavigationLoading, paramsKey, pushWithTransition]
   );
 
   const table = useReactTable({
-    data: rows,
+    data,
     columns,
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
@@ -137,21 +90,21 @@ export function InboxTable({
     state: { sorting, columnFilters, columnVisibility },
   });
 
+  const nameColumn = table.getColumn("name");
+  const nameFilterValue = nameColumn?.getFilterValue() ?? "";
+
   return (
     <div className="w-full max-w-screen-xl mx-auto p-4 md:p-6 rounded-xs">
       <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
-        <div>
-          <div className="flex items-center gap-4 py-4 px-4">
-            <Input
-              placeholder="Find Threads..."
-              value={table.getColumn("name")?.getFilterValue() ?? ""}
-              onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
-              }
-              className="max-w-xs rounded-md placeholder:font-medium placeholder:text-xs"
-            />
-          </div>
+        <div className="flex items-center gap-4 py-4 px-4">
+          <Input
+            placeholder="Find Threads..."
+            value={nameFilterValue}
+            onChange={(event) => nameColumn?.setFilterValue(event.target.value)}
+            className="max-w-xs rounded-md placeholder:font-medium placeholder:text-xs"
+          />
         </div>
+
         <Table className="text-sm min-w-full rounded-xs">
           <TableBody aria-busy={isNavigationLoading}>
             {isNavigationLoading ? (
@@ -207,17 +160,18 @@ export function InboxTable({
           </TableBody>
         </Table>
       </div>
+
       <div className="flex justify-end mt-3 gap-3">
         <button
           type="button"
           onClick={() => goToPage(Math.max(1, Number(pageNumber) - 1))}
           disabled={isNavigationLoading || Number(pageNumber) <= 1}
           className={`text-sm font-medium cursor-pointer text-white px-3 py-1.5 rounded-sm transition-colors
-      ${
-        isNavigationLoading || Number(pageNumber) <= 1
-          ? "bg-gray-300"
-          : "bg-[#4584F3] hover:bg-[#3574E2]"
-      }`}
+            ${
+              isNavigationLoading || Number(pageNumber) <= 1
+                ? "bg-gray-300"
+                : "bg-[#4584F3] hover:bg-[#3574E2]"
+            }`}
         >
           Previous
         </button>
@@ -227,9 +181,11 @@ export function InboxTable({
           onClick={() => goToPage(Number(pageNumber) + 1)}
           disabled={isNavigationLoading}
           className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm transition-colors
-      ${
-        isNavigationLoading ? "bg-gray-300" : "bg-[#4584F3] hover:bg-[#3574E2]"
-      }`}
+            ${
+              isNavigationLoading
+                ? "bg-gray-300"
+                : "bg-[#4584F3] hover:bg-[#3574E2]"
+            }`}
         >
           Next
         </button>

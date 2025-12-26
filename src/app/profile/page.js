@@ -40,31 +40,25 @@ export default async function Profile({ searchParams }) {
   };
 
   let parsedUserProfile = {};
-  let profileData = {}
+  let profileData = {};
   let fileExists = {};
 
-  try {
-    const [fileRes, profileRes, profileDataRes] = await Promise.all([
-      fetch(`${API_BASE}/storage/check-file-existance`, fileFetchOpts),
-      fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
-      fetch(`${API_BASE}/auth/fetch-info`, profileFetchOpts)
-    ]);
+  const [fileRes, profileRes, profileDataRes] = await Promise.all([
+    fetch(`${API_BASE}/storage/check-file-existance`, fileFetchOpts),
+    fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
+    fetch(`${API_BASE}/auth/fetch-info`, profileFetchOpts),
+  ]);
 
-    // This could be done in parallel change later
+  if (fileRes.ok) {
+    fileExists = await fileRes.json();
+  }
 
-    if (fileRes.ok) {
-      fileExists = await fileRes.json();
-    }
+  if (profileDataRes.ok) {
+    profileData = await profileDataRes.json();
+  }
 
-    if (profileDataRes.ok) {
-      profileData = await profileDataRes.json();
-    }
-
-    if (profileRes.ok) {
-      parsedUserProfile = await profileRes.json();
-    }
-  } catch {
-    //log with telemetry
+  if (profileRes.ok) {
+    parsedUserProfile = await profileRes.json();
   }
 
   return (
@@ -117,7 +111,11 @@ export default async function Profile({ searchParams }) {
                   </div>
                 </div>
                 <div className="mb-8 overflow-x-auto">
-                  <Dashboard access={access} fileExists = {fileExists} profileData={profileData}/>
+                  <Dashboard
+                    access={access}
+                    fileExists={fileExists}
+                    profileData={profileData}
+                  />
                 </div>
               </div>
             </div>

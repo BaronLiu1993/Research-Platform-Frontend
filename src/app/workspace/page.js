@@ -23,7 +23,7 @@ import { Laptop, MapIcon, Workflow } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 
 export default async function Workspace({ searchParams }) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const access = cookieStore.get("access_token")?.value;
   const sp = await searchParams;
   const pageNumber = Number(sp?.page ?? 1) || 1;

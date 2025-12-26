@@ -95,7 +95,6 @@ export default async function Terms() {
       </main>
       <section className="bg-white text-gray-900 font-main px-7 py-12 leading-relaxed flex flex-col justify-center">
         <div className="max-w-5xl mx-auto">
-          {/* Section 1 */}
           <h2 className="text-3xl tracking-wide mb-4 font-playfair">
             1. OUR SERVICES
           </h2>

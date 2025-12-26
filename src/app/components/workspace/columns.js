@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/shadcomponents/ui/button";
 import { Badge } from "@/shadcomponents/ui/badge";
 
 import { changeStatus } from "@/app/api/status/changeStatus";
@@ -60,7 +59,7 @@ const generateColumns = (
 ) => [
   {
     accessorKey: "checkbox",
-    header: ({ column }) => <div></div>,
+    header: ({ column }) => <></>,
     cell: ({ row }) => {
       const data = row.original;
       const isSelected = selectedRows.some((r) => r.id === data.professor_id);

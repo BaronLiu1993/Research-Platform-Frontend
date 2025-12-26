@@ -25,8 +25,11 @@ function formatDate(date) {
     year: "numeric",
     month: "short",
     day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   };
-  return new Date(date).toLocaleDateString("en-US", options);
+
+  return new Date(date).toLocaleString("en-US", options);
 }
 
 function getHeader(headers = [], name) {

@@ -24,7 +24,7 @@ import { DraftsTable } from "../components/drafts/draft-table";
 export default async function Drafts({ searchParams }) {
   const cookieStore = await cookies();
   const access = cookieStore.get("access_token")?.value;
-  const sp = await searchParams
+  const sp = await searchParams;
   const pageNumber = Number(sp?.page ?? 1) || 1;
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
@@ -60,15 +60,15 @@ export default async function Drafts({ searchParams }) {
 
   if (profileRes.ok) {
     parsedUserProfile = await profileRes.json();
-  } 
+  }
 
   if (draftsRes.ok) {
     draftsData = await draftsRes.json();
-  } 
+  }
 
   if (fileRes.ok) {
     fileExists = await fileRes.json();
-  } 
+  }
 
   return (
     <div className="w-full overflow-hidden">

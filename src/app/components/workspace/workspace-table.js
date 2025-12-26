@@ -100,7 +100,6 @@ export function WorkspaceTable({
 
   const onRemove = useCallback(
     async (id) => {
-      // optimistic remove
       setPendingDelete((s) => {
         const next = new Set(s);
         next.add(id);
@@ -113,7 +112,6 @@ export function WorkspaceTable({
         return next;
       });
 
-      // also unselect if selected
       setSelectedRows((prev) => prev.filter((pid) => pid !== id));
       setAllDataSelectedRows((prev) => prev.filter((obj) => obj.id !== id));
 
@@ -121,7 +119,6 @@ export function WorkspaceTable({
         await RemoveFromSaved({ access, id });
         toast.success("Deleted From Workspace");
       } catch (e) {
-        // rollback optimistic remove on failure
         setRemovedIds((prev) => {
           const next = new Set(prev);
           next.delete(id);

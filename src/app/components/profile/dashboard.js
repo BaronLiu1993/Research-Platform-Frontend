@@ -9,7 +9,6 @@ import {
   Leaf,
   Newspaper,
   PersonStandingIcon,
-  Trash,
   Trash2,
 } from "lucide-react";
 import { useState } from "react";
@@ -19,7 +18,6 @@ import DropdownInterests from "../dropdowns/dropdowninterests";
 import DropdownMajor from "../dropdowns/dropdownmajor";
 import DropdownYear from "../dropdowns/dropdownyear";
 import { DeleteFile } from "@/app/api/storage/deleteFile";
-import Image from "next/image";
 
 export default function Dashboard({ access, fileExists, profileData }) {
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
@@ -172,7 +170,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
           const data = await res.json();
           if (data?.message) msg = data.message;
         } catch {
-          // ignore parse errors
+          msg = "Internal Server Error";
         }
         throw new Error(msg);
       }
@@ -341,13 +339,16 @@ export default function Dashboard({ access, fileExists, profileData }) {
                 htmlFor="resume-upload"
                 className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
-                <Image
-                  className="bg-gray-100 w-full h-[8rem]"
+                <img
                   src="/luncheon.svg"
                   alt="resume upload background image"
                   width={200}
-                  height={200}
+                  height={128}
+                  loading="eager"
+                  decoding="async"
+                  className="w-full h-[8rem]"
                 />
+
                 <div>
                   <div className="flex items-center p-2 gap-2">
                     <Newspaper className="fill-blue-800 text-white h-4 w-4" />
@@ -418,13 +419,14 @@ export default function Dashboard({ access, fileExists, profileData }) {
                 htmlFor="transcript-upload"
                 className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
-                <Image
-                  className="w-full h-[8rem]"
+                <img
                   src="/walk.svg"
                   alt="transcript upload background image"
                   width={200}
-                  height={200}
-                  priority
+                  height={128}
+                  loading="eager"
+                  decoding="async"
+                  className="w-full h-[8rem]"
                 />
 
                 <div>
