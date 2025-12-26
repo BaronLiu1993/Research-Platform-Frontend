@@ -21,7 +21,7 @@ import Thread from "@/app/components/inbox/thread";
 
 export default async function Inbox({ searchParams }) {
   const cookieStore = cookies();
-  const sp = await sp;
+  const sp = await searchParams;
   const access = cookieStore.get("access_token")?.value;
   const threadId = sp?.id || "";
   const name = sp?.name || "";
