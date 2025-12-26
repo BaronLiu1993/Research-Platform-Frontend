@@ -1,8 +1,15 @@
 "use client";
 
 import { useSavedStore } from "@/app/store/useSavedStore";
-import { useState, useEffect, useMemo, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+  startTransition,
+} from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Select from "react-select";
 import { filterOptions } from "../dropdowns/filterOptions";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
@@ -34,18 +41,9 @@ export function DataTable({
 }) {
   const router = useRouter();
   const params = useSearchParams();
+  const pathname = usePathname();
+
   const setSaved = useSavedStore((state) => state.setSavedStore);
-
-  useEffect(() => {
-    setIsSearchLoading(false);
-    setIsNavigationLoading(false);
-  }, [data]);
-
-  useEffect(() => {
-    if (savedProfessors?.data) setSaved(savedProfessors.data);
-  }, [savedProfessors, setSaved]);
-
-  const flatOptions = filterOptions.flatMap((group) => group.options);
 
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
@@ -59,19 +57,53 @@ export function DataTable({
     department: [],
   });
 
+  const flatOptions = useMemo(
+    () => filterOptions.flatMap((group) => group.options),
+    []
+  );
+
   const columns = useMemo(
     () => generateColumns(access),
     [access, generateColumns]
   );
 
+  const paramsKey = params?.toString() ?? "";
+  useEffect(() => {
+    if (isSearchLoading) setIsSearchLoading(false);
+    if (isNavigationLoading) setIsNavigationLoading(false);
+  }, [pathname, paramsKey]);
+
+  const lastSavedRef = useRef(null);
+  useEffect(() => {
+    const nextSaved = savedProfessors?.data;
+    if (!nextSaved) return;
+
+    if (lastSavedRef.current === nextSaved) return;
+
+    lastSavedRef.current = nextSaved;
+    setSaved(nextSaved);
+  }, [savedProfessors?.data, setSaved]);
+
+  const pushWithTransition = useCallback(
+    (url, options) => {
+      startTransition(() => {
+        router.push(url, options);
+      });
+    },
+    [router]
+  );
+
   const goToPage = useCallback(
     (page) => {
       if (isNavigationLoading) return;
+
       setIsNavigationLoading(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
-      const next = new URLSearchParams(params?.toString());
+
+      const next = new URLSearchParams(paramsKey);
       next.set("page", String(page));
       next.set("search", search ?? "");
+
       Object.entries(filters).forEach(([key, val]) => {
         if (Array.isArray(val) && val.length > 0) {
           next.set(key, val.join(","));
@@ -79,9 +111,10 @@ export function DataTable({
           next.delete(key);
         }
       });
-      router.push(`?${next.toString()}`, { scroll: true });
+
+      pushWithTransition(`?${next.toString()}`, { scroll: true });
     },
-    [isNavigationLoading, params, router, search, filters]
+    [isNavigationLoading, paramsKey, search, filters, pushWithTransition]
   );
 
   const table = useReactTable({
@@ -101,10 +134,14 @@ export function DataTable({
   const handleSearch = useCallback(
     (e) => {
       e.preventDefault();
+      if (isSearchLoading) return;
+
       setIsSearchLoading(true);
-      const next = new URLSearchParams(params?.toString());
+
+      const next = new URLSearchParams(paramsKey);
       next.set("page", "1");
       next.set("search", query.trim());
+
       Object.entries(filters).forEach(([key, val]) => {
         if (Array.isArray(val) && val.length > 0) {
           next.set(key, val.join(","));
@@ -112,9 +149,10 @@ export function DataTable({
           next.delete(key);
         }
       });
-      router.push(`?${next.toString()}`);
+
+      pushWithTransition(`?${next.toString()}`);
     },
-    [params, query, router, filters]
+    [paramsKey, query, filters, pushWithTransition, isSearchLoading]
   );
 
   return (
@@ -169,7 +207,7 @@ export function DataTable({
                       }}
                       className="w-full sm:w-[20rem] text-xs font-medium font-main"
                       classNames={{
-                        control: (s) =>
+                        control: () =>
                           `!min-h-10 !h-auto !rounded-md !border !border-slate-200 !bg-white 
                            hover:!border-slate-300 focus:!border-[#4584F3] focus:!ring-2 focus:!ring-[#4584F3]/20`,
                         valueContainer: () =>
@@ -199,7 +237,11 @@ export function DataTable({
                     type="submit"
                     disabled={isSearchLoading}
                     className={`h-10 sm:w-fit inline-flex items-center justify-center text-sm cursor-pointer font-medium text-white px-4 rounded-md transition-colors
-        ${isSearchLoading ? "bg-blue-300" : "bg-[#4584F3] hover:bg-[#3574E2]"}`}
+                      ${
+                        isSearchLoading
+                          ? "bg-blue-300"
+                          : "bg-[#4584F3] hover:bg-[#3574E2]"
+                      }`}
                   >
                     {isSearchLoading ? "Querying..." : "Search"}
                   </button>
@@ -246,6 +288,7 @@ export function DataTable({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody aria-busy={isSearchLoading || isNavigationLoading}>
             {isSearchLoading || isNavigationLoading ? (
               Array.from({ length: 8 }).map((_, r) => (
@@ -288,9 +331,9 @@ export function DataTable({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="text-center text-xs py-6"
+                  className="text-center font-main font-medium text-xs py-6"
                 >
-                  No results.
+                  No Results
                 </TableCell>
               </TableRow>
             )}
@@ -304,11 +347,11 @@ export function DataTable({
           onClick={() => goToPage(Math.max(1, Number(pageNumber) - 1))}
           disabled={isNavigationLoading || Number(pageNumber) <= 1}
           className={`text-sm font-medium cursor-pointer text-white px-3 py-1.5 rounded-sm transition-colors
-      ${
-        isNavigationLoading || Number(pageNumber) <= 1
-          ? "bg-gray-300"
-          : "bg-[#4584F3] hover:bg-[#3574E2]"
-      }`}
+            ${
+              isNavigationLoading || Number(pageNumber) <= 1
+                ? "bg-gray-300"
+                : "bg-[#4584F3] hover:bg-[#3574E2]"
+            }`}
         >
           Previous
         </button>
@@ -318,9 +361,11 @@ export function DataTable({
           onClick={() => goToPage(Number(pageNumber) + 1)}
           disabled={isNavigationLoading}
           className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm transition-colors
-      ${
-        isNavigationLoading ? "bg-gray-300" : "bg-[#4584F3] hover:bg-[#3574E2]"
-      }`}
+            ${
+              isNavigationLoading
+                ? "bg-gray-300"
+                : "bg-[#4584F3] hover:bg-[#3574E2]"
+            }`}
         >
           Next
         </button>

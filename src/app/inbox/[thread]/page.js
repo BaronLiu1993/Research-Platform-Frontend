@@ -44,24 +44,21 @@ export default async function Inbox({ searchParams }) {
 
   let parsedUserProfile = {};
   let inboxEmails = [];
-  try {
-    const [profileRes, inboxRes] = await Promise.all([
-      fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
-      fetch(
-        `${API_BASE}/inbox/get-email-previews?threadId=${threadId}`,
-        inboxFetchOpts
-      ),
-    ]);
 
-    if (profileRes.ok) {
-      parsedUserProfile = await profileRes.json();
-    }
+  const [profileRes, inboxRes] = await Promise.all([
+    fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
+    fetch(
+      `${API_BASE}/inbox/get-email-previews?threadId=${threadId}`,
+      inboxFetchOpts
+    ),
+  ]);
 
-    if (inboxRes.ok) {
-      inboxEmails = await inboxRes.json();
-    }
-  } catch {
-    //log with telemetry
+  if (profileRes.ok) {
+    parsedUserProfile = await profileRes.json();
+  }
+
+  if (inboxRes.ok) {
+    inboxEmails = await inboxRes.json();
   }
 
   return (

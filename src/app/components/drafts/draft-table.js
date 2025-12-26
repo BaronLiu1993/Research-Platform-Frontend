@@ -446,9 +446,9 @@ export function DraftsTable({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="text-center text-xs py-6"
+                  className="text-center font-main font-medium text-xs py-6"
                 >
-                  No results.
+                  No Results
                 </TableCell>
               </TableRow>
             )}

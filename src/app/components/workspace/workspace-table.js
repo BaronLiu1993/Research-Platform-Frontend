@@ -52,11 +52,10 @@ export function WorkspaceTable({
   const [columnVisibility, setColumnVisibility] = useState({});
   const [isNavigationLoading, setIsNavigationLoading] = useState(false);
 
-
   const [removedIds, setRemovedIds] = useState(() => new Set());
 
-  const [selectedRows, setSelectedRows] = useState([]); 
-  const [allDataSelectedRows, setAllDataSelectedRows] = useState([]); 
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [allDataSelectedRows, setAllDataSelectedRows] = useState([]);
   const [pendingDelete, setPendingDelete] = useState(new Set());
   const [isEditing, setIsEditing] = useState(false);
 
@@ -258,8 +257,8 @@ export function WorkspaceTable({
                       {sortDir === "asc"
                         ? " 🔼"
                         : sortDir === "desc"
-                        ? " 🔽"
-                        : ""}
+                          ? " 🔽"
+                          : ""}
                     </TableHead>
                   );
                 })}
@@ -312,9 +311,9 @@ export function WorkspaceTable({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="text-center text-xs py-6"
+                  className="text-center font-main font-medium text-xs py-6"
                 >
-                  No results.
+                  No Results
                 </TableCell>
               </TableRow>
             )}
