@@ -25,7 +25,9 @@ import { Badge } from "@/shadcomponents/ui/badge";
 export default async function Inbox({ searchParams }) {
   const cookieStore = cookies();
   const access = cookieStore.get("access_token")?.value;
-  const pageNumber = Number(searchParams?.page ?? 1) || 1;
+  const sp = await searchParams;
+
+  const pageNumber = Number(sp?.page ?? 1) || 1;
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const profileFetchOpts = {
@@ -45,21 +47,18 @@ export default async function Inbox({ searchParams }) {
 
   let parsedUserProfile = {};
   let inboxThreads = [];
-  try {
-    const [profileRes, inboxRes] = await Promise.all([
-      fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
-      fetch(`${API_BASE}/inbox/get-threads?page=${pageNumber}`, inboxFetchOpts),
-    ]);
 
-    if (profileRes.ok) {
-      parsedUserProfile = await profileRes.json();
-    }
+  const [profileRes, inboxRes] = await Promise.all([
+    fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
+    fetch(`${API_BASE}/inbox/get-threads?page=${pageNumber}`, inboxFetchOpts),
+  ]);
 
-    if (inboxRes.ok) {
-      inboxThreads = await inboxRes.json();
-    }
-  } catch {
-    //log with telemetry
+  if (profileRes.ok) {
+    parsedUserProfile = await profileRes.json();
+  }
+
+  if (inboxRes.ok) {
+    inboxThreads = await inboxRes.json();
   }
 
   return (

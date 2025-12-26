@@ -19,8 +19,9 @@ export const LogOut = async () => {
         body: JSON.stringify({ refreshToken: refresh }),
       });
     }
+    return { success: true, message: "Logged Out" };
   } catch {
-    
+    return { success: false, message: "Internal Server Error" };
   } finally {
     cookieStore.delete("access_token", delOpts);
     cookieStore.delete("refresh_token", delOpts);

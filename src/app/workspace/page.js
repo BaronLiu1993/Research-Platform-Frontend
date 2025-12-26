@@ -25,8 +25,9 @@ import { Badge } from "@/shadcomponents/ui/badge";
 export default async function Workspace({ searchParams }) {
   const cookieStore = cookies();
   const access = cookieStore.get("access_token")?.value;
-  const pageNumber = Number(searchParams?.page ?? 1) || 1;
-  const filter = (await (searchParams?.page ?? "")) || "";
+  const sp = await searchParams;
+  const pageNumber = Number(sp?.page ?? 1) || 1;
+  const filter = (sp?.page ?? "") || "";
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const profileFetchOpts = {
@@ -52,21 +53,17 @@ export default async function Workspace({ searchParams }) {
   let savedData = [];
   let parsedUserProfile = {};
 
-  try {
-    const [profileRes, savedRes] = await Promise.all([
-      fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
-      fetch(`${API_BASE}/saved/kanban/get-saved?${qs}`, savedFetchOpts),
-    ]);
+  const [profileRes, savedRes] = await Promise.all([
+    fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
+    fetch(`${API_BASE}/saved/kanban/get-saved?${qs}`, savedFetchOpts),
+  ]);
 
-    if (profileRes.ok) {
-      parsedUserProfile = await profileRes.json();
-    }
+  if (profileRes.ok) {
+    parsedUserProfile = await profileRes.json();
+  }
 
-    if (savedRes.ok) {
-      savedData = await savedRes.json();
-    }
-  } catch {
-    //log with telemetry
+  if (savedRes.ok) {
+    savedData = await savedRes.json();
   }
 
   return (

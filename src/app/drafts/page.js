@@ -24,7 +24,8 @@ import { DraftsTable } from "../components/drafts/draft-table";
 export default async function Drafts({ searchParams }) {
   const cookieStore = await cookies();
   const access = cookieStore.get("access_token")?.value;
-  const pageNumber = Number(searchParams?.page ?? 1) || 1;
+  const sp = await searchParams
+  const pageNumber = Number(sp?.page ?? 1) || 1;
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const profileFetchOpts = {
@@ -51,28 +52,23 @@ export default async function Drafts({ searchParams }) {
   let parsedUserProfile = {};
   let fileExists = {};
 
-  try {
-    const [profileRes, draftsRes, fileRes] = await Promise.all([
-      fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
-      fetch(`${API_BASE}/email/get-drafts`, draftsFetchOpts),
-      fetch(`${API_BASE}/storage/check-file-existance`, fileFetchOpts),
-    ]);
+  const [profileRes, draftsRes, fileRes] = await Promise.all([
+    fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
+    fetch(`${API_BASE}/email/get-drafts`, draftsFetchOpts),
+    fetch(`${API_BASE}/storage/check-file-existance`, fileFetchOpts),
+  ]);
 
-    if (profileRes.ok) {
-      parsedUserProfile = await profileRes.json();
-    }
+  if (profileRes.ok) {
+    parsedUserProfile = await profileRes.json();
+  } 
 
-    if (draftsRes.ok) {
-      draftsData = await draftsRes.json();
-    }
+  if (draftsRes.ok) {
+    draftsData = await draftsRes.json();
+  } 
 
-    if (fileRes.ok) {
-      fileExists = await fileRes.json();
-    }
-
-  } catch {
-    //log with telemetry
-  }
+  if (fileRes.ok) {
+    fileExists = await fileRes.json();
+  } 
 
   return (
     <div className="w-full overflow-hidden">

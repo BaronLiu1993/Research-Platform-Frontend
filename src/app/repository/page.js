@@ -6,8 +6,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
 } from "@/shadcomponents/ui/breadcrumb";
 import {
   SidebarProvider,
@@ -20,24 +18,25 @@ import generateColumns from "../components/repository/columns";
 import { DataTable } from "../components/repository/data-table";
 import Recommendations from "../components/repository/recommendations";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { Database, Laptop, MapIcon } from "lucide-react";
+import { Database, Laptop } from "lucide-react";
 
 export default async function Repository({ searchParams }) {
   const cookieStore = await cookies();
   const access = cookieStore.get("access_token")?.value;
-  const pageNumber = Number(searchParams?.page ?? 1) || 1;
+  const sp = await searchParams;
+  const pageNumber = Number(sp?.page ?? 1) || 1;
   const filters = {
-    school: typeof searchParams?.school === "string" ? searchParams.school : "",
+    school: typeof sp?.school === "string" ? sp.school : "",
     faculty:
-      typeof searchParams?.faculty === "string" ? searchParams.faculty : "",
+      typeof sp?.faculty === "string" ? sp.faculty : "",
     department:
-      typeof searchParams?.department === "string"
-        ? searchParams.department
+      typeof sp?.department === "string"
+        ? sp.department
         : "",
   };
 
   const rawSearch = (
-    typeof searchParams?.search === "string" ? searchParams.search : ""
+    typeof sp?.search === "string" ? sp.search : ""
   ).trim();
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";

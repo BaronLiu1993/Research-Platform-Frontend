@@ -148,6 +148,8 @@ export function AppSidebar({ student_data, ...props }) {
           onClick={async () => {
             try {
               setIsLoading(true);
+              localStorage.clear();
+              sessionStorage.clear();
               await LogOut();
             } finally {
               setIsLoading(false);

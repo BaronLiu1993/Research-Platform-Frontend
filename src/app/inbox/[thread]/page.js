@@ -16,15 +16,16 @@ import {
 } from "@/shadcomponents/ui/sidebar";
 
 import { AppSidebar } from "@/app/components/sidebar";
-import { InboxIcon, Laptop, Mail, MapIcon } from "lucide-react";
+import { InboxIcon, Laptop, Mail } from "lucide-react";
 import Thread from "@/app/components/inbox/thread";
 
 export default async function Inbox({ searchParams }) {
   const cookieStore = cookies();
+  const sp = await sp;
   const access = cookieStore.get("access_token")?.value;
-  const threadId = (await searchParams?.id) || "";
-  const name = (await searchParams?.name) || "";
-  const email = (await searchParams?.email) || "";
+  const threadId = sp?.id || "";
+  const name = sp?.name || "";
+  const email = sp?.email || "";
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const profileFetchOpts = {
     headers: access
@@ -59,11 +60,9 @@ export default async function Inbox({ searchParams }) {
     if (inboxRes.ok) {
       inboxEmails = await inboxRes.json();
     }
-
   } catch {
     //log with telemetry
   }
-
 
   return (
     <div className="w-full overflow-hidden">
@@ -115,7 +114,7 @@ export default async function Inbox({ searchParams }) {
               userEmail={parsedUserProfile.student_email}
               userName={parsedUserProfile.student_name}
               professorName={name}
-            /> 
+            />
           </div>
         </SidebarInset>
       </SidebarProvider>
