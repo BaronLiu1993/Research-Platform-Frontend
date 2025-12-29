@@ -5,7 +5,7 @@ function ensureRepositoryDefaults(url) {
   if (url.pathname === "/repository" && url.searchParams.size === 0) {
     url.searchParams.set("page", "1");
     url.searchParams.set("search", "");
-    return true; 
+    return true;
   }
   return false;
 }
@@ -15,6 +15,7 @@ export async function AuthMiddleware(req) {
   const access = req.cookies.get("access_token")?.value;
   const refresh = req.cookies.get("refresh_token")?.value;
   const isProd = process.env.NODE_ENV === "production";
+
   const url = req.nextUrl.clone();
   const { pathname } = url;
 
@@ -37,7 +38,7 @@ export async function AuthMiddleware(req) {
   }
 
   if (!access && refresh) {
-    const refreshed = await attemptRefresh(refresh, req.url, isProd);
+    const refreshed = await attemptRefresh(refresh, isProd);
     if (!refreshed) {
       const signIn = req.nextUrl.clone();
       signIn.pathname = "/auth/signin";
@@ -79,10 +80,13 @@ export async function AuthMiddleware(req) {
       return refreshed;
     }
 
-    const profileCheck = await fetch(`${API_BASE}/auth/check-profile-completed`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${access}` },
-    });
+    const profileCheck = await fetch(
+      `${API_BASE}/auth/check-profile-completed`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${access}` },
+      }
+    );
     const profile = await profileCheck.json();
 
     if (!profile?.isComplete && pathname !== "/register") {
@@ -90,7 +94,6 @@ export async function AuthMiddleware(req) {
       url.search = "";
       return NextResponse.redirect(url);
     }
-
 
     if (profile?.isComplete && pathname === "/register") {
       url.pathname = "/repository";
@@ -113,7 +116,5 @@ export async function AuthMiddleware(req) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/|static/|favicons/|images/|favicon.ico).*)",
-  ],
+  matcher: ["/((?!_next/|static/|favicons/|images/|favicon.ico).*)"],
 };

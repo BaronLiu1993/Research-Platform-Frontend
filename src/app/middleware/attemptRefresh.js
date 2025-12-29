@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function attemptRefresh(refreshToken, url, isProd) {
+export async function attemptRefresh(refreshToken, isProd) {
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   if (!refreshToken) return null;
 
