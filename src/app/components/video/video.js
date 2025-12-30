@@ -3,46 +3,64 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function Video() {
+  const wrapRef = useRef(null);
   const videoRef = useRef(null);
-  const [load, setLoad] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
+    const target = wrapRef.current;
+    if (!target) return;
 
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setLoad(true);
+          setShouldLoad(true);
           io.disconnect();
         }
       },
       { rootMargin: "300px" }
     );
 
-    io.observe(el);
+    io.observe(target);
     return () => io.disconnect();
   }, []);
 
   useEffect(() => {
-    if (load) {
-      videoRef.current?.play().catch(() => {});
+    if (!shouldLoad) return;
+    const v = videoRef.current;
+    if (!v) return;
+
+    const tryPlay = () => v.play().catch(() => {});
+
+    if (v.readyState >= 2) {
+      tryPlay();
+      return;
     }
-  }, [load]);
+
+    v.addEventListener("canplay", tryPlay, { once: true });
+    return () => v.removeEventListener("canplay", tryPlay);
+  }, [shouldLoad]);
 
   return (
-    <div className="relative mx-auto max-w-5xl overflow-hidden bg-gray-100">
-      <video
-        ref={videoRef}
-        muted
-        playsInline
-        autoPlay
-        loop
-        preload="none"
-        className="h-[calc(100%-80px)] w-full object-cover"
-      >
-        {load && <source src="/demo.mp4" type="video/mp4" />}
-      </video>
+    <div
+      ref={wrapRef}
+      className="relative mx-auto max-w-5xl overflow-hidden bg-gray-100"
+    >
+      {!shouldLoad ? (
+        <div className="w-full aspect-video" />
+      ) : (
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          loop
+          preload="metadata"
+          autoPlay
+          className="w-full aspect-video object-cover"
+        >
+          <source src="/demo.mp4" type="video/mp4" />
+        </video>
+      )}
     </div>
   );
 }
