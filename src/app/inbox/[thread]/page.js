@@ -20,7 +20,7 @@ import { InboxIcon, Laptop, Mail } from "lucide-react";
 import Thread from "@/app/components/inbox/thread";
 
 export default async function Inbox({ searchParams }) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const sp = await searchParams;
   const access = cookieStore.get("access_token")?.value;
   const threadId = sp?.id || "";

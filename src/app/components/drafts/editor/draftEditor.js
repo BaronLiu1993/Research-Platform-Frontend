@@ -16,7 +16,7 @@ import {
   X,
 } from "lucide-react";
 
-import { DialogClose } from "@/shadcomponents/ui/dialog";
+import { DialogClose } from "@/shadcomponents/ui/composedialog";
 import { Skeleton } from "@/shadcomponents/ui/skeleton";
 import { toast } from "sonner";
 
@@ -27,7 +27,6 @@ export default function DraftEditor({
   userEmail,
   professorName,
   professorEmail,
-  handleIsEditing,
 }) {
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -188,7 +187,10 @@ export default function DraftEditor({
       <div className="text-sm">
         <div className="flex justify-between mx-4">
           <div></div>
-          <DialogClose className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2 cursor-pointer">
+          <DialogClose
+            className="text-[#37352F] hover:bg-[#F1F1EF] hover:text-red-500 mx-2 cursor-pointer
+             focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
+          >
             <X className="h-6 w-6 p-1 rounded-xs" />
           </DialogClose>
         </div>
