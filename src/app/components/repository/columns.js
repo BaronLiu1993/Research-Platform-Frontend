@@ -68,7 +68,7 @@ const generateColumns = (access) => [
               <div className="flex items-center space-x-3 min-w-0">
                 <Microscope className="bg-slate-100 text-slate-500 h-7 w-7 p-1.5 rounded-md flex-shrink-0" />
                 <div className="flex-grow min-w-0">
-                  <h1 className="text-xs sm:text-sm font-medium text-[#37352F] group-hover:text-blue-600 transition-colors truncate max-w-[13rem] sm:max-w-full">
+                  <h1 className="text-sm sm:text-sm font-medium text-[#37352F] group-hover:text-blue-600 transition-colors truncate max-w-[13rem] sm:max-w-full">
                     {data.name || "No name"}
                   </h1>
 
@@ -79,14 +79,14 @@ const generateColumns = (access) => [
                       </span>
                     ) : (
                       <span className="truncate max-w-[11rem]">
-                        {data.department || "N/A Department"}
+                        {data.department || "N/A"}
                       </span>
                     )}
                   </div>
 
-                  <div className="hidden sm:flex items-center space-x-1.5 text-xs text-[#787774] min-w-0">
-                    <span className="truncate max-w-[14rem]">
-                      {data.department || "N/A Department"}
+                  <div className="hidden sm:flex font-medium items-center space-x-1.5 text-sm text-[#787774] min-w-0">
+                    <span className="truncate ">
+                      {data.department || "N/A"}
                     </span>
                     {data.school && (
                       <span className="truncate max-w-[14rem] text-[#787774]">

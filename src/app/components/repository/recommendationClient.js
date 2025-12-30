@@ -30,7 +30,7 @@ import { useEffect, useState } from "react";
 
 function InterestBadges({ interests }) {
   if (!Array.isArray(interests) || interests.length === 0) return null;
-  const MAX = 20;
+  const MAX = 30;
   const shown = interests.slice(0, MAX);
   const remaining = Math.max(0, interests.length - shown.length);
   return (
@@ -72,7 +72,7 @@ export default function RecommendationsClient({ matches, access }) {
   if (!matches?.length) {
     return (
       <div className="p-6 text-sm text-neutral-600 bg-slate-50 border border-slate-200 rounded-lg">
-        No recommendations yet...
+        No Recommendations...
       </div>
     );
   }
@@ -111,7 +111,7 @@ export default function RecommendationsClient({ matches, access }) {
                         className="text-[13px] text-neutral-700 truncate"
                         title={response?.faculty}
                       >
-                        {response?.faculty ?? ""}
+                        {response?.department ?? ""}
                       </h2>
                     </div>
                     <InterestBadges
