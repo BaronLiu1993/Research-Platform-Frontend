@@ -73,8 +73,8 @@ export default function Home() {
               transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
             >
               <p className="text-gray-800 text-base sm:text-lg font-medium font-main">
-                discover, outreach, organise and land your next dream research
-                internships with over 1000+ professors all in one workspace
+                Discover professors, send outreach, stay organized, and land
+                your next dream research internship — all in one workspace.
               </p>
 
               <div className="mt-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full">
@@ -113,11 +113,9 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main */}
       <div className="w-full mt-8 sm:mt-10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="flex flex-col lg:flex-row gap-6">
-            {/* Feature cards */}
             <section className="font-main w-full lg:w-64">
               <motion.div
                 variants={listVariants}
@@ -131,7 +129,7 @@ export default function Home() {
                 >
                   <Database className="stroke-1 text-white fill-[#5AC2FF]" />
                   <h3 className="text-sm sm:text-base font-semibold">
-                    Access to 1000+ Professors
+                  Browse a Database of 1,000+ Professors
                   </h3>
                 </motion.div>
 
@@ -141,7 +139,7 @@ export default function Home() {
                 >
                   <Pencil className="stroke-1 text-white fill-[#5AC2FF]" />
                   <h3 className="text-sm sm:text-base font-semibold">
-                    Tools for Drafting Mass Emails
+                    Integrated Tooling for Drafting Mass Emails
                   </h3>
                 </motion.div>
 
@@ -151,13 +149,12 @@ export default function Home() {
                 >
                   <Mail className="stroke-1 text-white fill-[#5AC2FF]" />
                   <h3 className="text-sm sm:text-base font-semibold text-gray-700">
-                    Track and Organise All Your Outreach Emails
+                    Track and Organise Your Outreach Emails All In One Workspace
                   </h3>
                 </motion.div>
               </motion.div>
             </section>
 
-            {/* Video panel */}
             <motion.div
               className="min-w-0 w-full lg:flex-1 bg-white rounded-sm h-fit shadow-2xl overflow-hidden"
               initial={{ opacity: 0 }}
