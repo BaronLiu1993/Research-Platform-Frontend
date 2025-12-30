@@ -164,8 +164,8 @@ export default function Home() {
               <div
                 className="relative bg-gray-100 w-full border-b border-gray-300 px-3 sm:px-4
                 flex items-center gap-3 z-20
-                after:absolute after:left-0 after:bottom-[-10px]
-                after:w-full after:h-[10px]
+                after:absolute after:left-0 after:bottom-[-4px]
+                after:w-full after:h-[4px]
                 after:bg-gray-100"
               >
                 <div className="flex gap-2 py-2">
