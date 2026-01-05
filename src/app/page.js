@@ -109,6 +109,12 @@ export default function Home() {
                 </Link>
               </div>
             </motion.div>
+            <div class="mt-4 m-10 rounded-lg  border-gray-300 font-main px-4 py-3 text-sm text-gray-600">
+              <span class="font-medium text-gray-700">Disclaimer: </span>
+              This platform currently provides a searchable database of 1,000+
+              professors. Advanced outreach features (such as email campaigns)
+              are planned for a future release.
+            </div>
           </div>
         </div>
       </header>
@@ -129,7 +135,7 @@ export default function Home() {
                 >
                   <Database className="stroke-1 text-white fill-[#5AC2FF]" />
                   <h3 className="text-sm sm:text-base font-semibold">
-                  Browse a Database of 1,000+ Professors
+                    Browse a Database of 1,000+ Professors
                   </h3>
                 </motion.div>
 
@@ -195,9 +201,6 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs sm:text-sm">
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
               <span>Made By Jie Xuan Liu</span>
-              <a className="underline hover:text-blue-500" href="/blog">
-                Engineering Blog
-              </a>
             </div>
 
             <div className="flex gap-4">
