@@ -200,7 +200,8 @@ export function WorkspaceTable({
               className="w-full sm:max-w-xs placeholder:text-xs placeholder:font-medium rounded-md"
             />
 
-            <Dialog>
+            {/**
+             * <Dialog>
               <DialogTrigger asChild>
                 <Button
                   className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#4584F3] transition-colors hover:bg-[#3574E2] disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
@@ -224,6 +225,7 @@ export function WorkspaceTable({
                 />
               </DialogContent>
             </Dialog>
+             */}
           </div>
         </div>
 

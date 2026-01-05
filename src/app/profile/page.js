@@ -20,7 +20,7 @@ import { Laptop, PersonStanding, PlaneLanding } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
 import Dashboard from "../components/profile/dashboard";
 
-export default async function Profile({ searchParams }) {
+export default async function Profile() {
   const cookieStore = await cookies();
   const access = cookieStore.get("access_token")?.value;
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";

@@ -120,7 +120,8 @@ export default async function Workspace({ searchParams }) {
                     </Badge>
                   </div>
                   <div>
-                    <div className="my-5">
+                    {/**
+                     * <div className="my-5">
                       <div className="inline-flex items-center rounded-md bg-[#F6F3F9] px-2 py-0.5 text-[11px] font-main font-medium text-[#9065B0]">
                         How to Draft Your First Email
                       </div>
@@ -148,7 +149,7 @@ export default async function Workspace({ searchParams }) {
                             <li className="leading-5">
                               Click{" "}
                               <span className="rounded bg-slate-100 px-1 py-0.5 text-blue-700">
-                                Generate drafts
+                                compose drafts
                               </span>
                             </li>
                             <li className="leading-5">
@@ -159,6 +160,7 @@ export default async function Workspace({ searchParams }) {
                         </div>
                       </div>
                     </div>
+                     */}
                   </div>
                 </div>
 

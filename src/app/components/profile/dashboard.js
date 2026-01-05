@@ -318,7 +318,8 @@ export default function Dashboard({ access, fileExists, profileData }) {
               </div>
             </FieldGroup>
           </div>
-          <div className="flex font-main gap-4">
+          {/**
+           * <div className="flex font-main gap-4">
             <div className="relative w-[12.5rem] h-[13rem]">
               <input
                 id="resume-upload"
@@ -478,6 +479,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
               </div>
             </div>
           </div>
+           */}
         </div>
       </div>
       {submitError && (
@@ -493,7 +495,8 @@ export default function Dashboard({ access, fileExists, profileData }) {
           <PersonStandingIcon className="stroke-1" />
           {isSubmittingProfile ? "Saving..." : "Update Profile"}
         </Button>
-        <Button
+        {/**
+        *  <Button
           type="submit"
           onClick={handleFileUpdate}
           className="text-xs cursor-pointer font-medium text-white px-2 py-1 rounded-sm bg-none transition-colors bg-[#9065B0] hover:bg-[#9A6EC0]"
@@ -502,6 +505,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
           <File className="stroke-1" />
           {isSubmittingFile ? "Saving..." : "Apply File Changes"}
         </Button>
+        */}
       </div>
     </form>
   );

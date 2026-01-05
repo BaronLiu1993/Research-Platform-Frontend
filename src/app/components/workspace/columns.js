@@ -57,7 +57,8 @@ const generateColumns = (
   handleSelectedAllRowData,
   selectedRows
 ) => [
-  {
+  /**
+   * {
     accessorKey: "checkbox",
     header: ({ column }) => <></>,
     cell: ({ row }) => {
@@ -82,6 +83,7 @@ const generateColumns = (
     },
     size: 80,
   },
+   */
   {
     accessorKey: "name",
     header: ({ column }) => (

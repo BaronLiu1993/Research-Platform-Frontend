@@ -6,12 +6,13 @@ import { NextResponse } from "next/server";
 export async function middleware(req) {
   const { pathname } = req.nextUrl;
   // Handle register page
+
   if (pathname === "/account/register") {
     const registerResult = await RegisterMiddleware(req);
     if (registerResult?.headers.get("location")) {
       return registerResult;
     }
-    return NextResponse.next(); 
+    return NextResponse.next();
   }
 
   // Handle login page
@@ -20,8 +21,12 @@ export async function middleware(req) {
     if (loginResult?.headers.get("location")) {
       return loginResult;
     }
-    
-    return NextResponse.next(); 
+
+    return NextResponse.next();
+  }
+
+  if (pathname == "/drafts" || pathname == "/inbox") {
+    return NextResponse.redirect(new URL("/repository", req.url));
   }
 
   const authResult = await AuthMiddleware(req);
@@ -42,6 +47,6 @@ export const config = {
     "/workspace",
     "/inbox",
     "/inbox/thread",
-    "/profile"
+    "/profile",
   ],
 };
