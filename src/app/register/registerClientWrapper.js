@@ -61,7 +61,9 @@ export default function RegisterClientWrapper({ access }) {
     };
 
     try {
-      const [registerRes, watchRes] = await Promise.all([
+      /**
+       * 
+       * const [registerRes, watchRes] = await Promise.all([
         fetch(`${API_BASE}/auth/register`, {
           method: "POST",
           headers: {
@@ -78,11 +80,23 @@ export default function RegisterClientWrapper({ access }) {
           },
         }),
       ]);
+       */
 
-      if (!registerRes.ok || !watchRes.ok) {
+      const [registerRes] = await Promise.all([
+        fetch(`${API_BASE}/auth/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access}`,
+          },
+          body: JSON.stringify(payload),
+        }),
+      ]);
+
+      if (!registerRes.ok) {
         let msg = "Registration failed.";
         try {
-          const data = await watchRes.json();
+          const data = await registerRes.json();
           if (data?.message) msg = data.message;
         } catch {
           setSubmitting(false);
