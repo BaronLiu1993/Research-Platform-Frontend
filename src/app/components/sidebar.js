@@ -46,22 +46,6 @@ const data = {
             <LayoutDashboard className="h-6 w-6 bg-blue-100 rounded-xs text-[#337EA9] p-0.5" />
           ),
         },
-        /**
-         * {
-          title: "Drafts",
-          url: "/drafts",
-          icon: (
-            <Pen className="h-6 w-6 bg-indigo-50 rounded-xs text-indigo-400 p-0.5" />
-          ),
-        },
-        {
-          title: "Inbox",
-          url: "/inbox",
-          icon: (
-            <InboxIcon className="h-6 w-6 rounded-xs bg-violet-100 text-[#9065B0] p-0.5" />
-          ),
-        },
-         */
         {
           title: "Profile",
           url: "/profile",
