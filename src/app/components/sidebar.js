@@ -81,10 +81,10 @@ export function AppSidebar({ student_data, ...props }) {
     <Sidebar className="w-[12rem] font-main" {...props}>
       <SidebarHeader className="font-main rounded-sm m-2">
         <div className="flex items-center gap-2">
-          <div>
-            <h1 className="text-sm font-medium">{student_data.student_name}</h1>
-            <p className="text-xs max-w-[200px] truncate">
-              {student_data.student_email}
+          <div className="min-w-0">
+            <h1 className="text-sm font-medium truncate">{student_data.student_name.length > 25 ? student_data.student_name.slice(0, 25) + '...' : student_data.student_name}</h1>
+            <p className="text-xs truncate">
+              {student_data.student_email.length > 30 ? student_data.student_email.slice(0, 30) + '...' : student_data.student_email}
             </p>
           </div>
         </div>
