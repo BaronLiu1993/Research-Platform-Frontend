@@ -56,7 +56,7 @@
     "@tiptap/suggestion": "^2.14.0",
     "@vercel/otel": "^2.1.0",
     "@vercel/speed-insights": "^1.2.0",
-    "axios": "^1.8.4",
+    "axios": "^1.13.5",
     "chroma-js": "^3.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
