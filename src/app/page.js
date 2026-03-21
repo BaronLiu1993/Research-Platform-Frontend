@@ -1,6 +1,15 @@
 "use client";
 
-import { LogIn, Pencil } from "lucide-react";
+import {
+  LogIn,
+  Pencil,
+  Search,
+  Bookmark,
+  Mail,
+  UserCircle,
+  Sparkles,
+  BarChart3,
+} from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import Image from "next/image";
@@ -79,6 +88,52 @@ export default function Home() {
             </div>
           </div>
         </header>
+
+        <motion.section
+          className="mx-auto w-full max-w-6xl px-6 sm:px-10 pb-16 sm:pb-20"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+        >
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="lg:w-56 shrink-0 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible font-main">
+              {[
+                { icon: <Search className="h-5 w-5 stroke-1" />, bg: "bg-orange-100", text: "text-orange-600", label: "Discover", desc: "Browse 1000+ professors" },
+                { icon: <Sparkles className="h-5 w-5 stroke-1" />, bg: "bg-purple-100", text: "text-purple-600", label: "Recommendations", desc: "Based on research interests" },
+                { icon: <Bookmark className="h-5 w-5 stroke-1" />, bg: "bg-blue-100", text: "text-blue-600", label: "Save", desc: "Build your shortlist" },
+                { icon: <BarChart3 className="h-5 w-5 stroke-1" />, bg: "bg-green-100", text: "text-green-600", label: "Track", desc: "Monitor outreach status" },
+                { icon: <Mail className="h-5 w-5 stroke-1" />, bg: "bg-pink-100", text: "text-pink-600", label: "Draft Emails", desc: "Compose cold emails" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/50 p-3 min-w-[10rem] lg:min-w-0"
+                >
+                  <div className={`${item.bg} ${item.text} rounded-lg p-1.5 shrink-0`}>
+                    {item.icon}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-gray-900">{item.label}</p>
+                    <p className="text-xs text-gray-500 leading-tight">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex-1 rounded-2xl border border-gray-200 overflow-hidden shadow-lg bg-white p-2 sm:p-3">
+              <div className="rounded-xl overflow-hidden">
+                <video
+                  className="w-full block -mt-[1%]"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                >
+                  <source src="/demo.mp4" type="video/mp4" />
+                </video>
+              </div>
+            </div>
+          </div>
+        </motion.section>
       </main>
 
       <footer className="bg-white font-light border-t py-4">
