@@ -54,7 +54,7 @@ export default async function Drafts({ searchParams }) {
 
   const [profileRes, draftsRes, fileRes] = await Promise.all([
     fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
-    fetch(`${API_BASE}/email/get-drafts`, draftsFetchOpts),
+    fetch(`${API_BASE}/email/get-drafts?page=${pageNumber}`, draftsFetchOpts),
     fetch(`${API_BASE}/storage/check-file-existance`, fileFetchOpts),
   ]);
 
@@ -165,6 +165,7 @@ export default async function Drafts({ searchParams }) {
                   <DraftsTable
                     generateColumns={generateColumns}
                     data={draftsData.data}
+                    hasMore={draftsData.has_more ?? false}
                     pageNumber={pageNumber}
                     access={access}
                     fileExists={fileExists}

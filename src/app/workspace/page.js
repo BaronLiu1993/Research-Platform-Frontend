@@ -167,6 +167,7 @@ export default async function Workspace({ searchParams }) {
                   <WorkspaceTable
                     generateColumns={generateColumns}
                     data={savedData.data}
+                    hasMore={savedData.has_more ?? false}
                     pageNumber={pageNumber}
                     access={access}
                     userName={parsedUserProfile.student_name}

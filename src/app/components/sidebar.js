@@ -61,7 +61,7 @@ const data = {
                 title: "Inbox",
                 url: "/inbox",
                 icon: (
-                  <Mail className="h-6 w-6 bg-purple-100 rounded-xs text-purple-400 p-1" />
+                  <Mail className="h-6 w-6 bg-red-100 rounded-xs text-red-400 p-1" />
                 ),
               },
             ]
@@ -84,12 +84,10 @@ export function AppSidebar({ student_data, ...props }) {
   return (
     <Sidebar className="w-[12rem] font-main" {...props}>
       <SidebarHeader className="font-main rounded-sm m-2">
-        <div className="flex items-center gap-2">
-          <div className="min-w-0">
-            <h1 className="text-sm font-medium truncate">{student_data.student_name.length > 25 ? student_data.student_name.slice(0, 25) + '...' : student_data.student_name}</h1>
-            <p className="text-xs truncate">
-              {student_data.student_email.length > 30 ? student_data.student_email.slice(0, 30) + '...' : student_data.student_email}
-            </p>
+        <div className="flex items-center gap-2 overflow-hidden">
+          <div className="min-w-0 w-full">
+            <h1 className="text-sm font-medium truncate">{student_data?.student_name || ""}</h1>
+            <p className="text-xs text-gray-500 truncate">{student_data?.student_email || ""}</p>
           </div>
         </div>
       </SidebarHeader>

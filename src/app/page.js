@@ -6,7 +6,6 @@ import {
   Search,
   Bookmark,
   Mail,
-  UserCircle,
   Sparkles,
   BarChart3,
 } from "lucide-react";
@@ -96,27 +95,31 @@ export default function Home() {
           transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
         >
           <div className="flex flex-col lg:flex-row gap-4">
-            <div className="lg:w-56 shrink-0 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-visible font-main">
-              {[
-                { icon: <Search className="h-5 w-5 stroke-1" />, bg: "bg-orange-100", text: "text-orange-600", label: "Discover", desc: "Browse 1000+ professors" },
-                { icon: <Sparkles className="h-5 w-5 stroke-1" />, bg: "bg-purple-100", text: "text-purple-600", label: "Recommendations", desc: "Based on research interests" },
-                { icon: <Bookmark className="h-5 w-5 stroke-1" />, bg: "bg-blue-100", text: "text-blue-600", label: "Save", desc: "Build your shortlist" },
-                { icon: <BarChart3 className="h-5 w-5 stroke-1" />, bg: "bg-green-100", text: "text-green-600", label: "Track", desc: "Monitor outreach status" },
-                { icon: <Mail className="h-5 w-5 stroke-1" />, bg: "bg-pink-100", text: "text-pink-600", label: "Draft Emails", desc: "Compose cold emails" },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/50 p-3 min-w-[10rem] lg:min-w-0"
-                >
-                  <div className={`${item.bg} ${item.text} rounded-lg p-1.5 shrink-0`}>
-                    {item.icon}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-gray-900">{item.label}</p>
-                    <p className="text-xs text-gray-500 leading-tight">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
+            <div className="shrink-0 font-main lg:w-56">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2">
+                {[
+                  { icon: <Search className="h-5 w-5 stroke-1" />, bg: "bg-orange-100", text: "text-orange-600", label: "Discover", desc: "Browse 1000+ professors" },
+                  { icon: <Sparkles className="h-5 w-5 stroke-1" />, bg: "bg-purple-100", text: "text-purple-600", label: "Recommendations", desc: "Based on research interests" },
+                  { icon: <Bookmark className="h-5 w-5 stroke-1" />, bg: "bg-blue-100", text: "text-blue-600", label: "Save", desc: "Build your shortlist" },
+                  { icon: <BarChart3 className="h-5 w-5 stroke-1" />, bg: "bg-green-100", text: "text-green-600", label: "Track", desc: "Monitor outreach status" },
+                  { icon: <Mail className="h-5 w-5 stroke-1" />, bg: "bg-pink-100", text: "text-pink-600", label: "Draft Emails", desc: "Compose cold emails" },
+                ].map((item) => (
+                  <motion.div
+                    key={item.label}
+                    className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/50 p-3"
+                    whileHover={{ scale: 1.02, backgroundColor: "rgba(249,250,251,1)" }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className={`${item.bg} ${item.text} rounded-lg p-1.5 shrink-0`}>
+                      {item.icon}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-900">{item.label}</p>
+                      <p className="text-xs text-gray-500 leading-tight hidden sm:block">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
             <div className="flex-1 rounded-2xl border border-gray-200 overflow-hidden shadow-lg bg-white p-2 sm:p-3">

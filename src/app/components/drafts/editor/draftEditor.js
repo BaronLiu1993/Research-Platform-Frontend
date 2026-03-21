@@ -31,6 +31,7 @@ export default function DraftEditor({
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [contentReady, setContentReady] = useState(false);
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
   const getEmailDrafts = async () => {
@@ -98,20 +99,23 @@ export default function DraftEditor({
   useEffect(() => {
     const handleEmailDraft = async () => {
       setIsLoading(true);
+      setContentReady(false);
       const response = await getEmailDrafts();
       if (response.success) {
         setSubject(response.data.subject);
         setBody(response.data.html);
-        if (editor) {
-          editor.commands.setContent(response.data.html);
-        }
       }
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
+      setIsLoading(false);
     };
     handleEmailDraft();
-  }, [access, draftId, editor]);
+  }, [access, draftId]);
+
+  useEffect(() => {
+    if (!isLoading && editor && body) {
+      editor.commands.setContent(body);
+      requestAnimationFrame(() => setContentReady(true));
+    }
+  }, [isLoading, editor, body]);
 
   const saveDraft = async () => {
     try {
@@ -144,7 +148,7 @@ export default function DraftEditor({
     }
   };
 
-  if (isLoading) {
+  if (isLoading || !contentReady) {
     return (
       <div>
         <div className="text-sm">

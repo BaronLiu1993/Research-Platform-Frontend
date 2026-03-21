@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/shadcomponents/ui/button";
 
 import {
@@ -9,11 +10,57 @@ import {
   DialogTrigger,
 } from "@/shadcomponents/ui/composedialog";
 
-import { Trash2Icon, Pencil } from "lucide-react";
+import { Trash2Icon, Pencil, PenLine } from "lucide-react";
 
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
 import DraftEditor from "./editor/draftEditor";
 import { toast } from "sonner";
+
+function EditDraftCell({ data, access, userName, userEmail, handleIsEditing }) {
+  const [editing, setEditing] = useState(false);
+
+  return (
+    <div className="flex justify-end items-center h-full pr-1">
+      <Dialog onOpenChange={(open) => setEditing(open)}>
+        <DialogTrigger asChild>
+          <button
+            type="button"
+            className={`flex items-center gap-2 text-xs font-medium cursor-pointer p-2 rounded-md text-white transition-colors truncate ${
+              editing
+                ? "bg-green-500 hover:bg-green-600"
+                : "bg-orange-400 hover:bg-orange-500"
+            }`}
+          >
+            {editing ? (
+              <>
+                <PenLine className="stroke-1 h-4 w-4" />
+                Editing...
+              </>
+            ) : (
+              <>
+                <Pencil className="stroke-1 h-4 w-4" />
+                Edit Draft
+              </>
+            )}
+          </button>
+        </DialogTrigger>
+
+        <DialogContent>
+          <DialogTitle />
+          <DraftEditor
+            professorEmail={data.professor_email}
+            professorName={data.professor_name}
+            access={access}
+            draftId={data.draft_id}
+            userName={userName}
+            userEmail={userEmail}
+            handleIsEditing={handleIsEditing}
+          />
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
 const deleteDraft = async ({ access, draftId }) => {
@@ -139,32 +186,13 @@ const generateColumns = (
     cell: ({ row }) => {
       const data = row.original || {};
       return (
-        <div className="flex justify-end items-center h-full pr-1">
-          <Dialog>
-            <DialogTrigger asChild>
-              <button
-                type="button"
-                className="flex items-center gap-2 text-xs font-medium bg-orange-400 hover:bg-orange-500 cursor-pointer p-2 rounded-md text-white transition-colors truncate disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300"
-              >
-                <Pencil className="stroke-1 h-4 w-4" />
-                Edit Draft
-              </button>
-            </DialogTrigger>
-
-            <DialogContent>
-              <DialogTitle />
-              <DraftEditor
-                professorEmail={data.professor_email}
-                professorName={data.professor_name}
-                access={access}
-                draftId={data.draft_id}
-                userName={userName}
-                userEmail={userEmail}
-                handleIsEditing={handleIsEditing}
-              />
-            </DialogContent>
-          </Dialog>
-        </div>
+        <EditDraftCell
+          data={data}
+          access={access}
+          userName={userName}
+          userEmail={userEmail}
+          handleIsEditing={handleIsEditing}
+        />
       );
     },
     size: 90,

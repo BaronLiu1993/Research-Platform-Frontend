@@ -47,6 +47,7 @@ import {
 export function DraftsTable({
   data = [],
   generateColumns,
+  hasMore = false,
   pageNumber = 1,
   access,
   userName,
@@ -125,7 +126,8 @@ export function DraftsTable({
         userName,
         userEmail,
         selectedRows,
-        setIsEditing
+        setIsEditing,
+        isEditing
       ),
     [
       access,
@@ -474,10 +476,10 @@ export function DraftsTable({
         <button
           type="button"
           onClick={() => goToPage(Number(pageNumber) + 1)}
-          disabled={isNavigationLoading}
+          disabled={isNavigationLoading || !hasMore}
           className={`text-sm cursor-pointer font-medium text-white px-3 py-1.5 rounded-sm transition-colors
       ${
-        isNavigationLoading ? "bg-gray-300" : "bg-[#4584F3] hover:bg-[#3574E2]"
+        isNavigationLoading || !hasMore ? "bg-gray-300" : "bg-[#4584F3] hover:bg-[#3574E2]"
       }`}
         >
           Next
