@@ -12,8 +12,7 @@ export const SendReply = async ({
   threadId,
 }) => {
   try {
-    const API_BASE =
-      process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
+    const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
     const response = await fetch(
       `${API_BASE}/reply/send-reply?messageId=${messageId}`,
       {

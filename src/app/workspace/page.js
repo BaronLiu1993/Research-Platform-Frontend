@@ -119,9 +119,8 @@ export default async function Workspace({ searchParams }) {
                       Track Professor Outreach!
                     </Badge>
                   </div>
-                  <div>
-                    {/**
-                     * <div className="my-5">
+                  {process.env.NEXT_PUBLIC_FEATURE_EMAIL_FLOW === "true" && (
+                    <div className="my-5">
                       <div className="inline-flex items-center rounded-md bg-[#F6F3F9] px-2 py-0.5 text-[11px] font-main font-medium text-[#9065B0]">
                         How to Draft Your First Email
                       </div>
@@ -160,8 +159,7 @@ export default async function Workspace({ searchParams }) {
                         </div>
                       </div>
                     </div>
-                     */}
-                  </div>
+                  )}
                 </div>
 
                 <div className="mb-8 overflow-x-auto">
