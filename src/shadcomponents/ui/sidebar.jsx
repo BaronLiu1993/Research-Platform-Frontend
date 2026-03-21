@@ -240,7 +240,7 @@ function SidebarTrigger({
         toggleSidebar()
       }}
       {...props}>
-      <FolderOpen className = "font-semibold cursor-pointer text-[#5AC2FF]"/>
+      <FolderOpen className = "font-semibold cursor-pointer text-black"/>
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );

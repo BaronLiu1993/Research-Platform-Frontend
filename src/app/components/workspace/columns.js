@@ -37,6 +37,7 @@ import {
 import Link from "next/link";
 import { toast } from "sonner";
 import { Checkbox } from "@/shadcomponents/ui/checkbox";
+import { featureFlags } from "@/lib/featureFlags";
 
 const handleStatusChange = async ({ access, status, id }) => {
   try {
@@ -57,33 +58,35 @@ const generateColumns = (
   handleSelectedAllRowData,
   selectedRows
 ) => [
-  /**
-   * {
-    accessorKey: "checkbox",
-    header: ({ column }) => <></>,
-    cell: ({ row }) => {
-      const data = row.original;
-      const isSelected = selectedRows.some((r) => r.id === data.professor_id);
-      return (
-        <>
-          <Checkbox
-            className="h-4 w-4 cursor-pointer bg-gray-50 border-2 border-gray-700 rounded-xs"
-            checked={isSelected}
-            onCheckedChange={() => {
-              handleSelectedRows(data.professor_id);
-              handleSelectedAllRowData({
-                id: data.professor_id,
-                name: data.name,
-                email: data.email,
-              });
-            }}
-          />
-        </>
-      );
-    },
-    size: 80,
-  },
-   */
+  ...(featureFlags.emailFlow
+    ? [
+        {
+          accessorKey: "checkbox",
+          header: ({ column }) => <></>,
+          cell: ({ row }) => {
+            const data = row.original;
+            const isSelected = selectedRows.some((r) => r.id === data.professor_id);
+            return (
+              <>
+                <Checkbox
+                  className="h-4 w-4 cursor-pointer bg-gray-50 border-2 border-gray-700 rounded-xs"
+                  checked={isSelected}
+                  onCheckedChange={() => {
+                    handleSelectedRows(data.professor_id);
+                    handleSelectedAllRowData({
+                      id: data.professor_id,
+                      name: data.name,
+                      email: data.email,
+                    });
+                  }}
+                />
+              </>
+            );
+          },
+          size: 80,
+        },
+      ]
+    : []),
   {
     accessorKey: "name",
     header: ({ column }) => (

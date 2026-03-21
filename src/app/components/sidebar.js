@@ -20,9 +20,10 @@ import {
   ChevronDown,
   Library,
   LayoutDashboard,
-  InboxIcon,
   Pen,
   PersonStanding,
+  LetterText,
+  Mail,
 } from "lucide-react";
 import { Button } from "@/shadcomponents/ui/button";
 import { featureFlags } from "@/lib/featureFlags";
@@ -50,17 +51,17 @@ const data = {
         ...(featureFlags.emailFlow
           ? [
               {
-                title: "Inbox",
-                url: "/inbox",
-                icon: (
-                  <InboxIcon className="h-6 w-6 bg-purple-100 rounded-xs text-purple-500 p-0.5" />
-                ),
-              },
-              {
                 title: "Drafts",
                 url: "/drafts",
                 icon: (
-                  <Pen className="h-6 w-6 bg-yellow-100 rounded-xs text-yellow-600 p-0.5" />
+                  <Pen className="h-6 w-6 bg-gray-200 rounded-xs text-gray-600 p-1" />
+                ),
+              },
+              {
+                title: "Inbox",
+                url: "/inbox",
+                icon: (
+                  <Mail className="h-6 w-6 bg-purple-100 rounded-xs text-purple-400 p-1" />
                 ),
               },
             ]

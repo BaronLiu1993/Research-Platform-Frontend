@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { getFile } from "@/app/api/storage/getFile";
 import { uploadFile } from "@/app/api/storage/uploadFile";
 import { Button } from "@/shadcomponents/ui/button";
@@ -140,7 +141,7 @@ export default function Dashboard({ access, fileExists, profileData }) {
   const handleProfileUpdate = async (e) => {
     e?.preventDefault();
     setAttempted(true);
-    setSubmitError("");
+    setSubmitError(""); 
 
     const isValid = validateForm();
     if (!isValid) {
@@ -341,13 +342,12 @@ export default function Dashboard({ access, fileExists, profileData }) {
                   htmlFor="resume-upload"
                   className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 >
-                  <img
+                  <Image
                     src="/luncheon.svg"
                     alt="resume upload background image"
                     width={200}
                     height={128}
-                    loading="eager"
-                    decoding="async"
+                    priority
                     className="w-full h-[8rem]"
                   />
 
@@ -421,13 +421,12 @@ export default function Dashboard({ access, fileExists, profileData }) {
                   htmlFor="transcript-upload"
                   className="cursor-pointer rounded-sm hover:bg-gray-50 border-[1px] w-full h-full inline-block overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 >
-                  <img
+                  <Image
                     src="/walk.svg"
                     alt="transcript upload background image"
                     width={200}
                     height={128}
-                    loading="eager"
-                    decoding="async"
+                    priority
                     className="w-full h-[8rem]"
                   />
 

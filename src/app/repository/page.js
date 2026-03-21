@@ -107,7 +107,8 @@ export default async function Repository({ searchParams }) {
 
         <SidebarInset className="flex flex-col min-h-0 overflow-hidden">
           <header className="sticky top-0 z-10 flex h-10 shrink-0 items-center gap-2 px-4 sm:px-6 bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50">
-            <SidebarTrigger className="cursor-pointer text-[#5AC2FF]" />
+            <SidebarTrigger className="cursor-pointer text-black" />
+            <div className="h-5 w-px bg-gray-300" />
             <Breadcrumb className="font-main font-semibold">
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
@@ -116,7 +117,7 @@ export default async function Repository({ searchParams }) {
                       href="/repository"
                       className="font-main font-medium text-xs flex items-center hover:underline gap-2 text-[#37352F]"
                     >
-                      <Laptop className="h-5 w-5 text-[#5AC2FF]" />
+                      <Laptop className="h-5 w-5 text-black" />
                       Repository
                     </Link>
                   </BreadcrumbLink>

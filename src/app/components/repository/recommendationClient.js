@@ -83,7 +83,7 @@ export default function RecommendationsClient({ matches, access }) {
         {matches.map((response, index) => (
           <Dialog key={response.professor_id ?? index}>
             <CarouselItem className={`pl-3 md:pl-4 ${itemBasisClass}`}>
-              <article className="rounded-xl p-4 bg-white hover:shadow-sm transition-shadow duration-200 flex flex-col border border-gray-200 min-w-0 h-[200px]">
+              <article className="rounded-xl p-4 pb-6 bg-white hover:shadow-sm transition-shadow duration-200 flex flex-col border border-gray-200 min-w-0 h-[230px]">
                 <div className="flex justify-end -mt-1 -mr-1">
                   <SaveButton
                     professorData={response}
