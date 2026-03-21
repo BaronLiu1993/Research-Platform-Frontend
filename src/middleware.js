@@ -25,7 +25,8 @@ export async function middleware(req) {
     return NextResponse.next();
   }
 
-  if (pathname == "/drafts" || pathname == "/inbox") {
+  if ((pathname === "/drafts" || pathname === "/inbox") &&
+      process.env.NEXT_PUBLIC_FEATURE_EMAIL_FLOW !== "true") {
     return NextResponse.redirect(new URL("/repository", req.url));
   }
 

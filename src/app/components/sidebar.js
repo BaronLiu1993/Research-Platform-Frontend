@@ -25,6 +25,7 @@ import {
   PersonStanding,
 } from "lucide-react";
 import { Button } from "@/shadcomponents/ui/button";
+import { featureFlags } from "@/lib/featureFlags";
 
 const data = {
   navMain: [
@@ -46,6 +47,24 @@ const data = {
             <LayoutDashboard className="h-6 w-6 bg-blue-100 rounded-xs text-[#337EA9] p-0.5" />
           ),
         },
+        ...(featureFlags.emailFlow
+          ? [
+              {
+                title: "Inbox",
+                url: "/inbox",
+                icon: (
+                  <InboxIcon className="h-6 w-6 bg-purple-100 rounded-xs text-purple-500 p-0.5" />
+                ),
+              },
+              {
+                title: "Drafts",
+                url: "/drafts",
+                icon: (
+                  <Pen className="h-6 w-6 bg-yellow-100 rounded-xs text-yellow-600 p-0.5" />
+                ),
+              },
+            ]
+          : []),
         {
           title: "Profile",
           url: "/profile",

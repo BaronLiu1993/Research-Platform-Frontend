@@ -35,6 +35,7 @@ import {
 } from "@/shadcomponents/ui/composedialog";
 import EmailEditor from "./editor/emailEditor";
 import { Mail } from "lucide-react";
+import { featureFlags } from "@/lib/featureFlags";
 
 export function WorkspaceTable({
   data = [],
@@ -200,32 +201,32 @@ export function WorkspaceTable({
               className="w-full sm:max-w-xs placeholder:text-xs placeholder:font-medium rounded-md"
             />
 
-            {/**
-             * <Dialog>
-              <DialogTrigger asChild>
-                <Button
-                  className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#4584F3] transition-colors hover:bg-[#3574E2] disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
-                  disabled={selectedRows.length === 0 || isEditing}
-                  onClick={() => setIsEditing(true)}
-                >
-                  <Mail className="h-4 w-4" />
-                  <span>Draft Emails</span>
-                </Button>
-              </DialogTrigger>
+            {featureFlags.emailFlow && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button
+                    className="flex w-full items-center justify-center cursor-pointer gap-1.5 text-xs font-medium text-white px-3 py-1.5 rounded-sm bg-[#4584F3] transition-colors hover:bg-[#3574E2] disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:bg-gray-300 sm:w-auto sm:text-sm"
+                    disabled={selectedRows.length === 0 || isEditing}
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <Mail className="h-4 w-4" />
+                    <span>Draft Emails</span>
+                  </Button>
+                </DialogTrigger>
 
-              <DialogContent className="w-[95vw] max-w-2xl sm:w-full">
-                <DialogTitle></DialogTitle>
-                <EmailEditor
-                  access={access}
-                  userEmail={userEmail}
-                  userName={userName}
-                  selectedProfessors={selectedRows}
-                  fullSelectedProfessors={allDataSelectedRows}
-                  handleIsEditing={setIsEditing}
-                />
-              </DialogContent>
-            </Dialog>
-             */}
+                <DialogContent className="w-[95vw] max-w-2xl sm:w-full">
+                  <DialogTitle></DialogTitle>
+                  <EmailEditor
+                    access={access}
+                    userEmail={userEmail}
+                    userName={userName}
+                    selectedProfessors={selectedRows}
+                    fullSelectedProfessors={allDataSelectedRows}
+                    handleIsEditing={setIsEditing}
+                  />
+                </DialogContent>
+              </Dialog>
+            )}
           </div>
         </div>
 
