@@ -10,15 +10,12 @@ import {
   BreadcrumbSeparator,
 } from "@/shadcomponents/ui/breadcrumb";
 import {
-  SidebarProvider,
-  SidebarInset,
   SidebarTrigger,
 } from "@/shadcomponents/ui/sidebar";
 
-import { AppSidebar } from "../components/sidebar";
 import { Laptop, PersonStanding, PlaneLanding } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
-import Dashboard from "../components/profile/dashboard";
+import Dashboard from "@/app/components/profile/dashboard";
 
 export default async function Profile() {
   const cookieStore = await cookies();
@@ -39,33 +36,19 @@ export default async function Profile() {
     headers: access ? { Authorization: `Bearer ${access}` } : {},
   };
 
-  let parsedUserProfile = {};
   let profileData = {};
   let fileExists = {};
 
-  const [fileRes, profileRes, profileDataRes] = await Promise.all([
+  const [fileRes, profileDataRes] = await Promise.all([
     fetch(`${API_BASE}/storage/check-file-existance`, fileFetchOpts),
-    fetch(`${API_BASE}/auth/get-user-sidebar-info`, profileFetchOpts),
     fetch(`${API_BASE}/auth/fetch-info`, profileFetchOpts),
   ]);
 
-  if (fileRes.ok) {
-    fileExists = await fileRes.json();
-  }
-
-  if (profileDataRes.ok) {
-    profileData = await profileDataRes.json();
-  }
-
-  if (profileRes.ok) {
-    parsedUserProfile = await profileRes.json();
-  }
+  if (fileRes.ok) fileExists = await fileRes.json();
+  if (profileDataRes.ok) profileData = await profileDataRes.json();
 
   return (
-    <div className="w-full overflow-hidden">
-      <SidebarProvider>
-        <AppSidebar student_data={parsedUserProfile} />
-        <SidebarInset className="flex flex-col min-h-0 overflow-hidden">
+    <>
           <header className="sticky top-0 z-10 flex h-10 shrink-0 items-center gap-2 px-4 sm:px-6 bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50">
             <SidebarTrigger className="cursor-pointer text-black" />
             <div className="h-5 w-px bg-gray-300" />
@@ -121,8 +104,6 @@ export default async function Profile() {
               </div>
             </div>
           </div>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
+    </>
   );
 }

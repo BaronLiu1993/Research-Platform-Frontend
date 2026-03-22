@@ -10,12 +10,8 @@ import {
   BreadcrumbSeparator,
 } from "@/shadcomponents/ui/breadcrumb";
 import {
-  SidebarProvider,
-  SidebarInset,
   SidebarTrigger,
 } from "@/shadcomponents/ui/sidebar";
-
-import { AppSidebar } from "@/app/components/sidebar";
 import { InboxIcon, Laptop, Mail } from "lucide-react";
 import Thread from "@/app/components/inbox/thread";
 
@@ -62,10 +58,7 @@ export default async function Inbox({ searchParams }) {
   }
 
   return (
-    <div className="w-full overflow-hidden">
-      <SidebarProvider>
-        <AppSidebar student_data={parsedUserProfile} />
-        <SidebarInset className="flex flex-col min-h-0 overflow-hidden">
+    <>
           <header className="sticky top-0 z-10 flex h-10 shrink-0 items-center gap-2 px-4 sm:px-6 bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50">
             <SidebarTrigger className="cursor-pointer text-black" />
             <div className="h-5 w-px bg-gray-300" />
@@ -114,8 +107,6 @@ export default async function Inbox({ searchParams }) {
               professorName={name}
             />
           </div>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
+    </>
   );
 }

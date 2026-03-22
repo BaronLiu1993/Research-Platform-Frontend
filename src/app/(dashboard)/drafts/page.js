@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-import generateColumns from "../components/drafts/columns";
+import generateColumns from "@/app/components/drafts/columns";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,15 +11,12 @@ import {
   BreadcrumbSeparator,
 } from "@/shadcomponents/ui/breadcrumb";
 import {
-  SidebarProvider,
-  SidebarInset,
   SidebarTrigger,
 } from "@/shadcomponents/ui/sidebar";
 
-import { AppSidebar } from "../components/sidebar";
 import { Laptop, Pen, PlaneLanding } from "lucide-react";
 import { Badge } from "@/shadcomponents/ui/badge";
-import { DraftsTable } from "../components/drafts/draft-table";
+import { DraftsTable } from "@/app/components/drafts/draft-table";
 
 export default async function Drafts({ searchParams }) {
   const cookieStore = await cookies();
@@ -71,10 +68,7 @@ export default async function Drafts({ searchParams }) {
   }
 
   return (
-    <div className="w-full overflow-hidden">
-      <SidebarProvider>
-        <AppSidebar student_data={parsedUserProfile} />
-        <SidebarInset className="flex flex-col min-h-0 overflow-hidden">
+    <>
           <header className="sticky top-0 z-10 flex h-10 shrink-0 items-center gap-2 px-4 sm:px-6 bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50">
             <SidebarTrigger className="cursor-pointer text-black" />
             <div className="h-5 w-px bg-gray-300" />
@@ -177,8 +171,6 @@ export default async function Drafts({ searchParams }) {
               </div>
             </div>
           </div>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
+    </>
   );
 }

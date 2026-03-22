@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import {
   Sidebar,
   SidebarContent,
@@ -125,7 +126,7 @@ export function AppSidebar({ student_data, ...props }) {
                   ) : (
                     <SidebarMenuItem key={itm.title}>
                       <SidebarMenuButton asChild isActive={itm.isActive}>
-                        <a
+                        <Link
                           href={itm.url}
                           className="flex items-center gap-1 font-main"
                         >
@@ -135,7 +136,7 @@ export function AppSidebar({ student_data, ...props }) {
                           <span className="text-[#787774] text-[12.5px] font-[500]">
                             {itm.title}
                           </span>
-                        </a>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   )
